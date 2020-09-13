@@ -1,45 +1,20 @@
-import { takeLatest, put, all } from 'redux-saga/effects';
-import { types, requestForCourses, requestToSort } from './actions';
+import { takeLatest, put, all } from "redux-saga/effects";
+import { types, singleRequest } from "./actions";
 
 export default function* rootSaga() {
-  yield all([
-    root(),
-  ]);
+  yield all([root()]);
 }
 
 function* root() {
-  yield takeLatest(types.REQUEST_FOR_COURSES_REQUEST, watchRequestForCourses);
-  yield takeLatest(types.REQUEST_TO_SORT_REQUEST, watchRequestToSort);
+  yield takeLatest(types.REQUEST, watchSingleRequest);
 }
 
-const URL = 'http://localhost:3000/course';
-
-function* watchRequestForCourses() {
+function* watchSingleRequest() {
   try {
     // replace the following url with the URL above
-    const response = yield fetch(URL)
-    .then(response => response.json());
-    yield put(requestForCourses.success({ response }));
+    yield put(singleRequest.success());
   } catch (e) {
-    yield put(requestForCourses.error());
+    yield put(singleRequest.error());
     console.log(e);
-  }
-}
-
-function* watchRequestToSort(actions) {
-  const payload = actions.payload;
-  try {
-    const response = yield fetch(URL,
-    {
-      method : 'POST',
-      headers: { 
-        Accept: 'application/json',
-        'Content-type': 'application/json' 
-      },
-      body: JSON.stringify(payload),
-    }).then(response => response.json());
-    yield put(requestToSort.success({ response }));
-  } catch (e) {
-    yield put(requestToSort.error());
   }
 }

@@ -1,24 +1,29 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
+import React from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { singleRequest } from "../data/actions";
 
-const Layout = styled.div`
+const Wrapper = styled.div``;
+
+const TestingLink = styled.a`
+  text-decoration: underline;
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
-// Example of using a connector
-const connector = connect(
-  (state) => ({
-  }),
-  {  },
-);
+// An example of using a connector
+const connector = connect((state) => ({}), {
+  request: singleRequest.request,
+});
 
-const Layout = ({
-}) => {
+const Layout = ({ request }) => {
   return (
-    <Layout>
-      Welcome to vocab buddy
-    </Layout>
+    <Wrapper>
+      <TestingLink onClick={request}>Welcome to vocab buddy</TestingLink>
+    </Wrapper>
   );
-}
+};
 
-export default Layout;
+export default connector(Layout);

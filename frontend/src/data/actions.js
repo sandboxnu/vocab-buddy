@@ -1,18 +1,17 @@
 export const types = {
-  REQUEST: 'REQUEST',
-  SUCCESS: 'SUCCESS',
-  ERROR: 'ERROR',
+  REQUEST: "REQUEST",
+  SUCCESS: "SUCCESS",
+  ERROR: "ERROR",
 };
 
 export const singleRequest = {
   request: () => ({
     type: types.REQUEST,
   }),
-  success: ({ response }) => ({
+  success: () => ({
     type: types.SUCCESS,
-    payload: { response },
   }),
   error: () => ({
     type: types.ERROR,
   }),
-}
+};
