@@ -7,6 +7,9 @@ import { logger } from "redux-logger";
 import reducer from "./data/reducer";
 import rootSaga from "./data/saga";
 import App from "./App";
+import * as firebase from "firebase";
+
+firebase.initializeApp();
 
 const sagaMiddleware = createSagaMiddleware();
 
