@@ -7,6 +7,7 @@ import { logger } from "redux-logger";
 import reducer from "./data/reducer";
 import rootSaga from "./data/saga";
 import App from "./App";
+import "./index.css";
 import * as firebase from "firebase";
 
 // Your web app's Firebase configuration
