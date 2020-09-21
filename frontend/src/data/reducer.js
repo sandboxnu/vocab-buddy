@@ -1,12 +1,17 @@
 import { types } from "./actions";
 
-const initialState = {};
+const initialState = {
+  id: null,
+};
 
 const reducer = (state = initialState, action) => {
-  // const payload = action.payload;
+  const payload = action.payload;
   switch (action.type) {
-    case types.REQUEST:
     case types.SUCCESS:
+      return {
+        id: state.id || payload.id,
+      };
+    case types.REQUEST:
     case types.ERROR:
     default:
       return state;
