@@ -16,16 +16,25 @@ const NavBarContainer = styled.nav`
   width: 100%;
 `;
 
+const TestingId = styled.p``;
+
 // An example of using a connector
-const connector = connect((state) => ({}), {
+const connector = connect((state) => state, {
   request: singleRequest.request,
+  addUser: singleRequest.addUser,
 });
 
-const Layout = () => {
+const Layout = ({ id, request, addUser }) => {
   return (
     <Wrapper>
-      <Button type="primary">Primary Button</Button>
-      <NavBarContainer></NavBarContainer>
+      <TestingLink onClick={request}>Welcome to vocab buddy</TestingLink>
+      {id == null ? (
+        <TestingLink onClick={() => addUser({ name: "Jack" })}>
+          Add Jack to db as test
+        </TestingLink>
+      ) : (
+        <TestingId>The id is {id}</TestingId>
+      )}
     </Wrapper>
   );
 };
