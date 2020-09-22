@@ -2,6 +2,7 @@ import { types } from "./actions";
 
 const initialState = {
   id: null,
+  imageURL: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,6 +11,7 @@ const reducer = (state = initialState, action) => {
     case types.SUCCESS:
       return {
         id: state.id || payload.id,
+        imageURL: state.imageURL || payload.imageURL,
       };
     case types.REQUEST:
     case types.ERROR:

@@ -1,5 +1,6 @@
-import * as firebase from "firebase";
+import * as firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/storage";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -21,9 +22,22 @@ export default class FirebaseInteractor {
   /** {@type Firestore} */
   db = firebase.firestore();
 
+  /** {@type Storage} */
+  storage = firebase.storage();
+
   // Dummy method to see if we can add data
   async addUser(name) {
     let reference = await this.db.collection("user").add({ name: name });
     return reference.id;
+  }
+
+  /**
+   * Downloads Image at the given uri.
+   * This returns a promise to a downloadable url
+   * @param {String} uri the uri to the image
+   * @returns Promise<String>
+   */
+  async downloadImage(uri) {
+    return await this.storage.ref().child(uri).getDownloadURL();
   }
 }

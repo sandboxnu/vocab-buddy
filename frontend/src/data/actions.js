@@ -3,6 +3,7 @@ export const types = {
   SUCCESS: "SUCCESS",
   ERROR: "ERROR",
   ADDUSER: "ADDUSER",
+  DOWNLOADIMAGE: "DOWNLOADIMAGE",
 };
 
 export const singleRequest = {
@@ -19,5 +20,9 @@ export const singleRequest = {
   addUser: ({ name }) => ({
     type: types.ADDUSER,
     payload: { name },
+  }),
+  downloadImage: ({ imageURL }) => ({
+    type: types.DOWNLOADIMAGE,
+    payload: { imageURL },
   }),
 };
