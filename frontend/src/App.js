@@ -1,8 +1,8 @@
 import React from "react";
-import Layout from "./components/Layout";
+import Page from "./page";
 
 const App = () => {
-  return <Layout />;
+  return <Page />;
 };
 
 export default App;
