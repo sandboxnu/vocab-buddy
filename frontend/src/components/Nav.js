@@ -59,8 +59,8 @@ const StyledMenuIcon = styled(MenuOutlined)`
 
 const OpenMenu = styled.div`
   background-color: ${LIGHT_PURPLE};
-  height: 30vh;
-  margin-top: 50px;
+  height: 50vh;
+  margin-top: 40px;
   position: fixed;
   width: 100%;
 `;
