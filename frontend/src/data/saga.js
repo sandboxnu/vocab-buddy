@@ -11,6 +11,7 @@ export default function* rootSaga() {
 function* root() {
   yield takeLatest(types.REQUEST, watchSingleRequest);
   yield takeLatest(types.ADDUSER, watchAddUser);
+  yield takeLatest(types.DOWNLOADIMAGE, watchDownloadImage);
 }
 
 function* watchSingleRequest() {
@@ -33,6 +34,21 @@ function* watchAddUser(action) {
     yield call(updateWithSuccess);
     yield put(singleRequest.success({ id: id }));
   } catch (error) {
+    yield put(singleRequest.error());
+  }
+}
+
+function* watchDownloadImage(action) {
+  let { imageURL } = action.payload;
+  try {
+    let image;
+    const updateWithSuccess = async () => {
+      image = await firebaseInteractor.downloadImage(imageURL);
+    };
+    yield call(updateWithSuccess);
+    yield put(singleRequest.success({ imageURL: image }));
+  } catch (error) {
+    console.log(error);
     yield put(singleRequest.error());
   }
 }
