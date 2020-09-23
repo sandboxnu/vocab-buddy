@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import Layout from "./components/Layout";
-import { singleRequest } from "./data/actions";
+import Layout from "../components/Layout";
+import { singleRequest } from "../data/actions";
 
 const TestingId = styled.p``;
 const TestingLink = styled.a``;
@@ -15,7 +15,7 @@ const connector = connect((state) => state, {
   downloadImage: singleRequest.downloadImage,
 });
 
-const Page = ({ id, imageURL, request, addUser, downloadImage }) => {
+const Login = ({ id, imageURL, request, addUser, downloadImage }) => {
   useEffect(() => {
     downloadImage({ imageURL: "dajin.png" });
   }, [downloadImage]);
@@ -34,4 +34,4 @@ const Page = ({ id, imageURL, request, addUser, downloadImage }) => {
   );
 };
 
-export default connector(Page);
+export default connector(Login);

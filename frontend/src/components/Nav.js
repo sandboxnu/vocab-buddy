@@ -36,6 +36,11 @@ const Link = styled.a`
   color: ${PURPLE};
   text-decoration: none;
   font-weight: 600;
+  ${(props) =>
+    props.size &&
+    `
+    font-size: ${props.size}px;
+  `}
 `;
 
 const StyledMenuIcon = styled(MenuOutlined)`
@@ -52,8 +57,29 @@ const StyledMenuIcon = styled(MenuOutlined)`
   }
 `;
 
+const OpenMenu = styled.div`
+  background-color: ${LIGHT_PURPLE};
+  height: 30vh;
+  margin-top: 50px;
+  position: fixed;
+  width: 100%;
+`;
+
+const OpenMenuContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+
+  a:not(:last-child) {
+    margin-bottom: 2em;
+  }
+`;
+
 const Nav = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     const resizeScreen = () => {
       setScreenWidth(window.innerWidth);
@@ -64,17 +90,39 @@ const Nav = () => {
     };
   }, []);
 
+  const HeaderItems = (s) => {
+    return (
+      <>
+        <Link size={s} href="/">
+          Testing
+        </Link>
+        <Link size={s} href="/assessments">
+          Accessments
+        </Link>
+        <Link size={s} href="/interventions">
+          Interventions
+        </Link>
+        <Link size={s} href="/dashboard">
+          Dashboard
+        </Link>
+      </>
+    );
+  };
+
   return (
     <NavBar>
       <ProjectName>Vocab Buddy</ProjectName>
       {screenWidth <= 600 ? (
-        <StyledMenuIcon />
+        <>
+          <StyledMenuIcon onClick={() => setIsOpen(!isOpen)} />
+          {isOpen && (
+            <OpenMenu>
+              <OpenMenuContainer>{HeaderItems(20)}</OpenMenuContainer>
+            </OpenMenu>
+          )}
+        </>
       ) : (
-        <NavContainer>
-          <Link>Accessments</Link>
-          <Link>Interventions</Link>
-          <Link>Dashboard</Link>
-        </NavContainer>
+        <NavContainer>{HeaderItems(15)}</NavContainer>
       )}
     </NavBar>
   );
