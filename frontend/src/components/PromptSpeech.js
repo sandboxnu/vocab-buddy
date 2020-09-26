@@ -1,7 +1,8 @@
 import React from "react";
 import Speech from "react-speech";
+import { SoundOutlined } from "@ant-design/icons";
 
-const PromptSpeech = (props) => {
+const PromptSpeech = ({ prompt }) => {
   const speechStyle = {
     container: {},
     text: {},
@@ -39,10 +40,10 @@ const PromptSpeech = (props) => {
   return (
     <Speech
       styles={speechStyle}
-      text={props.prompt}
+      text={prompt}
       pitch={1.05}
       textAsButton={true}
-      displayText={"🔊"}
+      displayText={<SoundOutlined />}
     />
   );
 };
