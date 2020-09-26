@@ -7,7 +7,7 @@ const Assessments = () => {
     <Layout>
       <h1>Assessments</h1>
       <p>Miniscule</p>
-      <PromptSpeech prompt={"miniscule"} />
+      <PromptSpeech prompt="miniscule" />
     </Layout>
   );
 };
