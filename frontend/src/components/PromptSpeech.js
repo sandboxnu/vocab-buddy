@@ -1,7 +1,4 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import styled from "styled-components";
-import { singleRequest } from "../data/actions";
+import React from "react";
 import Speech from "react-speech";
 
 const PromptSpeech = (props) => {
@@ -12,11 +9,11 @@ const PromptSpeech = (props) => {
     play: {
       hover: {
         boxShadow: "0 0 15px 0 rgba(108,92,231,.69)",
-        // backgroundColor: 'GhostWhite',
+        backgroundColor: "GhostWhite",
       },
       button: {
-        width: "28",
-        height: "28",
+        width: "100",
+        height: "100",
         cursor: "pointer",
         pointerEvents: "none",
         outline: "none",
@@ -43,8 +40,9 @@ const PromptSpeech = (props) => {
     <Speech
       styles={speechStyle}
       text={props.prompt}
-      voice={"Google UK English Female"}
-      stop={true}
+      pitch={1.05}
+      textAsButton={true}
+      displayText={"🔊"}
     />
   );
 };
