@@ -97,7 +97,7 @@ const Nav = () => {
           Testing
         </Link>
         <Link size={s} href="/assessments">
-          Accessments
+          Assessments
         </Link>
         <Link size={s} href="/interventions">
           Interventions
