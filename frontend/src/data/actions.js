@@ -4,6 +4,8 @@ export const types = {
   ERROR: "ERROR",
   ADDUSER: "ADDUSER",
   DOWNLOADIMAGE: "DOWNLOADIMAGE",
+  GETWORDS: "GETWORDS",
+  GETWORDSSUCCESS: "GETWORDSSUCCESS",
 };
 
 export const singleRequest = {
@@ -24,5 +26,12 @@ export const singleRequest = {
   downloadImage: ({ imageURL }) => ({
     type: types.DOWNLOADIMAGE,
     payload: { imageURL },
+  }),
+  getWords: () => ({
+    type: types.GETWORDS,
+  }),
+  getWordsSuccess: ({ words }) => ({
+    type: types.GETWORDSSUCCESS,
+    payload: { words },
   }),
 };
