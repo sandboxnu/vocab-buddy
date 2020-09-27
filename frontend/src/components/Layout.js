@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { COLAL } from "../constants/colors";
+import { CORAL } from "../constants/colors";
 import Nav from "./Nav";
 
 const Wrapper = styled.div`
@@ -15,7 +15,7 @@ const Content = styled.main`
 `;
 
 const Footer = styled.footer`
-  background-color: ${COLAL};
+  background-color: ${CORAL};
   bottom: 0;
   height: 30px;
   position: fixed;

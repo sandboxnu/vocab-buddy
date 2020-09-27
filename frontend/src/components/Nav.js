@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { INK, COLAL } from "../constants/colors";
+import { INK, CORAL } from "../constants/colors";
 import { MenuOutlined } from "@ant-design/icons";
 
 const NavBar = styled.div`
@@ -44,7 +44,7 @@ const Link = styled.a`
 
 const StyledMenuIcon = styled(MenuOutlined)`
   align-items: center;
-  color: ${COLAL};
+  color: ${CORAL};
   display: flex;
   font-size: 20px;
   margin-right: 1.5em;
