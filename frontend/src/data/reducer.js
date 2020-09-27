@@ -11,6 +11,7 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SUCCESS:
       return {
+        ...state,
         id: state.id || payload.id,
         imageURL: state.imageURL || payload.imageURL,
       };
