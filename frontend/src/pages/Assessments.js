@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Layout from "../components/Layout";
 import { Button } from "antd";
-import { LIGHT_PURPLE, PURPLE } from "../constants/colors";
+import { INK } from "../constants/colors";
+
+const landingImageUrl =
+  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/assessments-landing.png?alt=media&token=168586ea-bb4e-499c-a711-5f3fe7a375b9";
 
 const AssessmentsContainer = styled.div`
+  display: flex;
   font-size: 56px;
   font-weight: bold;
-  width: 56%;
-  margin-left: 22%;
+  margin-top: 60px;
 `;
 
 const AssessmentsContainerShort = styled.div`
@@ -18,20 +21,26 @@ const AssessmentsContainerShort = styled.div`
 `;
 
 const Prompt = styled.div`
-  font-size: 24px;
+  font-size: 20px;
   font-weight: normal;
+  margin-top: 20px;
 `;
 
 const LandingPageImage = styled.img`
+  flex: 1;
   margin-top: 30px;
   width: 100%;
 `;
 
+const LandingPageText = styled.div`
+  flex: 1;
+  margin-left: 1em;
+`;
+
 const BeginButton = styled(Button)`
-  background: ${PURPLE};
+  background: ${INK};
   border: none;
   border-radius: 12px;
-  margin-top: 16px;
   height: 50px;
 
   :hover {
@@ -40,7 +49,7 @@ const BeginButton = styled(Button)`
 `;
 
 const BeginButtonShort = styled(BeginButton)`
-  float: right;
+  margin-top: 100px;
   width: 120px;
 `;
 
@@ -61,27 +70,25 @@ const Assessments = () => {
     <Layout>
       {screenWidth <= 600 ? (
         <AssessmentsContainerShort>
-          Assessments
+          {/* <LandingPageImage src={landingImageUrl} alt="assessments-landing" />
+          assessments
           <Prompt>Select the correct images to match the target words.</Prompt>
-          <LandingPageImage
-            src="https://www.stockvault.net/data/2007/03/01/102413/thumb16.jpg"
-            alt="landscape"
-          />
           <BeginButton block type="primary" size="large">
             Begin
-          </BeginButton>
+          </BeginButton> */}
         </AssessmentsContainerShort>
       ) : (
         <AssessmentsContainer>
-          Assessments
-          <Prompt>Select the correct images to match the target words.</Prompt>
-          <LandingPageImage
-            src="https://www.stockvault.net/data/2007/03/01/102413/thumb16.jpg"
-            alt="landscape"
-          />
-          <BeginButtonShort type="primary" size="large">
-            Begin
-          </BeginButtonShort>
+          <LandingPageImage src={landingImageUrl} alt="assessments-landing" />
+          <LandingPageText>
+            assessments
+            <Prompt>
+              Select the correct images to match the target words.
+            </Prompt>
+            <BeginButtonShort type="primary" size="large">
+              Begin
+            </BeginButtonShort>
+          </LandingPageText>
         </AssessmentsContainer>
       )}
     </Layout>
