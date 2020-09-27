@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { LIGHT_PURPLE, PURPLE } from "../constants/colors";
+import { INK, COLAL } from "../constants/colors";
 import { MenuOutlined } from "@ant-design/icons";
 
 const NavBar = styled.div`
-  background-color: ${LIGHT_PURPLE};
   display: flex;
   height: 50px;
   justify-content: space-between;
@@ -26,14 +25,14 @@ const NavContainer = styled.div`
 const ProjectName = styled.div`
   align-items: center;
   display: flex;
-  color: ${PURPLE};
+  color: ${INK};
   font-weight: 600;
   margin-left: 2em;
   text-transform: uppercase;
 `;
 
 const Link = styled.a`
-  color: ${PURPLE};
+  color: #000;
   text-decoration: none;
   font-weight: 600;
   ${(props) =>
@@ -45,7 +44,7 @@ const Link = styled.a`
 
 const StyledMenuIcon = styled(MenuOutlined)`
   align-items: center;
-  color: ${PURPLE};
+  color: ${COLAL};
   display: flex;
   font-size: 20px;
   margin-right: 1.5em;
@@ -58,7 +57,7 @@ const StyledMenuIcon = styled(MenuOutlined)`
 `;
 
 const OpenMenu = styled.div`
-  background-color: ${LIGHT_PURPLE};
+  background-color: ${INK};
   height: 50vh;
   margin-top: 40px;
   position: fixed;

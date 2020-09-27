@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { LIGHT_PURPLE, PURPLE } from "../constants/colors";
+import { COLAL } from "../constants/colors";
 import Nav from "./Nav";
 
 const Wrapper = styled.div`
@@ -15,7 +15,7 @@ const Content = styled.main`
 `;
 
 const Footer = styled.footer`
-  background-color: ${LIGHT_PURPLE};
+  background-color: ${COLAL};
   bottom: 0;
   height: 30px;
   position: fixed;
