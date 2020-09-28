@@ -1,4 +1,5 @@
 import * as firebase from "firebase/app";
+import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
@@ -25,10 +26,11 @@ export default class FirebaseInteractor {
   /** {@type Storage} */
   storage = firebase.storage();
 
-  // Dummy method to see if we can add data
-  async addUser(name) {
-    let reference = await this.db.collection("user").add({ name: name });
-    return reference.id;
+  /** {@type Auth} */
+  auth = firebase.auth();
+
+  get currentUser() {
+    return this.auth.currentUser;
   }
 
   /**
@@ -39,5 +41,16 @@ export default class FirebaseInteractor {
    */
   async downloadImage(uri) {
     return await this.storage.ref().child(uri).getDownloadURL();
+  }
+
+  /**
+   * Cretes an account for a user
+   */
+  async createAccount(email, password) {
+    let userAuth = await this.auth.createUserWithEmailAndPassword(
+      email,
+      password
+    );
+    userAuth.user.sendEmailVerification();
   }
 }

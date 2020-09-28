@@ -4,6 +4,9 @@ export const types = {
   ERROR: "ERROR",
   ADDUSER: "ADDUSER",
   DOWNLOADIMAGE: "DOWNLOADIMAGE",
+  CREATEUSER: "CREATEUSER",
+  UPDATEEMAIL: "UPDATEEMAIL",
+  UPDATEPASSWORD: "UPDATEPASSWORD",
 };
 
 export const singleRequest = {
@@ -17,12 +20,16 @@ export const singleRequest = {
   error: () => ({
     type: types.ERROR,
   }),
-  addUser: ({ name }) => ({
-    type: types.ADDUSER,
-    payload: { name },
+  createUser: ({ email, password }) => ({
+    type: types.CREATEUSER,
+    payload: { email, password },
   }),
-  downloadImage: ({ imageURL }) => ({
-    type: types.DOWNLOADIMAGE,
-    payload: { imageURL },
+  updateEmail: ({ email }) => ({
+    type: types.UPDATEEMAIL,
+    payload: { email },
+  }),
+  updatePassword: ({ password }) => ({
+    type: types.UPDATEPASSWORD,
+    payload: { password },
   }),
 };

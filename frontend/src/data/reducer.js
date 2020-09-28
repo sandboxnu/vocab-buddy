@@ -1,18 +1,24 @@
 import { types } from "./actions";
 
 const initialState = {
-  id: null,
-  imageURL: null,
+  email: "",
+  password: "",
 };
 
 const reducer = (state = initialState, action) => {
   const payload = action.payload;
   switch (action.type) {
-    case types.SUCCESS:
+    case types.UPDATEEMAIL:
       return {
-        id: state.id || payload.id,
-        imageURL: state.imageURL || payload.imageURL,
+        ...state,
+        email: payload.email,
       };
+    case types.UPDATEPASSWORD:
+      return {
+        ...state,
+        password: payload.password,
+      };
+    case types.SUCCESS:
     case types.REQUEST:
     case types.ERROR:
     default:

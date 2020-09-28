@@ -1,6 +1,6 @@
-import { takeLatest, put, all, call } from "redux-saga/effects";
-import { types, singleRequest } from "./actions";
+import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../firebase/firebaseInteractor";
+import { singleRequest, types } from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -10,8 +10,13 @@ export default function* rootSaga() {
 
 function* root() {
   yield takeLatest(types.REQUEST, watchSingleRequest);
-  yield takeLatest(types.ADDUSER, watchAddUser);
-  yield takeLatest(types.DOWNLOADIMAGE, watchDownloadImage);
+  yield takeLatest(types.UPDATEEMAIL, watchSendAction);
+  yield takeLatest(types.UPDATEPASSWORD, watchSendAction);
+  yield takeLatest(types.CREATEUSER, watchCreateUser);
+}
+
+function* watchSendAction(action) {
+  yield action;
 }
 
 function* watchSingleRequest() {
@@ -24,29 +29,12 @@ function* watchSingleRequest() {
   }
 }
 
-function* watchAddUser(action) {
-  let { name } = action.payload;
+function* watchCreateUser(action) {
+  let { email, password } = action.payload;
   try {
-    let id;
-    const updateWithSuccess = async () => {
-      id = await firebaseInteractor.addUser(name);
-    };
-    yield call(updateWithSuccess);
-    yield put(singleRequest.success({ id: id }));
-  } catch (error) {
-    yield put(singleRequest.error());
-  }
-}
-
-function* watchDownloadImage(action) {
-  let { imageURL } = action.payload;
-  try {
-    let image;
-    const updateWithSuccess = async () => {
-      image = await firebaseInteractor.downloadImage(imageURL);
-    };
-    yield call(updateWithSuccess);
-    yield put(singleRequest.success({ imageURL: image }));
+    yield call(() => firebaseInteractor.createAccount(email, password));
+    console.log(firebaseInteractor.currentUser);
+    yield put(singleRequest.success());
   } catch (error) {
     console.log(error);
     yield put(singleRequest.error());
