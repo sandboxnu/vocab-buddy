@@ -53,4 +53,8 @@ export default class FirebaseInteractor {
     );
     userAuth.user.sendEmailVerification();
   }
+
+  async signInWithUsernameAndPassword(username, password) {
+    await this.auth.signInWithEmailAndPassword(username, password);
+  }
 }

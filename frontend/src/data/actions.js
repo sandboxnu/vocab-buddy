@@ -7,6 +7,8 @@ export const types = {
   CREATEUSER: "CREATEUSER",
   UPDATEEMAIL: "UPDATEEMAIL",
   UPDATEPASSWORD: "UPDATEPASSWORD",
+  SIGNIN: "SIGNIN",
+  AUTHENTICATIONSUCCESS: "AUTHENTICATIONSUCCESS",
 };
 
 export const singleRequest = {
@@ -31,5 +33,12 @@ export const singleRequest = {
   updatePassword: ({ password }) => ({
     type: types.UPDATEPASSWORD,
     payload: { password },
+  }),
+  signIn: ({ email, password }) => ({
+    type: types.SIGNIN,
+    payload: { email, password },
+  }),
+  authenticationSuccess: () => ({
+    type: types.AUTHENTICATIONSUCCESS,
   }),
 };

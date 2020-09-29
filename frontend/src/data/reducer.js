@@ -3,6 +3,7 @@ import { types } from "./actions";
 const initialState = {
   email: "",
   password: "",
+  signedIn: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -17,6 +18,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         password: payload.password,
+      };
+    case types.AUTHENTICATIONSUCCESS:
+      return {
+        ...state,
+        signedIn: true,
       };
     case types.SUCCESS:
     case types.REQUEST:

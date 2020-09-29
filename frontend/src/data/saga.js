@@ -13,6 +13,7 @@ function* root() {
   yield takeLatest(types.UPDATEEMAIL, watchSendAction);
   yield takeLatest(types.UPDATEPASSWORD, watchSendAction);
   yield takeLatest(types.CREATEUSER, watchCreateUser);
+  yield takeLatest(types.SIGNIN, watchSignIn);
 }
 
 function* watchSendAction(action) {
@@ -34,7 +35,20 @@ function* watchCreateUser(action) {
   try {
     yield call(() => firebaseInteractor.createAccount(email, password));
     console.log(firebaseInteractor.currentUser);
-    yield put(singleRequest.success());
+    yield put(singleRequest.authenticationSuccess());
+  } catch (error) {
+    console.log(error);
+    yield put(singleRequest.error());
+  }
+}
+
+function* watchSignIn(action) {
+  let { email, password } = action.payload;
+  try {
+    yield call(() =>
+      firebaseInteractor.signInWithUsernameAndPassword(email, password)
+    );
+    yield put(singleRequest.authenticationSuccess());
   } catch (error) {
     console.log(error);
     yield put(singleRequest.error());
