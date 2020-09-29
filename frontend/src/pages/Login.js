@@ -117,6 +117,7 @@ const Login = ({
   signIn,
 }) => {
   let history = useHistory();
+  // For right now, go to dashboard when signed in
   if (signedIn) {
     history.push("/dashboard");
   }
