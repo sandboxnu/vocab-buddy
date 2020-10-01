@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { INK, CORAL, SEA_FOAM } from "../constants/colors";
+import { INK, SEA_FOAM } from "../constants/colors";
 import { MenuOutlined } from "@ant-design/icons";
 
 const NavBar = styled.div`
@@ -49,32 +49,30 @@ const Link = styled.a`
 
 const StyledMenuIcon = styled(MenuOutlined)`
   align-items: center;
-  color: ${CORAL};
   display: flex;
-  font-size: 20px;
+  font-size: 25px;
   margin-right: 1.5em;
 
   :hover {
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    transform: scale(1.5);
+    transform: scale(1.2);
   }
 `;
 
 const OpenMenu = styled.div`
-  background-color: ${INK};
-  height: 50vh;
-  margin-top: 40px;
+  background: #fff;
+  margin-top: 100px;
   position: fixed;
-  width: 100%;
+  right: 0;
 `;
 
 const OpenMenuContainer = styled.div`
-  align-items: center;
   display: flex;
   flex-direction: column;
   height: 100%;
   justify-content: center;
+  padding: 20px 50px;
 
   a:not(:last-child) {
     margin-bottom: 2em;

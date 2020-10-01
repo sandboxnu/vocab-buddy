@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Footer = styled.footer`
-  background-color: ${CORAL};
+const FooterContainer = styled.footer`
   bottom: 0;
   height: 30px;
   position: fixed;
@@ -16,6 +15,16 @@ const FooterContent = styled.div`
   margin-left: 2em;
 `;
 
-const Footer = () => {};
+const Footer = () => {
+  return (
+    <FooterContainer>
+      <FooterContent>
+        Made by students @&nbsp;
+        <a href="https://www.sandboxnu.com">Sandbox</a>. Source on&nbsp;
+        <a href="https://github.com/sandboxnu/vocab-buddy/">GitHub</a>.
+      </FooterContent>
+    </FooterContainer>
+  );
+};
 
 export default Footer;
