@@ -14,11 +14,11 @@ const Content = styled.main`
 `;
 
 // Main layout of the project that includes both header and navbar
-const Layout = (props) => {
+const Layout = ({ children }) => {
   return (
     <Wrapper>
       <Nav />
-      <Content>{props.children}</Content>
+      <Content>{children}</Content>
     </Wrapper>
   );
 };
