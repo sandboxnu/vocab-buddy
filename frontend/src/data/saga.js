@@ -1,6 +1,6 @@
-import { takeLatest, put, all, call } from "redux-saga/effects";
-import { types, singleRequest } from "./actions";
+import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../firebase/firebaseInteractor";
+import { singleRequest, types } from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -12,6 +12,7 @@ function* root() {
   yield takeLatest(types.REQUEST, watchSingleRequest);
   yield takeLatest(types.ADDUSER, watchAddUser);
   yield takeLatest(types.DOWNLOADIMAGE, watchDownloadImage);
+  yield takeLatest(types.GET_WORDS, watchGetWords);
 }
 
 function* watchSingleRequest() {
@@ -47,6 +48,20 @@ function* watchDownloadImage(action) {
     };
     yield call(updateWithSuccess);
     yield put(singleRequest.success({ imageURL: image }));
+  } catch (error) {
+    console.log(error);
+    yield put(singleRequest.error());
+  }
+}
+
+function* watchGetWords(action) {
+  try {
+    let words;
+    const updateWithSuccess = async () => {
+      words = await firebaseInteractor.getWords();
+    };
+    yield call(updateWithSuccess);
+    yield put(singleRequest.getWordsSuccess({ words }));
   } catch (error) {
     console.log(error);
     yield put(singleRequest.error());

@@ -3,6 +3,7 @@ import { types } from "./actions";
 const initialState = {
   id: null,
   imageURL: null,
+  words: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,8 +11,14 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SUCCESS:
       return {
+        ...state,
         id: state.id || payload.id,
         imageURL: state.imageURL || payload.imageURL,
+      };
+    case types.GET_WORDS_SUCCESS:
+      return {
+        ...state,
+        words: payload.words,
       };
     case types.REQUEST:
     case types.ERROR:
