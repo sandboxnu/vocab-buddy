@@ -12,7 +12,7 @@ function* root() {
   yield takeLatest(types.REQUEST, watchSingleRequest);
   yield takeLatest(types.ADDUSER, watchAddUser);
   yield takeLatest(types.DOWNLOADIMAGE, watchDownloadImage);
-  yield takeLatest(types.GETWORDS, watchGetWords);
+  yield takeLatest(types.GET_WORDS, watchGetWords);
 }
 
 function* watchSingleRequest() {

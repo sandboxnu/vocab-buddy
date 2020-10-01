@@ -15,7 +15,7 @@ const reducer = (state = initialState, action) => {
         id: state.id || payload.id,
         imageURL: state.imageURL || payload.imageURL,
       };
-    case types.GETWORDSSUCCESS:
+    case types.GET_WORDS_SUCCESS:
       return {
         ...state,
         words: payload.words,
