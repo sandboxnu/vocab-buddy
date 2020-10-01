@@ -7,18 +7,29 @@ import { singleRequest } from "../data/actions";
 const TestingId = styled.p``;
 const TestingLink = styled.a``;
 const TestingImage = styled.img``;
+const TestingWrapper = styled.div``;
 
 // An example of using a connector
 const connector = connect((state) => state, {
   request: singleRequest.request,
   addUser: singleRequest.addUser,
   downloadImage: singleRequest.downloadImage,
+  getWords: singleRequest.getWords,
 });
 
-const Login = ({ id, imageURL, request, addUser, downloadImage }) => {
+const Login = ({
+  id,
+  imageURL,
+  words,
+  request,
+  addUser,
+  downloadImage,
+  getWords,
+}) => {
   useEffect(() => {
     downloadImage({ imageURL: "dajin.png" });
-  }, [downloadImage]);
+    getWords();
+  }, [downloadImage, getWords]);
   return (
     <Layout>
       <TestingLink onClick={request}>Welcome to vocab buddy</TestingLink>
@@ -29,6 +40,15 @@ const Login = ({ id, imageURL, request, addUser, downloadImage }) => {
       ) : (
         <TestingId>The id is {id}</TestingId>
       )}
+      {words != null &&
+        words.map((word) => {
+          return (
+            <TestingWrapper key={word.id}>
+              <TestingLink> {word.value} </TestingLink>
+              <TestingImage src={word.correctImage} />
+            </TestingWrapper>
+          );
+        })}
       <TestingImage src={imageURL} alt="Dajin" />
     </Layout>
   );
