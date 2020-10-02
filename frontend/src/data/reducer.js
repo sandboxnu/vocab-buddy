@@ -5,7 +5,7 @@ const initialState = {
   words: null,
 };
 
-const reducer = (state = initialState, action) => {
+const testReducer = (state = initialState, action) => {
   const payload = action.payload;
   switch (action.type) {
     case types.AUTHENTICATION_SUCCESS:
@@ -31,4 +31,4 @@ export const getState = (state) => {
   return state;
 };
 
-export default reducer;
+export default testReducer;

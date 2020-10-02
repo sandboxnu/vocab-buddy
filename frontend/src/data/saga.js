@@ -54,17 +54,3 @@ function* watchSignIn(action) {
     yield put(singleRequest.error());
   }
 }
-
-function* watchGetWords(action) {
-  try {
-    let words;
-    const updateWithSuccess = async () => {
-      words = await firebaseInteractor.getWords();
-    };
-    yield call(updateWithSuccess);
-    yield put(getWordsRequest.getWordsSuccess({ words }));
-  } catch (error) {
-    console.log(error);
-    yield put(singleRequest.error());
-  }
-}

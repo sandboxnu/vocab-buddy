@@ -1,6 +1,6 @@
 import React from "react";
 import Login from "./pages/Login";
-import Assessments from "./pages/Assessments";
+import Assessments from "./pages/Assessments/Assessments";
 import Interventions from "./pages/Interventions";
 import Dashboard from "./pages/Dashboard";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
