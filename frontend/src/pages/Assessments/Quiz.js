@@ -4,8 +4,10 @@ import { getWords } from "../Assessments/data/actions";
 import { getAllWords } from "../Assessments/data/reducer";
 import styled from "styled-components";
 import PromptSpeech from "../../components/PromptSpeech";
+import { SEA_FOAM } from "../../constants/colors";
+import Button from "../../components/Button";
 
-const WordTitle = styled.p`
+const WordTitle = styled.span`
   margin-bottom: 20px;
   font-family: "Rubik";
   font-size: 50px;
@@ -23,9 +25,23 @@ const PromptText = styled.span`
   font-size: 20px;
 `;
 
-const ImageContainer = styled.div``;
+const ImageContainer = styled.div`
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 520px auto;
+  padding-top: 20px;
+`;
 
-const Image = styled.img``;
+const Image = styled.img`
+  border-radius: 20px;
+  width: 500px;
+  height: 300px;
+
+  :hover {
+    cursor: pointer;
+    border: solid 10px ${SEA_FOAM};
+  }
+`;
 
 const connector = connect(
   (state) => ({
@@ -36,7 +52,18 @@ const connector = connect(
   }
 );
 
+const shuffleImages = (images) => {
+  images.sort((a, b) => {
+    if (Math.random() > 0.5) return 1;
+    else return -1;
+  });
+  return images;
+};
+
 const Quiz = ({ getWords, allWords }) => {
+  let word = allWords && allWords[0];
+  let images = word && [word.correctImage].concat(word.incorrectImages);
+  let shuffled = (images && shuffleImages(images)) || [];
   return (
     <>
       <WordTitle onClick={() => getWords()}>miniscule</WordTitle>
@@ -44,9 +71,12 @@ const Quiz = ({ getWords, allWords }) => {
         <PromptText>Touch the picture that shows miniscule.</PromptText>
         <PromptSpeech prompt="Touch the picture that shows miniscule." />
       </Prompt>
-      {allWords.map((word) => {
-        return <Image src={word.correctImage}></Image>;
-      })}
+      <ImageContainer>
+        {shuffled.map((img, idx) => {
+          return <Image key={idx} src={img} onClick={(e) => console.log(e)} />;
+        })}
+      </ImageContainer>
+      <Button text={"next"} />
     </>
   );
 };

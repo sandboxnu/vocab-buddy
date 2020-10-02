@@ -17,7 +17,6 @@ function* root() {
   yield takeLatest(types.REQUEST, watchSingleRequest);
   yield takeLatest(types.CREATE_USER, watchCreateUser);
   yield takeLatest(types.SIGN_IN, watchSignIn);
-  yield takeLatest(types.GET_WORDS, watchGetWords);
 }
 
 function* watchSingleRequest() {

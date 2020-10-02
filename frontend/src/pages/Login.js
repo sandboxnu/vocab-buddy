@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Layout from "../components/Layout";
 import { INK, LOGIN_BACKGROUND } from "../constants/colors";
 import { authenticationRequest, singleRequest } from "../data/actions";
+import Button from "../components/Button";
 
 const LoginInput = styled.input`
   width: 100%;
@@ -142,9 +143,10 @@ const Login = ({ signedIn, createUser, signIn }) => {
                 />
               </InputDiv>
 
-              <LoginButton onClick={() => signIn({ email, password })}>
-                login
-              </LoginButton>
+              <Button
+                text={"login"}
+                onClick={() => signIn({ email, password })}
+              />
 
               <CreateUserButton onClick={() => createUser({ email, password })}>
                 sign up
