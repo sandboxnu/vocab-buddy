@@ -1,6 +1,11 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../firebase/firebaseInteractor";
-import { authenticationRequest, singleRequest, types } from "./actions";
+import {
+  authenticationRequest,
+  getWordsRequest,
+  singleRequest,
+  types,
+} from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -10,15 +15,9 @@ export default function* rootSaga() {
 
 function* root() {
   yield takeLatest(types.REQUEST, watchSingleRequest);
-  yield takeLatest(types.UPDATE_EMAIL, watchSendAction);
-  yield takeLatest(types.UPDATE_PASSWORD, watchSendAction);
   yield takeLatest(types.CREATE_USER, watchCreateUser);
   yield takeLatest(types.SIGN_IN, watchSignIn);
   yield takeLatest(types.GET_WORDS, watchGetWords);
-}
-
-function* watchSendAction(action) {
-  yield action;
 }
 
 function* watchSingleRequest() {
@@ -63,7 +62,7 @@ function* watchGetWords(action) {
       words = await firebaseInteractor.getWords();
     };
     yield call(updateWithSuccess);
-    yield put(singleRequest.getWordsSuccess({ words }));
+    yield put(getWordsRequest.getWordsSuccess({ words }));
   } catch (error) {
     console.log(error);
     yield put(singleRequest.error());

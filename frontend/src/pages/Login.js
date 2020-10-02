@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -100,25 +100,21 @@ const LoginButton = styled.button`
 const connector = connect((state) => state, {
   request: singleRequest.request,
   createUser: authenticationRequest.createUser,
-  updateEmail: authenticationRequest.updateEmail,
-  updatePassword: authenticationRequest.updatePassword,
   signIn: authenticationRequest.signIn,
 });
 
-const Login = ({
-  email,
-  password,
-  signedIn,
-  updateEmail,
-  updatePassword,
-  createUser,
-  signIn,
-}) => {
+const Login = ({ signedIn, createUser, signIn }) => {
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
   let history = useHistory();
+
+  useEffect(() => {
+    if (signedIn) {
+      history.push("/dashboard");
+    }
+  }, [signedIn, history]);
   // For right now, go to dashboard when signed in
-  if (signedIn) {
-    history.push("/dashboard");
-  }
+
   return (
     <Layout>
       <LoginSwitchingDiv>
@@ -133,9 +129,7 @@ const Login = ({
                   type="email"
                   value={email}
                   placeholder="email address"
-                  onChange={(event) =>
-                    updateEmail({ email: event.target.value })
-                  }
+                  onChange={(event) => setEmail(event.target.value)}
                 />
               </InputDiv>
               <InputDiv>
@@ -144,7 +138,7 @@ const Login = ({
                   type="password"
                   value={password}
                   placeholder="password"
-                  onChange={(e) => updatePassword({ password: e.target.value })}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </InputDiv>
 
