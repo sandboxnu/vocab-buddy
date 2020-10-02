@@ -10,17 +10,17 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   const payload = action.payload;
   switch (action.type) {
-    case types.UPDATEEMAIL:
+    case types.UPDATE_EMAIL:
       return {
         ...state,
         email: payload.email,
       };
-    case types.UPDATEPASSWORD:
+    case types.UPDATE_PASSWORD:
       return {
         ...state,
         password: payload.password,
       };
-    case types.AUTHENTICATIONSUCCESS:
+    case types.AUTHENTICATION_SUCCESS:
       return {
         ...state,
         signedIn: true,

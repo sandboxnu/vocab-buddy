@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/Layout";
 import { INK, LOGIN_BACKGROUND } from "../constants/colors";
-import { singleRequest } from "../data/actions";
+import { authenticationRequest, singleRequest } from "../data/actions";
 
 const LoginInput = styled.input`
   width: 100%;
@@ -99,10 +99,10 @@ const LoginButton = styled.button`
 // An example of using a connector
 const connector = connect((state) => state, {
   request: singleRequest.request,
-  createUser: singleRequest.createUser,
-  updateEmail: singleRequest.updateEmail,
-  updatePassword: singleRequest.updatePassword,
-  signIn: singleRequest.signIn,
+  createUser: authenticationRequest.createUser,
+  updateEmail: authenticationRequest.updateEmail,
+  updatePassword: authenticationRequest.updatePassword,
+  signIn: authenticationRequest.signIn,
 });
 
 const Login = ({
