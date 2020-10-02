@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { INK, CORAL } from "../constants/colors";
+import { INK, SEA_FOAM } from "../constants/colors";
 import { MenuOutlined } from "@ant-design/icons";
 
 const NavBar = styled.div`
   display: flex;
-  height: 50px;
+  height: 100px;
   justify-content: space-between;
   position: fixed;
   width: 100%;
@@ -15,7 +15,7 @@ const NavContainer = styled.div`
   align-items: center;
   display: flex;
   height: 100%;
-  margin-right: 2em;
+  margin: 0 2em;
 
   a:not(:last-child) {
     margin-right: 1.5em;
@@ -26,50 +26,53 @@ const ProjectName = styled.div`
   align-items: center;
   display: flex;
   color: ${INK};
-  font-weight: 600;
+  font-family: "Rubik", sans-serif;
+  font-size: 25px;
+  font-weight: 700;
   margin-left: 2em;
-  text-transform: uppercase;
+  text-transform: lowercase;
 `;
 
 const Link = styled.a`
   color: #000;
+  font-family: "Rubik", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
   text-decoration: none;
-  font-weight: 600;
-  ${(props) =>
-    props.size &&
-    `
-    font-size: ${props.size}px;
-  `}
+  text-transform: lowercase;
+
+  :hover {
+    color: #000;
+    border-bottom: 4px solid ${SEA_FOAM};
+  }
 `;
 
 const StyledMenuIcon = styled(MenuOutlined)`
   align-items: center;
-  color: ${CORAL};
   display: flex;
-  font-size: 20px;
+  font-size: 25px;
   margin-right: 1.5em;
 
   :hover {
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    transform: scale(1.5);
+    transform: scale(1.2);
   }
 `;
 
 const OpenMenu = styled.div`
-  background-color: ${INK};
-  height: 50vh;
-  margin-top: 40px;
+  background: #fff;
+  margin-top: 100px;
   position: fixed;
-  width: 100%;
+  right: 0;
 `;
 
 const OpenMenuContainer = styled.div`
-  align-items: center;
   display: flex;
   flex-direction: column;
   height: 100%;
   justify-content: center;
+  padding: 20px 50px;
 
   a:not(:last-child) {
     margin-bottom: 2em;
@@ -89,39 +92,30 @@ const Nav = () => {
     };
   }, []);
 
-  const HeaderItems = (s) => {
+  const HeaderItems = () => {
     return (
       <>
-        <Link size={s} href="/">
-          Testing
-        </Link>
-        <Link size={s} href="/assessments">
-          Assessments
-        </Link>
-        <Link size={s} href="/interventions">
-          Interventions
-        </Link>
-        <Link size={s} href="/dashboard">
-          Dashboard
-        </Link>
+        <Link href="/assessments">assessments</Link>
+        <Link href="/interventions">interventions</Link>
+        <Link href="/dashboard">dashboard</Link>
       </>
     );
   };
 
   return (
     <NavBar>
-      <ProjectName>Vocab Buddy</ProjectName>
+      <ProjectName>vocab buddy</ProjectName>
       {screenWidth <= 600 ? (
         <>
           <StyledMenuIcon onClick={() => setIsOpen(!isOpen)} />
           {isOpen && (
             <OpenMenu>
-              <OpenMenuContainer>{HeaderItems(20)}</OpenMenuContainer>
+              <OpenMenuContainer>{HeaderItems()}</OpenMenuContainer>
             </OpenMenu>
           )}
         </>
       ) : (
-        <NavContainer>{HeaderItems(15)}</NavContainer>
+        <NavContainer>{HeaderItems()}</NavContainer>
       )}
     </NavBar>
   );

@@ -96,11 +96,9 @@ const LoginButton = styled.button`
   margin: 5px 0px 15px 0px;
   padding: 15px;
 `;
-
 // An example of using a connector
 const connector = connect((state) => state, {
   request: singleRequest.request,
-  addUser: singleRequest.addUser,
   createUser: singleRequest.createUser,
   updateEmail: singleRequest.updateEmail,
   updatePassword: singleRequest.updatePassword,

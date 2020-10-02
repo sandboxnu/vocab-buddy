@@ -14,6 +14,7 @@ function* root() {
   yield takeLatest(types.UPDATEPASSWORD, watchSendAction);
   yield takeLatest(types.CREATEUSER, watchCreateUser);
   yield takeLatest(types.SIGNIN, watchSignIn);
+  yield takeLatest(types.GET_WORDS, watchGetWords);
 }
 
 function* watchSendAction(action) {
@@ -49,6 +50,20 @@ function* watchSignIn(action) {
       firebaseInteractor.signInWithUsernameAndPassword(email, password)
     );
     yield put(singleRequest.authenticationSuccess());
+  } catch (error) {
+    console.log(error);
+    yield put(singleRequest.error());
+  }
+}
+
+function* watchGetWords(action) {
+  try {
+    let words;
+    const updateWithSuccess = async () => {
+      words = await firebaseInteractor.getWords();
+    };
+    yield call(updateWithSuccess);
+    yield put(singleRequest.getWordsSuccess({ words }));
   } catch (error) {
     console.log(error);
     yield put(singleRequest.error());

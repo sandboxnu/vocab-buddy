@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import Word from "../models/Word";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -37,7 +38,7 @@ export default class FirebaseInteractor {
    * Downloads Image at the given uri.
    * This returns a promise to a downloadable url
    * @param {String} uri the uri to the image
-   * @returns Promise<String>
+   * @returns {Promise<String>}
    */
   async downloadImage(uri) {
     return await this.storage.ref().child(uri).getDownloadURL();
@@ -56,5 +57,32 @@ export default class FirebaseInteractor {
 
   async signInWithUsernameAndPassword(username, password) {
     await this.auth.signInWithEmailAndPassword(username, password);
+  }
+
+  /**
+   * Gets all possible words.
+   *
+   * @returns { Promise<Array<Word>> }
+   */
+  async getWords() {
+    let wordRef = await this.db.collection("words").get();
+    let wordDocs = wordRef.docs;
+    let words = [];
+    for (let wordRef of wordDocs) {
+      let word = wordRef.data();
+      words.push(
+        new Word(
+          word.value,
+          word.correctImage,
+          word.incorrectImages,
+          wordRef.id,
+          word.dateCreated.toDate()
+        )
+      );
+    }
+    words.sort(
+      (word1, word2) => word1.createdAt.getTime() - word2.createdAt.getTime()
+    );
+    return words;
   }
 }

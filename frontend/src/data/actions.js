@@ -2,13 +2,13 @@ export const types = {
   REQUEST: "REQUEST",
   SUCCESS: "SUCCESS",
   ERROR: "ERROR",
-  ADDUSER: "ADDUSER",
-  DOWNLOADIMAGE: "DOWNLOADIMAGE",
   CREATEUSER: "CREATEUSER",
   UPDATEEMAIL: "UPDATEEMAIL",
   UPDATEPASSWORD: "UPDATEPASSWORD",
   SIGNIN: "SIGNIN",
   AUTHENTICATIONSUCCESS: "AUTHENTICATIONSUCCESS",
+  GET_WORDS: "GETWORDS",
+  GET_WORDS_SUCCESS: "GETWORDSSUCCESS",
 };
 
 export const singleRequest = {
@@ -40,5 +40,12 @@ export const singleRequest = {
   }),
   authenticationSuccess: () => ({
     type: types.AUTHENTICATIONSUCCESS,
+  }),
+  getWords: () => ({
+    type: types.GET_WORDS,
+  }),
+  getWordsSuccess: ({ words }) => ({
+    type: types.GET_WORDS_SUCCESS,
+    payload: { words },
   }),
 };
