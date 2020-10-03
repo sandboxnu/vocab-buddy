@@ -35,12 +35,14 @@ const LandingPageImage = styled.img`
 const LandingPageText = styled.div`
   flex: 1;
   margin-left: 1em;
+  margin-top: 120px;
 `;
 
 const BeginButtonMobile = styled(Button)`
   background: ${INK};
   border: none;
   border-radius: 12px;
+  font-weight: bold;
   height: 50px;
 
   :hover {
@@ -74,7 +76,7 @@ const Assessments = () => {
           assessments
           <Prompt>Select the correct images to match the target words.</Prompt>
           <BeginButtonMobile block type="primary" size="large">
-            Begin
+            begin
           </BeginButtonMobile>
         </AssessmentsContainerMobile>
       ) : (
@@ -85,9 +87,9 @@ const Assessments = () => {
             <Prompt>
               Select the correct images to match the target words.
             </Prompt>
-            <BeginButtonMobile type="primary" size="large">
-              Begin
-            </BeginButtonMobile>
+            <BeginButton type="primary" size="large">
+              begin
+            </BeginButton>
           </LandingPageText>
         </AssessmentsContainer>
       )}
