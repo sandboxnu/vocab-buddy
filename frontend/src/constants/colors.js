@@ -1,6 +1,7 @@
 // Primary colors
 export const CORAL = "#FE5D5D";
 export const INK = "#615EF7";
+export const INK_HOVER = "#7371FF";
 export const SKY = "#A2C5FB";
 export const SEA_FOAM = "#68F2D2";
 export const LOGIN_BACKGROUND = "#CCCFDE";
