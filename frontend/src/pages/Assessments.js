@@ -14,7 +14,7 @@ const AssessmentsContainer = styled.div`
   margin-top: 60px;
 `;
 
-const AssessmentsContainerShort = styled.div`
+const AssessmentsContainerMobile = styled.div`
   font-size: 56px;
   font-weight: bold;
   width: 100%;
@@ -37,7 +37,7 @@ const LandingPageText = styled.div`
   margin-left: 1em;
 `;
 
-const BeginButton = styled(Button)`
+const BeginButtonMobile = styled(Button)`
   background: ${INK};
   border: none;
   border-radius: 12px;
@@ -48,7 +48,7 @@ const BeginButton = styled(Button)`
   }
 `;
 
-const BeginButtonShort = styled(BeginButton)`
+const BeginButton = styled(BeginButtonMobile)`
   margin-top: 100px;
   width: 120px;
 `;
@@ -69,14 +69,14 @@ const Assessments = () => {
   return (
     <Layout>
       {screenWidth <= 600 ? (
-        <AssessmentsContainerShort>
-          {/* <LandingPageImage src={landingImageUrl} alt="assessments-landing" />
+        <AssessmentsContainerMobile>
+          <LandingPageImage src={landingImageUrl} alt="assessments-landing" />
           assessments
           <Prompt>Select the correct images to match the target words.</Prompt>
-          <BeginButton block type="primary" size="large">
+          <BeginButtonMobile block type="primary" size="large">
             Begin
-          </BeginButton> */}
-        </AssessmentsContainerShort>
+          </BeginButtonMobile>
+        </AssessmentsContainerMobile>
       ) : (
         <AssessmentsContainer>
           <LandingPageImage src={landingImageUrl} alt="assessments-landing" />
@@ -85,9 +85,9 @@ const Assessments = () => {
             <Prompt>
               Select the correct images to match the target words.
             </Prompt>
-            <BeginButtonShort type="primary" size="large">
+            <BeginButtonMobile type="primary" size="large">
               Begin
-            </BeginButtonShort>
+            </BeginButtonMobile>
           </LandingPageText>
         </AssessmentsContainer>
       )}
