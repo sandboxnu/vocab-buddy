@@ -1,10 +1,13 @@
 import React from "react";
 import Speech from "react-speech";
 import styled from "styled-components";
-import { SoundOutlined } from "@ant-design/icons";
+import PlayButton from "../components/PlayButton";
 
 const SpeechContainer = styled.div`
   margin: 0;
+  button {
+    background-color: #fff !important;
+  }
 `;
 
 const PromptSpeech = ({ prompt }) => {
@@ -14,7 +17,7 @@ const PromptSpeech = ({ prompt }) => {
         text={prompt}
         pitch={1.05}
         textAsButton={true}
-        displayText={<SoundOutlined />}
+        displayText={<PlayButton />}
       />
     </SpeechContainer>
   );

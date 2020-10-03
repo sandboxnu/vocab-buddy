@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { getWords } from "../Assessments/data/actions";
 import { getAllWords } from "../Assessments/data/reducer";
@@ -7,12 +7,19 @@ import PromptSpeech from "../../components/PromptSpeech";
 import { SEA_FOAM } from "../../constants/colors";
 import Button from "../../components/Button";
 
-const WordTitle = styled.span`
+const Wrapper = styled.div``;
+
+const WordTitle = styled.p`
   margin-bottom: 20px;
   font-family: "Rubik";
   font-size: 50px;
   font-weight: 700;
   text-transform: lowercase;
+  word-wrap: break-word;
+
+  @media (max-width: 600px) {
+    font-size: 35px;
+  }
 `;
 
 const Prompt = styled.div`
@@ -64,20 +71,25 @@ const Quiz = ({ getWords, allWords }) => {
   let word = allWords && allWords[0];
   let images = word && [word.correctImage].concat(word.incorrectImages);
   let shuffled = (images && shuffleImages(images)) || [];
+  let wrapperContainer = useRef();
   return (
-    <>
+    <Wrapper>
       <WordTitle onClick={() => getWords()}>miniscule</WordTitle>
       <Prompt>
         <PromptText>Touch the picture that shows miniscule.</PromptText>
         <PromptSpeech prompt="Touch the picture that shows miniscule." />
       </Prompt>
       <ImageContainer>
-        {shuffled.map((img, idx) => {
-          return <Image key={idx} src={img} onClick={(e) => console.log(e)} />;
-        })}
+        <div>
+          {shuffled.map((img, idx) => {
+            return (
+              <Image key={idx} src={img} onClick={(e) => console.log(e)} />
+            );
+          })}
+        </div>
       </ImageContainer>
       <Button text={"next"} />
-    </>
+    </Wrapper>
   );
 };
 
