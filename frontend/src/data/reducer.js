@@ -1,18 +1,24 @@
 import { types } from "./actions";
 
 const initialState = {
-  id: null,
-  imageURL: null,
+  signedIn: false,
+  words: null,
 };
 
 const reducer = (state = initialState, action) => {
   const payload = action.payload;
   switch (action.type) {
-    case types.SUCCESS:
+    case types.AUTHENTICATION_SUCCESS:
       return {
-        id: state.id || payload.id,
-        imageURL: state.imageURL || payload.imageURL,
+        ...state,
+        signedIn: true,
       };
+    case types.GET_WORDS_SUCCESS:
+      return {
+        ...state,
+        words: payload.words,
+      };
+    case types.SUCCESS:
     case types.REQUEST:
     case types.ERROR:
     default:

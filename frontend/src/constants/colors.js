@@ -3,6 +3,7 @@ export const CORAL = "#FE5D5D";
 export const INK = "#615EF7";
 export const SKY = "#A2C5FB";
 export const SEA_FOAM = "#68F2D2";
+export const LOGIN_BACKGROUND = "#CCCFDE";
 
 // RGBA values
 export const CORAL_RGBA = (a) => `rgba(254, 93, 93, ${a})`;

@@ -1,6 +1,11 @@
-import { takeLatest, put, all, call } from "redux-saga/effects";
-import { types, singleRequest } from "./actions";
+import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../firebase/firebaseInteractor";
+import {
+  authenticationRequest,
+  getWordsRequest,
+  singleRequest,
+  types,
+} from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -10,8 +15,9 @@ export default function* rootSaga() {
 
 function* root() {
   yield takeLatest(types.REQUEST, watchSingleRequest);
-  yield takeLatest(types.ADDUSER, watchAddUser);
-  yield takeLatest(types.DOWNLOADIMAGE, watchDownloadImage);
+  yield takeLatest(types.CREATE_USER, watchCreateUser);
+  yield takeLatest(types.SIGN_IN, watchSignIn);
+  yield takeLatest(types.GET_WORDS, watchGetWords);
 }
 
 function* watchSingleRequest() {
@@ -24,29 +30,39 @@ function* watchSingleRequest() {
   }
 }
 
-function* watchAddUser(action) {
-  let { name } = action.payload;
+function* watchCreateUser(action) {
+  let { email, password } = action.payload;
   try {
-    let id;
-    const updateWithSuccess = async () => {
-      id = await firebaseInteractor.addUser(name);
-    };
-    yield call(updateWithSuccess);
-    yield put(singleRequest.success({ id: id }));
+    yield call(() => firebaseInteractor.createAccount(email, password));
+    console.log(firebaseInteractor.currentUser);
+    yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
+    console.log(error);
     yield put(singleRequest.error());
   }
 }
 
-function* watchDownloadImage(action) {
-  let { imageURL } = action.payload;
+function* watchSignIn(action) {
+  let { email, password } = action.payload;
   try {
-    let image;
+    yield call(() =>
+      firebaseInteractor.signInWithUsernameAndPassword(email, password)
+    );
+    yield put(authenticationRequest.authenticationSuccess());
+  } catch (error) {
+    console.log(error);
+    yield put(singleRequest.error());
+  }
+}
+
+function* watchGetWords(action) {
+  try {
+    let words;
     const updateWithSuccess = async () => {
-      image = await firebaseInteractor.downloadImage(imageURL);
+      words = await firebaseInteractor.getWords();
     };
     yield call(updateWithSuccess);
-    yield put(singleRequest.success({ imageURL: image }));
+    yield put(getWordsRequest.getWordsSuccess({ words }));
   } catch (error) {
     console.log(error);
     yield put(singleRequest.error());

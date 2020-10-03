@@ -1,6 +1,8 @@
 import * as firebase from "firebase/app";
+import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import Word from "../models/Word";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -25,19 +27,62 @@ export default class FirebaseInteractor {
   /** {@type Storage} */
   storage = firebase.storage();
 
-  // Dummy method to see if we can add data
-  async addUser(name) {
-    let reference = await this.db.collection("user").add({ name: name });
-    return reference.id;
+  /** {@type Auth} */
+  auth = firebase.auth();
+
+  get currentUser() {
+    return this.auth.currentUser;
   }
 
   /**
    * Downloads Image at the given uri.
    * This returns a promise to a downloadable url
    * @param {String} uri the uri to the image
-   * @returns Promise<String>
+   * @returns {Promise<String>}
    */
   async downloadImage(uri) {
     return await this.storage.ref().child(uri).getDownloadURL();
+  }
+
+  /**
+   * Cretes an account for a user
+   */
+  async createAccount(email, password) {
+    let userAuth = await this.auth.createUserWithEmailAndPassword(
+      email,
+      password
+    );
+    userAuth.user.sendEmailVerification();
+  }
+
+  async signInWithUsernameAndPassword(username, password) {
+    await this.auth.signInWithEmailAndPassword(username, password);
+  }
+
+  /**
+   * Gets all possible words.
+   *
+   * @returns { Promise<Array<Word>> }
+   */
+  async getWords() {
+    let wordRef = await this.db.collection("words").get();
+    let wordDocs = wordRef.docs;
+    let words = [];
+    for (let wordRef of wordDocs) {
+      let word = wordRef.data();
+      words.push(
+        new Word(
+          word.value,
+          word.correctImage,
+          word.incorrectImages,
+          wordRef.id,
+          word.dateCreated.toDate()
+        )
+      );
+    }
+    words.sort(
+      (word1, word2) => word1.createdAt.getTime() - word2.createdAt.getTime()
+    );
+    return words;
   }
 }

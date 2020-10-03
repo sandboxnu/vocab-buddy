@@ -1,35 +1,161 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/Layout";
-import { singleRequest } from "../data/actions";
+import { INK, LOGIN_BACKGROUND } from "../constants/colors";
+import { authenticationRequest, singleRequest } from "../data/actions";
 
-const TestingId = styled.p``;
-const TestingLink = styled.a``;
-const TestingImage = styled.img``;
+const LoginInput = styled.input`
+  width: 100%;
+  background-color: clear;
+  border-radius: 12px;
+  border: 1px solid #d4d6e2;
+  padding: 10px;
+`;
 
+const CreateUserButton = styled.button`
+  flex: 1;
+  margin: 5px 0px;
+  background-color: #fff0;
+  border-width: 0px;
+  text-align: left;
+  color: ${INK};
+`;
+
+const LoginHoldingDiv = styled.div`
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  @media (max-width: 600px) {
+    flex: 2;
+    justify-content: flex-start;
+  }
+
+  @media (min-width: 601px) {
+    flex: 1;
+    justify-content: center;
+  }
+`;
+
+const LoginSwitchingDiv = styled.div`
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+
+  @media (min-width: 601px) {
+    flex-direction: row;
+  }
+`;
+
+const ActuallyLoginDiv = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const LoginInfoDiv = styled.div`
+  flex: 1;
+  background: ${LOGIN_BACKGROUND};
+`;
+
+const HorizontalDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const InputDiv = styled.div`
+  justify-content: center;
+  margin: 16px 0px;
+`;
+
+const InputTitle = styled.h4``;
+
+const LoginHeader = styled.h1``;
+
+const EvenSpacedDiv = styled.div`
+  @media (max-width: 600px) {
+    flex: 0;
+  }
+
+  @media (min-width: 601px) {
+    flex: 1;
+  }
+`;
+
+const LoginButton = styled.button`
+  background-color: ${INK};
+  border-radius: 12px;
+  color: #fff;
+  border-width: 0px;
+  flex: 1;
+  margin: 5px 0px 15px 0px;
+  padding: 15px;
+`;
 // An example of using a connector
 const connector = connect((state) => state, {
   request: singleRequest.request,
-  addUser: singleRequest.addUser,
-  downloadImage: singleRequest.downloadImage,
+  createUser: authenticationRequest.createUser,
+  signIn: authenticationRequest.signIn,
 });
 
-const Login = ({ id, imageURL, request, addUser, downloadImage }) => {
+const Login = ({ signedIn, createUser, signIn }) => {
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  let history = useHistory();
+
   useEffect(() => {
-    downloadImage({ imageURL: "dajin.png" });
-  }, [downloadImage]);
+    if (signedIn) {
+      history.push("/dashboard");
+    }
+  }, [signedIn, history]);
+  // For right now, go to dashboard when signed in
+
   return (
     <Layout>
-      <TestingLink onClick={request}>Welcome to vocab buddy</TestingLink>
-      {id == null ? (
-        <TestingLink onClick={() => addUser({ name: "Jack" })}>
-          Add Jack to db as test
-        </TestingLink>
-      ) : (
-        <TestingId>The id is {id}</TestingId>
-      )}
-      <TestingImage src={imageURL} alt="Dajin" />
+      <LoginSwitchingDiv>
+        <LoginHoldingDiv>
+          <HorizontalDiv>
+            <EvenSpacedDiv />
+            <ActuallyLoginDiv>
+              <LoginHeader>login</LoginHeader>
+              <InputDiv>
+                <InputTitle>email address</InputTitle>
+                <LoginInput
+                  type="email"
+                  value={email}
+                  placeholder="email address"
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </InputDiv>
+              <InputDiv>
+                <InputTitle>password</InputTitle>
+                <LoginInput
+                  type="password"
+                  value={password}
+                  placeholder="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </InputDiv>
+
+              <LoginButton onClick={() => signIn({ email, password })}>
+                login
+              </LoginButton>
+
+              <CreateUserButton onClick={() => createUser({ email, password })}>
+                sign up
+              </CreateUserButton>
+            </ActuallyLoginDiv>
+            <EvenSpacedDiv />
+          </HorizontalDiv>
+        </LoginHoldingDiv>
+
+        <LoginInfoDiv></LoginInfoDiv>
+      </LoginSwitchingDiv>
     </Layout>
   );
 };
