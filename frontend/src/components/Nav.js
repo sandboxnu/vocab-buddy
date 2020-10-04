@@ -4,11 +4,13 @@ import { INK, SEA_FOAM } from "../constants/colors";
 import { MenuOutlined } from "@ant-design/icons";
 
 const NavBar = styled.div`
+  background: #fff;
   display: flex;
   height: 100px;
   justify-content: space-between;
   position: fixed;
   width: 100%;
+  z-index: 5;
 `;
 
 const NavContainer = styled.div`

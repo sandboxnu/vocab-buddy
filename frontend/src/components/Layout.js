@@ -7,7 +7,7 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.main`
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   padding: 7em 2em 7em 3.5em;
   width: 100%;
