@@ -45,22 +45,24 @@ const PromptText = styled.span`
 const ImageContainer = styled.div`
   display: grid;
   grid-gap: 20px;
-  grid-template-columns: 400px auto;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
   margin-top: 15px;
 
   @media (max-width: 900px) {
-    grid-template-columns: 250px auto;
+    /* grid-template-columns: 250px auto; */
   }
 
   @media (max-width: 600px) {
-    grid-template-columns: 100px auto;
+    /* grid-template-columns: 100px auto; */
   }
 `;
 
 const Image = styled.img`
   border-radius: 20px;
-  width: 400px;
-  height: 240px;
+  /* width: 400px; */
+  /* height: 240px; */
+  width: 100%;
 
   :hover {
     cursor: pointer;
@@ -68,15 +70,15 @@ const Image = styled.img`
   }
 
   @media (max-width: 900px) {
-    max-width: 250px;
-    max-height: 250px;
-    object-fit: cover;
+    /* max-width: 250px; */
+    /* max-height: 250px; */
+    /* object-fit: cover; */
   }
 
   @media (max-width: 600px) {
-    max-width: 100px;
-    max-height: 100px;
-    object-fit: cover;
+    /* max-width: 100px; */
+    /* max-height: 100px; */
+    /* object-fit: cover; */
   }
 `;
 
