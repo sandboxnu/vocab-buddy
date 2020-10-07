@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import { User } from "../models/User";
 import Word from "../models/Word";
 
 // Your web app's Firebase configuration
@@ -28,10 +29,24 @@ export default class FirebaseInteractor {
   storage = firebase.storage();
 
   /** {@type Auth} */
-  auth = firebase.auth();
+  get auth() {
+    return firebase.auth();
+  }
 
-  get currentUser() {
-    return this.auth.currentUser;
+  /** {@type User} */
+  currentUser;
+
+  unsubscribe;
+
+  /** */
+  waitToBeSignedIn() {
+    return new Promise((resolve, reject) => {
+      this.unsubscribe = this.auth.onAuthStateChanged((user) => {
+        if (user != null) {
+          resolve(true);
+        }
+      });
+    });
   }
 
   /**
@@ -45,18 +60,28 @@ export default class FirebaseInteractor {
   }
 
   /**
-   * Cretes an account for a user
+   * Creates an account for a user
    */
-  async createAccount(email, password) {
+  async createAccount(email, password, name, accountType) {
+    this.unsubscribe();
     let userAuth = await this.auth.createUserWithEmailAndPassword(
       email,
       password
     );
+    this.db.collection("users").doc(userAuth.user.uid).set({
+      name,
+      accountType,
+    });
     userAuth.user.sendEmailVerification();
   }
 
   async signInWithUsernameAndPassword(username, password) {
+    this.unsubscribe();
     await this.auth.signInWithEmailAndPassword(username, password);
+    let id = this.auth.currentUser.uid;
+    let user = await this.db.collection("users").doc(id).get();
+    let userData = user.data();
+    this.currentUser = new User(id, userData.name, userData.accountType);
   }
 
   /**

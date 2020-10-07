@@ -10,7 +10,7 @@ import {
 let firebaseInteractor = new FirebaseInteractor();
 
 export default function* rootSaga() {
-  yield all([root()]);
+  yield all([root(), waitForSignInAtStart()]);
 }
 
 function* root() {
@@ -26,18 +26,17 @@ function* watchSingleRequest() {
     yield put(singleRequest.success());
   } catch (e) {
     yield put(singleRequest.error());
-    console.log(e);
   }
 }
 
 function* watchCreateUser(action) {
-  let { email, password } = action.payload;
+  let { email, password, name, accountType } = action.payload;
   try {
-    yield call(() => firebaseInteractor.createAccount(email, password));
-    console.log(firebaseInteractor.currentUser);
+    yield call(() =>
+      firebaseInteractor.createAccount(email, password, name, accountType)
+    );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
-    console.log(error);
     yield put(singleRequest.error());
   }
 }
@@ -50,7 +49,6 @@ function* watchSignIn(action) {
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
-    console.log(error);
     yield put(singleRequest.error());
   }
 }
@@ -64,7 +62,11 @@ function* watchGetWords(action) {
     yield call(updateWithSuccess);
     yield put(getWordsRequest.getWordsSuccess({ words }));
   } catch (error) {
-    console.log(error);
     yield put(singleRequest.error());
   }
+}
+
+function* waitForSignInAtStart() {
+  yield call(() => firebaseInteractor.waitToBeSignedIn());
+  yield put(authenticationRequest.authenticationSuccess());
 }

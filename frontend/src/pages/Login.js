@@ -3,16 +3,9 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/Layout";
+import { TextInput } from "../components/TextInput";
 import { INK, LOGIN_BACKGROUND } from "../constants/colors";
 import { authenticationRequest, singleRequest } from "../data/actions";
-
-const LoginInput = styled.input`
-  width: 100%;
-  background-color: clear;
-  border-radius: 12px;
-  border: 1px solid #d4d6e2;
-  padding: 10px;
-`;
 
 const CreateUserButton = styled.button`
   flex: 1;
@@ -41,7 +34,7 @@ const LoginHoldingDiv = styled.div`
 const LoginSwitchingDiv = styled.div`
   display: flex;
   align-items: stretch;
-  height: 100%;
+  min-height: 100%;
   @media (max-width: 600px) {
     flex-direction: column;
   }
@@ -68,13 +61,6 @@ const HorizontalDiv = styled.div`
   flex-direction: row;
 `;
 
-const InputDiv = styled.div`
-  justify-content: center;
-  margin: 16px 0px;
-`;
-
-const InputTitle = styled.h4``;
-
 const LoginHeader = styled.h1``;
 
 const EvenSpacedDiv = styled.div`
@@ -99,11 +85,10 @@ const LoginButton = styled.button`
 // An example of using a connector
 const connector = connect((state) => state, {
   request: singleRequest.request,
-  createUser: authenticationRequest.createUser,
   signIn: authenticationRequest.signIn,
 });
 
-const Login = ({ signedIn, createUser, signIn }) => {
+const Login = ({ signedIn, signIn }) => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let history = useHistory();
@@ -113,7 +98,6 @@ const Login = ({ signedIn, createUser, signIn }) => {
       history.push("/dashboard");
     }
   }, [signedIn, history]);
-  // For right now, go to dashboard when signed in
 
   return (
     <Layout>
@@ -123,30 +107,24 @@ const Login = ({ signedIn, createUser, signIn }) => {
             <EvenSpacedDiv />
             <ActuallyLoginDiv>
               <LoginHeader>login</LoginHeader>
-              <InputDiv>
-                <InputTitle>email address</InputTitle>
-                <LoginInput
-                  type="email"
-                  value={email}
-                  placeholder="email address"
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-              </InputDiv>
-              <InputDiv>
-                <InputTitle>password</InputTitle>
-                <LoginInput
-                  type="password"
-                  value={password}
-                  placeholder="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </InputDiv>
+              <TextInput
+                onChange={(event) => setEmail(event.target.value)}
+                value={email}
+                type="email"
+                text="email address"
+              />
+              <TextInput
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                type="password"
+                text="password"
+              />
 
               <LoginButton onClick={() => signIn({ email, password })}>
                 login
               </LoginButton>
 
-              <CreateUserButton onClick={() => createUser({ email, password })}>
+              <CreateUserButton onClick={() => history.push("/sign_up")}>
                 sign up
               </CreateUserButton>
             </ActuallyLoginDiv>

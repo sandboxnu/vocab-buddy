@@ -33,9 +33,9 @@ export const getWordsRequest = {
 };
 
 export const authenticationRequest = {
-  createUser: ({ email, password }) => ({
+  createUser: ({ email, password, name, accountType }) => ({
     type: types.CREATE_USER,
-    payload: { email, password },
+    payload: { email, password, name, accountType },
   }),
   signIn: ({ email, password }) => ({
     type: types.SIGN_IN,
