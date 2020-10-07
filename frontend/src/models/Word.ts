@@ -1,20 +1,20 @@
 export default class Word {
   /** @type {String} */
-  value;
+  value: string;
 
   /** @type {String} */
-  correctImage;
+  correctImage: string;
 
-  /** @type {Array<String>} */
-  incorrectImages;
+  /** @type {string[]} */
+  incorrectImages: string[];
 
   /** @type {String} */
-  id;
+  id: string;
 
   /** @type {Date} */
-  createdAt;
+  createdAt: Date;
 
-  constructor(value, correctImage, incorrectImages, id, createdAt) {
+  constructor(value: string, correctImage: string, incorrectImages: string[], id: string, createdAt: Date) {
     this.value = value;
     this.correctImage = correctImage;
     this.incorrectImages = incorrectImages;
