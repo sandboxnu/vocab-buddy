@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {FunctionComponent, useEffect, useState} from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -103,7 +103,17 @@ const connector = connect((state) => state, {
   signIn: authenticationRequest.signIn,
 });
 
-const Login = ({ signedIn, createUser, signIn }) => {
+interface LoginParams {
+  email : string;
+  password : string;
+}
+interface LoginProps {
+  signedIn : boolean;
+  createUser : ({email, password} : LoginParams) => void;
+  signIn : ({email, password} : LoginParams) => void;
+}
+
+const Login : FunctionComponent<LoginProps> = ({ signedIn, createUser, signIn }) => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let history = useHistory();
