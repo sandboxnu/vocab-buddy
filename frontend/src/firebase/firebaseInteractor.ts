@@ -40,22 +40,25 @@ export default class FirebaseInteractor {
    * @param {String} uri the uri to the image
    * @returns {Promise<String>}
    */
-  async downloadImage(uri) {
+  async downloadImage(uri : string) : Promise<string> {
     return await this.storage.ref().child(uri).getDownloadURL();
   }
 
   /**
    * Cretes an account for a user
    */
-  async createAccount(email, password) {
+  async createAccount(email : string, password : string) {
     let userAuth = await this.auth.createUserWithEmailAndPassword(
       email,
       password
     );
+
+    // typescript is angry bc userAuth.user could be null
+    // @ts-ignore
     userAuth.user.sendEmailVerification();
   }
 
-  async signInWithUsernameAndPassword(username, password) {
+  async signInWithUsernameAndPassword(username : string, password : string) {
     await this.auth.signInWithEmailAndPassword(username, password);
   }
 
@@ -64,10 +67,10 @@ export default class FirebaseInteractor {
    *
    * @returns { Promise<Array<Word>> }
    */
-  async getWords() {
+  async getWords() : Promise<Word[]> {
     let wordRef = await this.db.collection("words").get();
     let wordDocs = wordRef.docs;
-    let words = [];
+    let words : Word[] = [];
     for (let wordRef of wordDocs) {
       let word = wordRef.data();
       words.push(
