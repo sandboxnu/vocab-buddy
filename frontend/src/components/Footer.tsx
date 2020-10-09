@@ -1,4 +1,4 @@
-import React from "react";
+import React, {FunctionComponent, ReactElement} from "react";
 import styled from "styled-components";
 
 const FooterContainer = styled.footer`
@@ -15,7 +15,7 @@ const FooterContent = styled.div`
   margin-left: 2em;
 `;
 
-const Footer = () => {
+const Footer : FunctionComponent = () : ReactElement => {
   return (
     <FooterContainer>
       <FooterContent>

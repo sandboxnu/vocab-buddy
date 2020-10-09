@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import Word from "../models/Word";
+import {Word} from "../models/types";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -40,22 +40,23 @@ export default class FirebaseInteractor {
    * @param {String} uri the uri to the image
    * @returns {Promise<String>}
    */
-  async downloadImage(uri) {
+  async downloadImage(uri : string) : Promise<string> {
     return await this.storage.ref().child(uri).getDownloadURL();
   }
 
   /**
    * Cretes an account for a user
    */
-  async createAccount(email, password) {
+  async createAccount(email : string, password : string) {
     let userAuth = await this.auth.createUserWithEmailAndPassword(
       email,
       password
     );
-    userAuth.user.sendEmailVerification();
+
+    userAuth.user?.sendEmailVerification();
   }
 
-  async signInWithUsernameAndPassword(username, password) {
+  async signInWithUsernameAndPassword(username : string, password : string) {
     await this.auth.signInWithEmailAndPassword(username, password);
   }
 
@@ -64,20 +65,20 @@ export default class FirebaseInteractor {
    *
    * @returns { Promise<Array<Word>> }
    */
-  async getWords() {
+  async getWords() : Promise<Word[]> {
     let wordRef = await this.db.collection("words").get();
     let wordDocs = wordRef.docs;
-    let words = [];
+    let words : Word[] = [];
     for (let wordRef of wordDocs) {
       let word = wordRef.data();
       words.push(
-        new Word(
-          word.value,
-          word.correctImage,
-          word.incorrectImages,
-          wordRef.id,
-          word.dateCreated.toDate()
-        )
+          {
+            value: word.value,
+            correctImage: word.correctImage,
+            incorrectImages: word.incorrectImages,
+            id: wordRef.id,
+            createdAt: word.dateCreated.toDate()
+          }
       );
     }
     words.sort(

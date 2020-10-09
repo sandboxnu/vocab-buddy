@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../components/Layout";
 import { INK, LOGIN_BACKGROUND } from "../constants/colors";
 import { authenticationRequest, singleRequest } from "../data/actions";
+import {LoginParams} from "../models/types";
 
 const LoginInput = styled.input`
   width: 100%;
@@ -103,7 +104,13 @@ const connector = connect((state) => state, {
   signIn: authenticationRequest.signIn,
 });
 
-const Login = ({ signedIn, createUser, signIn }) => {
+interface LoginProps {
+  signedIn : boolean;
+  createUser : ({email, password} : LoginParams) => void;
+  signIn : ({email, password} : LoginParams) => void;
+}
+
+const Login : FunctionComponent<LoginProps> = ({ signedIn, createUser, signIn }) : ReactElement => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let history = useHistory();

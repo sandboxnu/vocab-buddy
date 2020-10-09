@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, FunctionComponent, ReactElement} from "react";
 import styled from "styled-components";
 import { INK, SEA_FOAM } from "../constants/colors";
 import { MenuOutlined } from "@ant-design/icons";
@@ -79,7 +79,7 @@ const OpenMenuContainer = styled.div`
   }
 `;
 
-const Nav = () => {
+const Nav : FunctionComponent = () : ReactElement => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
@@ -92,7 +92,7 @@ const Nav = () => {
     };
   }, []);
 
-  const HeaderItems = () => {
+  const HeaderItems = () : ReactElement => {
     return (
       <>
         <Link href="/assessments">assessments</Link>
