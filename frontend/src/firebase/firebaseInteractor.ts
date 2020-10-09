@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import Word from "../models/Word";
+import {Word} from "../models/types";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -53,9 +53,7 @@ export default class FirebaseInteractor {
       password
     );
 
-    // typescript is angry bc userAuth.user could be null
-    // @ts-ignore
-    userAuth.user.sendEmailVerification();
+    userAuth.user?.sendEmailVerification();
   }
 
   async signInWithUsernameAndPassword(username : string, password : string) {
@@ -74,13 +72,13 @@ export default class FirebaseInteractor {
     for (let wordRef of wordDocs) {
       let word = wordRef.data();
       words.push(
-        new Word(
-          word.value,
-          word.correctImage,
-          word.incorrectImages,
-          wordRef.id,
-          word.dateCreated.toDate()
-        )
+          {
+            value: word.value,
+            correctImage: word.correctImage,
+            incorrectImages: word.incorrectImages,
+            id: wordRef.id,
+            createdAt: word.dateCreated.toDate()
+          }
       );
     }
     words.sort(

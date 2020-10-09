@@ -1,4 +1,4 @@
-import {LoginParams, ActionTypes, WordList, Action} from "../models/types";
+import {LoginParams, ActionTypes, Word, Action} from "../models/types";
 
 
 export const singleRequest = {
@@ -18,7 +18,7 @@ export const getWordsRequest = {
   getWords: () : Action => ({
     type: ActionTypes.GET_WORDS,
   }),
-  getWordsSuccess: ({ words } : WordList) : Action => ({
+  getWordsSuccess: (words : Word[]) : Action => ({
     type: ActionTypes.GET_WORDS_SUCCESS,
     payload: { words },
   }),

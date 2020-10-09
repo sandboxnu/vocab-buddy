@@ -5,8 +5,7 @@ import {
   getWordsRequest,
   singleRequest,
 } from "./actions";
-import {Action, ActionTypes, LoginParams} from "../models/types";
-import Word from "../models/Word";
+import {Action, ActionTypes, LoginParams, Word} from "../models/types";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -63,7 +62,7 @@ function* watchGetWords(action : Action) {
       words = await firebaseInteractor.getWords();
     };
     yield call(updateWithSuccess);
-    yield put(getWordsRequest.getWordsSuccess({ words }));
+    yield put(getWordsRequest.getWordsSuccess(words));
   } catch (error) {
     console.log(error);
     yield put(singleRequest.error());

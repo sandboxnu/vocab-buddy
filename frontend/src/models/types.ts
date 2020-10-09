@@ -1,7 +1,15 @@
-// bad?
-import Word from "./Word";
 
 
+/**
+ * Represents a word used in an assessment.
+ */
+export interface Word {
+  value: string;
+  correctImage: string;
+  incorrectImages: string[];
+  id: string;
+  createdAt: Date;
+}
 
 // also these & all State/Action can def be moved to a separate file
 /**
@@ -22,7 +30,7 @@ export enum ActionTypes {
 // i think we should make separate reducers to separate the different states if that makes sense
 export interface State {
   signedIn : boolean;
-  words : WordList | null;
+  words : Word[] | null;
 }
 
 // i think we should make separate actions as well
@@ -31,18 +39,10 @@ export interface Action {
   payload? : any; // eh
 }
 
-
-
 /**
  * Represents parameters needed to login.
  */
 export interface LoginParams {
   email : string;
   password : string;
-}
-
-// i dont really like this
-// i think we should convert Word from a class to one of these types
-export interface WordList {
-  words: Word[];
 }
