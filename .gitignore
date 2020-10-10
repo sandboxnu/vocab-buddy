@@ -105,3 +105,4 @@ dist
 
 # for our mac users
 .DS_Store
+/.idea/

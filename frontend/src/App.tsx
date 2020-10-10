@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Assessments from "./pages/Assessments";
 import CreateUser from "./pages/CreateUser";
@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Interventions from "./pages/Interventions";
 import Login from "./pages/Login";
 
-const App = () => {
+const App = () : ReactElement => {
   return (
     <Router>
       <Switch>

@@ -1,10 +1,10 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../firebase/firebaseInteractor";
+import { Action, ActionTypes, CreateUserParams, LoginParams, Word } from "../models/types";
 import {
   authenticationRequest,
   getWordsRequest,
-  singleRequest,
-  types,
+  singleRequest
 } from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
@@ -14,10 +14,10 @@ export default function* rootSaga() {
 }
 
 function* root() {
-  yield takeLatest(types.REQUEST, watchSingleRequest);
-  yield takeLatest(types.CREATE_USER, watchCreateUser);
-  yield takeLatest(types.SIGN_IN, watchSignIn);
-  yield takeLatest(types.GET_WORDS, watchGetWords);
+  yield takeLatest(ActionTypes.REQUEST, watchSingleRequest);
+  yield takeLatest(ActionTypes.CREATE_USER, watchCreateUser);
+  yield takeLatest(ActionTypes.SIGN_IN, watchSignIn);
+  yield takeLatest(ActionTypes.GET_WORDS, watchGetWords);
 }
 
 function* watchSingleRequest() {
@@ -29,20 +29,22 @@ function* watchSingleRequest() {
   }
 }
 
-function* watchCreateUser(action) {
-  let { email, password, name, accountType } = action.payload;
+function* watchCreateUser(action : Action) {
+  let { email, password, name, accountType, age } : CreateUserParams = action.payload;
+  console.log(action)
   try {
     yield call(() =>
-      firebaseInteractor.createAccount(email, password, name, accountType)
+      firebaseInteractor.createAccount(email, password, name, accountType, age)
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
+    console.log(error);
     yield put(singleRequest.error());
   }
 }
 
-function* watchSignIn(action) {
-  let { email, password } = action.payload;
+function* watchSignIn(action : Action) {
+  let { email, password } : LoginParams = action.payload;
   try {
     yield call(() =>
       firebaseInteractor.signInWithUsernameAndPassword(email, password)
@@ -53,14 +55,14 @@ function* watchSignIn(action) {
   }
 }
 
-function* watchGetWords(action) {
+function* watchGetWords(action : Action) {
   try {
-    let words;
+    let words : Word[] = [];
     const updateWithSuccess = async () => {
       words = await firebaseInteractor.getWords();
     };
     yield call(updateWithSuccess);
-    yield put(getWordsRequest.getWordsSuccess({ words }));
+    yield put(getWordsRequest.getWordsSuccess(words));
   } catch (error) {
     yield put(singleRequest.error());
   }

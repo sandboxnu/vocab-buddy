@@ -1,4 +1,4 @@
-import React from "react";
+import React, {FunctionComponent, ReactElement} from "react";
 import styled from "styled-components";
 import Layout from "../components/Layout";
 import { Button } from "antd";
@@ -68,7 +68,7 @@ const BeginButton = styled(Button)`
   }
 `;
 
-const Assessments = () => {
+const Assessments : FunctionComponent = () : ReactElement => {
   return (
     <Layout>
       <AssessmentsContainer>
