@@ -63,9 +63,6 @@ export default class FirebaseInteractor {
    */
   async createAccount(email : string, password : string, name : string, accountType : AccountType, age: Number) {
     this.unsubscribe?.apply(this);
-    if (age == null) {
-      throw new Error("wtf");
-    }
     let userAuth = await this.auth.createUserWithEmailAndPassword(
       email,
       password
