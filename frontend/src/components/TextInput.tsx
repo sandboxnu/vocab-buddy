@@ -24,6 +24,7 @@ const TextInput = ({ value, onChange, text, type, expectedValue = null } : TextI
             ? {}
             : { border: "1px solid red" }
         }
+        min="0"
       />
     </InputDiv>
   );

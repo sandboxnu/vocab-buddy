@@ -166,7 +166,6 @@ const CreateUser : FunctionComponent<CreateUserProps> = ({ signedIn, createUser 
               <TextInput
                 onChange={(e) => {
                   if (parseInt(e.target.value) != null) {
-                    console.log(e.target.value);
                     setAge(e.target.value);
                   }
                 }}
