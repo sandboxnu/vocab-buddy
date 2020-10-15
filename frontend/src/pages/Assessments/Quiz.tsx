@@ -2,12 +2,18 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import Layout from "../../components/Layout";
-import { getWords } from "../Assessments/data/actions";
-import { getAllWords } from "../Assessments/data/reducer";
+import { getWords } from "./data/actions";
+import { getAllWords } from "./data/reducer";
 import styled from "styled-components";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
+import { Word } from "../../models/types";
 import { CLOUD } from "../../constants/colors";
+
+interface IProps {
+  getWords: Function,
+  allWords: Array<Word>,
+}
 
 const Container = styled.div`
   display: flex;
@@ -84,21 +90,21 @@ const connector = connect(
   }
 );
 
-const shuffleImages = (images) => {
-  images.sort((a, b) => {
+const shuffleImages = (images: any) => {
+  images.sort((a: any, b: any) => {
     if (Math.random() > 0.5) return 1;
     else return -1;
   });
   return images;
 };
 
-const getNextImageID = (path) => {
+const getNextImageID = (path: string) => {
   let splitPath = path.split("/");
   let currentId = splitPath[splitPath.length - 1];
   return parseInt(currentId) + 1;
 };
 
-const Quiz = ({ getWords, allWords }) => {
+const Quiz = ({ getWords, allWords }: IProps) => {
   let word = allWords && allWords[0];
   let images = word && [word.correctImage].concat(word.incorrectImages);
   let shuffled = (images && shuffleImages(images)) || [];
@@ -115,7 +121,7 @@ const Quiz = ({ getWords, allWords }) => {
             <PromptSpeech prompt="Touch the picture that shows miniscule." />
           </Prompt>
           <ImageContainer>
-            {shuffled.map((img, idx) => {
+            {shuffled.map((img: string, idx: number) => {
               return <Image key={idx} src={img} />;
             })}
           </ImageContainer>

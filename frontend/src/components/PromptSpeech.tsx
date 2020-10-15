@@ -1,4 +1,6 @@
-import React from "react";
+import React, {FunctionComponent, ReactElement} from "react";
+// no @types/react-speech so we ignore this error
+// @ts-ignore
 import Speech from "react-speech";
 import styled from "styled-components";
 import PlayButton from "../components/PlayButton";
@@ -11,7 +13,11 @@ const SpeechContainer = styled.div`
   }
 `;
 
-const PromptSpeech = ({ prompt }) => {
+interface SpeechProp {
+  prompt: string;
+}
+
+const PromptSpeech : FunctionComponent<SpeechProp> = ({ prompt }) : ReactElement => {
   return (
     <SpeechContainer>
       <Speech

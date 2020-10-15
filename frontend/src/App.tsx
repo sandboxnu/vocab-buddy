@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import Login from "./pages/Login";
 import Assessments from "./pages/Assessments/Assessments";
 import Interventions from "./pages/Interventions";
@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Quiz from "./pages/Assessments/Quiz";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-const App = () => {
+const App = () : ReactElement => {
   return (
     <Router>
       <Switch>

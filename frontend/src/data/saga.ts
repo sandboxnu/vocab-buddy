@@ -4,8 +4,8 @@ import {
   authenticationRequest,
   getWordsRequest,
   singleRequest,
-  types,
 } from "./actions";
+import {Action, ActionTypes, LoginParams, Word} from "../models/types";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -14,9 +14,9 @@ export default function* rootSaga() {
 }
 
 function* root() {
-  yield takeLatest(types.REQUEST, watchSingleRequest);
-  yield takeLatest(types.CREATE_USER, watchCreateUser);
-  yield takeLatest(types.SIGN_IN, watchSignIn);
+  yield takeLatest(ActionTypes.REQUEST, watchSingleRequest);
+  yield takeLatest(ActionTypes.CREATE_USER, watchCreateUser);
+  yield takeLatest(ActionTypes.SIGN_IN, watchSignIn);
 }
 
 function* watchSingleRequest() {
@@ -29,8 +29,8 @@ function* watchSingleRequest() {
   }
 }
 
-function* watchCreateUser(action) {
-  let { email, password } = action.payload;
+function* watchCreateUser(action : Action) {
+  let { email, password } : LoginParams = action.payload;
   try {
     yield call(() => firebaseInteractor.createAccount(email, password));
     console.log(firebaseInteractor.currentUser);
@@ -41,8 +41,8 @@ function* watchCreateUser(action) {
   }
 }
 
-function* watchSignIn(action) {
-  let { email, password } = action.payload;
+function* watchSignIn(action : Action) {
+  let { email, password } : LoginParams = action.payload;
   try {
     yield call(() =>
       firebaseInteractor.signInWithUsernameAndPassword(email, password)

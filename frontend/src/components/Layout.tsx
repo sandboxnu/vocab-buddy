@@ -1,4 +1,4 @@
-import React from "react";
+import React, {FunctionComponent, ReactElement} from "react";
 import styled from "styled-components";
 import Nav from "./Nav";
 
@@ -14,7 +14,7 @@ const Content = styled.main`
 `;
 
 // Main layout of the project that includes both header and navbar
-const Layout = ({ children }) => {
+const Layout : FunctionComponent = ({ children }) : ReactElement => {
   return (
     <Wrapper>
       <Nav />

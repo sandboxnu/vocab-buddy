@@ -13,7 +13,7 @@ const TriangleButton = styled.svg`
   }
 `;
 
-const PlayButton = ({ scale }) => {
+const PlayButton = ({ scale=1 }) => {
   return (
     <TriangleButton
       scale={scale}

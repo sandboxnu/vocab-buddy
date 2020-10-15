@@ -3,6 +3,10 @@ import { INK, INK_HOVER } from "../constants/colors";
 import styled from "styled-components";
 import { Button } from "antd";
 
+interface StyledProps {
+  top: number,
+}
+
 const ButtonContainer = styled(Button)`
   background: ${INK};
   border: none;
@@ -12,11 +16,7 @@ const ButtonContainer = styled(Button)`
   height: 50px;
   width: 120px;
 
-  ${(props) =>
-    `
-    margin-top: ${props.top}px;
-  `}
-
+  margin-top: ${(prop: StyledProps) => prop.top}px;
   span {
     color: #fff;
   }
@@ -30,8 +30,9 @@ const ButtonContainer = styled(Button)`
   }
 `;
 
-const PurpleButton = ({ text, top, onClick }) => {
+const PurpleButton = ({ text='', top=0, onClick={} }) => {
   return (
+    // @ts-ignore
     <ButtonContainer top={top} onClick={onClick}>
       {text}
     </ButtonContainer>
