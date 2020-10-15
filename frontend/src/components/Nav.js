@@ -6,7 +6,7 @@ import { MenuOutlined } from "@ant-design/icons";
 const NavBar = styled.div`
   background: #fff;
   display: flex;
-  height: 100px;
+  height: 80px;
   justify-content: space-between;
   position: fixed;
   width: 100%;
@@ -64,7 +64,7 @@ const StyledMenuIcon = styled(MenuOutlined)`
 
 const OpenMenu = styled.div`
   background: #fff;
-  margin-top: 100px;
+  margin-top: 80px;
   position: fixed;
   right: 0;
 `;

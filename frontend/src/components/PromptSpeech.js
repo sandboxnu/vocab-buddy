@@ -6,7 +6,8 @@ import PlayButton from "../components/PlayButton";
 const SpeechContainer = styled.div`
   margin: 0;
   button {
-    background-color: #fff !important;
+    background-color: transparent !important;
+    border: none !important;
   }
 `;
 
@@ -17,7 +18,7 @@ const PromptSpeech = ({ prompt }) => {
         text={prompt}
         pitch={1.05}
         textAsButton={true}
-        displayText={<PlayButton />}
+        displayText={<PlayButton scale={0.8} />}
       />
     </SpeechContainer>
   );

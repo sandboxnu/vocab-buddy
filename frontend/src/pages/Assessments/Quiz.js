@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import Layout from "../../components/Layout";
@@ -7,6 +7,7 @@ import { getAllWords } from "../Assessments/data/reducer";
 import styled from "styled-components";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
+import { CLOUD } from "../../constants/colors";
 
 const Container = styled.div`
   display: flex;
@@ -20,65 +21,57 @@ const MainContent = styled.div`
 `;
 
 const WordTitle = styled.p`
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-family: "Rubik";
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 700;
   text-transform: lowercase;
   word-wrap: break-word;
 
   @media (max-width: 600px) {
-    font-size: 35px;
+    font-size: 30px;
   }
 `;
 
 const Prompt = styled.div`
+  align-items: center;
+  background-color: ${CLOUD};
+  border-radius: 10px;
   display: flex;
+  padding: 1px 5px;
+  width: max-content;
+  @media (max-width: 600px) {
+    width: auto;
+  }
 `;
 
 const PromptText = styled.span`
-  margin-right: 20px;
+  margin-right: 10px;
   font-family: "Open Sans";
-  font-size: 20px;
+  font-size: 15px;
 `;
 
 const ImageContainer = styled.div`
   display: grid;
-  grid-gap: 20px;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 50% 50%;
-  margin-top: 15px;
-
-  @media (max-width: 900px) {
-    /* grid-template-columns: 250px auto; */
-  }
-
-  @media (max-width: 600px) {
-    /* grid-template-columns: 100px auto; */
-  }
+  grid-template-rows: 30% 30%;
 `;
 
 const Image = styled.img`
   border-radius: 20px;
-  /* width: 400px; */
-  /* height: 240px; */
   width: 100%;
+  height: 100%;
+  transform: scale(0.8);
 
   :hover {
     cursor: pointer;
     opacity: 0.8;
   }
+`;
 
-  @media (max-width: 900px) {
-    /* max-width: 250px; */
-    /* max-height: 250px; */
-    /* object-fit: cover; */
-  }
-
-  @media (max-width: 600px) {
-    /* max-width: 100px; */
-    /* max-height: 100px; */
-    /* object-fit: cover; */
+const ButtonContainer = styled.div`
+  @media (min-width: 600px) {
+    float: right;
   }
 `;
 
@@ -109,7 +102,6 @@ const Quiz = ({ getWords, allWords }) => {
   let word = allWords && allWords[0];
   let images = word && [word.correctImage].concat(word.incorrectImages);
   let shuffled = (images && shuffleImages(images)) || [];
-  let containerWidth = useRef(null);
   let history = useHistory();
   let path = window.location && window.location.pathname;
   let nextImageId = getNextImageID(path);
@@ -122,16 +114,17 @@ const Quiz = ({ getWords, allWords }) => {
             <PromptText>Touch the picture that shows miniscule.</PromptText>
             <PromptSpeech prompt="Touch the picture that shows miniscule." />
           </Prompt>
-          <ImageContainer ref={containerWidth}>
+          <ImageContainer>
             {shuffled.map((img, idx) => {
               return <Image key={idx} src={img} />;
             })}
           </ImageContainer>
-          <PurpleButton
-            text={"next"}
-            top={20}
-            onClick={() => history.push(`/assessments/${nextImageId}`)}
-          />
+          <ButtonContainer>
+            <PurpleButton
+              text={"next"}
+              onClick={() => history.push(`/assessments/${nextImageId}`)}
+            />
+          </ButtonContainer>
         </MainContent>
       </Container>
     </Layout>
