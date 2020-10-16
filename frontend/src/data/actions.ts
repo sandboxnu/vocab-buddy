@@ -1,4 +1,4 @@
-import { Action, ActionTypes, CreateUserParams, LoginParams, Word } from "../models/types";
+import { Action, ActionTypes, CreateUserParams, LoginParams, ResetPasswordParams, Word } from "../models/types";
 
 
 export const singleRequest = {
@@ -36,4 +36,11 @@ export const authenticationRequest = {
   authenticationSuccess: () : Action => ({
     type: ActionTypes.AUTHENTICATION_SUCCESS,
   }),
+  resetPassword: ({email} : ResetPasswordParams) : Action => ({
+    type: ActionTypes.RESET_PASSWORD,
+    payload: { email }
+  }),
+  resetPasswordSuccess: () : Action => ({
+    type: ActionTypes.RESET_PASSWORD_SUCCESS
+  })
 };

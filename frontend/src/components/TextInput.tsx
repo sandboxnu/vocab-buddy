@@ -8,11 +8,12 @@ interface TextInputProps {
   text: string;
   type: string;
   expectedValue : string | null;
+  className: string;
 }
 
-const TextInput = ({ value, onChange, text, type, expectedValue = null } : TextInputProps) : ReactElement => {
+const TextInput = ({ className = "", value, onChange, text, type, expectedValue = null } : TextInputProps) : ReactElement => {
   return (
-    <InputDiv>
+    <InputDiv className={className}>
       <InputTitle>{text}</InputTitle>
       <LoginInput
         type={type}
@@ -31,7 +32,8 @@ const TextInput = ({ value, onChange, text, type, expectedValue = null } : TextI
 };
 
 TextInput.defaultProps = {
-  expectedValue: null
+  expectedValue: null,
+  className: ""
 };
 
 const InputDiv = styled.div`
@@ -39,7 +41,13 @@ const InputDiv = styled.div`
   margin: 16px 0px;
 `;
 
-const InputTitle = styled.h4``;
+const InputTitle = styled.p`
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+`;
 
 const LoginInput = styled.input`
   width: 100%;

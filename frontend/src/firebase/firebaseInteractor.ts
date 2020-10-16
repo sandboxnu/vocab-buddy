@@ -61,7 +61,7 @@ export default class FirebaseInteractor {
   /**
    * Creates an account for a user
    */
-  async createAccount(email : string, password : string, name : string, accountType : AccountType, age: Number) {
+  async createAccount(email : string, password : string, name : string, accountType : AccountType, age: Number | null) {
     this.unsubscribe?.apply(this);
     let userAuth = await this.auth.createUserWithEmailAndPassword(
       email,
@@ -115,5 +115,9 @@ export default class FirebaseInteractor {
       (word1, word2) => word1.createdAt.getTime() - word2.createdAt.getTime()
     );
     return words;
+  }
+
+  async resetPassword(email: string) {
+    await this.auth.sendPasswordResetEmail(email);
   }
 }
