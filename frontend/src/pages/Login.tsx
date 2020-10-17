@@ -17,6 +17,14 @@ const ResetUserButton = styled.button`
   text-align: left;
   color: ${INK};
   font-weight: bold;
+
+  :hover {
+    cursor: pointer;
+  }
+
+  :active {
+    opacity: 0.8;
+  }
 `;
 
 const CreateUserButton = styled(ResetUserButton)`
