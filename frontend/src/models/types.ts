@@ -41,6 +41,8 @@ export enum ActionTypes {
   GET_WORDS_SUCCESS = "GETWORDSSUCCESS",
   GET_WORDS_REQUEST= "GET_WORDS_REQUEST",
   GET_WORDS_ERROR = "GET_WORDS_SUCCESS",
+  RESET_PASSWORD = "RESETPASSWORD",
+  RESET_PASSWORD_SUCCESS = "RESETPASSWORDSUCCESS"
 };
 
 
@@ -73,5 +75,9 @@ export interface CreateUserParams {
   password : string;
   name: string;
   accountType: AccountType;
-  age: number;
+  age: Number | null;
+}
+
+export interface ResetPasswordParams {
+  email: string;
 }

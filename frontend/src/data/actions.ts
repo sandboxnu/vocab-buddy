@@ -1,18 +1,4 @@
-import { Action, ActionTypes, CreateUserParams, LoginParams, Word } from "../models/types";
-
-
-export const singleRequest = {
-  request: () : Action => ({
-    type: ActionTypes.REQUEST,
-  }),
-  success: (payload = {}) : Action => ({
-    type: ActionTypes.SUCCESS,
-    payload: payload,
-  }),
-  error: () : Action => ({
-    type: ActionTypes.ERROR,
-  }),
-};
+import { Action, ActionTypes, CreateUserParams, LoginParams, ResetPasswordParams, Word } from "../models/types";
 
 export const getWordsRequest = {
   getWords: () : Action => ({
@@ -22,6 +8,9 @@ export const getWordsRequest = {
     type: ActionTypes.GET_WORDS_SUCCESS,
     payload: { words },
   }),
+  error: () : Action => ({
+    type: ActionTypes.ERROR,
+  })
 };
 
 export const authenticationRequest = {
@@ -36,4 +25,14 @@ export const authenticationRequest = {
   authenticationSuccess: () : Action => ({
     type: ActionTypes.AUTHENTICATION_SUCCESS,
   }),
+  resetPassword: ({email} : ResetPasswordParams) : Action => ({
+    type: ActionTypes.RESET_PASSWORD,
+    payload: { email }
+  }),
+  resetPasswordSuccess: () : Action => ({
+    type: ActionTypes.RESET_PASSWORD_SUCCESS
+  }),
+  error: () : Action => ({
+    type: ActionTypes.ERROR,
+  })
 };

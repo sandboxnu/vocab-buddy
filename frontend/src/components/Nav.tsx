@@ -1,12 +1,15 @@
-import React, {useState, useEffect, FunctionComponent, ReactElement} from "react";
+import { MenuOutlined } from "@ant-design/icons";
+import firebase from "firebase";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 import { INK, SEA_FOAM } from "../constants/colors";
-import { MenuOutlined } from "@ant-design/icons";
 
-import firebase from "firebase";
+interface NavProps {
+  showsBar: boolean
+}
 
 const NavBar = styled.div`
-  background: #fff;
+  background: clear;
   display: flex;
   height: 80px;
   justify-content: space-between;
@@ -83,7 +86,7 @@ const OpenMenuContainer = styled.div`
   }
 `;
 
-const Nav : FunctionComponent = () : ReactElement => {
+const Nav : FunctionComponent<NavProps> = ( { showsBar }) : ReactElement => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
@@ -109,9 +112,9 @@ const Nav : FunctionComponent = () : ReactElement => {
   };
 
   return (
-    <NavBar>
+    <NavBar style={showsBar || screenWidth > 900 ? {} : {justifyContent: 'center'}}>
       <ProjectName>vocab buddy</ProjectName>
-      {screenWidth <= 600 ? (
+      {showsBar && (screenWidth <= 600 ? (
         <>
           <StyledMenuIcon onClick={() => setIsOpen(!isOpen)} />
           {isOpen && (
@@ -122,7 +125,7 @@ const Nav : FunctionComponent = () : ReactElement => {
         </>
       ) : (
         <NavContainer>{HeaderItems()}</NavContainer>
-      )}
+      ))}
     </NavBar>
   );
 };
