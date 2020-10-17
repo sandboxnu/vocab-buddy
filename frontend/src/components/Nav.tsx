@@ -113,7 +113,7 @@ const Nav : FunctionComponent<NavProps> = ( { showsBar }) : ReactElement => {
   };
 
   return (
-    <NavBar style={showsBar || screenWidth > 600 ? {} : {justifyContent: 'center'}}>
+    <NavBar style={showsBar || screenWidth > 900 ? {} : {justifyContent: 'center'}}>
       <ProjectName>vocab buddy</ProjectName>
       {showsBar && (screenWidth <= 600 ? (
         <>
