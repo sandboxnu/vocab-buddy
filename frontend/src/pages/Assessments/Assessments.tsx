@@ -1,23 +1,20 @@
-import React, {FunctionComponent, ReactElement} from "react";
+import React from "react";
 import styled from "styled-components";
-import Layout from "../components/Layout";
-import { Button } from "antd";
-import { INK, INK_HOVER } from "../constants/colors";
-import { ASSESSMENTS_LANDING } from "../constants/images";
+import Layout from "../../components/Layout";
+import PurpleButton from "../../components/PurpleButton";
+import { ASSESSMENTS_LANDING } from "../../constants/images";
 
 const AssessmentsContainer = styled.div`
   display: flex;
   font-weight: bold;
+  flex-direction: row;
+  font-size: 4vw;
+  margin-top: 60px;
 
   @media (max-width: 600px) {
     flex-direction: column;
-    font-size: 56px;
-  }
-
-  @media (min-width: 601px) {
-    flex-direction: row;
-    font-size: 4vw;
-    margin-top: 60px;
+    font-size: 40px;
+    word-wrap: break-word;
   }
 `;
 
@@ -40,35 +37,13 @@ const LandingPageImage = styled.img`
 const LandingPageText = styled.div`
   flex: 1;
 
-  @media (min-width: 601px) {
+  @media (min-width: 600px) {
     margin-left: 1em;
     margin-top: 60px;
   }
 `;
 
-const BeginButton = styled(Button)`
-  background: ${INK};
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  height: 50px;
-
-  :hover {
-    background: ${INK_HOVER};
-  }
-
-  @media (max-width: 600px) {
-    width: 100%;
-  }
-
-  @media (min-width: 601px) {
-    margin-top: 100px;
-    width: 120px;
-  }
-`;
-
-const Assessments : FunctionComponent = () : ReactElement => {
+const Assessments = () => {
   return (
     <Layout>
       <AssessmentsContainer>
@@ -81,7 +56,7 @@ const Assessments : FunctionComponent = () : ReactElement => {
         <LandingPageText>
           assessments
           <Prompt>Select the correct images to match the target words.</Prompt>
-          <BeginButton type="primary">begin</BeginButton>
+          <PurpleButton text={"begin"} top={100} />
         </LandingPageText>
       </AssessmentsContainer>
     </Layout>

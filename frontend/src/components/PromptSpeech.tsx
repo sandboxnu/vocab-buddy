@@ -3,11 +3,13 @@ import React, {FunctionComponent, ReactElement} from "react";
 // @ts-ignore
 import Speech from "react-speech";
 import styled from "styled-components";
-import { SoundOutlined } from "@ant-design/icons";
+import PlayButton from "../components/PlayButton";
 
-const StyledSpeech = styled(Speech)`
-  :hover {
-    boxshadow: "0 0 15px 0 rgba(108,92,231,.69)";
+const SpeechContainer = styled.div`
+  margin: 0;
+  button {
+    background-color: transparent !important;
+    border: none !important;
   }
 `;
 
@@ -17,12 +19,14 @@ interface SpeechProp {
 
 const PromptSpeech : FunctionComponent<SpeechProp> = ({ prompt }) : ReactElement => {
   return (
-    <StyledSpeech
-      text={prompt}
-      pitch={1.05}
-      textAsButton={true}
-      displayText={<SoundOutlined />}
-    />
+    <SpeechContainer>
+      <Speech
+        text={prompt}
+        pitch={1.05}
+        textAsButton={true}
+        displayText={<PlayButton scale={0.8} />}
+      />
+    </SpeechContainer>
   );
 };
 

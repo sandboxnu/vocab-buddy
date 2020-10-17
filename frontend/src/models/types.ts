@@ -39,6 +39,8 @@ export enum ActionTypes {
   AUTHENTICATION_SUCCESS = "AUTHENTICATIONSUCCESS",
   GET_WORDS = "GETWORDS",
   GET_WORDS_SUCCESS = "GETWORDSSUCCESS",
+  GET_WORDS_REQUEST= "GET_WORDS_REQUEST",
+  GET_WORDS_ERROR = "GET_WORDS_SUCCESS",
 };
 
 
@@ -46,6 +48,10 @@ export enum ActionTypes {
 export interface State {
   signedIn : boolean;
   words : Word[] | null;
+}
+
+export interface AssessmentState {
+  words: Word[] | null;
 }
 
 // i think we should make separate actions as well
