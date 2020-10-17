@@ -10,9 +10,9 @@ import PurpleButton from "../../components/PurpleButton";
 import { Word } from "../../models/types";
 import { CLOUD } from "../../constants/colors";
 
-interface IProps {
-  getWords: Function,
-  allWords: Array<Word>,
+interface QuizProps {
+  getWords: () => void,
+  allWords: Word[],
 }
 
 const Container = styled.div`
@@ -33,7 +33,7 @@ const WordTitle = styled.p`
   font-weight: 700;
   text-transform: lowercase;
   word-wrap: break-word;
-
+ 
   @media (max-width: 600px) {
     font-size: 30px;
   }
@@ -90,7 +90,7 @@ const connector = connect(
   }
 );
 
-const shuffleImages = (images: any) => {
+const shuffleImages = (images: any[]) => {
   images.sort((a: any, b: any) => {
     if (Math.random() > 0.5) return 1;
     else return -1;
@@ -104,7 +104,7 @@ const getNextImageID = (path: string) => {
   return parseInt(currentId) + 1;
 };
 
-const Quiz = ({ getWords, allWords }: IProps) => {
+const Quiz = ({ getWords, allWords }: QuizProps) => {
   let word = allWords && allWords[0];
   let images = word && [word.correctImage].concat(word.incorrectImages);
   let shuffled = (images && shuffleImages(images)) || [];

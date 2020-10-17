@@ -1,10 +1,12 @@
-import React from "react";
+import React, { ReactElement, MouseEvent } from "react";
 import { INK, INK_HOVER } from "../constants/colors";
 import styled from "styled-components";
 import { Button } from "antd";
 
-interface StyledProps {
-  top: number,
+interface PurpleButtonProps {
+  top?: number,
+  text?: string | '',
+  onClick?:((event: MouseEvent<HTMLInputElement>) => void)
 }
 
 const ButtonContainer = styled(Button)`
@@ -16,7 +18,7 @@ const ButtonContainer = styled(Button)`
   height: 50px;
   width: 120px;
 
-  margin-top: ${(prop: StyledProps) => prop.top}px;
+  margin-top: ${(prop: PurpleButtonProps) => prop.top}px;
   span {
     color: #fff;
   }
@@ -30,9 +32,8 @@ const ButtonContainer = styled(Button)`
   }
 `;
 
-const PurpleButton = ({ text='', top=0, onClick={} }) => {
+const PurpleButton = ({ text, top, onClick }: PurpleButtonProps)  : ReactElement => {
   return (
-    // @ts-ignore
     <ButtonContainer top={top} onClick={onClick}>
       {text}
     </ButtonContainer>

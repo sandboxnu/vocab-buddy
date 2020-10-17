@@ -1,16 +1,16 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../firebase/firebaseInteractor";
+import { Action, ActionTypes, CreateUserParams, LoginParams, Word } from "../models/types";
 import {
   authenticationRequest,
   getWordsRequest,
-  singleRequest,
+  singleRequest
 } from "./actions";
-import {Action, ActionTypes, LoginParams, Word} from "../models/types";
 
 let firebaseInteractor = new FirebaseInteractor();
 
 export default function* rootSaga() {
-  yield all([root()]);
+  yield all([root(), waitForSignInAtStart()]);
 }
 
 function* root() {
@@ -25,15 +25,16 @@ function* watchSingleRequest() {
     yield put(singleRequest.success());
   } catch (e) {
     yield put(singleRequest.error());
-    console.log(e);
   }
 }
 
 function* watchCreateUser(action : Action) {
-  let { email, password } : LoginParams = action.payload;
+  let { email, password, name, accountType, age } : CreateUserParams = action.payload;
+  console.log(action)
   try {
-    yield call(() => firebaseInteractor.createAccount(email, password));
-    console.log(firebaseInteractor.currentUser);
+    yield call(() =>
+      firebaseInteractor.createAccount(email, password, name, accountType, age)
+    );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
     console.log(error);
@@ -49,7 +50,11 @@ function* watchSignIn(action : Action) {
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
-    console.log(error);
     yield put(singleRequest.error());
   }
+}
+
+function* waitForSignInAtStart() {
+  yield call(() => firebaseInteractor.waitToBeSignedIn());
+  yield put(authenticationRequest.authenticationSuccess());
 }
