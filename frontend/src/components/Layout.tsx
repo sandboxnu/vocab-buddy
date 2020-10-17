@@ -7,9 +7,9 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.main`
-  height: 100%;
+  height: 100vh;
   margin: 0 auto;
-  padding: 5em 2em 5em 3.5em;
+  padding: 6em 2em 5em 3.5em;
   width: 100%;
 `;
 
