@@ -1,3 +1,4 @@
+import { Alert } from 'antd';
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -127,6 +128,13 @@ const CreateUserButton = styled.button`
   padding: 15px;
 `;
 
+const StyledAlert = styled(Alert)`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  margin: auto;
+`;
+
 interface NameTextInputProps {
   isStudent: boolean;
 }
@@ -157,11 +165,12 @@ const CreateUser : FunctionComponent<CreateUserProps> = ({ signedIn, createUser 
   let [name, setName] = useState("");
   let [accountType, setAccountType] = useState("STUDENT");
   let [age, setAge] = useState("");
+  let [error, setError] = useState("");
   let createUserWithCheck = () => {
     if (confirmPassword !== password) {
-      alert("You need to confirm the password with the same password");
-    } else if (accountType === "") {
-      alert("You need to specify an account");
+      setError("you need to confirm the password with the same password");
+    } else if ((accountType === "STUDENT" && !age) || !name || !password || !email) {
+      setError("please fill in all fields");
     } else {
       createUser({ email, password, name, accountType: accountType as AccountType, age: accountType === "RESEARCHER" ? null : parseInt(age) });
     }
@@ -179,6 +188,7 @@ const CreateUser : FunctionComponent<CreateUserProps> = ({ signedIn, createUser 
   return ( 
     <Layout hideBar={true}>
       <>
+        {error && <StyledAlert message={error} type='error' closable onClose={() => setError("")}/>}
         <CloudImageLeft direction='left' />
         <CloudImageRight direction='right' />
         <LoginHoldingDiv>

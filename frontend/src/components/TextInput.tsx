@@ -11,6 +11,10 @@ interface TextInputProps {
   className: string;
 }
 
+interface LoginInputProps {
+  isExpectedValue: boolean;
+}
+
 const TextInput = ({ className = "", value, onChange, text, type, expectedValue = null } : TextInputProps) : ReactElement => {
   return (
     <InputDiv className={className}>
@@ -20,11 +24,7 @@ const TextInput = ({ className = "", value, onChange, text, type, expectedValue 
         value={value}
         placeholder={text}
         onChange={onChange}
-        style={
-          expectedValue == null || expectedValue === value
-            ? {}
-            : { border: "1px solid red" }
-        }
+        isExpectedValue={expectedValue == null || expectedValue === value}
         min="0"
       />
     </InputDiv>
@@ -55,8 +55,10 @@ const LoginInput = styled.input`
   border-radius: 12px;
   border: 1px solid #d4d6e2;
   padding: 10px;
+  border: ${({isExpectedValue} : LoginInputProps) => isExpectedValue ? '1px solid #d4d6e2' : '1px solid red'};
+
   :focus {
-    border: 1px solid ${SEA_FOAM};
+    border: ${({isExpectedValue} : LoginInputProps) => isExpectedValue ? `1px solid ${SEA_FOAM}` : '1px solid red'};
     outline: none !important;
   }
 `;
