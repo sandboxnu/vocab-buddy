@@ -130,8 +130,16 @@ const CreateUserButton = styled.button`
 
 const StyledAlert = styled(Alert)`
   position: absolute;
-  top: 0;
-  width: 100%;
+  top: 10px;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+
+  @media (min-width: 601px) {
+    width: 50%;
+    left: 25%;
+  }
   margin: auto;
 `;
 
@@ -188,7 +196,7 @@ const CreateUser : FunctionComponent<CreateUserProps> = ({ signedIn, createUser 
   return ( 
     <Layout hideBar={true}>
       <>
-        {error && <StyledAlert message={error} type='error' closable onClose={() => setError("")}/>}
+        {error && <StyledAlert banner message={error} type='error' closable onClose={() => setError("")}/>}
         <CloudImageLeft direction='left' />
         <CloudImageRight direction='right' />
         <LoginHoldingDiv>
