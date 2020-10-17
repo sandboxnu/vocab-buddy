@@ -1,4 +1,4 @@
-import {LoginParams, ActionTypes, Word, Action} from "../models/types";
+import { Action, ActionTypes, CreateUserParams, LoginParams, Word } from "../models/types";
 
 
 export const singleRequest = {
@@ -25,9 +25,9 @@ export const getWordsRequest = {
 };
 
 export const authenticationRequest = {
-  createUser: ({ email, password } : LoginParams) : Action => ({
+  createUser: ({ email, password, name, accountType, age } : CreateUserParams) : Action => ({
     type: ActionTypes.CREATE_USER,
-    payload: { email, password },
+    payload: { email, password, name, accountType, age },
   }),
   signIn: ({ email, password } : LoginParams) : Action => ({
     type: ActionTypes.SIGN_IN,

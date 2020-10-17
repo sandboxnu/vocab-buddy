@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import {Word} from "../models/types";
+import { AccountType, User, Word } from "../models/types";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -28,10 +28,24 @@ export default class FirebaseInteractor {
   storage = firebase.storage();
 
   /** {@type Auth} */
-  auth = firebase.auth();
+  get auth() {
+    return firebase.auth();
+  }
 
-  get currentUser() {
-    return this.auth.currentUser;
+  /** {@type User} */
+  currentUser: User | null = null;
+
+  unsubscribe: (() => void) | null = null;
+
+  /** */
+  waitToBeSignedIn() {
+    return new Promise((resolve, reject) => {
+      this.unsubscribe = this.auth.onAuthStateChanged((user) => {
+        if (user != null) {
+          resolve(true);
+        }
+      });
+    });
   }
 
   /**
@@ -45,19 +59,35 @@ export default class FirebaseInteractor {
   }
 
   /**
-   * Cretes an account for a user
+   * Creates an account for a user
    */
-  async createAccount(email : string, password : string) {
+  async createAccount(email : string, password : string, name : string, accountType : AccountType, age: Number) {
+    this.unsubscribe?.apply(this);
     let userAuth = await this.auth.createUserWithEmailAndPassword(
       email,
       password
     );
-
-    userAuth.user?.sendEmailVerification();
+    if (userAuth.user?.uid == null) {
+      throw new Error("No actual user");
+    }
+    this.db.collection("users").doc(userAuth.user.uid).set({
+      name,
+      accountType,
+      age
+    });
+    userAuth.user.sendEmailVerification();
   }
 
   async signInWithUsernameAndPassword(username : string, password : string) {
+    this.unsubscribe?.apply(this);
     await this.auth.signInWithEmailAndPassword(username, password);
+    let id = this.auth.currentUser?.uid;
+    let user = await this.db.collection("users").doc(id).get();
+    let userData = user.data();
+    if (id != null && userData != null) {
+      this.currentUser = { id: id, name: userData.name as string, accountType: userData.accountType as AccountType, age: userData.age as number };
+    }
+    
   }
 
   /**

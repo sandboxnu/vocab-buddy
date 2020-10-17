@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { INK, SEA_FOAM } from "../constants/colors";
 import { MenuOutlined } from "@ant-design/icons";
 
+import firebase from "firebase";
+
 const NavBar = styled.div`
   display: flex;
   height: 100px;
@@ -96,7 +98,9 @@ const Nav : FunctionComponent = () : ReactElement => {
     return (
       <>
         <Link href="/assessments">assessments</Link>
-        <Link href="/interventions">interventions</Link>
+        <Link href="/interventions" onClick={() => firebase.auth().signOut()}>
+          interventions
+        </Link>
         <Link href="/dashboard">dashboard</Link>
       </>
     );

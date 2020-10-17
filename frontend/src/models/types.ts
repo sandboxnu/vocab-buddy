@@ -11,6 +11,21 @@ export interface Word {
   createdAt: Date;
 }
 
+/**
+ * Represents a User object
+ */
+export interface User {
+  id: string;
+  name: string;
+  accountType: AccountType;
+  age: number;
+}
+
+/**
+ * Represents account types
+ */
+export type AccountType = "RESEARCHER" | "STUDENT"
+
 // also these & all State/Action can def be moved to a separate file
 /**
  * Represents types for redux Actions.
@@ -45,4 +60,12 @@ export interface Action {
 export interface LoginParams {
   email : string;
   password : string;
+}
+
+export interface CreateUserParams {
+  email: string;
+  password : string;
+  name: string;
+  accountType: AccountType;
+  age: number;
 }
