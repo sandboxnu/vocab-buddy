@@ -12,7 +12,7 @@ interface ContentProps {
 
 const Content = styled.main`
   height: 100vh;
-  margin: 0 auto;
+  margin: ${({shouldAddPadding} : ContentProps) => shouldAddPadding ? '0 auto' : 0};
   padding: ${({shouldAddPadding} : ContentProps) => shouldAddPadding ? '6em 2em 5em 3.5em' : 0};
   width: 100%;
 `;

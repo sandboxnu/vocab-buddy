@@ -16,6 +16,7 @@ const ResetUserButton = styled.button`
   border-width: 0px;
   text-align: left;
   color: ${INK};
+  font-weight: bold;
 `;
 
 const CreateUserButton = styled(ResetUserButton)`
@@ -110,6 +111,12 @@ const LoginImage = styled.img`
   }
 `;
 
+const StyledPurpleButton = styled(PurpleButton)`
+  flex: 1;
+  width: 100%;
+  margin: 5px 0px 15px 0px;
+`;
+
 
 // An example of using a connector
 const connector = connect((state) => ({
@@ -174,7 +181,7 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
                 text="password"
               />
 
-              <PurpleButton
+              <StyledPurpleButton
                 text={"login"}
                 top={0}
                 onClick={() => signIn({ email, password })}

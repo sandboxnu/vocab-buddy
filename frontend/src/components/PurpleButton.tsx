@@ -6,7 +6,8 @@ import { Button } from "antd";
 interface PurpleButtonProps {
   top?: number,
   text?: string | '',
-  onClick?:((event: MouseEvent<HTMLInputElement>) => void)
+  onClick?:((event: MouseEvent<HTMLInputElement>) => void),
+  className: string
 }
 
 const ButtonContainer = styled(Button)`
@@ -32,12 +33,16 @@ const ButtonContainer = styled(Button)`
   }
 `;
 
-const PurpleButton = ({ text, top, onClick }: PurpleButtonProps)  : ReactElement => {
+const PurpleButton = ({ className = "", text, top, onClick }: PurpleButtonProps)  : ReactElement => {
   return (
-    <ButtonContainer top={top} onClick={onClick}>
+    <ButtonContainer className={className} top={top} onClick={onClick}>
       {text}
     </ButtonContainer>
   );
 };
+
+PurpleButton.defaultProps = {
+  className: ""
+}
 
 export default PurpleButton;

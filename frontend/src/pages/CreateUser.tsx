@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import CloudImage from "../components/CloudImage";
 import Layout from "../components/Layout";
+import PurpleButton from "../components/PurpleButton";
 import { TextInput } from "../components/TextInput";
 import { INK, SEA_FOAM } from "../constants/colors";
 import { authenticationRequest } from "../data/actions";
@@ -116,16 +117,13 @@ const LoginButton = styled.button`
   border-width: 0px;
   text-align: left;
   color: ${INK};
+  font-weight: bold;
 `;
 
-const CreateUserButton = styled.button`
-  background-color: ${INK};
-  border-radius: 12px;
-  color: #fff;
-  border-width: 0px;
+const StyledPurpleButton = styled(PurpleButton)`
   flex: 1;
+  width: 100%;
   margin: 5px 0px 15px 0px;
-  padding: 15px;
 `;
 
 const StyledAlert = styled(Alert)`
@@ -253,10 +251,12 @@ const CreateUser : FunctionComponent<CreateUserProps> = ({ signedIn, createUser 
                 expectedValue={password}
                 text="confirm password"
               />
-
-              <CreateUserButton onClick={() => createUserWithCheck()}>
-                sign up
-              </CreateUserButton>
+                
+              <StyledPurpleButton
+                text={"sign up"}
+                top={0}
+                onClick={() => createUserWithCheck()}
+              />
 
               <HorizontalDiv>
               Have an account?   

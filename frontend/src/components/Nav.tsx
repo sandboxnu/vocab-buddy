@@ -4,9 +4,12 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import styled from "styled-components";
 import { INK, SEA_FOAM } from "../constants/colors";
 
+interface NavProps {
+  showsBar: boolean
+}
 
 const NavBar = styled.div`
-  background: #fff;
+  background: clear;
   display: flex;
   height: 80px;
   justify-content: space-between;
@@ -82,10 +85,6 @@ const OpenMenuContainer = styled.div`
     margin-bottom: 2em;
   }
 `;
-
-interface NavProps {
-  showsBar: boolean
-}
 
 const Nav : FunctionComponent<NavProps> = ( { showsBar }) : ReactElement => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
