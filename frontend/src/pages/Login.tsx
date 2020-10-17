@@ -8,6 +8,7 @@ import { INK, LOGIN_BACKGROUND } from "../constants/colors";
 import { authenticationRequest, singleRequest } from "../data/actions";
 import PurpleButton from "../components/PurpleButton";
 import { LoginParams } from "../models/types";
+import { getSignedIn } from "../data/reducer";
 
 const CreateUserButton = styled.button`
   flex: 1;
@@ -73,19 +74,12 @@ const EvenSpacedDiv = styled.div`
   @media (min-width: 601px) {
     flex: 1;
   }
-`;
+`; 
 
-const LoginButton = styled.button`
-  background-color: ${INK};
-  border-radius: 12px;
-  color: #fff;
-  border-width: 0px;
-  flex: 1;
-  margin: 5px 0px 15px 0px;
-  padding: 15px;
-`;
 // An example of using a connector
-const connector = connect((state) => state, {
+const connector = connect((state) => ({
+  signedIn: getSignedIn(state),
+}), {
   request: singleRequest.request,
   signIn: authenticationRequest.signIn,
 });
