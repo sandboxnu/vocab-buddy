@@ -1,19 +1,5 @@
 import { Action, ActionTypes, CreateUserParams, LoginParams, ResetPasswordParams, Word } from "../models/types";
 
-
-export const singleRequest = {
-  request: () : Action => ({
-    type: ActionTypes.REQUEST,
-  }),
-  success: (payload = {}) : Action => ({
-    type: ActionTypes.SUCCESS,
-    payload: payload,
-  }),
-  error: () : Action => ({
-    type: ActionTypes.ERROR,
-  }),
-};
-
 export const getWordsRequest = {
   getWords: () : Action => ({
     type: ActionTypes.GET_WORDS,
@@ -22,6 +8,9 @@ export const getWordsRequest = {
     type: ActionTypes.GET_WORDS_SUCCESS,
     payload: { words },
   }),
+  error: () : Action => ({
+    type: ActionTypes.ERROR,
+  })
 };
 
 export const authenticationRequest = {
@@ -42,5 +31,8 @@ export const authenticationRequest = {
   }),
   resetPasswordSuccess: () : Action => ({
     type: ActionTypes.RESET_PASSWORD_SUCCESS
+  }),
+  error: () : Action => ({
+    type: ActionTypes.ERROR,
   })
 };

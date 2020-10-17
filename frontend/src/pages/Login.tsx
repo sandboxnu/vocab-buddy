@@ -6,7 +6,7 @@ import Layout from "../components/Layout";
 import PurpleButton from "../components/PurpleButton";
 import { TextInput } from "../components/TextInput";
 import { INK, LOGIN_BACKGROUND } from "../constants/colors";
-import { authenticationRequest, singleRequest } from "../data/actions";
+import { authenticationRequest } from "../data/actions";
 import { getSignedIn } from "../data/reducer";
 import { LoginParams, ResetPasswordParams } from "../models/types";
 
@@ -26,12 +26,12 @@ const LoginHoldingDiv = styled.div`
   display: flex;
   align-items: stretch;
   flex-direction: column;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     flex: 2;
     justify-content: flex-start;
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 901px) {
     flex: 1;
     justify-content: center;
   }
@@ -42,22 +42,22 @@ const LoginSwitchingDiv = styled.div`
   align-items: stretch;
   min-height: 100%;
   width: 100%;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     flex-direction: column;
     padding: 7em 0em 7em 0em
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 901px) {
     flex-direction: row;
   }
 `;
 
 const ActuallyLoginDiv = styled.div`
   display: flex;
-  flex: 1;
+  flex: 2;
   flex-direction: column;
   justify-content: space-between;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     padding: 1em 2.5em 0em 2.5em
   }
 `;
@@ -67,12 +67,12 @@ const LoginInfoDiv = styled.div`
   background: ${LOGIN_BACKGROUND};
   display: flex;
   align-items: center;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     width: 100%;
     justify-content: center;
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 901px) {
     min-height: 100%;
   }
 `;
@@ -86,11 +86,11 @@ const HorizontalDiv = styled.div`
 const LoginHeader = styled.h1``;
 
 const EvenSpacedDiv = styled.div`
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     flex: 0;
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 901px) {
     flex: 1;
   }
 `; 
@@ -98,13 +98,13 @@ const EvenSpacedDiv = styled.div`
 
 const LoginImage = styled.img`
   flex: 5;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     flex: 0;
     margin: auto;
     width: 80vw;
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 901px) {
     margin: auto;
     width: 40vw;
   }
@@ -115,7 +115,6 @@ const LoginImage = styled.img`
 const connector = connect((state) => ({
   signedIn: getSignedIn(state),
 }), {
-  request: singleRequest.request,
   signIn: authenticationRequest.signIn,
   resetPassword: authenticationRequest.resetPassword,
 });

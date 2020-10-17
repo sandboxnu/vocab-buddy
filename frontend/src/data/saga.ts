@@ -2,9 +2,7 @@ import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../firebase/firebaseInteractor";
 import { Action, ActionTypes, CreateUserParams, LoginParams, ResetPasswordParams } from "../models/types";
 import {
-  authenticationRequest,
-
-  singleRequest
+  authenticationRequest
 } from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
@@ -14,19 +12,9 @@ export default function* rootSaga() {
 }
 
 function* root() {
-  yield takeLatest(ActionTypes.REQUEST, watchSingleRequest);
   yield takeLatest(ActionTypes.CREATE_USER, watchCreateUser);
   yield takeLatest(ActionTypes.SIGN_IN, watchSignIn);
   yield takeLatest(ActionTypes.RESET_PASSWORD, watchResetPassword);
-}
-
-function* watchSingleRequest() {
-  try {
-    // replace the following url with the URL above
-    yield put(singleRequest.success());
-  } catch (e) {
-    yield put(singleRequest.error());
-  }
 }
 
 function* watchCreateUser(action : Action) {
@@ -37,7 +25,7 @@ function* watchCreateUser(action : Action) {
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
-    yield put(singleRequest.error());
+    yield put(authenticationRequest.error());
   }
 }
 
@@ -49,7 +37,7 @@ function* watchSignIn(action : Action) {
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
-    yield put(singleRequest.error());
+    yield put(authenticationRequest.error());
   }
 }
 
@@ -59,7 +47,7 @@ function* watchResetPassword(action : Action) {
     yield call(() => firebaseInteractor.resetPassword(email));
     yield put(authenticationRequest.resetPasswordSuccess());
   } catch (error) {
-    yield put(singleRequest.error());
+    yield put(authenticationRequest.error());
   }
 }
 

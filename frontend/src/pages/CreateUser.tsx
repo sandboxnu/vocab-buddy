@@ -15,14 +15,14 @@ const LoginHoldingDiv = styled.div`
   align-items: stretch;
   flex-direction: column;
   padding-top: 5em;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     flex: 2;
     justify-content: flex-start;
     padding-left: 3em;
     padding-right: 3em;
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 901px) {
     flex: 1;
     justify-content: center;
   }
@@ -30,7 +30,7 @@ const LoginHoldingDiv = styled.div`
 
 const ActuallyCreateUserDiv = styled.div`
   display: flex;
-  flex: 1;
+  flex: 2;
   flex-direction: column;
   justify-content: space-between;
 `;
@@ -73,7 +73,7 @@ const CloudImageLeft = styled(CloudImage)`
   width: 15%;
 
   
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     @media (max-height: 800px) {
     height: 0px;
   }
@@ -81,7 +81,7 @@ const CloudImageLeft = styled(CloudImage)`
     bottom: 1.5em;
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 901px) {
     top: 30%;
   }
 `;
@@ -90,22 +90,22 @@ const CloudImageRight = styled(CloudImage)`
   position: absolute;
   right: 0;
   width: 15%;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     top: 3em;
     width: 20%;
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 901px) {
     bottom: 30%;
   }
 `
 
 const EvenSpacedDiv = styled.div`
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     flex: 0;
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 901px) {
     flex: 1;
   }
 `;
@@ -132,11 +132,11 @@ const StyledAlert = styled(Alert)`
   position: absolute;
   top: 10px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     width: 100%;
   }
 
-  @media (min-width: 601px) {
+  @media (min-width: 901px) {
     width: 50%;
     left: 25%;
   }

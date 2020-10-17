@@ -53,7 +53,6 @@ const LoginInput = styled.input`
   width: 100%;
   background-color: clear;
   border-radius: 12px;
-  border: 1px solid #d4d6e2;
   padding: 10px;
   border: ${({isExpectedValue} : LoginInputProps) => isExpectedValue ? '1px solid #d4d6e2' : '1px solid red'};
 
