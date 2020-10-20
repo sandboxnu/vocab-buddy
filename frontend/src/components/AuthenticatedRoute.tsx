@@ -8,15 +8,19 @@ interface AuthorizedRouteProps {
 
 const AuthorizedRoute = ({ signedIn, children } : AuthorizedRouteProps) : ReactElement => {
     let location = useLocation();
+    console.log(signedIn);
+    console.log(children);
     if (signedIn) {
         return children;
     }
-    return (<Redirect to={{
-        pathname: '/',
-        state: {
-            redirect: location.pathname
-        }
-    }}/>)
+    return (
+        <Redirect from={location.pathname} to={{
+            pathname: '/',
+            state: {
+                redirect: location.pathname
+            }
+        }}/>
+    )
 }
 
 export default AuthorizedRoute

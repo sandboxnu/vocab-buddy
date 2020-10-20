@@ -170,7 +170,7 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
   useEffect(() => {
     if (signedIn) {
       if (redirect != null) {
-        history.push(redirect);
+        history.replace(redirect);
       } else {
         history.push("/dashboard");
       }
