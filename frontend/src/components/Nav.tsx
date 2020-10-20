@@ -1,5 +1,5 @@
 import { MenuOutlined } from "@ant-design/icons";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import styled from "styled-components";

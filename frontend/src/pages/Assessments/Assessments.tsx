@@ -1,10 +1,8 @@
-import { Button } from 'antd';
 import React, { FunctionComponent, ReactElement } from "react";
 import { connect } from 'react-redux';
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
-import { INK, INK_HOVER } from '../../constants/colors';
 import { ASSESSMENTS_LANDING } from "../../constants/images";
 
 const AssessmentsContainer = styled.div`
@@ -43,28 +41,6 @@ const LandingPageText = styled.div`
   @media (min-width: 600px) {
     margin-left: 1em;
     margin-top: 60px;
-  }
-`;
-
-const BeginButton = styled(Button)`
-  background: ${INK};
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  height: 50px;
-
-  :hover {
-    background: ${INK_HOVER};
-  }
-
-  @media (max-width: 600px) {
-    width: 100%;
-  }
-
-  @media (min-width: 601px) {
-    margin-top: 100px;
-    width: 120px;
   }
 `;
 

@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import { getSignedIn } from "./data/reducer";
 import Assessments from "./pages/Assessments/Assessments";
@@ -18,12 +18,16 @@ const App = ({signedIn} : AppProps) : ReactElement => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Login} />
+        <Redirect exact from="/" to='/login' />
+        <Route exact path="/login" component={Login} />
         <Route path="/sign_up" component={CreateUser} />
-        <AuthenticatedRoute path="/dashboard" signedIn={signedIn} component={Dashboard} />
-        <AuthenticatedRoute path="/interventions" signedIn={signedIn} component={Interventions} />
-        <AuthenticatedRoute exact path="/assessments/:id" signedIn={signedIn} component={Quiz} />
-        <AuthenticatedRoute path="/assessments" signedIn={signedIn} component={Assessments} />
+        <AuthenticatedRoute signedIn={signedIn}>
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/interventions" component={Interventions} />
+          <Route exact path="/assessments/:id" component={Quiz} />
+          <Route path="/assessments" component={Assessments} />
+        </AuthenticatedRoute>
+        
       </Switch>
     </Router>
   );

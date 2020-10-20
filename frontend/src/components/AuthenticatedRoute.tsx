@@ -6,39 +6,20 @@ interface AuthorizedRouteProps extends RouteProps {
 }
 
 class AuthorizedRoute extends Route<AuthorizedRouteProps> {
-    get location() {
-        return this.props.location;
-    }
     render() {
+        let { location } = this.props;
         if (this.props.signedIn) {
-            return (<Route component={this.props.component} />)
+            return (<Route {... this.props} />)
         }
         return (
-            <Redirect from={this.location?.pathname || ""} to={{
-                pathname: '/',
+            <Redirect from={location?.pathname || ""} to={{
+                pathname: '/login',
                 state: {
-                    redirect: this.location?.pathname || ""
+                    redirect: location?.pathname || ""
                 }
             }}/>
         )
     }
 }
-
-// const AuthorizedRoute = ({ signedIn, children } : AuthorizedRouteProps) : ReactElement => {
-//     let location = useLocation();
-//     console.log(signedIn);
-//     console.log(children);
-//     if (signedIn) {
-//         return children;
-//     }
-//     return (
-//         <Redirect from={location.pathname} to={{
-//             pathname: '/',
-//             state: {
-//                 redirect: location.pathname
-//             }
-//         }}/>
-//     )
-// }
 
 export default AuthorizedRoute
