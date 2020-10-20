@@ -7,8 +7,8 @@ interface AuthorizedRouteProps extends RouteProps {
 
 class AuthorizedRoute extends Route<AuthorizedRouteProps> {
     render() {
-        let { location } = this.props;
-        if (this.props.signedIn) {
+        let { location, signedIn } = this.props;
+        if (signedIn) {
             return (<Route {... this.props} />)
         }
         return (
