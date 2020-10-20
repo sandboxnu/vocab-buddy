@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { connect } from 'react-redux';
-import { useHistory } from "react-router-dom";
-import styled from 'styled-components';
+import { connect } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import styled from "styled-components";
 import Layout from "../components/Layout";
 import PurpleButton from "../components/PurpleButton";
 import { TextInput } from "../components/TextInput";
@@ -142,10 +142,20 @@ interface LoginProps {
   resetPassword : ({email} : ResetPasswordParams) => void;
 }
 
+interface State {
+  redirect: string;
+}
+
 const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword }) : ReactElement => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let history = useHistory();
+  let location = useLocation();
+  let redirect : string | null = null;
+  if (location.state != null) {
+    redirect = (location.state as State).redirect;
+  }
+  
 
   let doResetPassword = () => {
     let email = prompt("What is your email?");
@@ -159,9 +169,14 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
 
   useEffect(() => {
     if (signedIn) {
-      history.push("/dashboard");
+      if (redirect != null) {
+        history.push(redirect);
+      } else {
+        history.push("/dashboard");
+      }
+     
     }
-  }, [signedIn, history]);
+  }, [signedIn, history, redirect]);
 
   return (
     <Layout hideBar={true}>

@@ -1,25 +1,41 @@
-import React, {ReactElement} from "react";
-import Login from "./pages/Login";
+import React, { ReactElement } from "react";
+import { connect } from "react-redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import AuthenticatedRoute from './components/AuthenticatedRoute';
 import Assessments from "./pages/Assessments/Assessments";
-import Interventions from "./pages/Interventions";
-import Dashboard from "./pages/Dashboard";
 import Quiz from "./pages/Assessments/Quiz";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CreateUser from "./pages/CreateUser";
+import Dashboard from "./pages/Dashboard";
+import Interventions from "./pages/Interventions";
+import Login from "./pages/Login";
 
-const App = () : ReactElement => {
+interface AppProps {
+  signedIn: boolean
+}
+
+const App = ({signedIn} : AppProps) : ReactElement => {
   return (
     <Router>
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route exact path="/sign_up" component={CreateUser} />
-        <Route exact path="/assessments" component={Assessments} />
-        <Route exact path="/assessments/:id" component={Quiz} />
-        <Route exact path="/interventions" component={Interventions} />
-        <Route exact path="/dashboard" component={Dashboard} />
+        <Route path="/sign_up" component={CreateUser} />
+        <AuthenticatedRoute signedIn={signedIn}>
+          <Route exact path="/assessments/:id" component={Quiz} />
+        </AuthenticatedRoute>
+        <AuthenticatedRoute signedIn={signedIn}>
+          <Route path="/interventions" component={Interventions} />
+        </AuthenticatedRoute>
+        <AuthenticatedRoute signedIn={signedIn}>
+          <Route path="/dashboard" component={Dashboard} />
+        </AuthenticatedRoute>
+        <AuthenticatedRoute signedIn={signedIn}>
+          <Route path="/assessments" component={Assessments} />
+        </AuthenticatedRoute>
       </Switch>
     </Router>
   );
 };
 
-export default App;
+const connector = connect((state) => state, {});
+
+export default connector(App);

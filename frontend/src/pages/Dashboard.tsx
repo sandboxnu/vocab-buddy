@@ -1,4 +1,4 @@
-import React, {FunctionComponent, ReactElement} from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import Layout from "../components/Layout";
 
 const Dashboard : FunctionComponent = () : ReactElement => {

@@ -21,6 +21,7 @@ firebase.initializeApp(firebaseConfig);
  * This adds a level of abstraction around firebase, so that this is the only object dealing with the server
  */
 export default class FirebaseInteractor {
+
   /** {@type Firestore} */
   db = firebase.firestore();
 
@@ -42,7 +43,11 @@ export default class FirebaseInteractor {
     return new Promise((resolve, reject) => {
       this.unsubscribe = this.auth.onAuthStateChanged((user) => {
         if (user != null) {
-          resolve(true);
+          this.createCurrentUser()
+          .then(_ => {
+            resolve(true);
+          })
+          
         }
       });
     });
@@ -81,13 +86,16 @@ export default class FirebaseInteractor {
   async signInWithUsernameAndPassword(username : string, password : string) {
     this.unsubscribe?.apply(this);
     await this.auth.signInWithEmailAndPassword(username, password);
+    await this.createCurrentUser();
+  }
+
+  async createCurrentUser() {
     let id = this.auth.currentUser?.uid;
     let user = await this.db.collection("users").doc(id).get();
     let userData = user.data();
     if (id != null && userData != null) {
       this.currentUser = { id: id, name: userData.name as string, accountType: userData.accountType as AccountType, age: userData.age as number };
     }
-    
   }
 
   /**
