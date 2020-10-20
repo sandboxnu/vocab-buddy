@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { getSignedIn } from '../data/reducer';
 
 interface AuthorizedRouteProps extends RouteProps {
     signedIn: boolean,
@@ -22,4 +24,9 @@ class AuthorizedRoute extends Route<AuthorizedRouteProps> {
     }
 }
 
-export default AuthorizedRoute
+const connector = connect((state) => ({
+    ...state,
+    signedIn: getSignedIn(state)
+  }), {});
+
+export default connector(AuthorizedRoute)
