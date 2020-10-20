@@ -21,13 +21,10 @@ const App = ({signedIn} : AppProps) : ReactElement => {
         <Redirect exact from="/" to='/login' />
         <Route exact path="/login" component={Login} />
         <Route path="/sign_up" component={CreateUser} />
-        <AuthenticatedRoute signedIn={signedIn}>
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/interventions" component={Interventions} />
-          <Route exact path="/assessments/:id" component={Quiz} />
-          <Route path="/assessments" component={Assessments} />
-        </AuthenticatedRoute>
-        
+        <AuthenticatedRoute signedIn={signedIn} path="/dashboard" component={Dashboard} />
+        <AuthenticatedRoute signedIn={signedIn} path="/interventions" component={Interventions} />
+        <AuthenticatedRoute signedIn={signedIn} exact path="/assessments/:id" component={Quiz} />
+        <AuthenticatedRoute signedIn={signedIn} path="/assessments" component={Assessments} />
       </Switch>
     </Router>
   );
