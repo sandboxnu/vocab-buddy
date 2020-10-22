@@ -7,12 +7,12 @@ import { getAllWords } from "./data/reducer";
 import styled from "styled-components";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
-import { Word } from "../../models/types";
+import { Assessment } from "../../models/types";
 import { CLOUD } from "../../constants/colors";
 
 interface QuizProps {
-  getWords: () => void,
-  allWords: Word[],
+  getWords: () => void;
+  assessment: Assessment;
 }
 
 const Container = styled.div`
@@ -33,7 +33,7 @@ const WordTitle = styled.p`
   font-weight: 700;
   text-transform: lowercase;
   word-wrap: break-word;
- 
+
   @media (max-width: 600px) {
     font-size: 30px;
   }
@@ -83,7 +83,7 @@ const ButtonContainer = styled.div`
 
 const connector = connect(
   (state) => ({
-    allWords: getAllWords(state),
+    assessment: getAllWords(state),
   }),
   {
     getWords: getWords.request,
@@ -104,8 +104,10 @@ const getNextImageID = (path: string) => {
   return parseInt(currentId) + 1;
 };
 
-const Quiz = ({ getWords, allWords }: QuizProps) => {
-  let word = allWords && allWords[0];
+const Quiz = ({ getWords, assessment }: QuizProps) => {
+  if (!assessment.words) getWords();
+
+  let word = assessment.words && assessment.words[0];
   let images = word && [word.correctImage].concat(word.incorrectImages);
   let shuffled = (images && shuffleImages(images)) || [];
   let history = useHistory();

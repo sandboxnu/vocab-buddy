@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import { AccountType, User, Word } from "../models/types";
+import { AccountType, User, Word, Assessment } from "../models/types";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -54,14 +54,20 @@ export default class FirebaseInteractor {
    * @param {String} uri the uri to the image
    * @returns {Promise<String>}
    */
-  async downloadImage(uri : string) : Promise<string> {
+  async downloadImage(uri: string): Promise<string> {
     return await this.storage.ref().child(uri).getDownloadURL();
   }
 
   /**
    * Creates an account for a user
    */
-  async createAccount(email : string, password : string, name : string, accountType : AccountType, age: Number | null) {
+  async createAccount(
+    email: string,
+    password: string,
+    name: string,
+    accountType: AccountType,
+    age: Number | null
+  ) {
     this.unsubscribe?.apply(this);
     let userAuth = await this.auth.createUserWithEmailAndPassword(
       email,
@@ -73,21 +79,25 @@ export default class FirebaseInteractor {
     this.db.collection("users").doc(userAuth.user.uid).set({
       name,
       accountType,
-      age
+      age,
     });
     userAuth.user.sendEmailVerification();
   }
 
-  async signInWithUsernameAndPassword(username : string, password : string) {
+  async signInWithUsernameAndPassword(username: string, password: string) {
     this.unsubscribe?.apply(this);
     await this.auth.signInWithEmailAndPassword(username, password);
     let id = this.auth.currentUser?.uid;
     let user = await this.db.collection("users").doc(id).get();
     let userData = user.data();
     if (id != null && userData != null) {
-      this.currentUser = { id: id, name: userData.name as string, accountType: userData.accountType as AccountType, age: userData.age as number };
+      this.currentUser = {
+        id: id,
+        name: userData.name as string,
+        accountType: userData.accountType as AccountType,
+        age: userData.age as number,
+      };
     }
-    
   }
 
   /**
@@ -95,26 +105,32 @@ export default class FirebaseInteractor {
    *
    * @returns { Promise<Array<Word>> }
    */
-  async getWords() : Promise<Word[]> {
-    let wordRef = await this.db.collection("words").get();
+  async getWords(): Promise<Assessment> {
+    let assessmentRef = await this.db.collection("assessments").get();
+    console.log("---------------------------------------------------");
+    let assessmentDocs = assessmentRef.docs;
+    // Hardcoding first assessment for now
+    let assessment = assessmentDocs[0];
+    let { id, currentIndex } = assessment.data();
+    let wordPath = `assessments/${assessment.id}/words`;
+    let wordRef = await this.db.collection(wordPath).get();
     let wordDocs = wordRef.docs;
-    let words : Word[] = [];
+
+    let words: Word[] = [];
     for (let wordRef of wordDocs) {
       let word = wordRef.data();
-      words.push(
-          {
-            value: word.value,
-            correctImage: word.correctImage,
-            incorrectImages: word.incorrectImages,
-            id: wordRef.id,
-            createdAt: word.dateCreated.toDate()
-          }
-      );
+      words.push({
+        value: word.value,
+        correctImage: word.correctImage,
+        incorrectImages: word.incorrectImages,
+        id: wordRef.id,
+        createdAt: word.dateCreated.toDate(),
+      });
     }
     words.sort(
       (word1, word2) => word1.createdAt.getTime() - word2.createdAt.getTime()
     );
-    return words;
+    return { id, currentIndex, words };
   }
 
   async resetPassword(email: string) {

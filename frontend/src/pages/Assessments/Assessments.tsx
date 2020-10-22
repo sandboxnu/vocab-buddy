@@ -3,6 +3,13 @@ import styled from "styled-components";
 import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
 import { ASSESSMENTS_LANDING } from "../../constants/images";
+import { useHistory } from "react-router-dom";
+import { getWords } from "./data/actions";
+import { connect } from "react-redux";
+
+interface AssessmentProps {
+  getWords: () => void;
+}
 
 const AssessmentsContainer = styled.div`
   display: flex;
@@ -43,7 +50,9 @@ const LandingPageText = styled.div`
   }
 `;
 
-const Assessments = () => {
+const Assessments = ({ getWords }: AssessmentProps) => {
+  const history = useHistory();
+
   return (
     <Layout>
       <AssessmentsContainer>
@@ -56,11 +65,22 @@ const Assessments = () => {
         <LandingPageText>
           assessments
           <Prompt>Select the correct images to match the target words.</Prompt>
-          <PurpleButton text={"begin"} top={100} />
+          <PurpleButton
+            text={"begin"}
+            top={100}
+            onClick={() => {
+              history.push("/assessments/1");
+              getWords();
+            }}
+          />
         </LandingPageText>
       </AssessmentsContainer>
     </Layout>
   );
 };
 
-export default Assessments;
+const connector = connect((state) => ({}), {
+  getWords: getWords.request,
+});
+
+export default connector(Assessments);
