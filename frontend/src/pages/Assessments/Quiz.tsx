@@ -1,5 +1,4 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Layout from "../../components/Layout";
 import { getWords } from "./data/actions";
@@ -98,29 +97,41 @@ const shuffleImages = (images: any[]) => {
   return images;
 };
 
-const getNextImageID = (path: string) => {
-  let splitPath = path.split("/");
-  let currentId = splitPath[splitPath.length - 1];
-  return parseInt(currentId) + 1;
-};
-
 const Quiz = ({ getWords, assessment }: QuizProps) => {
   if (!assessment.words) getWords();
 
-  let word = assessment.words && assessment.words[0];
-  let images = word && [word.correctImage].concat(word.incorrectImages);
-  let shuffled = (images && shuffleImages(images)) || [];
-  let history = useHistory();
-  let path = window.location && window.location.pathname;
-  let nextImageId = getNextImageID(path);
-  return (
+  useEffect(() => {
+    if (assessment.words) {
+      setCurrentIndex(assessment.currentIndex);
+      setWord(assessment.words[assessment.currentIndex]);
+    }
+  }, [assessment]);
+
+  let [currentIndex, setCurrentIndex] = useState(0);
+  let [word, setWord] = useState(
+    assessment.words && assessment.words[currentIndex]
+  );
+
+  let images = word ? [word.correctImage].concat(word.incorrectImages) : [];
+  let shuffled = images ? shuffleImages(images) : [];
+
+  const nextWord = () => {
+    if (currentIndex < assessment.words.length - 1) {
+      setWord(assessment.words[currentIndex + 1]);
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  return word ? (
     <Layout>
       <Container>
         <MainContent>
-          <WordTitle onClick={() => getWords()}>miniscule</WordTitle>
+          <WordTitle>{word.value}</WordTitle>
           <Prompt>
-            <PromptText>Touch the picture that shows miniscule.</PromptText>
-            <PromptSpeech prompt="Touch the picture that shows miniscule." />
+            <PromptText>Touch the picture that shows {word.value}.</PromptText>
+            <PromptSpeech
+              prompt={`Touch the picture that shows ${word.value}.`}
+            />
           </Prompt>
           <ImageContainer>
             {shuffled.map((img: string, idx: number) => {
@@ -128,14 +139,13 @@ const Quiz = ({ getWords, assessment }: QuizProps) => {
             })}
           </ImageContainer>
           <ButtonContainer>
-            <PurpleButton
-              text={"next"}
-              onClick={() => history.push(`/assessments/${nextImageId}`)}
-            />
+            <PurpleButton text={"next"} onClick={nextWord} />
           </ButtonContainer>
         </MainContent>
       </Container>
     </Layout>
+  ) : (
+    <h1>Loading...</h1>
   );
 };
 

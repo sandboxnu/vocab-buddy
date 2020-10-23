@@ -107,7 +107,6 @@ export default class FirebaseInteractor {
    */
   async getWords(): Promise<Assessment> {
     let assessmentRef = await this.db.collection("assessments").get();
-    console.log("---------------------------------------------------");
     let assessmentDocs = assessmentRef.docs;
     // Hardcoding first assessment for now
     let assessment = assessmentDocs[0];

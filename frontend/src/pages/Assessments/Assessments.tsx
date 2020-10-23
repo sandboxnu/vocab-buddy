@@ -69,6 +69,7 @@ const Assessments = ({ getWords }: AssessmentProps) => {
             text={"begin"}
             top={100}
             onClick={() => {
+              // hardcoding assessment with id=1 for now
               history.push("/assessments/1");
               getWords();
             }}
