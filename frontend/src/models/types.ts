@@ -45,9 +45,9 @@ export enum ActionTypes {
   SIGN_IN = "SIGNIN",
   AUTHENTICATION_SUCCESS = "AUTHENTICATIONSUCCESS",
   GET_WORDS = "GETWORDS",
-  GET_WORDS_SUCCESS = "GETWORDSSUCCESS",
-  GET_WORDS_REQUEST = "GET_WORDS_REQUEST",
-  GET_WORDS_ERROR = "GET_WORDS_SUCCESS",
+  GET_ASSESSMENT_SUCCESS = "GET_ASSESSMENT_SUCCESS",
+  GET_ASSESSMENT_REQUEST = "GET_ASSESSMENT_REQUEST",
+  GET_ASSESSMENT_ERROR = "GET_ASSESSMENT_ERROR",
   RESET_PASSWORD = "RESETPASSWORD",
   RESET_PASSWORD_SUCCESS = "RESETPASSWORDSUCCESS",
 }
@@ -59,7 +59,7 @@ export interface State {
 }
 
 export interface AssessmentState {
-  words: Word[] | null;
+  assessment: Assessment;
 }
 
 // i think we should make separate actions as well

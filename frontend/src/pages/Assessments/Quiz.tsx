@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Layout from "../../components/Layout";
-import { getWords } from "./data/actions";
-import { getAllWords } from "./data/reducer";
+import { getAssessment as getAssessmentAction } from "./data/actions";
+import { getAssessment as getAssessmentReducer } from "./data/reducer";
 import styled from "styled-components";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
@@ -10,7 +10,7 @@ import { Assessment } from "../../models/types";
 import { CLOUD } from "../../constants/colors";
 
 interface QuizProps {
-  getWords: () => void;
+  getAssessment: () => void;
   assessment: Assessment;
 }
 
@@ -82,10 +82,10 @@ const ButtonContainer = styled.div`
 
 const connector = connect(
   (state) => ({
-    assessment: getAllWords(state),
+    assessment: getAssessmentReducer(state),
   }),
   {
-    getWords: getWords.request,
+    getAssessment: getAssessmentAction.request,
   }
 );
 
@@ -97,8 +97,8 @@ const shuffleImages = (images: any[]) => {
   return images;
 };
 
-const Quiz = ({ getWords, assessment }: QuizProps) => {
-  if (!assessment.words) getWords();
+const Quiz = ({ getAssessment, assessment }: QuizProps) => {
+  if (!assessment.words[0]) getAssessment();
 
   useEffect(() => {
     if (assessment.words) {

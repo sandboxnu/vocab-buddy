@@ -103,9 +103,9 @@ export default class FirebaseInteractor {
   /**
    * Gets all possible words.
    *
-   * @returns { Promise<Array<Word>> }
+   * @returns { Promise<Assessment> }
    */
-  async getWords(): Promise<Assessment> {
+  async getAssessment(): Promise<Assessment> {
     let assessmentRef = await this.db.collection("assessments").get();
     let assessmentDocs = assessmentRef.docs;
     // Hardcoding first assessment for now

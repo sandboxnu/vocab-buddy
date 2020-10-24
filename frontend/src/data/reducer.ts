@@ -1,12 +1,12 @@
 import { RootStateOrAny } from "react-redux";
-import {State, Action, ActionTypes} from "../models/types";
+import { State, Action, ActionTypes } from "../models/types";
 
-const initialState : State = {
+const initialState: State = {
   signedIn: false,
   words: null,
 };
 
-const reducer = (state : State = initialState, action : Action) : State => {
+const reducer = (state: State = initialState, action: Action): State => {
   const payload = action.payload;
   switch (action.type) {
     case ActionTypes.AUTHENTICATION_SUCCESS:
@@ -14,7 +14,7 @@ const reducer = (state : State = initialState, action : Action) : State => {
         ...state,
         signedIn: true,
       };
-    case ActionTypes.GET_WORDS_SUCCESS:
+    case ActionTypes.GET_ASSESSMENT_SUCCESS:
       return {
         ...state,
         words: payload.words,
@@ -27,7 +27,7 @@ const reducer = (state : State = initialState, action : Action) : State => {
   }
 };
 
-export const getSignedIn = (state : RootStateOrAny) : boolean => {
+export const getSignedIn = (state: RootStateOrAny): boolean => {
   return state.test.signedIn;
 };
 

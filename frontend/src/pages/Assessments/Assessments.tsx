@@ -4,12 +4,9 @@ import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
 import { ASSESSMENTS_LANDING } from "../../constants/images";
 import { useHistory } from "react-router-dom";
-import { getWords } from "./data/actions";
 import { connect } from "react-redux";
 
-interface AssessmentProps {
-  getWords: () => void;
-}
+interface AssessmentProps {}
 
 const AssessmentsContainer = styled.div`
   display: flex;
@@ -50,7 +47,7 @@ const LandingPageText = styled.div`
   }
 `;
 
-const Assessments = ({ getWords }: AssessmentProps) => {
+const Assessments = () => {
   const history = useHistory();
 
   return (
@@ -71,7 +68,6 @@ const Assessments = ({ getWords }: AssessmentProps) => {
             onClick={() => {
               // hardcoding assessment with id=1 for now
               history.push("/assessments/1");
-              getWords();
             }}
           />
         </LandingPageText>
@@ -80,8 +76,6 @@ const Assessments = ({ getWords }: AssessmentProps) => {
   );
 };
 
-const connector = connect((state) => ({}), {
-  getWords: getWords.request,
-});
+const connector = connect((state) => ({}), {});
 
 export default connector(Assessments);

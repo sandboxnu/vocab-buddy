@@ -1,7 +1,7 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../../../firebase/firebaseInteractor";
 import { ActionTypes } from "../../../models/types";
-import { getWords } from "./actions";
+import { getAssessment } from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -10,18 +10,18 @@ export default function* assessmentSaga() {
 }
 
 function* root() {
-  yield takeLatest(ActionTypes.GET_WORDS_REQUEST, watchGetWords);
+  yield takeLatest(ActionTypes.GET_ASSESSMENT_REQUEST, watchGetAssessment);
 }
 
-function* watchGetWords() {
+function* watchGetAssessment() {
   try {
-    let words;
+    let assessment;
     const updateWithSuccess = async () => {
-      words = await firebaseInteractor.getWords();
+      assessment = await firebaseInteractor.getAssessment();
     };
     yield call(updateWithSuccess);
-    yield put(getWords.success({ words }));
+    yield put(getAssessment.success({ assessment }));
   } catch (error) {
-    yield put(getWords.error({ error }));
+    yield put(getAssessment.error({ error }));
   }
 }
