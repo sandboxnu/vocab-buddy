@@ -1,4 +1,5 @@
-import React from "react";
+import React, { FunctionComponent, ReactElement } from "react";
+import { connect } from 'react-redux';
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
@@ -43,9 +44,13 @@ const LandingPageText = styled.div`
   }
 `;
 
-const Assessments = () => {
+const connector = connect((state) => state, {
+
+});
+
+const Assessments : FunctionComponent = () : ReactElement => {
   return (
-    <Layout>
+      <Layout>
       <AssessmentsContainer>
         <ImageContainer>
           <LandingPageImage
@@ -63,4 +68,4 @@ const Assessments = () => {
   );
 };
 
-export default Assessments;
+export default connector(Assessments);

@@ -1,12 +1,12 @@
-import { all } from "redux-saga/effects";
 import { combineReducers } from "redux";
-import testReducer from "../data/reducer";
-import assessmentReducer from "./Assessments/data/reducer";
+import { all } from "redux-saga/effects";
+import loginReducer from "../data/reducer";
 import rootSaga from "../data/saga";
+import assessmentReducer from "./Assessments/data/reducer";
 import assessmentSaga from "./Assessments/data/sagas";
 
 export const reducer = combineReducers({
-  test: testReducer,
+  login: loginReducer,
   assessments: assessmentReducer,
 });
 
