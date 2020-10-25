@@ -62,7 +62,7 @@ const LandingPage : FunctionComponent<LandingPageProps> = ({ image, title, subti
         <LandingPageText>
           {title}
           <Prompt>{subtitle}</Prompt>
-          <PurpleButton text={"begin"} top={100} onClick={() => onBegin()} />
+          <PurpleButton text={"begin"} top={100} onClick={onBegin} />
         </LandingPageText>
       </LandingPageContainer>
     </Layout>
