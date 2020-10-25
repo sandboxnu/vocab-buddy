@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
-import FirebaseInteractor from "../firebase/firebaseInteractor";
-import { Action, ActionTypes, CreateUserParams, LoginParams, ResetPasswordParams } from "../models/types";
+import FirebaseInteractor from "../../../firebase/firebaseInteractor";
+import { Action, ActionTypes, CreateUserParams, LoginParams, ResetPasswordParams } from "../../../models/types";
 import {
   authenticationRequest
 } from "./actions";

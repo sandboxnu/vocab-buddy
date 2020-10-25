@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { getSignedIn } from '../data/reducer';
+import { getSignedIn } from '../pages/Login/data/reducer';
 
 interface AuthorizedRouteProps extends RouteProps {
     signedIn: boolean,

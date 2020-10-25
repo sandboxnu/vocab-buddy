@@ -2,13 +2,13 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { connect } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import Layout from "../components/Layout";
-import PurpleButton from "../components/PurpleButton";
-import { TextInput } from "../components/TextInput";
-import { INK, LOGIN_BACKGROUND } from "../constants/colors";
-import { authenticationRequest } from "../data/actions";
-import { getSignedIn } from "../data/reducer";
-import { LoginParams, ResetPasswordParams } from "../models/types";
+import Layout from "../../components/Layout";
+import PurpleButton from "../../components/PurpleButton";
+import { TextInput } from "../../components/TextInput";
+import { INK, LOGIN_BACKGROUND } from "../../constants/colors";
+import { authenticationRequest } from "./data/actions";
+import { getSignedIn } from "./data/reducer";
+import { LoginParams, ResetPasswordParams } from "../../models/types";
 
 const ResetUserButton = styled.button`
   padding-left: 0;

@@ -1,5 +1,5 @@
 import { RootStateOrAny } from "react-redux";
-import { Action, ActionTypes, State } from "../models/types";
+import { Action, ActionTypes, State } from "../../../models/types";
 
 const initialState : State = {
   signedIn: false,

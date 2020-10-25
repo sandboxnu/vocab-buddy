@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-d
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Assessments from "./pages/Assessments/Assessments";
 import Quiz from "./pages/Assessments/Quiz";
-import CreateUser from "./pages/CreateUser";
+import CreateUser from "./pages/Login/CreateUser";
 import Dashboard from "./pages/Dashboard";
-import Interventions from "./pages/Interventions";
-import Login from "./pages/Login";
+import Interventions from "./pages/Interventions/Interventions";
+import Login from "./pages/Login/Login";
 
 const App = () : ReactElement => {
   return (

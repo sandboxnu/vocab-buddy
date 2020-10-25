@@ -1,4 +1,4 @@
-import { Action, ActionTypes, CreateUserParams, LoginParams, ResetPasswordParams, Word } from "../models/types";
+import { Action, ActionTypes, CreateUserParams, LoginParams, ResetPasswordParams, Word } from "../../../models/types";
 
 export const getWordsRequest = {
   getWords: () : Action => ({

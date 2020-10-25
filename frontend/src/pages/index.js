@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { all } from "redux-saga/effects";
-import loginReducer from "../data/reducer";
-import rootSaga from "../data/saga";
+import loginReducer from "./Login/data/reducer";
+import rootSaga from "./Login/data/saga";
 import assessmentReducer from "./Assessments/data/reducer";
 import assessmentSaga from "./Assessments/data/sagas";
 

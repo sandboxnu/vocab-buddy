@@ -3,13 +3,13 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import CloudImage from "../components/CloudImage";
-import Layout from "../components/Layout";
-import PurpleButton from "../components/PurpleButton";
-import { TextInput } from "../components/TextInput";
-import { INK, SEA_FOAM } from "../constants/colors";
-import { authenticationRequest } from "../data/actions";
-import { AccountType, CreateUserParams } from "../models/types";
+import CloudImage from "../../components/CloudImage";
+import Layout from "../../components/Layout";
+import PurpleButton from "../../components/PurpleButton";
+import { TextInput } from "../../components/TextInput";
+import { INK, SEA_FOAM } from "../../constants/colors";
+import { authenticationRequest } from "./data/actions";
+import { AccountType, CreateUserParams } from "../../models/types";
 
 const LoginHoldingDiv = styled.div`
   display: flex;
