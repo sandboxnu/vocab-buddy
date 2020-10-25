@@ -17,6 +17,7 @@ const ButtonContainer = styled(Button)`
   font-size: 16px;
   font-weight: 700;
   height: 50px;
+  margin-bottom: 20px;
   width: 120px;
 
   margin-top: ${(prop: PurpleButtonProps) => prop.top}px;
