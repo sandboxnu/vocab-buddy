@@ -7,7 +7,6 @@ import Quiz from "./pages/Assessments/Quiz";
 import CreateUser from "./pages/Login/CreateUser";
 import Dashboard from "./pages/Dashboard";
 import Interventions from "./pages/Interventions/Interventions";
-import FirstActivity from "./pages/Interventions/FirstActivity";
 import Login from "./pages/Login/Login";
 
 const App = () : ReactElement => {
@@ -18,7 +17,7 @@ const App = () : ReactElement => {
         <Route exact path="/login" component={Login} />
         <Route path="/sign_up" component={CreateUser} />
         <AuthenticatedRoute path="/dashboard" component={Dashboard} />
-        <Route path="/interventions" component={FirstActivity} />
+        <AuthenticatedRoute path="/interventions" component={Interventions} />
         <AuthenticatedRoute exact path="/assessments/:id" component={Quiz} />
         <AuthenticatedRoute path="/assessments" component={Assessments} />
       </Switch>
