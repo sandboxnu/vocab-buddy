@@ -6,9 +6,9 @@ import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
 import { TextInput } from "../../components/TextInput";
 import { INK, LOGIN_BACKGROUND } from "../../constants/colors";
+import { LoginParams, ResetPasswordParams } from "../../models/types";
 import { authenticationRequest } from "./data/actions";
 import { getSignedIn } from "./data/reducer";
-import { LoginParams, ResetPasswordParams } from "../../models/types";
 
 const ResetUserButton = styled.button`
   padding-left: 0;
@@ -202,6 +202,7 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
                 value={password}
                 type="password"
                 text="password"
+                onKeyDown={(e) => e.key === 'Enter' && signIn({ email, password })}
               />
 
               <StyledPurpleButton
