@@ -106,7 +106,10 @@ export enum ActionTypes {
   GET_WORDS_REQUEST= "GET_WORDS_REQUEST",
   GET_WORDS_ERROR = "GET_WORDS_SUCCESS",
   RESET_PASSWORD = "RESETPASSWORD",
-  RESET_PASSWORD_SUCCESS = "RESETPASSWORDSUCCESS"
+  RESET_PASSWORD_SUCCESS = "RESETPASSWORDSUCCESS",
+  GET_INTERVENTIONS_REQUEST = "GET_INTERVENTIONS_REQUEST",
+  GET_INTERVENTIONS_ERROR = "GET_INTERVENTIONS_ERROR",
+  GET_INTERVENTIONS_SUCCESS = "GET_INTERVENTIONS_SUCCESS",
 };
 
 
@@ -118,6 +121,12 @@ export interface State {
 
 export interface AssessmentState {
   words: Word[] | null;
+}
+
+export interface InterventionState {
+  currentWordIdx: number;
+  currentActivityIdx: number;
+  interventions: Interventions | null;
 }
 
 // i think we should make separate actions as well
