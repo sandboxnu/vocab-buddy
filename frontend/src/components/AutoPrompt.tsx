@@ -14,7 +14,7 @@ const AutoPrompt : FunctionComponent<SpeechProp> = ({ prompt }) : ReactElement =
 
   useEffect(() => {
     talk();
-     const interval = setInterval(talk, 4000);
+     const interval = setInterval(talk, 8000);
      return () => clearInterval(interval);
    })
 
