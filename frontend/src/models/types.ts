@@ -11,6 +11,70 @@ export interface Word {
   createdAt: Date;
 }
 
+
+/**
+ * Represents a list of interventions for multiple words.
+ */
+export interface Interventions {
+  interventions: Intervention[];  // list of Intervention
+  wordIdx: number;                // current word you're on
+  activityIdx: number;            // current activity you're on
+}
+
+/**
+ * Represents an intervention for a word, with four different activities.
+ */
+export interface Intervention {
+  word: Word;
+  activities: ActivityList;
+}
+
+export interface ActivityList {
+  a1: Activity1;
+  a2: Activity2;
+  a3: Activity3;
+  a4: Activity4;
+}
+
+/**
+ * Activity 1 consists of oral prompts and an image.
+ */
+export interface Activity1 {
+  prompt: string;
+  url: string;
+}
+
+/**
+ * Activity 2 consists of 2 images, and an oral prompt.
+ */
+export interface Activity2 {
+  prompt: string;
+  correctUrl: string;
+  incorrectUrl: string;
+}
+
+/**
+ * Activity 3 consists of an image, a prompt, and a correct answer.
+ */
+export interface Activity3 {
+  prompt: string;
+  url: string;
+  answer: "yes" | "no";
+}
+
+/**
+ * Activity 4 consists of an image and oral prompt.
+ */
+export interface Activity4 {
+  prompt: string;
+  url: string;
+}
+
+
+
+
+
+
 /**
  * Represents a User object
  */
