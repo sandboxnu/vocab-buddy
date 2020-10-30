@@ -11,6 +11,70 @@ export interface Word {
   createdAt: Date;
 }
 
+
+/**
+ * Represents a list of interventions for multiple words.
+ */
+export interface Interventions {
+  wordList: InterventionWord[];       // list of Intervention words
+  wordIdx: number;                // current word you're on
+  activityIdx: number;            // current activity you're on
+}
+
+/**
+ * Represents an intervention for a word, with four different activities.
+ */
+export interface InterventionWord {
+  word: Word;
+  activities: ActivityList;
+}
+
+export interface ActivityList {
+  a1: Activity1;
+  a2: Activity2;
+  a3: Activity3;
+  a4: Activity4;
+}
+
+/**
+ * Activity 1 consists of oral prompts and an image.
+ */
+export interface Activity1 {
+  prompt: string;
+  url: string;
+}
+
+/**
+ * Activity 2 consists of 2 images, and an oral prompt.
+ */
+export interface Activity2 {
+  prompt: string;
+  correctUrl: string;
+  incorrectUrl: string;
+}
+
+/**
+ * Activity 3 consists of an image, a prompt, and a correct answer.
+ */
+export interface Activity3 {
+  prompt: string;
+  url: string;
+  answer: boolean;
+}
+
+/**
+ * Activity 4 consists of an image and oral prompt.
+ */
+export interface Activity4 {
+  prompt: string;
+  url: string;
+}
+
+
+
+
+
+
 /**
  * Represents a User object
  */
@@ -42,7 +106,10 @@ export enum ActionTypes {
   GET_WORDS_REQUEST= "GET_WORDS_REQUEST",
   GET_WORDS_ERROR = "GET_WORDS_SUCCESS",
   RESET_PASSWORD = "RESETPASSWORD",
-  RESET_PASSWORD_SUCCESS = "RESETPASSWORDSUCCESS"
+  RESET_PASSWORD_SUCCESS = "RESETPASSWORDSUCCESS",
+  GET_INTERVENTIONS_REQUEST = "GET_INTERVENTIONS_REQUEST",
+  GET_INTERVENTIONS_ERROR = "GET_INTERVENTIONS_ERROR",
+  GET_INTERVENTIONS_SUCCESS = "GET_INTERVENTIONS_SUCCESS",
 };
 
 
@@ -54,6 +121,12 @@ export interface State {
 
 export interface AssessmentState {
   words: Word[] | null;
+}
+
+export interface InterventionState {
+  currentWordIdx: number;
+  currentActivityIdx: number;
+  interventions: Interventions | null;
 }
 
 // i think we should make separate actions as well
