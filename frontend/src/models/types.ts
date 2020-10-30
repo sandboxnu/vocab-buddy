@@ -16,7 +16,7 @@ export interface Word {
  * Represents a list of interventions for multiple words.
  */
 export interface Interventions {
-  interventions: Intervention[];  // list of Intervention
+  wordList: InterventionWord[];       // list of Intervention words
   wordIdx: number;                // current word you're on
   activityIdx: number;            // current activity you're on
 }
@@ -24,7 +24,7 @@ export interface Interventions {
 /**
  * Represents an intervention for a word, with four different activities.
  */
-export interface Intervention {
+export interface InterventionWord {
   word: Word;
   activities: ActivityList;
 }
@@ -59,7 +59,7 @@ export interface Activity2 {
 export interface Activity3 {
   prompt: string;
   url: string;
-  answer: "yes" | "no";
+  answer: boolean;
 }
 
 /**

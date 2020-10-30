@@ -11,7 +11,7 @@ const interventionReducer = (state: InterventionState = initialState, action: Ac
   const payload = action.payload;
 
   switch (action.type) {
-    case ActionTypes.GET_WORDS_SUCCESS:
+    case ActionTypes.GET_INTERVENTIONS_SUCCESS:
       return {
         ...state,
         interventions: payload.interventions,
@@ -23,7 +23,7 @@ const interventionReducer = (state: InterventionState = initialState, action: Ac
 
 // is this correct?
 export const getAllInterventions = (state: RootStateOrAny) => {
-  return state.interventions.interventions;
+  return state.interventions.wordList;
 };
 
 export default interventionReducer;
