@@ -3,7 +3,6 @@ import React, {FunctionComponent, ReactElement} from "react";
 // @ts-ignore
 import Speech from "react-speech";
 import styled from "styled-components";
-import PlayButton from "../components/PlayButton";
 
 const SpeechContainer = styled.div`
   margin: 0;
@@ -15,16 +14,17 @@ const SpeechContainer = styled.div`
 
 interface SpeechProp {
   prompt: string;
+  button: ReactElement;
 }
 
-const PromptSpeech : FunctionComponent<SpeechProp> = ({ prompt }) : ReactElement => {
+const PromptSpeech : FunctionComponent<SpeechProp> = ({ prompt, button }) : ReactElement => {
   return (
     <SpeechContainer>
       <Speech
         text={prompt}
         pitch={1.05}
         textAsButton={true}
-        displayText={<PlayButton scale={0.8} />}
+        displayText={button}
       />
     </SpeechContainer>
   );
