@@ -20,9 +20,9 @@ const ReplayText = styled.p`
 `;
 
 const ReplayButtonSVG = styled.svg`
-  ${(props) =>
+  ${({scale}) =>
     `
-    transform: scale(${props.scale});
+    transform: scale(${scale});
   `}
   path: hover {
     cursor: pointer;

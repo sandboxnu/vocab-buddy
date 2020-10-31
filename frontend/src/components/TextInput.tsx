@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactElement } from "react";
+import React, { ChangeEvent, KeyboardEvent, ReactElement } from "react";
 import styled from "styled-components";
 import { SEA_FOAM } from "../constants/colors";
 
@@ -9,13 +9,14 @@ interface TextInputProps {
   type: string;
   expectedValue : string | null;
   className: string;
+  onKeyDown: ((event: KeyboardEvent<HTMLInputElement>) => void);
 }
 
 interface LoginInputProps {
   isExpectedValue: boolean;
 }
 
-const TextInput = ({ className = "", value, onChange, text, type, expectedValue = null } : TextInputProps) : ReactElement => {
+const TextInput = ({ className = "", value, onChange, text, type, expectedValue = null, onKeyDown = ()=>{} } : TextInputProps) : ReactElement => {
   return (
     <InputDiv className={className}>
       <InputTitle>{text}</InputTitle>
@@ -26,6 +27,7 @@ const TextInput = ({ className = "", value, onChange, text, type, expectedValue 
         onChange={onChange}
         isExpectedValue={expectedValue == null || expectedValue === value}
         min="0"
+        onKeyDown={onKeyDown}
       />
     </InputDiv>
   );
@@ -33,7 +35,8 @@ const TextInput = ({ className = "", value, onChange, text, type, expectedValue 
 
 TextInput.defaultProps = {
   expectedValue: null,
-  className: ""
+  className: "",
+  onKeyDown: ()=>{}
 };
 
 const InputDiv = styled.div`

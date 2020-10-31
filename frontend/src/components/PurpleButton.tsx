@@ -1,7 +1,7 @@
-import React, { ReactElement, MouseEvent } from "react";
-import { INK, INK_HOVER } from "../constants/colors";
-import styled from "styled-components";
 import { Button } from "antd";
+import React, { MouseEvent, ReactElement } from "react";
+import styled from "styled-components";
+import { INK, INK_HOVER } from "../constants/colors";
 
 interface PurpleButtonProps {
   top?: number,

@@ -5,11 +5,11 @@ import Layout from "../../components/Layout";
 import { getWords } from "./data/actions";
 import { getAllWords } from "./data/reducer";
 import styled from "styled-components";
-import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
 import PlayButton from "../../components/PlayButton";
 import { Word } from "../../models/types";
 import { CLOUD } from "../../constants/colors";
+import AutoPrompt from "../../components/AutoPrompt";
 
 interface QuizProps {
   getWords: () => void,
@@ -119,7 +119,7 @@ const Quiz = ({ getWords, allWords }: QuizProps) => {
           <WordTitle onClick={() => getWords()}>miniscule</WordTitle>
           <Prompt>
             <PromptText>Touch the picture that shows miniscule.</PromptText>
-            <PromptSpeech prompt="Touch the picture that shows miniscule." button={<PlayButton scale={0.8} />}/>
+            <AutoPrompt prompt="Touch the picture that shows miniscule." button={<PlayButton scale={0.8} />}/>
           </Prompt>
           <ImageContainer>
             {shuffled.map((img: string, idx: number) => {
