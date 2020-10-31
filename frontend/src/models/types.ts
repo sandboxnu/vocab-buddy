@@ -58,10 +58,6 @@ export interface State {
   words: Word[] | null;
 }
 
-export interface AssessmentState {
-  assessment: Assessment;
-}
-
 // i think we should make separate actions as well
 export interface Action {
   type: ActionTypes;

@@ -7,7 +7,7 @@ import assessmentSaga from "./Assessments/data/sagas";
 
 export const reducer = combineReducers({
   test: testReducer,
-  assessments: assessmentReducer,
+  assessment: assessmentReducer,
 });
 
 export function* saga() {

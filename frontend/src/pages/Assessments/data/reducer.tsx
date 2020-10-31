@@ -3,25 +3,23 @@ import {
   Action,
   ActionTypes,
   Assessment,
-  AssessmentState,
+  // AssessmentState,
 } from "../../../models/types";
 
-const emptyAssessment: Assessment = { id: -1, currentIndex: 0, words: [] };
-
-const initialState: AssessmentState = {
-  assessment: emptyAssessment,
-};
+const initialState: RootStateOrAny = null;
 
 const assessmentReducer = (
-  state: AssessmentState = initialState,
+  state: Assessment = initialState,
   action: Action
-): AssessmentState => {
+): Assessment => {
   const payload = action.payload;
   switch (action.type) {
     case ActionTypes.GET_ASSESSMENT_SUCCESS:
       return {
         ...state,
-        assessment: payload.assessment,
+        id: payload.assessment.id,
+        currentIndex: payload.assessment.currentIndex,
+        words: payload.assessment.words,
       };
     default:
       return state;
@@ -29,7 +27,7 @@ const assessmentReducer = (
 };
 
 export const getAssessment = (state: RootStateOrAny) => {
-  return state.assessments.assessment;
+  return state.assessment;
 };
 
 export default assessmentReducer;
