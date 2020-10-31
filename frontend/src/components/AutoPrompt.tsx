@@ -3,9 +3,10 @@ import PromptSpeech from "./PromptSpeech";
 
 interface SpeechProp {
   prompt: string;
+  button: ReactElement;
 }
 
-const AutoPrompt : FunctionComponent<SpeechProp> = ({ prompt }) : ReactElement => {
+const AutoPrompt : FunctionComponent<SpeechProp> = ({ prompt, button }) : ReactElement => {
 
   const talk = () => {
     let x = window.speechSynthesis;
@@ -18,7 +19,7 @@ const AutoPrompt : FunctionComponent<SpeechProp> = ({ prompt }) : ReactElement =
      return () => clearInterval(interval);
    })
 
-  return <PromptSpeech prompt={prompt}/>;
+  return <PromptSpeech prompt={prompt} button={button}/>;
 };
 
 export default AutoPrompt;
