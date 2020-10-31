@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { getAssessment as getAssessmentAction } from "./data/actions";
 import { getAssessment as getAssessmentReducer } from "./data/reducer";
@@ -20,8 +20,11 @@ const connector = connect(
 );
 
 const Quiz = ({ getAssessment, assessment }: QuizProps) => {
+  useEffect(() => {
+    if (!assessment) getAssessment();
+  }, [assessment, getAssessment]);
+
   if (!assessment) {
-    getAssessment();
     return <h1>Loading...</h1>;
   } else {
     return <QuizWords assessment={assessment} />;

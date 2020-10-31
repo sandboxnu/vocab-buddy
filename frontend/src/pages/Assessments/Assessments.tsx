@@ -9,12 +9,14 @@ interface AssessmentProps {}
 const connector = connect((state) => state, {});
 
 const Assessments: FunctionComponent = (): ReactElement => {
+  const history = useHistory();
+
   return (
     <LandingPage
       title="assessments"
       subtitle="Select the correct images to match the target words."
       image={ASSESSMENTS_LANDING}
-      onBegin={() => console.log("beginning")}
+      onBegin={() => history.push(`/assessments/1`)}
     />
   );
 };

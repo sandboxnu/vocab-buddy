@@ -1,10 +1,5 @@
 import { RootStateOrAny } from "react-redux";
-import {
-  Action,
-  ActionTypes,
-  Assessment,
-  // AssessmentState,
-} from "../../../models/types";
+import { Action, ActionTypes, Assessment } from "../../../models/types";
 
 const initialState: RootStateOrAny = null;
 
