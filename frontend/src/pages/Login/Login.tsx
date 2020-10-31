@@ -1,14 +1,14 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { connect } from 'react-redux';
-import { useHistory } from "react-router-dom";
-import styled from 'styled-components';
-import Layout from "../components/Layout";
-import PurpleButton from "../components/PurpleButton";
-import { TextInput } from "../components/TextInput";
-import { INK, LOGIN_BACKGROUND } from "../constants/colors";
-import { authenticationRequest } from "../data/actions";
-import { getSignedIn } from "../data/reducer";
-import { LoginParams, ResetPasswordParams } from "../models/types";
+import { connect } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import styled from "styled-components";
+import Layout from "../../components/Layout";
+import PurpleButton from "../../components/PurpleButton";
+import { TextInput } from "../../components/TextInput";
+import { INK, LOGIN_BACKGROUND } from "../../constants/colors";
+import { LoginParams, ResetPasswordParams } from "../../models/types";
+import { authenticationRequest } from "./data/actions";
+import { getSignedIn } from "./data/reducer";
 
 const ResetUserButton = styled.button`
   padding-left: 0;
@@ -142,10 +142,20 @@ interface LoginProps {
   resetPassword : ({email} : ResetPasswordParams) => void;
 }
 
+interface State {
+  redirect: string;
+}
+
 const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword }) : ReactElement => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let history = useHistory();
+  let location = useLocation();
+  let redirect : string | null = null;
+  if (location.state != null) {
+    redirect = (location.state as State).redirect;
+  }
+  
 
   let doResetPassword = () => {
     let email = prompt("What is your email?");
@@ -159,9 +169,14 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
 
   useEffect(() => {
     if (signedIn) {
-      history.push("/dashboard");
+      if (redirect != null) {
+        history.replace(redirect);
+      } else {
+        history.push("/dashboard");
+      }
+     
     }
-  }, [signedIn, history]);
+  }, [signedIn, history, redirect]);
 
   return (
     <Layout hideBar={true}>
@@ -187,6 +202,7 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
                 value={password}
                 type="password"
                 text="password"
+                onKeyDown={(e) => e.key === 'Enter' && signIn({ email, password })}
               />
 
               <StyledPurpleButton

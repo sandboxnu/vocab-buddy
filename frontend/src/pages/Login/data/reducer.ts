@@ -1,5 +1,5 @@
 import { RootStateOrAny } from "react-redux";
-import { State, Action, ActionTypes } from "../models/types";
+import { Action, ActionTypes, State } from "../../../models/types";
 
 const initialState: State = {
   signedIn: false,
@@ -28,7 +28,7 @@ const reducer = (state: State = initialState, action: Action): State => {
 };
 
 export const getSignedIn = (state: RootStateOrAny): boolean => {
-  return state.test.signedIn;
+  return state.login.signedIn;
 };
 
 export default reducer;

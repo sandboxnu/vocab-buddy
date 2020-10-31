@@ -1,6 +1,7 @@
 import { MenuOutlined } from "@ant-design/icons";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import styled from "styled-components";
 import { INK, SEA_FOAM } from "../constants/colors";
 
@@ -40,7 +41,7 @@ const ProjectName = styled.div`
   text-transform: lowercase;
 `;
 
-const Link = styled.a`
+const StyledLink = styled(Link)`
   color: #000;
   font-family: "Rubik", sans-serif;
   font-size: 20px;
@@ -102,11 +103,11 @@ const Nav : FunctionComponent<NavProps> = ( { showsBar }) : ReactElement => {
   const HeaderItems = () : ReactElement => {
     return (
       <>
-        <Link href="/assessments">assessments</Link>
-        <Link href="/interventions" onClick={() => firebase.auth().signOut()}>
+        <StyledLink to="/assessments">assessments</StyledLink>
+        <StyledLink to="/interventions" onClick={() => firebase.auth().signOut()}>
           interventions
-        </Link>
-        <Link href="/dashboard">dashboard</Link>
+        </StyledLink>
+        <StyledLink to="/dashboard">dashboard</StyledLink>
       </>
     );
   };

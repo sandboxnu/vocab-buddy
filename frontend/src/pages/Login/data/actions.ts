@@ -5,7 +5,7 @@ import {
   LoginParams,
   ResetPasswordParams,
   Word,
-} from "../models/types";
+} from "../../../models/types";
 
 export const getAssessmentRequest = {
   getAssessment: (): Action => ({
