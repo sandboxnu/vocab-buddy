@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { CLOUD } from "../../constants/colors";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
+import PlayButton from "../../components/PlayButton";
 
 interface QuizWordsProps {
   assessment: Assessment;
@@ -106,6 +107,7 @@ const QuizWords = ({ assessment }: QuizWordsProps) => {
             <PromptText>Touch the picture that shows {word.value}.</PromptText>
             <PromptSpeech
               prompt={`Touch the picture that shows ${word.value}.`}
+              button={<PlayButton scale={0.8} />}
             />
           </Prompt>
           <ImageContainer>
