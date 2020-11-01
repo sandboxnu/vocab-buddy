@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { Assessment } from "../../models/types";
 import styled from "styled-components";
@@ -6,6 +6,7 @@ import { CLOUD } from "../../constants/colors";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
 import PlayButton from "../../components/PlayButton";
+import ImageComponent from "../../components/ImageComponent";
 
 interface QuizWordsProps {
   assessment: Assessment;
@@ -63,7 +64,6 @@ const Image = styled.img`
   border-radius: 20px;
   width: 100%;
   height: 100%;
-  transform: scale(0.8);
 
   :hover {
     cursor: pointer;
@@ -112,7 +112,7 @@ const QuizWords = ({ assessment }: QuizWordsProps) => {
           </Prompt>
           <ImageContainer>
             {shuffled.map((img: string, idx: number) => {
-              return <Image key={idx} src={img} />;
+              return <ImageComponent key={idx} src={img} />;
             })}
           </ImageContainer>
           <ButtonContainer>
