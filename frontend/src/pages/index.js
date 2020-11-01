@@ -9,7 +9,7 @@ import interventionSaga from "./Interventions/data/saga";
 
 export const reducer = combineReducers({
   login: loginReducer,
-  assessments: assessmentReducer,
+  assessment: assessmentReducer,
   interventions: interventionReducer,
 });
 

@@ -1,20 +1,21 @@
 import React, { FunctionComponent, ReactElement } from "react";
-import { connect } from 'react-redux';
 import LandingPage from "../../components/LandingPage";
 import { ASSESSMENTS_LANDING } from "../../constants/images";
+import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 
-const connector = connect((state) => state, {
+const connector = connect((state) => state, {});
 
-});
+const Assessments: FunctionComponent = (): ReactElement => {
+  const history = useHistory();
 
-const Assessments : FunctionComponent = () : ReactElement => {
   return (
-    <LandingPage 
-    title='assessments' 
-    subtitle='Select the correct images to match the target words.' 
-    image={ASSESSMENTS_LANDING}
-    onBegin={() => console.log('beginning')}/>
-    
+    <LandingPage
+      title="assessments"
+      subtitle="Select the correct images to match the target words."
+      image={ASSESSMENTS_LANDING}
+      onBegin={() => history.push(`/assessments/1`)}
+    />
   );
 };
 
