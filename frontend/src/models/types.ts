@@ -1,4 +1,11 @@
-
+/**
+ * Represents an assessment
+ */
+export interface Assessment {
+  id: number;
+  words: Word[];
+  currentIndex: number;
+}
 
 /**
  * Represents a word used in an assessment.
@@ -11,14 +18,13 @@ export interface Word {
   createdAt: Date;
 }
 
-
 /**
  * Represents a list of interventions for multiple words.
  */
 export interface Interventions {
-  wordList: InterventionWord[];       // list of Intervention words
-  wordIdx: number;                // current word you're on
-  activityIdx: number;            // current activity you're on
+  wordList: InterventionWord[]; // list of Intervention words
+  wordIdx: number; // current word you're on
+  activityIdx: number; // current activity you're on
 }
 
 /**
@@ -70,11 +76,6 @@ export interface Activity4 {
   url: string;
 }
 
-
-
-
-
-
 /**
  * Represents a User object
  */
@@ -88,38 +89,33 @@ export interface User {
 /**
  * Represents account types
  */
-export type AccountType = "RESEARCHER" | "STUDENT"
+export type AccountType = "RESEARCHER" | "STUDENT";
 
 // also these & all State/Action can def be moved to a separate file
 /**
  * Represents types for redux Actions.
  */
 export enum ActionTypes {
-  REQUEST= "REQUEST",
-  SUCCESS= "SUCCESS",
+  REQUEST = "REQUEST",
+  SUCCESS = "SUCCESS",
   ERROR = "ERROR",
   CREATE_USER = "CREATEUSER",
   SIGN_IN = "SIGNIN",
   AUTHENTICATION_SUCCESS = "AUTHENTICATIONSUCCESS",
   GET_WORDS = "GETWORDS",
-  GET_WORDS_SUCCESS = "GETWORDSSUCCESS",
-  GET_WORDS_REQUEST= "GET_WORDS_REQUEST",
-  GET_WORDS_ERROR = "GET_WORDS_SUCCESS",
+  GET_ASSESSMENT_SUCCESS = "GET_ASSESSMENT_SUCCESS",
+  GET_ASSESSMENT_REQUEST = "GET_ASSESSMENT_REQUEST",
+  GET_ASSESSMENT_ERROR = "GET_ASSESSMENT_ERROR",
   RESET_PASSWORD = "RESETPASSWORD",
   RESET_PASSWORD_SUCCESS = "RESETPASSWORDSUCCESS",
   GET_INTERVENTIONS_REQUEST = "GET_INTERVENTIONS_REQUEST",
   GET_INTERVENTIONS_ERROR = "GET_INTERVENTIONS_ERROR",
   GET_INTERVENTIONS_SUCCESS = "GET_INTERVENTIONS_SUCCESS",
-};
-
+}
 
 // i think we should make separate reducers to separate the different states if that makes sense
 export interface State {
-  signedIn : boolean;
-  words : Word[] | null;
-}
-
-export interface AssessmentState {
+  signedIn: boolean;
   words: Word[] | null;
 }
 
@@ -131,21 +127,21 @@ export interface InterventionState {
 
 // i think we should make separate actions as well
 export interface Action {
-  type : ActionTypes;
-  payload? : any; // eh
+  type: ActionTypes;
+  payload?: any; // eh
 }
 
 /**
  * Represents parameters needed to login.
  */
 export interface LoginParams {
-  email : string;
-  password : string;
+  email: string;
+  password: string;
 }
 
 export interface CreateUserParams {
   email: string;
-  password : string;
+  password: string;
   name: string;
   accountType: AccountType;
   age: Number | null;

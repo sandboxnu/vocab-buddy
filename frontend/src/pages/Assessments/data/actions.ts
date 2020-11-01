@@ -1,20 +1,20 @@
-import { ActionTypes, Action, Word } from "../../../models/types";
+import { ActionTypes, Action, Assessment } from "../../../models/types";
 
-interface GetWordAction {
-  error?: string,
-  words?: Word[],
+interface GetAssessmentAction {
+  error?: string;
+  assessment?: Assessment;
 }
 
-export const getWords = {
+export const getAssessment = {
   request: (): Action => ({
-    type: ActionTypes.GET_WORDS_REQUEST,
+    type: ActionTypes.GET_ASSESSMENT_REQUEST,
   }),
-  error: ({ error }: GetWordAction): Action=> ({
-    type: ActionTypes.GET_WORDS_ERROR,
+  error: ({ error }: GetAssessmentAction): Action => ({
+    type: ActionTypes.GET_ASSESSMENT_ERROR,
     payload: { error },
   }),
-  success: ({words}: GetWordAction) : Action => ({
-    type: ActionTypes.GET_WORDS_SUCCESS,
-    payload: { words },
+  success: ({ assessment }: GetAssessmentAction): Action => ({
+    type: ActionTypes.GET_ASSESSMENT_SUCCESS,
+    payload: { assessment },
   }),
 };
