@@ -7,6 +7,10 @@ export interface Assessment {
   currentIndex: number;
 }
 
+export interface AssessmentPayload {
+  assessment: Assessment;
+}
+
 /**
  * Represents a word used in an assessment.
  */

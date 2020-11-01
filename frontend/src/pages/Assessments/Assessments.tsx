@@ -4,8 +4,6 @@ import { ASSESSMENTS_LANDING } from "../../constants/images";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
-interface AssessmentProps {}
-
 const connector = connect((state) => state, {});
 
 const Assessments: FunctionComponent = (): ReactElement => {

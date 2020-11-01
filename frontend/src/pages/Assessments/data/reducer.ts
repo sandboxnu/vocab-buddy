@@ -1,20 +1,18 @@
 import { RootStateOrAny } from "react-redux";
-import { Action, ActionTypes, Assessment } from "../../../models/types";
+import { Action, ActionTypes, AssessmentPayload } from "../../../models/types";
 
-const initialState: RootStateOrAny = null;
+const initialState: RootStateOrAny = { assessment: null };
 
 const assessmentReducer = (
-  state: Assessment = initialState,
+  state: AssessmentPayload = initialState,
   action: Action
-): Assessment => {
+): AssessmentPayload => {
   const payload = action.payload;
   switch (action.type) {
     case ActionTypes.GET_ASSESSMENT_SUCCESS:
       return {
         ...state,
-        id: payload.assessment.id,
-        currentIndex: payload.assessment.currentIndex,
-        words: payload.assessment.words,
+        assessment: payload.assessment,
       };
     default:
       return state;
@@ -22,7 +20,7 @@ const assessmentReducer = (
 };
 
 export const getAssessment = (state: RootStateOrAny) => {
-  return state.assessment;
+  return state.assessment.assessment;
 };
 
 export default assessmentReducer;
