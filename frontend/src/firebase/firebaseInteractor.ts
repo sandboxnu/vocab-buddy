@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import { AccountType, Activity1, Activity2, Activity3, Activity4, Assessment, Interventions, InterventionWord, User, Word } from "../models/types";
+import { AccountType, Assessment, Context, Definition, Example, Interventions, InterventionWord, Review, User, Word } from "../models/types";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -166,10 +166,10 @@ export default class FirebaseInteractor {
       // Get the word
       let actualWord = await this.getWord(word);
       // Get each activity from firebase
-      let activity1 = (await interventionRef.ref.collection(word).doc("activity1").get()).data() as Activity1;
-      let activity2 = (await interventionRef.ref.collection(word).doc("activity2").get()).data() as Activity2;
-      let activity3 = (await interventionRef.ref.collection(word).doc("activity3").get()).data() as Activity3;
-      let activity4 = (await interventionRef.ref.collection(word).doc("activity4").get()).data() as Activity4;
+      let activity1 = (await interventionRef.ref.collection(word).doc("activity1").get()).data() as Definition;
+      let activity2 = (await interventionRef.ref.collection(word).doc("activity2").get()).data() as Example;
+      let activity3 = (await interventionRef.ref.collection(word).doc("activity3").get()).data() as Context;
+      let activity4 = (await interventionRef.ref.collection(word).doc("activity4").get()).data() as Review;
       interventionWords.push({
         word: actualWord,
         activities: {

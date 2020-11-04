@@ -36,16 +36,16 @@ export interface InterventionWord {
 }
 
 export interface ActivityList {
-  a1: Activity1;
-  a2: Activity2;
-  a3: Activity3;
-  a4: Activity4;
+  a1: Definition;
+  a2: Example;
+  a3: Context;
+  a4: Review;
 }
 
 /**
  * Activity 1 consists of oral prompts and an image.
  */
-export interface Activity1 {
+export interface Definition {
   prompt: string;
   url: string;
 }
@@ -53,7 +53,7 @@ export interface Activity1 {
 /**
  * Activity 2 consists of 2 images, and an oral prompt.
  */
-export interface Activity2 {
+export interface Example {
   prompt: string;
   correctUrl: string;
   incorrectUrl: string;
@@ -62,7 +62,7 @@ export interface Activity2 {
 /**
  * Activity 3 consists of an image, a prompt, and a correct answer.
  */
-export interface Activity3 {
+export interface Context {
   prompt: string;
   url: string;
   answer: boolean;
@@ -71,7 +71,7 @@ export interface Activity3 {
 /**
  * Activity 4 consists of an image and oral prompt.
  */
-export interface Activity4 {
+export interface Review {
   prompt: string;
   url: string;
 }
