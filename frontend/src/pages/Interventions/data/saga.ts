@@ -17,7 +17,7 @@ function* watchGetInterventions() {
   try {
     let interventions;
     const updateWithSuccess = async () => {
-      interventions = null; //TODO: await firebaseInteractor.getInterventions();
+      interventions = await firebaseInteractor.getIntervention("CYf3VgYXDn72omXhuy0A");
     };
     yield call(updateWithSuccess);
     yield put(getInterventions.success({ interventions }));

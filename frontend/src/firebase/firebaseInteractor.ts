@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import { AccountType, User, Word, Assessment } from "../models/types";
+import { AccountType, Assessment, Context, Definition, Example, Interventions, InterventionWord, Review, User, Word } from "../models/types";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -139,6 +139,53 @@ export default class FirebaseInteractor {
       (word1, word2) => word1.createdAt.getTime() - word2.createdAt.getTime()
     );
     return { id, currentIndex, words };
+  }
+
+  async getWord(id: string) : Promise<Word> {
+    let word = (await this.db.collection("words").doc(id).get()).data();
+    if (word == null) {
+      throw Error("This word does not exist");
+    }
+    return {
+      value: word.value,
+      correctImage: word.correctImage,
+      incorrectImages: word.incorrectImages,
+      id: id,
+      createdAt: word.dateCreated.toDate()
+    }
+  }
+
+  async getIntervention(id: string) : Promise<Interventions> {
+    let interventionRef = await this.db.collection("interventions").doc(id).get();
+    let intervention = interventionRef.data();
+    if (intervention == null) {
+      throw new Error("There is no intervention with that name");
+    }
+    let interventionWords : InterventionWord[] = [];
+    for (let word of intervention.wordList as string[]) {
+      // Get the word
+      let actualWord = await this.getWord(word);
+      // Get each activity from firebase
+      let activity1 = (await interventionRef.ref.collection(word).doc("activity1").get()).data() as Definition;
+      let activity2 = (await interventionRef.ref.collection(word).doc("activity2").get()).data() as Example;
+      let activity3 = (await interventionRef.ref.collection(word).doc("activity3").get()).data() as Context;
+      let activity4 = (await interventionRef.ref.collection(word).doc("activity4").get()).data() as Review;
+      interventionWords.push({
+        word: actualWord,
+        activities: {
+          a1: activity1,
+          a2: activity2,
+          a3: activity3,
+          a4: activity4
+        }
+      });
+    }
+
+    return {
+      wordList : interventionWords,
+      activityIdx: intervention.activityIdx,
+      wordIdx: intervention.wordIdx
+    }
   }
 
   async resetPassword(email: string) {
