@@ -1,4 +1,4 @@
-import {ActionTypes, Action, Interventions} from "../../../models/types";
+import { Action, ActionTypes, Interventions } from "../../../models/types";
 
 interface GetInterventionsAction {
   error?: string,
