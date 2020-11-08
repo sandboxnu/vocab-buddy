@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import styled from "styled-components";
 import { SEA_FOAM } from "../constants/colors";
 
