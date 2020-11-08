@@ -57,7 +57,6 @@ const PromptText = styled.span`
 const ImageContainer = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 30% 30%;
 `;
 
 const ButtonContainer = styled.div`
