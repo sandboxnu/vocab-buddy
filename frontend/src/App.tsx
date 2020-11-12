@@ -5,7 +5,7 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Assessments from "./pages/Assessments/Assessments";
 import Quiz from "./pages/Assessments/Quiz";
 import CreateUser from "./pages/Login/CreateUser";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Interventions from "./pages/Interventions/Interventions";
 import Login from "./pages/Login/Login";
 

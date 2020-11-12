@@ -111,6 +111,9 @@ export enum ActionTypes {
   GET_INTERVENTIONS_REQUEST = "GET_INTERVENTIONS_REQUEST",
   GET_INTERVENTIONS_ERROR = "GET_INTERVENTIONS_ERROR",
   GET_INTERVENTIONS_SUCCESS = "GET_INTERVENTIONS_SUCCESS",
+  SIGN_OUT_REQUEST = "SIGN_OUT_REQUEST",
+  SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS",
+  SIGN_OUT_ERROR = "SIGN_OUT_ERROR"
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense
@@ -149,4 +152,8 @@ export interface CreateUserParams {
 
 export interface ResetPasswordParams {
   email: string;
+}
+
+export interface DashboardState {
+  isSignedOut: boolean
 }

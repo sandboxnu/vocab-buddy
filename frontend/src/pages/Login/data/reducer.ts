@@ -19,6 +19,11 @@ const reducer = (state: State = initialState, action: Action): State => {
         ...state,
         words: payload.words,
       };
+    case ActionTypes.SIGN_OUT_SUCCESS:
+      return {
+        ...state,
+        signedIn: false
+      };
     case ActionTypes.SUCCESS:
     case ActionTypes.REQUEST:
     case ActionTypes.ERROR:
