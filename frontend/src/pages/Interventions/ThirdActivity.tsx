@@ -6,9 +6,9 @@ import PurpleButton from "../../components/PurpleButton";
 import { SKY } from "../../constants/colors";
 import AutoPrompt from "../../components/AutoPrompt";
 import CloudImage from "../../components/CloudImage";
-
-
 import { LikeFilled, DislikeFilled } from "@ant-design/icons";
+import YesNoSelection from "../../components/YesNoSelection";
+import DelayedNextButton from "../../components/DelayedNextButton";
 
 interface ThirdActivityProps {
   title: string, // the word
@@ -23,7 +23,23 @@ const Container = styled.div`
 `;
 
 const YesNoButton = styled(PurpleButton)`
+margin-left: 10px;
+margin-right: 10px;
 
+    @media (max-width: 900px) {
+    width:100%;
+  }
+  
+`;
+
+const NextButton = styled(PurpleButton)`
+margin-left: 10px;
+margin-right: 10px;
+
+    @media (max-width: 900px) {
+    width:100%;
+  }
+  
 `;
 
 const MainContent = styled.div`
@@ -75,12 +91,35 @@ const Image = styled.img`
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  margin-top: 20px;
+  
+  @media (max-width: 900px) {
+    flex-direction: column;
+    justify-content: center;
+    
+  }
+
+  @media (min-width: 901px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
 `;
 
 const YesNoContainer = styled.div`
   display: flex;
+  flex-grow: 1;
   justify-content: end;
+  padding: 0em 0em 5em 0em;  
+`;
+
+const NextContainer = styled.div`
+display: flex;
+  justify-content: space-between;
+  
+  @media (max-width: 900px) {
+    width:100%;
+  }
 `;
 
 const CloudImageLeft = styled(CloudImage)`
@@ -118,9 +157,6 @@ const CloudImageRight = styled(CloudImage)`
 
 const ThirdActivity  = ({ prompt, imageUrl, answer }: ThirdActivityProps) : ReactElement => {
 
-  const nextButton = <PurpleButton text="next" top={20}/>;
-
-
   useEffect(() => {
     const timer = setTimeout(() => {
       // show nextbutton
@@ -150,12 +186,10 @@ const ThirdActivity  = ({ prompt, imageUrl, answer }: ThirdActivityProps) : Reac
             <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule2.png?alt=media&amp;token=f14c983c-6fff-475d-84ba-07b7b86ea2d5" />
 
             <ButtonContainer>
-              <YesNoContainer>
-                <PurpleButton text="yes" top={20} icon={<LikeFilled />}/>
-                <PurpleButton text={"no"} top={20} icon={<DislikeFilled />}/>
-              </YesNoContainer>
-
-              {nextButton}
+              <YesNoSelection correctAnswer={answer} />
+              <NextContainer>
+                <DelayedNextButton text="next" top={20} delay={5000}/>;
+              </NextContainer>
             </ButtonContainer>
 
           </MainContent>
