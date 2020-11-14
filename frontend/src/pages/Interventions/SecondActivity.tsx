@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import Layout from "../../components/Layout";
 import styled from "styled-components";
-import { CORAL, SKY } from "../../constants/colors";
+import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
 import PromptSpeech from "../../components/PromptSpeech";
 import ReplayButton from "../../components/ReplayButton";
 import PurpleButton from "../../components/PurpleButton";
@@ -90,7 +90,7 @@ const IncorrectImage = styled.img`
     opacity: 0.8;
   }
 
-  border: 10px solid ${SKY};
+  border: 10px solid ${SEA_FOAM};
 `;
 
 const correctUrl = {
