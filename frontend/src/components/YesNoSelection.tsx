@@ -2,7 +2,7 @@ import React, {FunctionComponent, ReactElement, useState} from "react";
 import styled from "styled-components";
 import {CORAL, SEA_FOAM} from "../constants/colors";
 import PurpleButton from "./PurpleButton";
-import {LikeFilled, DislikeFilled} from "@ant-design/icons";
+import {LikeFilled, DislikeFilled, CheckCircleFilled} from "@ant-design/icons";
 
 
 interface YesNoSelectionProps {
@@ -60,8 +60,10 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({correctAnswer})
       selected === answer ?
           <YesNoContainer>
             <YesNoButton highlight={1} onClick={() => setSelected(1)} text="yes" top={20}
+                         check={<CheckCircleFilled style={{color: SEA_FOAM}}/>}
                          icon={<LikeFilled/>}/>
             <YesNoButton highlight={0} onClick={() => setSelected(0)} text="no" top={20}
+                         check = {<CheckCircleFilled style={{color: CORAL}}/>}
                          icon={<DislikeFilled/>}/>
           </YesNoContainer>
           :
@@ -76,9 +78,11 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({correctAnswer})
               :
 
               <YesNoContainer>
-                <YesNoButton highlight={0} onClick={() => setSelected(1)} text="yes" top={20}
+                <YesNoButton highlight={1} onClick={() => setSelected(1)} text="yes" top={20}
+                             check = {<CheckCircleFilled style={{color: SEA_FOAM}}/>}
                              icon={<LikeFilled/>}/>
-                <YesNoButton highlight={1} onClick={() => setSelected(0)} text="no" top={20}
+                <YesNoButton highlight={0} onClick={() => setSelected(0)} text="no" top={20}
+                             check = {<CheckCircleFilled style={{color: CORAL}}/>}
                              icon={<DislikeFilled/>}/>
               </YesNoContainer>
 

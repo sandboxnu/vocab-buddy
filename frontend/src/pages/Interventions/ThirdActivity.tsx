@@ -1,12 +1,10 @@
-import React, {ReactElement, useEffect} from "react";
+import React, {ReactElement} from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import ReplayButton from '../../components/ReplayButton';
-import PurpleButton from "../../components/PurpleButton";
 import { SKY } from "../../constants/colors";
 import AutoPrompt from "../../components/AutoPrompt";
 import CloudImage from "../../components/CloudImage";
-import { LikeFilled, DislikeFilled } from "@ant-design/icons";
 import YesNoSelection from "../../components/YesNoSelection";
 import DelayedNextButton from "../../components/DelayedNextButton";
 
@@ -20,26 +18,6 @@ interface ThirdActivityProps {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const YesNoButton = styled(PurpleButton)`
-margin-left: 10px;
-margin-right: 10px;
-
-    @media (max-width: 900px) {
-    width:100%;
-  }
-  
-`;
-
-const NextButton = styled(PurpleButton)`
-margin-left: 10px;
-margin-right: 10px;
-
-    @media (max-width: 900px) {
-    width:100%;
-  }
-  
 `;
 
 const MainContent = styled.div`
@@ -96,7 +74,6 @@ const ButtonContainer = styled.div`
   @media (max-width: 900px) {
     flex-direction: column;
     justify-content: center;
-    
   }
 
   @media (min-width: 901px) {
@@ -104,13 +81,6 @@ const ButtonContainer = styled.div`
     justify-content: space-between;
   }
   
-`;
-
-const YesNoContainer = styled.div`
-  display: flex;
-  flex-grow: 1;
-  justify-content: end;
-  padding: 0em 0em 5em 0em;  
 `;
 
 const NextContainer = styled.div`
@@ -157,15 +127,6 @@ const CloudImageRight = styled(CloudImage)`
 
 const ThirdActivity  = ({ prompt, imageUrl, answer }: ThirdActivityProps) : ReactElement => {
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      // show nextbutton
-    }, 15000);
-    return () => clearTimeout(timer);
-  })
-
-
-
   return (
       <Layout>
         <Container>
@@ -188,7 +149,7 @@ const ThirdActivity  = ({ prompt, imageUrl, answer }: ThirdActivityProps) : Reac
             <ButtonContainer>
               <YesNoSelection correctAnswer={answer} />
               <NextContainer>
-                <DelayedNextButton text="next" top={20} delay={5000}/>;
+                <DelayedNextButton text="next" top={20} delay={10000}/>;
               </NextContainer>
             </ButtonContainer>
 
