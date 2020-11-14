@@ -6,7 +6,7 @@ import { CLOUD } from "../../constants/colors";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
 import PlayButton from "../../components/PlayButton";
-import ImagesComponent from "../../components/ImagesComponent";
+import WordImages from "../../components/WordImages";
 
 interface QuizWordsProps {
   assessment: Assessment;
@@ -99,7 +99,7 @@ const QuizWords = ({ assessment }: QuizWordsProps) => {
             />
           </Prompt>
           <ImageContainer>
-            <ImagesComponent images={shuffled} />
+            <WordImages images={shuffled} />
           </ImageContainer>
           <ButtonContainer>
             <PurpleButton text={"next"} onClick={nextWord} />

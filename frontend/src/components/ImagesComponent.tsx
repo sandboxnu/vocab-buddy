@@ -26,7 +26,7 @@ const Image = styled.img`
   `};
 `;
 
-const ImagesComponent: FunctionComponent<ImagesProp> = ({ images })  : ReactElement => {
+const WordImages: FunctionComponent<ImagesProp> = ({ images })  : ReactElement => {
   let [selected, setSelected] = useState(-1);
   return (
     <>
@@ -36,4 +36,4 @@ const ImagesComponent: FunctionComponent<ImagesProp> = ({ images })  : ReactElem
   );
 };
 
-export default ImagesComponent;
+export default WordImages;
