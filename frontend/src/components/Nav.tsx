@@ -1,5 +1,4 @@
 import { MenuOutlined } from "@ant-design/icons";
-import firebase from "firebase/app";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import styled from "styled-components";
@@ -104,7 +103,7 @@ const Nav : FunctionComponent<NavProps> = ( { showsBar }) : ReactElement => {
     return (
       <>
         <StyledLink to="/assessments">assessments</StyledLink>
-        <StyledLink to="/interventions" onClick={() => firebase.auth().signOut()}>
+        <StyledLink to="/interventions">
           interventions
         </StyledLink>
         <StyledLink to="/dashboard">dashboard</StyledLink>

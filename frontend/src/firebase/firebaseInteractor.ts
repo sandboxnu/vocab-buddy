@@ -191,4 +191,9 @@ export default class FirebaseInteractor {
   async resetPassword(email: string) {
     await this.auth.sendPasswordResetEmail(email);
   }
+
+  async signOut() {
+    await this.auth.signOut();
+    this.currentUser = null;
+  }
 }
