@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import { AccountType, Assessment, Context, Definition, Example, Interventions, InterventionWord, Review, User, Word } from "../models/types";
+import { AccountType, Assessment, AssessmentResult, Context, Definition, Example, Interventions, InterventionWord, Review, User, Word } from "../models/types";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -114,20 +114,23 @@ export default class FirebaseInteractor {
    *
    * @returns { Promise<Assessment> }
    */
-  async getAssessment(): Promise<Assessment> {
-    let assessmentRef = await this.db.collection("assessments").get();
-    let assessmentDocs = assessmentRef.docs;
+  async getAssessment(firebaseId: string): Promise<Assessment> {
+    let assessmentRef = await this.db.collection("assessments").doc(firebaseId).get();
     // Hardcoding first assessment for now
-    let assessment = assessmentDocs[0];
-    let { id, currentIndex } = assessment.data();
-    let wordPath = `assessments/${assessment.id}/words`;
-    let wordRef = await this.db.collection(wordPath).get();
-    let wordDocs = wordRef.docs;
+    let assessment = assessmentRef.data();
+    if (assessment == null) {
+      throw new Error(`Assessment with id ${firebaseId} does not exist`)
+    }
+    let { id, currentIndex, words } = assessment;
 
-    let words: Word[] = [];
-    for (let wordRef of wordDocs) {
+    let actualWords: Word[] = [];
+    for (let wordString of words) {
+      let wordRef = await this.db.collection("words").doc(wordString).get();
       let word = wordRef.data();
-      words.push({
+      if (word == null) {
+        throw new Error(`There is no word with the id ${wordString}`);
+      }
+      actualWords.push({
         value: word.value,
         correctImage: word.correctImage,
         incorrectImages: word.incorrectImages,
@@ -135,10 +138,16 @@ export default class FirebaseInteractor {
         createdAt: word.dateCreated.toDate(),
       });
     }
-    words.sort(
+    actualWords.sort(
       (word1, word2) => word1.createdAt.getTime() - word2.createdAt.getTime()
     );
-    return { id, currentIndex, words };
+    return { id, currentIndex, words: actualWords, firebaseId: assessment.id };
+  }
+
+  async updateAssessment(id: string, responses: AssessmentResult[]) {
+    await Promise.all(responses.map(async (response) => {
+      return await this.db.collection("assessments").doc(id).collection("results").doc(response.word).set({correct: response.correct});
+    }))
   }
 
   async getWord(id: string) : Promise<Word> {
