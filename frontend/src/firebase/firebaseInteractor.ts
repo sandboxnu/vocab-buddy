@@ -119,7 +119,7 @@ export default class FirebaseInteractor {
     this.unsubscribe?.apply(this);
     let interventions = await this.db.collection("interventions").get();
     let intervention = interventions.docs[0];
-    intervention.ref.set({
+    intervention.ref.update({
       wordIdx,
       activityIdx,
     })

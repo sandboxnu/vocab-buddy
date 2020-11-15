@@ -13,28 +13,32 @@ const interventionReducer = (state: InterventionState = initialState, action: Ac
   switch (action.type) {
     case ActionTypes.GET_INTERVENTIONS_SUCCESS:
       return {
+        currentWordIdx: payload.interventions.wordIdx,
+        currentActivityIdx: payload.interventions.activityIdx,
+        interventions: payload.interventions.wordList,
+      };
+    case ActionTypes.UPDATE_INTERVENTION_SUCCESS:
+      return {
         ...state,
-        interventions: payload.interventions,
+        currentWordIdx: payload.wordIdx,
+        currentActivityIdx: payload.activityIdx,
       };
     default:
       return state;
   }
 };
 
-export const getCurrentIntervention = (state: RootStateOrAny) => {
-  return (state.interventions.interventions || []);
-};
 
 export const getCurrentInterventionWordIdx = (state: RootStateOrAny) => {
-  return getCurrentIntervention(state).wordIdx;
+  return state.interventions.currentWordIdx;
 };
 
 export const getCurrentInterventionActivityIdx = (state: RootStateOrAny) => {
-  return getCurrentIntervention(state).activityIdx;
+  return state.interventions.currentActivityIdx;
 };
 
 export const getCurrentInverventionWordList = (state: RootStateOrAny) => {
-  return getCurrentIntervention(state).wordList;
+  return state.interventions.interventions;
 };
 
 export default interventionReducer;

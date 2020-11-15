@@ -7,13 +7,17 @@ import PurpleButton from "../../components/PurpleButton";
 import { SKY } from "../../constants/colors";
 import { connect } from "react-redux";
 import { updateIntervention } from "./data/actions"; 
-import { getNextWordIdx, getNextActivityIdx } from "../../constants/utils";
-import { getCurrentInterventionWordIdx, getCurrentInterventionActivityIdx } from "./data/reducer"; 
+import { 
+  // getNextWordIdx, 
+  getNextActivityIdx } from "../../constants/utils";
+import { 
+  // getCurrentInterventionWordIdx, 
+  getCurrentInterventionActivityIdx } from "./data/reducer"; 
 
 interface FourthActivityProps {
   title: string;
   imageUrl: string;
-  wordIdx: number,
+  // wordIdx: number,
   activityIdx: number, 
   updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
 }
@@ -77,7 +81,7 @@ const ButtonContainer = styled.div`
 
 const connector = connect(
   (state) => ({
-    wordIdx: getCurrentInterventionWordIdx(state),
+    // wordIdx: getCurrentInterventionWordIdx(state),
     activityIdx: getCurrentInterventionActivityIdx(state),
   }),
   {
@@ -88,20 +92,19 @@ const connector = connect(
 const FourthActivity = ({
   title,
   imageUrl,
-  wordIdx, 
+  // wordIdx, 
   activityIdx,
   updateIntervention,
 }: FourthActivityProps): ReactElement => {
   const nextActivityIdx = getNextActivityIdx(activityIdx);
-  const nextWordIdx = getNextWordIdx(wordIdx);
+  // const nextWordIdx = getNextWordIdx(wordIdx);
   return (
     <Layout>
       <Container>
         <MainContent>
           <DescriptionText>review with new picture</DescriptionText>
           <WordTitle>
-            {/* {title} */}
-            Miniscule
+            {title}
           </WordTitle>
           <Prompt>
             <PromptSpeech
@@ -109,10 +112,10 @@ const FourthActivity = ({
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
-          {/* <Image src={imageUrl}/> */}
-          <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule3.png?alt=media&token=cb4f4cf6-a1d0-465d-a972-087230d2ff05" />
+          <Image src={imageUrl}/>
           <ButtonContainer>
-            <PurpleButton text={"next"} top={20} onClick={() => updateIntervention({wordIdx: nextWordIdx, activityIdx: nextActivityIdx})} />
+            // TODO: change 0 to nextWordIdx
+            <PurpleButton text={"next"} top={20} onClick={() => updateIntervention({wordIdx: 0, activityIdx: nextActivityIdx})} />
           </ButtonContainer>
         </MainContent>
       </Container>

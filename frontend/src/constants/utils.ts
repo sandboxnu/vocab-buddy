@@ -3,5 +3,6 @@ export const getNextWordIdx = (wordIdx: number) => {
 }
 
 export const getNextActivityIdx = (activityIdx: number) => {
-  return activityIdx === 3 ? 0 : activityIdx+1;
+  // TODO: change to 3
+  return activityIdx === 1 ? 0 : activityIdx+1;
 }

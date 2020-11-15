@@ -8,7 +8,7 @@ import ReplayButton from '../../components/ReplayButton';
 import { SKY } from "../../constants/colors";
 import { connect } from "react-redux";
 import { updateIntervention } from "./data/actions"; 
-import { getNextWordIdx, getNextActivityIdx } from "../../constants/utils";
+import { getNextActivityIdx } from "../../constants/utils";
 import { getCurrentInterventionWordIdx, getCurrentInterventionActivityIdx } from "./data/reducer"; 
 
 interface FirstActivityProps {
@@ -103,8 +103,7 @@ const FirstActivity = ({
         <MainContent>
           <DescriptionText>introduction + definition</DescriptionText>
           <WordTitle>
-            {/* {title} */}
-            Miniscule
+            {title}
           </WordTitle>
           <Prompt>
             <PromptSpeech
@@ -112,8 +111,7 @@ const FirstActivity = ({
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
-          {/* <Image src={imageUrl}/> */}
-          <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule2.png?alt=media&amp;token=f14c983c-6fff-475d-84ba-07b7b86ea2d5" />
+          <Image src={imageUrl}/>
           <ButtonContainer>
             <Blocker afterSeconds={5} message='Click on the next button to continue' repeatable={false}>
               <PurpleButton text={"next"} top={20} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />

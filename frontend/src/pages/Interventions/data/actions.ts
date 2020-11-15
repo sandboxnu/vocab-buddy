@@ -30,8 +30,9 @@ export const updateIntervention = {
     type: ActionTypes.UPDATE_INTERVENTION_REQUEST,
     payload: { wordIdx, activityIdx }
   }),
-  success: (): Action => ({
+  success: ({ wordIdx, activityIdx }: UpdateInterventionAction): Action => ({
     type: ActionTypes.UPDATE_INTERVENTION_SUCCESS,
+    payload: { wordIdx, activityIdx }
   }),
   error: ({ error }: UpdateInterventionAction): Action => ({
     type: ActionTypes.UPDATE_INTERVENTION_ERROR,

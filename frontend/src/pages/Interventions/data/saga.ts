@@ -31,8 +31,8 @@ function* watchUpdateIntervention(action : Action) {
   try {
     let { wordIdx, activityIdx } = action.payload;
     yield call(() => firebaseInteractor.updateIntervention(wordIdx, activityIdx));
-    yield put(updateIntervention.success());
-    console.log(wordIdx);
+    yield put(updateIntervention.success({wordIdx, activityIdx}));
+    console.log(activityIdx);
   } catch (error) {
     yield put(updateIntervention.error({ error }));
   }
