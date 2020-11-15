@@ -5,6 +5,7 @@ import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
 import PromptSpeech from "../../components/PromptSpeech";
 import ReplayButton from "../../components/ReplayButton";
 import PurpleButton from "../../components/PurpleButton";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 
 interface SecondActivityProps {
   title: string;
@@ -62,6 +63,7 @@ const ButtonContainer = styled.div`
 const UnselectedImage = styled.img`
   border-radius: 20px;
   margin: 20px;
+  padding: 10px;
 
   :hover {
     cursor: pointer;
@@ -78,7 +80,7 @@ const CorrectImage = styled.img`
     opacity: 0.8;
   }
 
-  border: 10px solid ${CORAL};
+  border: 10px solid ${SEA_FOAM};
 `;
 
 const IncorrectImage = styled.img`
@@ -90,7 +92,34 @@ const IncorrectImage = styled.img`
     opacity: 0.8;
   }
 
-  border: 10px solid ${SEA_FOAM};
+  border: 10px solid ${CORAL};
+`;
+
+const ImageContainer = styled.div`
+  display: inline-block;
+  position: relative;
+`;
+
+const RedCircle = styled.div`
+  position: absolute;
+  text-align: center;
+  top: 37%;
+  left: 41.5%;
+  height: 80px;
+  width: 80px;
+  background-color: ${CORAL};
+  border-radius: 50%;
+`;
+
+const GreenCircle = styled.div`
+  position: absolute;
+  text-align: center;
+  top: 37%;
+  left: 41.5%;
+  height: 80px;
+  width: 80px;
+  background-color: ${SEA_FOAM};
+  border-radius: 50%;
 `;
 
 const correctUrl = {
@@ -149,12 +178,35 @@ const SecondActivity = ({
             />
           </Prompt>
           {imageUrls.map((img, index) => (
-            <Image
-              url={img.url}
-              correct={img.correct}
-              selected={index === selectedIndex}
-              onClick={() => setSelectedIndex(index)}
-            />
+            <ImageContainer>
+              <Image
+                url={img.url}
+                correct={img.correct}
+                selected={index === selectedIndex}
+                onClick={() => setSelectedIndex(index)}
+              />
+              {!img.correct && index === selectedIndex && (
+                <RedCircle>
+                  <CloseOutlined
+                    style={{
+                      fontSize: "40px",
+                      marginTop: "20px",
+                      color: "white",
+                    }}
+                  />
+                </RedCircle>
+              )}
+              {img.correct && index === selectedIndex && (
+                <GreenCircle>
+                  <CheckOutlined
+                    style={{
+                      fontSize: "40px",
+                      marginTop: "20px",
+                    }}
+                  />
+                </GreenCircle>
+              )}
+            </ImageContainer>
           ))}
           <ButtonContainer>
             <PurpleButton text="next" top={20} />
