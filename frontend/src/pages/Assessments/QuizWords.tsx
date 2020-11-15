@@ -6,6 +6,7 @@ import { CLOUD } from "../../constants/colors";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
 import PlayButton from "../../components/PlayButton";
+import WordImages from "../../components/WordImages";
 
 interface QuizWordsProps {
   assessment: Assessment;
@@ -56,19 +57,6 @@ const PromptText = styled.span`
 const ImageContainer = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 30% 30%;
-`;
-
-const Image = styled.img`
-  border-radius: 20px;
-  width: 100%;
-  height: 100%;
-  transform: scale(0.8);
-
-  :hover {
-    cursor: pointer;
-    opacity: 0.8;
-  }
 `;
 
 const ButtonContainer = styled.div`
@@ -111,9 +99,7 @@ const QuizWords = ({ assessment }: QuizWordsProps) => {
             />
           </Prompt>
           <ImageContainer>
-            {shuffled.map((img: string, idx: number) => {
-              return <Image key={idx} src={img} />;
-            })}
+            <WordImages images={shuffled} />
           </ImageContainer>
           <ButtonContainer>
             <PurpleButton text={"next"} onClick={nextWord} />
