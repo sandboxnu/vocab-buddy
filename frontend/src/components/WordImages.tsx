@@ -1,10 +1,13 @@
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import styled from "styled-components";
 import { SEA_FOAM } from "../constants/colors";
 
 
 interface ImagesProp {
   images: string[],
+  setSelected: (index: number) => void;
+  hasValue: boolean,
+  selected: number
 }
 
 interface ImageProp {
@@ -26,12 +29,16 @@ const Image = styled.img`
   `};
 `;
 
-const WordImages: FunctionComponent<ImagesProp> = ({ images })  : ReactElement => {
-  let [selected, setSelected] = useState(-1);
+const WordImages: FunctionComponent<ImagesProp> = ({ images, hasValue, setSelected, selected })  : ReactElement => {
+  const selectIndex = (idx: number) => {
+    if (!hasValue) {
+      setSelected(idx);
+    }
+  }
   return (
     <>
     {images.map((img: string, idx: number) => {
-      return (<Image src={img} key={idx} highlight={selected===idx} onClick={() => setSelected(idx)} />)})}
+      return (<Image src={img} key={idx} highlight={selected===idx} onClick={() => selectIndex(idx)} />)})}
     </>
   );
 };
