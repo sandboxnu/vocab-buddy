@@ -1,9 +1,10 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
+import Blocker from "../../components/Blocker";
 import Layout from "../../components/Layout";
 import PromptSpeech from "../../components/PromptSpeech";
-import ReplayButton from "../../components/ReplayButton";
 import PurpleButton from "../../components/PurpleButton";
+import ReplayButton from '../../components/ReplayButton';
 import { SKY } from "../../constants/colors";
 import { connect } from "react-redux";
 import { updateIntervention } from "./data/actions"; 
@@ -114,7 +115,9 @@ const FirstActivity = ({
           {/* <Image src={imageUrl}/> */}
           <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule2.png?alt=media&amp;token=f14c983c-6fff-475d-84ba-07b7b86ea2d5" />
           <ButtonContainer>
-            <PurpleButton text={"next"} top={20} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />
+            <Blocker afterSeconds={5} message='Click on the next button to continue' repeatable={false}>
+              <PurpleButton text={"next"} top={20} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />
+            </Blocker>
           </ButtonContainer>
         </MainContent>
       </Container>

@@ -4,15 +4,15 @@ import {
   BrowserRouter as Router,
   Redirect,
   Route,
-  Switch,
+  Switch
 } from "react-router-dom";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Assessments from "./pages/Assessments/Assessments";
 import Quiz from "./pages/Assessments/Quiz";
-import CreateUser from "./pages/Login/CreateUser";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Interventions from "./pages/Interventions/Interventions";
 import Activities from "./pages/Interventions/Activities";
+import CreateUser from "./pages/Login/CreateUser";
 import Login from "./pages/Login/Login";
 
 const App = (): ReactElement => {
