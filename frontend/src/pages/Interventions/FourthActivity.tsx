@@ -6,7 +6,7 @@ import ReplayButton from "../../components/ReplayButton";
 import PurpleButton from "../../components/PurpleButton";
 import { SKY } from "../../constants/colors";
 
-interface FirstActivityProps {
+interface FourthActivityProps {
   title: string;
   imageUrl: string;
 }
@@ -68,27 +68,27 @@ const ButtonContainer = styled.div`
   justify-content: end;
 `;
 
-const FirstActivity = ({
+const FourthActivity = ({
   title,
   imageUrl,
-}: FirstActivityProps): ReactElement => {
+}: FourthActivityProps): ReactElement => {
   return (
     <Layout>
       <Container>
         <MainContent>
-          <DescriptionText>introduction + definition</DescriptionText>
+          <DescriptionText>review with new picture</DescriptionText>
           <WordTitle>
             {/* {title} */}
             Miniscule
           </WordTitle>
           <Prompt>
             <PromptSpeech
-              prompt="Look at that miniscule ant! It is really, really, small."
+              prompt="Say, miniscule means really, really small"
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
           {/* <Image src={imageUrl}/> */}
-          <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule2.png?alt=media&amp;token=f14c983c-6fff-475d-84ba-07b7b86ea2d5" />
+          <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule3.png?alt=media&token=cb4f4cf6-a1d0-465d-a972-087230d2ff05" />
           <ButtonContainer>
             <PurpleButton text={"next"} top={20} />
           </ButtonContainer>
@@ -98,4 +98,4 @@ const FirstActivity = ({
   );
 };
 
-export default FirstActivity;
+export default FourthActivity;
