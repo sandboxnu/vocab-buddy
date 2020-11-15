@@ -1,7 +1,7 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../../../firebase/firebaseInteractor";
-import { ActionTypes } from "../../../models/types";
-import { getInterventions } from "./actions";
+import { Action, ActionTypes } from "../../../models/types";
+import { getInterventions, updateIntervention } from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -11,6 +11,7 @@ export default function* interventionSaga() {
 
 function* root() {
   yield takeLatest(ActionTypes.GET_INTERVENTIONS_REQUEST, watchGetInterventions);
+  yield takeLatest(ActionTypes.UPDATE_INTERVENTION_REQUEST, watchUpdateIntervention);
 }
 
 function* watchGetInterventions() {
@@ -23,5 +24,16 @@ function* watchGetInterventions() {
     yield put(getInterventions.success({ interventions }));
   } catch (error) {
     yield put(getInterventions.error({ error }));
+  }
+}
+
+function* watchUpdateIntervention(action : Action) {
+  try {
+    let { wordIdx, activityIdx } = action.payload;
+    yield call(() => firebaseInteractor.updateIntervention(wordIdx, activityIdx));
+    yield put(updateIntervention.success());
+    console.log(wordIdx);
+  } catch (error) {
+    yield put(updateIntervention.error({ error }));
   }
 }

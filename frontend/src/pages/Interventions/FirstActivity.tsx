@@ -5,10 +5,17 @@ import PromptSpeech from "../../components/PromptSpeech";
 import ReplayButton from "../../components/ReplayButton";
 import PurpleButton from "../../components/PurpleButton";
 import { SKY } from "../../constants/colors";
+import { connect } from "react-redux";
+import { updateIntervention } from "./data/actions"; 
+import { getNextWordIdx, getNextActivityIdx } from "../../constants/utils";
+import { getCurrentInterventionWordIdx, getCurrentInterventionActivityIdx } from "./data/reducer"; 
 
 interface FirstActivityProps {
   title: string;
   imageUrl: string;
+  wordIdx: number,
+  activityIdx: number, 
+  updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
 }
 
 const Container = styled.div`
@@ -68,10 +75,27 @@ const ButtonContainer = styled.div`
   justify-content: end;
 `;
 
+
+const connector = connect(
+  (state) => ({
+    wordIdx: getCurrentInterventionWordIdx(state),
+    activityIdx: getCurrentInterventionActivityIdx(state),
+  }),
+  {
+    updateIntervention: updateIntervention.request,
+  }
+);
+
 const FirstActivity = ({
   title,
   imageUrl,
+  wordIdx, 
+  activityIdx,
+  updateIntervention,
 }: FirstActivityProps): ReactElement => {
+  
+  const nextActivityIdx = getNextActivityIdx(activityIdx);
+
   return (
     <Layout>
       <Container>
@@ -90,7 +114,7 @@ const FirstActivity = ({
           {/* <Image src={imageUrl}/> */}
           <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule2.png?alt=media&amp;token=f14c983c-6fff-475d-84ba-07b7b86ea2d5" />
           <ButtonContainer>
-            <PurpleButton text={"next"} top={20} />
+            <PurpleButton text={"next"} top={20} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />
           </ButtonContainer>
         </MainContent>
       </Container>
@@ -98,4 +122,4 @@ const FirstActivity = ({
   );
 };
 
-export default FirstActivity;
+export default connector(FirstActivity);

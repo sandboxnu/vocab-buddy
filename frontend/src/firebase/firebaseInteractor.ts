@@ -110,6 +110,22 @@ export default class FirebaseInteractor {
   }
 
   /**
+   * update intervention idx number
+   */
+  async updateIntervention(
+    wordIdx: number,
+    activityIdx: number
+  ) {
+    this.unsubscribe?.apply(this);
+    let interventions = await this.db.collection("interventions").get();
+    let intervention = interventions.docs[0];
+    intervention.ref.set({
+      wordIdx,
+      activityIdx,
+    })
+  }
+
+  /**
    * Gets all possible words.
    *
    * @returns { Promise<Assessment> }

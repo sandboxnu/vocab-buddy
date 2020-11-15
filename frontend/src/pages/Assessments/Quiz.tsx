@@ -22,7 +22,7 @@ const connector = connect(
 const Quiz = ({ getAssessment, assessment }: QuizProps) => {
   useEffect(() => {
     if (!assessment) getAssessment();
-  }, [assessment, getAssessment]);
+  }, [assessment]);
 
   if (!assessment) {
     return <h1>Loading...</h1>;

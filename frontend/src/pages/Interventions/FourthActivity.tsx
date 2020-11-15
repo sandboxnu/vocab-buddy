@@ -5,10 +5,17 @@ import PromptSpeech from "../../components/PromptSpeech";
 import ReplayButton from "../../components/ReplayButton";
 import PurpleButton from "../../components/PurpleButton";
 import { SKY } from "../../constants/colors";
+import { connect } from "react-redux";
+import { updateIntervention } from "./data/actions"; 
+import { getNextWordIdx, getNextActivityIdx } from "../../constants/utils";
+import { getCurrentInterventionWordIdx, getCurrentInterventionActivityIdx } from "./data/reducer"; 
 
 interface FourthActivityProps {
   title: string;
   imageUrl: string;
+  wordIdx: number,
+  activityIdx: number, 
+  updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
 }
 
 const Container = styled.div`
@@ -68,10 +75,25 @@ const ButtonContainer = styled.div`
   justify-content: end;
 `;
 
+const connector = connect(
+  (state) => ({
+    wordIdx: getCurrentInterventionWordIdx(state),
+    activityIdx: getCurrentInterventionActivityIdx(state),
+  }),
+  {
+    updateIntervention: updateIntervention.request,
+  }
+);
+
 const FourthActivity = ({
   title,
   imageUrl,
+  wordIdx, 
+  activityIdx,
+  updateIntervention,
 }: FourthActivityProps): ReactElement => {
+  const nextActivityIdx = getNextActivityIdx(activityIdx);
+  const nextWordIdx = getNextWordIdx(wordIdx);
   return (
     <Layout>
       <Container>
@@ -90,7 +112,7 @@ const FourthActivity = ({
           {/* <Image src={imageUrl}/> */}
           <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule3.png?alt=media&token=cb4f4cf6-a1d0-465d-a972-087230d2ff05" />
           <ButtonContainer>
-            <PurpleButton text={"next"} top={20} />
+            <PurpleButton text={"next"} top={20} onClick={() => updateIntervention({wordIdx: nextWordIdx, activityIdx: nextActivityIdx})} />
           </ButtonContainer>
         </MainContent>
       </Container>
@@ -98,4 +120,4 @@ const FourthActivity = ({
   );
 };
 
-export default FourthActivity;
+export default connector(FourthActivity);

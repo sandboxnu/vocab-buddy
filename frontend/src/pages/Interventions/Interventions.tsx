@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import LandingPage from "../../components/LandingPage";
 import { ASSESSMENTS_LANDING } from "../../constants/images";
 import { getInterventions } from "./data/actions";
+import { useHistory } from "react-router-dom";
 
 interface InterventionsProps {
   getInterventions: () => void;
@@ -13,7 +14,13 @@ const connector = connect((state) => state, {
 })
 
 const Interventions : FunctionComponent<InterventionsProps> = ({ getInterventions }) : ReactElement => {
-  return <LandingPage onBegin={() => getInterventions()} image={ASSESSMENTS_LANDING} title='interventions' subtitle='start an intervention'/>;
+  const history = useHistory();
+
+  return <LandingPage 
+  onBegin={() => history.push('/interventions/1')} 
+  image={ASSESSMENTS_LANDING} 
+  title='interventions' 
+  subtitle='start an intervention'/>;
 };
 
 export default connector(Interventions);

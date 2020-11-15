@@ -21,9 +21,20 @@ const interventionReducer = (state: InterventionState = initialState, action: Ac
   }
 };
 
-// is this correct?
-export const getAllInterventions = (state: RootStateOrAny) => {
-  return state.interventions.wordList;
+export const getCurrentIntervention = (state: RootStateOrAny) => {
+  return (state.interventions.interventions || []);
+};
+
+export const getCurrentInterventionWordIdx = (state: RootStateOrAny) => {
+  return getCurrentIntervention(state).wordIdx;
+};
+
+export const getCurrentInterventionActivityIdx = (state: RootStateOrAny) => {
+  return getCurrentIntervention(state).activityIdx;
+};
+
+export const getCurrentInverventionWordList = (state: RootStateOrAny) => {
+  return getCurrentIntervention(state).wordList;
 };
 
 export default interventionReducer;

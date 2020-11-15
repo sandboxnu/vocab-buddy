@@ -5,6 +5,12 @@ interface GetInterventionsAction {
   interventions?: Interventions,
 }
 
+interface UpdateInterventionAction {
+  error?: string,
+  wordIdx?: number,
+  activityIdx?: number,
+}
+
 export const getInterventions = {
   request: (): Action => ({
     type: ActionTypes.GET_INTERVENTIONS_REQUEST,
@@ -18,3 +24,17 @@ export const getInterventions = {
     payload: { interventions },
   }),
 };
+
+export const updateIntervention = {
+  request: ({ wordIdx, activityIdx }: UpdateInterventionAction): Action => ({
+    type: ActionTypes.UPDATE_INTERVENTION_REQUEST,
+    payload: { wordIdx, activityIdx }
+  }),
+  success: (): Action => ({
+    type: ActionTypes.UPDATE_INTERVENTION_SUCCESS,
+  }),
+  error: ({ error }: UpdateInterventionAction): Action => ({
+    type: ActionTypes.UPDATE_INTERVENTION_ERROR,
+    payload: { error },
+  })
+}

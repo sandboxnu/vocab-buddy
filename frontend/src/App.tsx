@@ -12,6 +12,7 @@ import Quiz from "./pages/Assessments/Quiz";
 import CreateUser from "./pages/Login/CreateUser";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Interventions from "./pages/Interventions/Interventions";
+import Activities from "./pages/Interventions/Activities";
 import Login from "./pages/Login/Login";
 
 const App = (): ReactElement => {
@@ -22,7 +23,8 @@ const App = (): ReactElement => {
         <Route exact path="/login" component={Login} />
         <Route path="/sign_up" component={CreateUser} />
         <AuthenticatedRoute path="/dashboard" component={Dashboard} />
-        <AuthenticatedRoute path="/interventions" component={Interventions} />
+        <AuthenticatedRoute exact path="/interventions" component={Interventions} />
+        <AuthenticatedRoute exact path="/interventions/:id" component={Activities} />
         <AuthenticatedRoute exact path="/assessments/:id" component={Quiz} />
         <AuthenticatedRoute path="/assessments" component={Assessments} />
       </Switch>
