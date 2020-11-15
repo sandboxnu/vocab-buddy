@@ -91,7 +91,7 @@ const FirstActivity = ({
           {/* <Image src={imageUrl}/> */}
           <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule2.png?alt=media&amp;token=f14c983c-6fff-475d-84ba-07b7b86ea2d5" />
           <ButtonContainer>
-            <Blocker afterSeconds={5} message='Click on the next button to continue'>
+            <Blocker afterSeconds={5} message='Click on the next button to continue' repeatable={false}>
               <PurpleButton text={"next"} top={20}/>
             </Blocker>
           </ButtonContainer>

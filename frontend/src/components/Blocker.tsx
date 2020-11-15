@@ -4,11 +4,12 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 interface BlockerProps {
     children: ReactElement,
     afterSeconds: number,
-    message: string
+    message: string,
+    repeatable: boolean
 }
 
-const Blocker: FunctionComponent<BlockerProps> = ({ afterSeconds, children, message }) : ReactElement => {
-    const [lastTap] = useState(new Date());
+const Blocker: FunctionComponent<BlockerProps> = ({ afterSeconds, children, message, repeatable }) : ReactElement => {
+    const [lastTap, setLastTap] = useState(new Date());
     const [currentTime, setCurrentTime] = useState(new Date());
     const [hasShown, setHasShown] = useState(false);
     let onClick = children.props.onClick;
@@ -16,7 +17,11 @@ const Blocker: FunctionComponent<BlockerProps> = ({ afterSeconds, children, mess
         if (onClick) {
             onClick()
         }
-        setHasShown(true);
+        if (repeatable) {
+            setLastTap(new Date());
+        } else {
+            setHasShown(true);
+        }
     }
     useEffect(() => {
         let interval = window.setInterval(() => {
@@ -27,12 +32,20 @@ const Blocker: FunctionComponent<BlockerProps> = ({ afterSeconds, children, mess
     const timeSince = currentTime.getTime() - lastTap.getTime();
     let shouldShowBlocker = timeSince >= afterSeconds * 1000;
 
+    const finishedShowing = () => {
+        if (repeatable) {
+            setLastTap(new Date());
+        } else {
+            setHasShown(true);
+        }
+    }
+
     return (<>
         <Modal
         title="Hey there!"
         visible={shouldShowBlocker && !hasShown}
-        afterClose={() => setHasShown(true)}
-        onOk={() => setHasShown(true)}
+        afterClose={finishedShowing}
+        onOk={finishedShowing}
         closable={false}
         cancelButtonProps={{style: {display: 'none'}}}
       >
