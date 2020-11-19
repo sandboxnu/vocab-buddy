@@ -25,6 +25,10 @@ const ButtonContainer = styled(Button)`
     color: #fff;
   }
 
+  :focus {
+    background: ${INK};
+  }
+
   :hover {
     background: ${INK_HOVER};
   }
