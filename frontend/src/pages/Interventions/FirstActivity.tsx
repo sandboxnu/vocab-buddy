@@ -9,13 +9,13 @@ import { SKY } from "../../constants/colors";
 import { connect } from "react-redux";
 import { updateIntervention } from "./data/actions"; 
 import { getNextActivityIdx } from "../../constants/utils";
-import { getCurrentInterventionWordIdx, getCurrentInterventionActivityIdx } from "./data/reducer"; 
+import { Interventions } from "../../models/types";
+import { getCurrentInterventions } from "./data/reducer"; 
 
 interface FirstActivityProps {
-  title: string;
-  imageUrl: string;
-  wordIdx: number,
-  activityIdx: number, 
+  title: string,
+  imageUrl: string,
+  interventions: Interventions,
   updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
 }
 
@@ -79,8 +79,7 @@ const ButtonContainer = styled.div`
 
 const connector = connect(
   (state) => ({
-    wordIdx: getCurrentInterventionWordIdx(state),
-    activityIdx: getCurrentInterventionActivityIdx(state),
+    interventions: getCurrentInterventions(state),
   }),
   {
     updateIntervention: updateIntervention.request,
@@ -90,11 +89,12 @@ const connector = connect(
 const FirstActivity = ({
   title,
   imageUrl,
-  wordIdx, 
-  activityIdx,
+  interventions,
   updateIntervention,
 }: FirstActivityProps): ReactElement => {
-  
+
+  const activityIdx = interventions && interventions.activityIdx;
+  const wordIdx = interventions && interventions.wordIdx;
   const nextActivityIdx = getNextActivityIdx(activityIdx);
 
   return (

@@ -10,15 +10,13 @@ import { updateIntervention } from "./data/actions";
 import { 
   // getNextWordIdx, 
   getNextActivityIdx } from "../../constants/utils";
-import { 
-  // getCurrentInterventionWordIdx, 
-  getCurrentInterventionActivityIdx } from "./data/reducer"; 
+import { Interventions } from "../../models/types";
+import { getCurrentInterventions } from "./data/reducer"; 
 
 interface FourthActivityProps {
   title: string;
   imageUrl: string;
-  // wordIdx: number,
-  activityIdx: number, 
+  interventions: Interventions, 
   updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
 }
 
@@ -81,8 +79,7 @@ const ButtonContainer = styled.div`
 
 const connector = connect(
   (state) => ({
-    // wordIdx: getCurrentInterventionWordIdx(state),
-    activityIdx: getCurrentInterventionActivityIdx(state),
+    interventions: getCurrentInterventions(state),
   }),
   {
     updateIntervention: updateIntervention.request,
@@ -92,10 +89,11 @@ const connector = connect(
 const FourthActivity = ({
   title,
   imageUrl,
-  // wordIdx, 
-  activityIdx,
+  interventions,
   updateIntervention,
 }: FourthActivityProps): ReactElement => {
+  const activityIdx = interventions && interventions.activityIdx;
+  const wordIdx = interventions && interventions.wordIdx;
   const nextActivityIdx = getNextActivityIdx(activityIdx);
   // const nextWordIdx = getNextWordIdx(wordIdx);
   return (
@@ -114,7 +112,7 @@ const FourthActivity = ({
           </Prompt>
           <Image src={imageUrl}/>
           <ButtonContainer>
-            // TODO: change 0 to nextWordIdx
+            {/* TODO: change 0 to nextWordIdx */}
             <PurpleButton text={"next"} top={20} onClick={() => updateIntervention({wordIdx: 0, activityIdx: nextActivityIdx})} />
           </ButtonContainer>
         </MainContent>

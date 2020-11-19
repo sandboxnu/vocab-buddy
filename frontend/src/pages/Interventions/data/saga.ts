@@ -30,9 +30,13 @@ function* watchGetInterventions() {
 function* watchUpdateIntervention(action : Action) {
   try {
     let { wordIdx, activityIdx } = action.payload;
-    yield call(() => firebaseInteractor.updateIntervention(wordIdx, activityIdx));
-    yield put(updateIntervention.success({wordIdx, activityIdx}));
-    console.log(activityIdx);
+    let interventions;
+    const updateAndGetNewInterventions = async () => {
+      await firebaseInteractor.updateIntervention(wordIdx, activityIdx);
+      interventions = await firebaseInteractor.getIntervention("CYf3VgYXDn72omXhuy0A");
+    }
+    yield call(updateAndGetNewInterventions);
+    yield put(updateIntervention.success({ interventions }));
   } catch (error) {
     yield put(updateIntervention.error({ error }));
   }

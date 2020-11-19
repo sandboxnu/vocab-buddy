@@ -2,26 +2,20 @@ import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import Layout from "../../components/Layout";
 import { connect } from "react-redux";
 import { 
-  getCurrentInverventionWordList, 
-  getCurrentInterventionActivityIdx, 
-  getCurrentInterventionWordIdx } from "../Interventions/data/reducer";
-import { InterventionWord } from "../../models/types";
+  getCurrentInterventions } from "../Interventions/data/reducer";
+import { Interventions } from "../../models/types";
 import { getInterventions } from "./data/actions";
 import FirstActivity from "../Interventions/FirstActivity";
 import FourthActivity from "../Interventions/FourthActivity";
 
 interface ActivityProps {
-  wordList: InterventionWord[], 
-  currActivityIdx: number,
-  currentWordIdx: number,
+  interventions: Interventions,
   getInterventions: () => void;
 }
 
 const connector = connect(
   (state) => ({
-    wordList: getCurrentInverventionWordList(state),
-    currActivityIdx: getCurrentInterventionActivityIdx(state),
-    currentWordIdx: getCurrentInterventionWordIdx(state),
+    interventions: getCurrentInterventions(state),
   }),
   {
     getInterventions: getInterventions.request,
@@ -29,11 +23,14 @@ const connector = connect(
 );
 
 
-const Activities: FunctionComponent<ActivityProps> = ({ wordList, getInterventions, currActivityIdx, currentWordIdx }): ReactElement => {
+const Activities: FunctionComponent<ActivityProps> = ({ interventions, getInterventions }): ReactElement => {
   useEffect(() => {
-    if (!wordList) getInterventions();
-  }, [wordList, getInterventions]);
+    if (!interventions) getInterventions();
+  }, [interventions, getInterventions]);
 
+  const currentWordIdx = interventions && interventions.wordIdx;
+  const currentActivityIdx = interventions && interventions.activityIdx;
+  const wordList = interventions && interventions.wordList;
   const activities = wordList && wordList[currentWordIdx].activities;
   const title = wordList && wordList[currentWordIdx].word.value;
 
@@ -54,7 +51,7 @@ const Activities: FunctionComponent<ActivityProps> = ({ wordList, getInterventio
 
   return (
     <>
-    {wordList ? ActivityComponent(currActivityIdx) : <Layout>Loading</Layout>}
+    {wordList ? ActivityComponent(currentActivityIdx) : <Layout>Loading</Layout>}
     </>
   )
 };

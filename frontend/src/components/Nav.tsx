@@ -1,6 +1,6 @@
 import { MenuOutlined } from "@ant-design/icons";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from "styled-components";
 import { INK, SEA_FOAM } from "../constants/colors";
 
@@ -12,7 +12,7 @@ const NavBar = styled.div`
   background: clear;
   display: flex;
   height: 80px;
-  justify-content: space-between;
+  justify-content: ${({showsBar} : NavProps) => showsBar ? 'space-between' : 'center'};
   position: fixed;
   width: 100%;
   z-index: 5;
@@ -40,6 +40,10 @@ const ProjectName = styled.div`
   text-transform: lowercase;
 `;
 
+interface LinkAttributes {
+  isCurrent: boolean;
+};
+
 const StyledLink = styled(Link)`
   color: #000;
   font-family: "Rubik", sans-serif;
@@ -47,6 +51,7 @@ const StyledLink = styled(Link)`
   font-weight: 700;
   text-decoration: none;
   text-transform: lowercase;
+  border-bottom: ${({ isCurrent } : LinkAttributes) => isCurrent ? '4px solid ' + SEA_FOAM : '0px' };
 
   :hover {
     color: #000;
@@ -57,8 +62,12 @@ const StyledLink = styled(Link)`
 const StyledMenuIcon = styled(MenuOutlined)`
   align-items: center;
   display: flex;
+  position: fixed;
   font-size: 25px;
-  margin-right: 1.5em;
+  margin-left: 1.5em;
+  left: 0;
+  height: 80px;
+  top: 0px;
 
   :hover {
     cursor: pointer;
@@ -71,7 +80,7 @@ const OpenMenu = styled.div`
   background: #fff;
   margin-top: 80px;
   position: fixed;
-  right: 0;
+  left: 0;
 `;
 
 const OpenMenuContainer = styled.div`
@@ -79,7 +88,7 @@ const OpenMenuContainer = styled.div`
   flex-direction: column;
   height: 100%;
   justify-content: center;
-  padding: 20px 50px;
+  padding: 12px 50px;
 
   a:not(:last-child) {
     margin-bottom: 2em;
@@ -99,20 +108,23 @@ const Nav : FunctionComponent<NavProps> = ( { showsBar }) : ReactElement => {
     };
   }, []);
 
+  let location = useLocation();
+
   const HeaderItems = () : ReactElement => {
     return (
       <>
-        <StyledLink to="/assessments">assessments</StyledLink>
-        <StyledLink to="/interventions">
+        <StyledLink to="/assessments" isCurrent={location.pathname.includes("assessments")}>assessments</StyledLink>
+        <StyledLink to="/interventions" isCurrent={location.pathname.includes("interventions")}>
           interventions
         </StyledLink>
-        <StyledLink to="/dashboard">dashboard</StyledLink>
+        <StyledLink to="/dashboard" isCurrent={location.pathname.includes("dashboard")}>dashboard</StyledLink>
       </>
     );
   };
 
   return (
-    <NavBar style={showsBar || screenWidth > 900 ? {} : {justifyContent: 'center'}}>
+    <NavBar showsBar={(showsBar && screenWidth > 600) || screenWidth > 900}>
+      
       <ProjectName>vocab buddy</ProjectName>
       {showsBar && (screenWidth <= 600 ? (
         <>

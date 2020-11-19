@@ -1,27 +1,23 @@
-import {Action, ActionTypes, InterventionState} from "../../../models/types";
-import {RootStateOrAny} from "react-redux";
+import { Action, ActionTypes, Interventions } from "../../../models/types";
+import { RootStateOrAny } from "react-redux";
 
-const initialState: InterventionState = {
-  currentWordIdx: 0,
-  currentActivityIdx: 0,
-  interventions: null,
-};
+const initialState: RootStateOrAny = null;
 
-const interventionReducer = (state: InterventionState = initialState, action: Action): InterventionState => {
+const interventionReducer = (
+  state: Interventions = initialState,
+  action: Action
+): Interventions => {
   const payload = action.payload;
 
   switch (action.type) {
     case ActionTypes.GET_INTERVENTIONS_SUCCESS:
       return {
-        currentWordIdx: payload.interventions.wordIdx,
-        currentActivityIdx: payload.interventions.activityIdx,
-        interventions: payload.interventions.wordList,
+        ...state,
+        ...payload.interventions,
       };
     case ActionTypes.UPDATE_INTERVENTION_SUCCESS:
       return {
-        ...state,
-        currentWordIdx: payload.wordIdx,
-        currentActivityIdx: payload.activityIdx,
+        ...payload.interventions, 
       };
     default:
       return state;
@@ -29,16 +25,8 @@ const interventionReducer = (state: InterventionState = initialState, action: Ac
 };
 
 
-export const getCurrentInterventionWordIdx = (state: RootStateOrAny) => {
-  return state.interventions.currentWordIdx;
-};
-
-export const getCurrentInterventionActivityIdx = (state: RootStateOrAny) => {
-  return state.interventions.currentActivityIdx;
-};
-
-export const getCurrentInverventionWordList = (state: RootStateOrAny) => {
-  return state.interventions.interventions;
+export const getCurrentInterventions = (state: RootStateOrAny) => {
+  return state.interventions;
 };
 
 export default interventionReducer;
