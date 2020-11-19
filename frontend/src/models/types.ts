@@ -22,6 +22,7 @@ export interface Word {
  * Represents a list of interventions for multiple words.
  */
 export interface Interventions {
+  setId: string;
   wordList: InterventionWord[]; // list of Intervention words
   wordIdx: number; // current word you're on
   activityIdx: number; // current activity you're on
@@ -113,7 +114,7 @@ export enum ActionTypes {
   GET_INTERVENTIONS_SUCCESS = "GET_INTERVENTIONS_SUCCESS",
   SIGN_OUT_REQUEST = "SIGN_OUT_REQUEST",
   SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS",
-  SIGN_OUT_ERROR = "SIGN_OUT_ERROR"
+  SIGN_OUT_ERROR = "SIGN_OUT_ERROR",
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense
@@ -123,8 +124,6 @@ export interface State {
 }
 
 export interface InterventionState {
-  currentWordIdx: number;
-  currentActivityIdx: number;
   interventions: Interventions | null;
 }
 
@@ -155,5 +154,5 @@ export interface ResetPasswordParams {
 }
 
 export interface DashboardState {
-  isSignedOut: boolean
+  isSignedOut: boolean;
 }

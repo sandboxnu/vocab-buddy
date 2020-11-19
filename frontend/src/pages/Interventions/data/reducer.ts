@@ -1,13 +1,14 @@
-import {Action, ActionTypes, InterventionState} from "../../../models/types";
-import {RootStateOrAny} from "react-redux";
+import { Action, ActionTypes, InterventionState } from "../../../models/types";
+import { RootStateOrAny } from "react-redux";
 
 const initialState: InterventionState = {
-  currentWordIdx: 0,
-  currentActivityIdx: 0,
   interventions: null,
 };
 
-const interventionReducer = (state: InterventionState = initialState, action: Action): InterventionState => {
+const interventionReducer = (
+  state: InterventionState = initialState,
+  action: Action
+): InterventionState => {
   const payload = action.payload;
 
   switch (action.type) {
