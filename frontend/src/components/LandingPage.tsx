@@ -34,19 +34,19 @@ const LandingPageImage = styled.img`
 
 const LandingPageText = styled.div`
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-content: center;
   margin-left: 1em;
-  margin-top: 60px;
   margin-right: 1em;
-  @media(min-width: 601px) {
-    margin-top: 120px;
-  }
-  
-  
+`;
+
+const LandingPageTextHolder = styled.div`
+  margin: auto;
 `;
 
 const Prompt = styled.p`
- // Not sure why the table works here, but I am using it since otherwise it would take up the full width lol
-  display: table;
+  display: block;
   background-color: ${CLOUD};
   border-radius: 10px;
   padding: 6px 10px;
@@ -72,9 +72,11 @@ const LandingPage : FunctionComponent<LandingPageProps> = ({ image, title, subti
           />
         </ImageContainer>
         <LandingPageText>
-          {title}
-          <Prompt>{subtitle}</Prompt>
-          <PurpleButton text={"begin"} top={100} onClick={onBegin} />
+          <LandingPageTextHolder>
+            {title}
+            <Prompt>{subtitle}</Prompt>
+            <PurpleButton text={"begin"} top={100} onClick={onBegin} />
+          </LandingPageTextHolder>
         </LandingPageText>
       </LandingPageContainer>
     </Layout>
