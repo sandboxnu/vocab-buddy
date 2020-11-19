@@ -2,7 +2,18 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import { AccountType, Assessment, Context, Definition, Example, Interventions, InterventionWord, Review, User, Word } from "../models/types";
+import {
+  AccountType,
+  Assessment,
+  Context,
+  Definition,
+  Example,
+  Interventions,
+  InterventionWord,
+  Review,
+  User,
+  Word,
+} from "../models/types";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -21,7 +32,6 @@ firebase.initializeApp(firebaseConfig);
  * This adds a level of abstraction around firebase, so that this is the only object dealing with the server
  */
 export default class FirebaseInteractor {
-
   /** {@type Firestore} */
   db = firebase.firestore();
 
@@ -43,11 +53,9 @@ export default class FirebaseInteractor {
     return new Promise((resolve, reject) => {
       this.unsubscribe = this.auth.onAuthStateChanged((user) => {
         if (user != null) {
-          this.createCurrentUser()
-          .then(_ => {
+          this.createCurrentUser().then((_) => {
             resolve(true);
-          })
-          
+          });
         }
       });
     });
@@ -141,7 +149,7 @@ export default class FirebaseInteractor {
     return { id, currentIndex, words };
   }
 
-  async getWord(id: string) : Promise<Word> {
+  async getWord(id: string): Promise<Word> {
     let word = (await this.db.collection("words").doc(id).get()).data();
     if (word == null) {
       throw Error("This word does not exist");
@@ -151,41 +159,53 @@ export default class FirebaseInteractor {
       correctImage: word.correctImage,
       incorrectImages: word.incorrectImages,
       id: id,
-      createdAt: word.dateCreated.toDate()
-    }
+      createdAt: word.dateCreated.toDate(),
+    };
   }
 
-  async getIntervention(id: string) : Promise<Interventions> {
-    let interventionRef = await this.db.collection("interventions").doc(id).get();
+  async getIntervention(id: string): Promise<Interventions> {
+    let interventionRef = await this.db
+      .collection("interventions")
+      .doc(id)
+      .get();
     let intervention = interventionRef.data();
     if (intervention == null) {
       throw new Error("There is no intervention with that name");
     }
-    let interventionWords : InterventionWord[] = [];
+    let interventionWords: InterventionWord[] = [];
     for (let word of intervention.wordList as string[]) {
       // Get the word
       let actualWord = await this.getWord(word);
       // Get each activity from firebase
-      let activity1 = (await interventionRef.ref.collection(word).doc("activity1").get()).data() as Definition;
-      let activity2 = (await interventionRef.ref.collection(word).doc("activity2").get()).data() as Example;
-      let activity3 = (await interventionRef.ref.collection(word).doc("activity3").get()).data() as Context;
-      let activity4 = (await interventionRef.ref.collection(word).doc("activity4").get()).data() as Review;
+      let activity1 = (
+        await interventionRef.ref.collection(word).doc("activity1").get()
+      ).data() as Definition;
+      let activity2 = (
+        await interventionRef.ref.collection(word).doc("activity2").get()
+      ).data() as Example;
+      let activity3 = (
+        await interventionRef.ref.collection(word).doc("activity3").get()
+      ).data() as Context;
+      let activity4 = (
+        await interventionRef.ref.collection(word).doc("activity4").get()
+      ).data() as Review;
       interventionWords.push({
         word: actualWord,
         activities: {
           a1: activity1,
           a2: activity2,
           a3: activity3,
-          a4: activity4
-        }
+          a4: activity4,
+        },
       });
     }
 
     return {
-      wordList : interventionWords,
+      setId: id,
+      wordList: interventionWords,
       activityIdx: intervention.activityIdx,
-      wordIdx: intervention.wordIdx
-    }
+      wordIdx: intervention.wordIdx,
+    };
   }
 
   async resetPassword(email: string) {
