@@ -1,4 +1,4 @@
-import React, {FunctionComponent, ReactElement} from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 // no @types/react-speech so we ignore this error
 // @ts-ignore
 import Speech from "react-speech";
@@ -6,9 +6,14 @@ import styled from "styled-components";
 
 const SpeechContainer = styled.div`
   margin: 0;
+  span {
+    display: flex;
+    
+  }
   button {
     background-color: transparent !important;
     border: none !important;
+    align-self: center;
   }
 `;
 
