@@ -18,22 +18,24 @@ const Content = styled.main`
 `;
 
 interface LayoutProps {
+  shouldAddPadding: boolean;
   hideBar: boolean;
   children: JSX.Element | string;
 }
 
 // Main layout of the project that includes both header and navbar
-const Layout = ({ hideBar = false, children } : LayoutProps) : ReactElement => {
+const Layout = ({ hideBar = false, shouldAddPadding = true, children } : LayoutProps) : ReactElement => {
   return (
     <Wrapper>
       <Nav showsBar={!hideBar}/>
-      <Content shouldAddPadding={!hideBar}>{children}</Content>
+      <Content shouldAddPadding={!hideBar && shouldAddPadding}>{children}</Content>
     </Wrapper>
   );
 };
 
 Layout.defaultProps = {
-  hideBar: false
+  hideBar: false,
+  shouldAddPadding: true
 }
 
 export default Layout;

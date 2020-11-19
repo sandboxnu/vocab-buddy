@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Layout from "../../components/Layout";
-import { Assessment } from "../../models/types";
 import styled from "styled-components";
-import { CLOUD } from "../../constants/colors";
+import Layout from "../../components/Layout";
+import PlayButton from "../../components/PlayButton";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
-import PlayButton from "../../components/PlayButton";
 import WordImages from "../../components/WordImages";
+import { CLOUD } from "../../constants/colors";
+import { Assessment } from "../../models/types";
 
 interface QuizWordsProps {
   assessment: Assessment;
@@ -37,11 +37,12 @@ const WordTitle = styled.p`
 `;
 
 const Prompt = styled.div`
+  display: flex;
   align-items: center;
   background-color: ${CLOUD};
   border-radius: 10px;
   display: flex;
-  padding: 1px 5px;
+  padding: 5px 10px;
   width: max-content;
   @media (max-width: 600px) {
     width: auto;
@@ -52,6 +53,7 @@ const PromptText = styled.span`
   margin-right: 10px;
   font-family: "Open Sans";
   font-size: 15px;
+  flex: 1;
 `;
 
 const ImageContainer = styled.div`

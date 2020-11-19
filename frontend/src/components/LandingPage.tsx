@@ -1,5 +1,6 @@
 import React, { FunctionComponent, ReactElement } from "react";
 import styled from "styled-components";
+import { CLOUD, LOGIN_BACKGROUND } from "../constants/colors";
 import Layout from "./Layout";
 import PurpleButton from "./PurpleButton";
 
@@ -8,7 +9,7 @@ const LandingPageContainer = styled.div`
   font-weight: bold;
   flex-direction: row;
   font-size: 4vw;
-  margin-top: 60px;
+  min-height: 100%;
 
   @media (max-width: 600px) {
     flex-direction: column;
@@ -17,29 +18,40 @@ const LandingPageContainer = styled.div`
   }
 `;
 
-const Prompt = styled.div`
-  font-size: 20px;
-  font-weight: normal;
-  margin-top: 20px;
-`;
-
 const ImageContainer = styled.div`
   flex: 1;
-  margin-top: 30px;
+  padding-top: 30px;
   width: 100%;
+  background: ${LOGIN_BACKGROUND};
+  display: flex;
+  align-items: center;
 `;
 
 const LandingPageImage = styled.img`
   width: 100%;
+  flex: 1;
 `;
 
 const LandingPageText = styled.div`
   flex: 1;
-
-  @media (min-width: 600px) {
-    margin-left: 1em;
-    margin-top: 60px;
+  margin-left: 1em;
+  margin-top: 60px;
+  margin-right: 1em;
+  @media(min-width: 601px) {
+    margin-top: 120px;
   }
+  
+  
+`;
+
+const Prompt = styled.p`
+ // Not sure why the table works here, but I am using it since otherwise it would take up the full width lol
+  display: table;
+  background-color: ${CLOUD};
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 20px;
+  font-weight: normal;
 `;
 
 interface LandingPageProps {
@@ -51,7 +63,7 @@ interface LandingPageProps {
 
 const LandingPage : FunctionComponent<LandingPageProps> = ({ image, title, subtitle, onBegin }) : ReactElement => {
   return (
-      <Layout>
+      <Layout shouldAddPadding={false}>
       <LandingPageContainer>
         <ImageContainer>
           <LandingPageImage
