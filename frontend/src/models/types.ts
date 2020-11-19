@@ -123,10 +123,6 @@ export interface State {
   words: Word[] | null;
 }
 
-export interface InterventionState {
-  interventions: Interventions | null;
-}
-
 // i think we should make separate actions as well
 export interface Action {
   type: ActionTypes;

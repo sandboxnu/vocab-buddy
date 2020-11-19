@@ -1,21 +1,19 @@
-import { Action, ActionTypes, InterventionState } from "../../../models/types";
+import { Action, ActionTypes, Interventions } from "../../../models/types";
 import { RootStateOrAny } from "react-redux";
 
-const initialState: InterventionState = {
-  interventions: null,
-};
+const initialState: RootStateOrAny = null;
 
 const interventionReducer = (
-  state: InterventionState = initialState,
+  state: Interventions = initialState,
   action: Action
-): InterventionState => {
+): Interventions => {
   const payload = action.payload;
 
   switch (action.type) {
     case ActionTypes.GET_INTERVENTIONS_SUCCESS:
       return {
         ...state,
-        interventions: payload.interventions,
+        ...payload.interventions,
       };
     default:
       return state;
