@@ -49,7 +49,14 @@ margin-right: 10px;
   }
 }
 };
-  
+`;
+
+const CheckCorrect = styled(CheckCircleFilled)`
+color: ${SEA_FOAM};
+`;
+
+const CheckIncorrect = styled(CheckCircleFilled)`
+color: ${CORAL};
 `;
 
 const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({correctAnswer}): ReactElement => {
@@ -60,10 +67,10 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({correctAnswer})
       selected === answer ?
           <YesNoContainer>
             <YesNoButton highlight={1} onClick={() => setSelected(1)} text="yes" top={20}
-                         check={<CheckCircleFilled style={{color: SEA_FOAM}}/>}
+                         check={<CheckCorrect/>}
                          icon={<LikeFilled/>}/>
             <YesNoButton highlight={0} onClick={() => setSelected(0)} text="no" top={20}
-                         check = {<CheckCircleFilled style={{color: CORAL}}/>}
+                         check = {<CheckIncorrect/>}
                          icon={<DislikeFilled/>}/>
           </YesNoContainer>
           :
@@ -79,10 +86,10 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({correctAnswer})
 
               <YesNoContainer>
                 <YesNoButton highlight={1} onClick={() => setSelected(1)} text="yes" top={20}
-                             check = {<CheckCircleFilled style={{color: SEA_FOAM}}/>}
+                             check = {<CheckCorrect/>}
                              icon={<LikeFilled/>}/>
                 <YesNoButton highlight={0} onClick={() => setSelected(0)} text="no" top={20}
-                             check = {<CheckCircleFilled style={{color: CORAL}}/>}
+                             check = {<CheckIncorrect/>}
                              icon={<DislikeFilled/>}/>
               </YesNoContainer>
 
