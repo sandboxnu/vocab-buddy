@@ -6,10 +6,11 @@ import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
 import WordImages from "../../components/WordImages";
 import { CLOUD } from "../../constants/colors";
-import { Assessment } from "../../models/types";
+import { Assessment, AssessmentResult } from "../../models/types";
 
 interface QuizWordsProps {
   assessment: Assessment;
+  updateWords: (results: AssessmentResult[]) => void;
 }
 
 const Container = styled.div`
@@ -75,16 +76,26 @@ const shuffleImages = (images: any[]) => {
   return images;
 };
 
-const QuizWords = ({ assessment }: QuizWordsProps) => {
+const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
   let [currentIndex, setCurrentIndex] = useState(assessment.currentIndex);
-  let [word, setWord] = useState(assessment.words[currentIndex]);
+  let [wordResponses, setWordResponses] = useState<AssessmentResult[]>([]);
+  let [selectedIndex, setSelectedIndex] = useState(-1);
+  let word = assessment.words[currentIndex];
   let images = [word.correctImage].concat(word.incorrectImages);
-  let shuffled = shuffleImages(images);
+  let [shuffled, setShuffled] = useState<string[]>([]);
+  if (shuffled.length === 0) {
+    setShuffled(shuffleImages(images));
+  }
 
   const nextWord = () => {
-    if (currentIndex < assessment.words.length - 1) {
-      setWord(assessment.words[currentIndex + 1]);
+    if (wordResponses.filter((response) => !response.correct).length >= 2) {
+      updateWords(wordResponses);
+    } else if (currentIndex < assessment.words.length - 1) {
+      setShuffled([]);
+      setSelectedIndex(-1);
       setCurrentIndex(currentIndex + 1);
+    } else {
+      updateWords(wordResponses);
     }
   };
 
@@ -101,7 +112,13 @@ const QuizWords = ({ assessment }: QuizWordsProps) => {
             />
           </Prompt>
           <ImageContainer>
-            <WordImages images={shuffled} />
+            <WordImages images={shuffled}
+                        selected={selectedIndex} 
+                        hasValue={selectedIndex !== -1} 
+                        setSelected={idx => {
+                          setSelectedIndex(idx)
+                          setWordResponses(wordResponses.concat([{word: word.id, correct: shuffled[idx] === word.correctImage}]))
+                         } }/>
           </ImageContainer>
           <ButtonContainer>
             <PurpleButton text={"next"} onClick={nextWord} />
