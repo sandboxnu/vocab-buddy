@@ -7,6 +7,8 @@ interface PurpleButtonProps {
   top?: number,
   text?: string | '',
   onClick?:((event: MouseEvent<HTMLInputElement>) => void),
+  check?: ReactElement,
+  icon?: ReactElement,
   className: string
 }
 
@@ -25,6 +27,10 @@ const ButtonContainer = styled(Button)`
     color: #fff;
   }
 
+  :focus {
+    background: ${INK};
+  }
+
   :hover {
     background: ${INK_HOVER};
   }
@@ -34,10 +40,13 @@ const ButtonContainer = styled(Button)`
   }
 `;
 
-const PurpleButton = ({ className = "", text, top, onClick }: PurpleButtonProps)  : ReactElement => {
+const PurpleButton = ({ className = "", text, top, onClick, icon, check}: PurpleButtonProps)  : ReactElement => {
   return (
     <ButtonContainer className={className} top={top} onClick={onClick}>
+      {check}
       {text}
+      {icon}
+
     </ButtonContainer>
   );
 };
