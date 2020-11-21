@@ -122,6 +122,17 @@ const GreenCircle = styled.div`
   border-radius: 50%;
 `;
 
+const StyledCloseOutlined = styled(CloseOutlined)`
+  font-size: 40px;
+  margin-top: 20px;
+  color: white;
+`;
+
+const StyledCheckOutlined = styled(CheckOutlined)`
+  font-size: 40px;
+  margin-top: 20px;
+`;
+
 const correctUrl = {
   url:
     "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule3.png?alt=media&token=cb4f4cf6-a1d0-465d-a972-087230d2ff05",
@@ -134,7 +145,10 @@ const incorrectUrl = {
   correct: false,
 };
 
-const imageUrls = [correctUrl, incorrectUrl];
+const imageUrls =
+  Math.floor(Math.random() * 2) === 0
+    ? [correctUrl, incorrectUrl]
+    : [incorrectUrl, correctUrl];
 
 interface ImageProps {
   url: string;
@@ -187,23 +201,12 @@ const SecondActivity = ({
               />
               {!img.correct && index === selectedIndex && (
                 <RedCircle>
-                  <CloseOutlined
-                    style={{
-                      fontSize: "40px",
-                      marginTop: "20px",
-                      color: "white",
-                    }}
-                  />
+                  <StyledCloseOutlined />
                 </RedCircle>
               )}
               {img.correct && index === selectedIndex && (
                 <GreenCircle>
-                  <CheckOutlined
-                    style={{
-                      fontSize: "40px",
-                      marginTop: "20px",
-                    }}
-                  />
+                  <StyledCheckOutlined />
                 </GreenCircle>
               )}
             </ImageContainer>
