@@ -150,6 +150,31 @@ export default class FirebaseInteractor {
     }))
   }
 
+  async createInterventionSet(id: string, responses: AssessmentResult[]) {
+    await Promise.all(responses.map(async (response) => {
+
+      let word = (await this.db.collection("words").doc(response.word));
+      let wordData = (await word.get()).data();
+      if (wordData == null) {
+        throw Error("This word does not exist");
+      }
+      let wordValue = wordData.value;
+      let correctURL = wordData.correctImage;
+      let incorrectURL = wordData.incorrectImages[Math.floor(Math.random() * wordData.incorrectImages.length)];
+      let incorrectURL2 = wordData.incorrectImages[Math.floor(Math.random() * wordData.incorrectImages.length)];
+
+      let activity3Answer = Math.random() > .5 ? true : false;
+      let activity3URL = activity3Answer ? correctURL : incorrectURL2;
+
+      let a1 = word.collection("intervention-set").doc("activity1").set({prompt: "Say " + wordValue, url: correctURL});
+      let a2 = word.collection("intervention-set").doc("activity2").set({correctUrl: correctURL, incorrectUrl: incorrectURL, prompt: "Click the image that is " + wordValue});
+      let a3 = word.collection("intervention-set").doc("activity3").set({correctAnswer: activity3Answer, prompt: "Is this image " + wordValue + "?", url: activity3URL});
+      let a4 = word.collection("intervention-set").doc("activity4").set({prompt: "Say " + wordValue, url: correctURL});
+
+      return [a1, a2, a3, a4];
+    }))
+  }
+
   async getWord(id: string) : Promise<Word> {
     let word = (await this.db.collection("words").doc(id).get()).data();
     if (word == null) {

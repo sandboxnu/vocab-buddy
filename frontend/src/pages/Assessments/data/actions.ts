@@ -38,3 +38,18 @@ export const updateAssessment = {
     payload: { error }
   })
 }
+
+
+export const createInterventionSet = {
+  request: ({ responses, id } : UpdateAssessmentAction) : Action => ({
+    type: ActionTypes.CREATE_INTERVENTIONSET_REQUEST,
+    payload: { responses, id }
+  }),
+  success: (): Action => ({
+    type: ActionTypes.CREATE_INTERVENTIONSET_SUCCESS,
+  }),
+  error: (error: Error): Action => ({
+    type: ActionTypes.CREATE_INTERVENTIONSET_ERROR,
+    payload: { error }
+  })
+}

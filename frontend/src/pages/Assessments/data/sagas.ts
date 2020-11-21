@@ -1,7 +1,12 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../../../firebase/firebaseInteractor";
 import { Action, ActionTypes } from "../../../models/types";
-import { getAssessment, updateAssessment, UpdateAssessmentAction } from "./actions";
+import {
+  createInterventionSet,
+  getAssessment,
+  updateAssessment,
+  UpdateAssessmentAction
+} from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -12,6 +17,7 @@ export default function* assessmentSaga() {
 function* root() {
   yield takeLatest(ActionTypes.GET_ASSESSMENT_REQUEST, watchGetAssessment);
   yield takeLatest(ActionTypes.UPDATE_ASSESSMENT_REQUEST, watchUpdateAssessment);
+  yield takeLatest(ActionTypes.CREATE_INTERVENTIONSET_REQUEST, watchCreateInterventionSet);
 }
 
 function* watchGetAssessment(action: Action) {
@@ -35,5 +41,15 @@ function* watchUpdateAssessment(action: Action) {
     yield put(updateAssessment.success())
   } catch (error) {
     yield put(updateAssessment.error(error))
+  }
+}
+
+function* watchCreateInterventionSet(action: Action) {
+  let { responses, id } : UpdateAssessmentAction = action.payload;
+  try {
+    yield call(() => firebaseInteractor.createInterventionSet(id, responses))
+    yield put(createInterventionSet.success())
+  } catch (error) {
+    yield put(createInterventionSet.error(error))
   }
 }
