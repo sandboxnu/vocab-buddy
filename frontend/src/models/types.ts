@@ -5,6 +5,7 @@ export interface Assessment {
   id: number;
   words: Word[];
   currentIndex: number;
+  firebaseId: string;
 }
 
 /**
@@ -118,6 +119,9 @@ export enum ActionTypes {
   UPDATE_INTERVENTION_REQUEST = 'UPDATE_INTERVENTION_REQUEST',
   UPDATE_INTERVENTION_ERROR = 'UPDATE_INTERVENTION_ERROR',
   UPDATE_INTERVENTION_SUCCESS = 'UPDATE_INTERVENTION_SUCCESS',
+  UPDATE_ASSESSMENT_REQUEST = "UPDATE_ASSESSMENT_REQUEST",
+  UPDATE_ASSESSMENT_SUCCESS = "UPDATE_ASSESSMENT_SUCCESS",
+  UPDATE_ASSESSMENT_ERROR = "UPDATE_ASSESSMENT_ERROR"
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense
@@ -154,4 +158,9 @@ export interface ResetPasswordParams {
 
 export interface DashboardState {
   isSignedOut: boolean;
+}
+
+export interface AssessmentResult {
+  word: string,
+  correct: boolean
 }

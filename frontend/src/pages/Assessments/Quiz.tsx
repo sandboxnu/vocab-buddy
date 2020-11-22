@@ -1,33 +1,50 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { getAssessment as getAssessmentAction } from "./data/actions";
-import { getAssessment as getAssessmentReducer } from "./data/reducer";
-import { Assessment } from "../../models/types";
+import { useHistory, useParams } from "react-router-dom";
+import { Assessment, AssessmentResult } from "../../models/types";
+import { getAssessment as getAssessmentAction, updateAssessment } from "./data/actions";
+import { getAssessment as getAssessmentReducer, getIsFinished } from "./data/reducer";
 import QuizWords from "./QuizWords";
 
 interface QuizProps {
-  getAssessment: () => void;
+  getAssessment: (id: string) => void;
   assessment: Assessment;
+  updateAssessment: (responses: AssessmentResult[], id: string) => void;
+  isFinished: boolean
 }
 
 const connector = connect(
   (state) => ({
     assessment: getAssessmentReducer(state),
+    isFinished: getIsFinished(state)
   }),
   {
     getAssessment: getAssessmentAction.request,
+    updateAssessment: (responses: AssessmentResult[], id: string) => updateAssessment.request({ responses, id })
   }
 );
 
-const Quiz = ({ getAssessment, assessment }: QuizProps) => {
+interface QuizParams {
+  id: string;
+}
+
+const Quiz = ({ getAssessment, assessment, updateAssessment, isFinished }: QuizProps) => {
+  let history = useHistory();
+  let params = useParams<QuizParams>();
+  if (isFinished) {
+    history.push("/dashboard");
+  }
   useEffect(() => {
-    if (!assessment) getAssessment();
-  }, [assessment, getAssessment]);
+    if (!assessment) getAssessment(params.id);
+  }, [assessment, getAssessment, params]);
 
   if (!assessment) {
     return <h1>Loading...</h1>;
   } else {
-    return <QuizWords assessment={assessment} />;
+    const updateAssessmentWords = (responses: AssessmentResult[]) => {
+      updateAssessment(responses, params.id);
+    }
+    return <QuizWords assessment={assessment} updateWords={updateAssessmentWords} />;
   }
 };
 
