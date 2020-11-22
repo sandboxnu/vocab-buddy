@@ -1,11 +1,12 @@
-import React, { ReactElement, useState } from "react";
-import Layout from "../../components/Layout";
-import styled from "styled-components";
-import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
-import PromptSpeech from "../../components/PromptSpeech";
-import ReplayButton from "../../components/ReplayButton";
-import PurpleButton from "../../components/PurpleButton";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import React, { ReactElement, useState } from "react";
+import styled from "styled-components";
+import Blocker from "../../components/Blocker";
+import Layout from "../../components/Layout";
+import PromptSpeech from "../../components/PromptSpeech";
+import PurpleButton from "../../components/PurpleButton";
+import ReplayButton from "../../components/ReplayButton";
+import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
 
 interface SecondActivityProps {
   title: string;
@@ -214,26 +215,30 @@ const SecondActivity = ({
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
-          {imageUrls.map((img, index) => (
-            <ImageContainer>
-              <Image
-                url={img.url}
-                correct={img.correct}
-                selected={index === selectedIndex}
-                onClick={() => setSelectedIndex(index)}
-              />
-              {!img.correct && index === selectedIndex && (
-                <RedCircle>
-                  <StyledCloseOutlined />
-                </RedCircle>
-              )}
-              {img.correct && index === selectedIndex && (
-                <GreenCircle>
-                  <StyledCheckOutlined />
-                </GreenCircle>
-              )}
-            </ImageContainer>
-          ))}
+          <Blocker afterSeconds={15} message='Click on an image' repeatable={false}>
+            <div>
+              {imageUrls.map((img, index) => (
+                <ImageContainer>
+                  <Image
+                    url={img.url}
+                    correct={img.correct}
+                    selected={index === selectedIndex}
+                    onClick={() => setSelectedIndex(index)}
+                  />
+                  {!img.correct && index === selectedIndex && (
+                    <RedCircle>
+                      <StyledCloseOutlined />
+                    </RedCircle>
+                  )}
+                  {img.correct && index === selectedIndex && (
+                    <GreenCircle>
+                      <StyledCheckOutlined />
+                    </GreenCircle>
+                  )}
+                </ImageContainer>
+              ))}
+            </div>
+          </Blocker>
           <ButtonContainer>
             <PurpleButton text="next" top={20} />
           </ButtonContainer>
