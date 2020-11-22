@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Interventions from "./pages/Interventions/Interventions";
 import CreateUser from "./pages/Login/CreateUser";
 import Login from "./pages/Login/Login";
+import Reward from "./pages/Interventions/Reward";
 
 const App = (): ReactElement => {
   return (
@@ -24,6 +25,7 @@ const App = (): ReactElement => {
         <AuthenticatedRoute path="/dashboard" component={Dashboard} />
         <AuthenticatedRoute exact path="/interventions" component={Interventions} />
         <AuthenticatedRoute exact path="/assessments/:id" component={Quiz} />
+        <AuthenticatedRoute path="/reward" component={Reward} />
         <AuthenticatedRoute path="/assessments" component={Assessments} />
       </Switch>
     </Router>
