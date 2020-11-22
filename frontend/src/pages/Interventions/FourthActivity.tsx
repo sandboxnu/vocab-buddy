@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
+import Blocker from "../../components/Blocker";
 import Layout from "../../components/Layout";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
@@ -91,7 +92,9 @@ const FourthActivity = ({
           {/* <Image src={imageUrl}/> */}
           <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule3.png?alt=media&token=cb4f4cf6-a1d0-465d-a972-087230d2ff05" />
           <ButtonContainer>
-            <PurpleButton text={"next"} top={20} />
+            <Blocker afterSeconds={30} message='Click on the next button to continue' repeatable={false}>
+              <PurpleButton text={"next"} top={20}/>
+            </Blocker>
           </ButtonContainer>
         </MainContent>
       </Container>

@@ -1,12 +1,12 @@
-import React, {ReactElement} from "react";
+import React, { ReactElement } from "react";
 import styled from "styled-components";
-import Layout from "../../components/Layout";
-import ReplayButton from '../../components/ReplayButton';
-import { SKY } from "../../constants/colors";
 import AutoPrompt from "../../components/AutoPrompt";
 import CloudImage from "../../components/CloudImage";
-import YesNoSelection from "../../components/YesNoSelection";
 import DelayedNextButton from "../../components/DelayedNextButton";
+import Layout from "../../components/Layout";
+import ReplayButton from '../../components/ReplayButton';
+import YesNoSelection from "../../components/YesNoSelection";
+import { SKY } from "../../constants/colors";
 
 interface ThirdActivityProps {
   title: string, // the word
@@ -39,7 +39,7 @@ const WordTitle = styled.p`
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
-  text-transfom: lowercase;
+  text-transform: lowercase;
   word-wrap: break-word;
  
   @media (max-width: 600px) {
@@ -149,10 +149,9 @@ const ThirdActivity  = ({ prompt, imageUrl, answer }: ThirdActivityProps) : Reac
             <ButtonContainer>
               <YesNoSelection correctAnswer={answer} />
               <NextContainer>
-                <DelayedNextButton text="next" top={20} delay={10000}/>;
+                <DelayedNextButton text="next" top={20} delay={10000}/>
               </NextContainer>
             </ButtonContainer>
-
           </MainContent>
         </Container>
       </Layout>);

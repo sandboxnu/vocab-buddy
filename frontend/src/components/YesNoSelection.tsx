@@ -1,8 +1,9 @@
-import React, {FunctionComponent, ReactElement, useState} from "react";
+import { CheckCircleFilled, DislikeFilled, LikeFilled } from "@ant-design/icons";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import styled from "styled-components";
-import {CORAL, SEA_FOAM} from "../constants/colors";
+import { CORAL, SEA_FOAM } from "../constants/colors";
+import Blocker from "./Blocker";
 import PurpleButton from "./PurpleButton";
-import {LikeFilled, DislikeFilled, CheckCircleFilled} from "@ant-design/icons";
 
 
 interface YesNoSelectionProps {
@@ -64,34 +65,38 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({correctAnswer})
   const answer = correctAnswer ? 1 : 0;
 
   return (
-      selected === answer ?
-          <YesNoContainer>
-            <YesNoButton highlight={1} onClick={() => setSelected(1)} text="yes" top={20}
+    <Blocker afterSeconds={15} repeatable={false} message='Yes or No?'>
+      <YesNoContainer>
+      {selected === answer ?
+      <>
+        <YesNoButton highlight={1} onClick={() => setSelected(1)} text="yes" top={20}
                          check={<CheckCorrect/>}
                          icon={<LikeFilled/>}/>
             <YesNoButton highlight={0} onClick={() => setSelected(0)} text="no" top={20}
                          check = {<CheckIncorrect/>}
                          icon={<DislikeFilled/>}/>
-          </YesNoContainer>
-          :
-          selected === -1 ?
-              <YesNoContainer>
+      </> : 
+      selected === -1 ?
+              <>
                 <YesNoButton highlight={-1} onClick={() => setSelected(1)} text="yes" top={20}
                              icon={<LikeFilled/>}/>
                 <YesNoButton highlight={-1} onClick={() => setSelected(0)} text="no" top={20}
                              icon={<DislikeFilled/>}/>
 
-              </YesNoContainer>
+              </>
               :
-
-              <YesNoContainer>
+              <>
                 <YesNoButton highlight={1} onClick={() => setSelected(1)} text="yes" top={20}
                              check = {<CheckCorrect/>}
                              icon={<LikeFilled/>}/>
                 <YesNoButton highlight={0} onClick={() => setSelected(0)} text="no" top={20}
                              check = {<CheckIncorrect/>}
                              icon={<DislikeFilled/>}/>
-              </YesNoContainer>
+              </>}
+
+      </YesNoContainer>
+          
+      </Blocker>
 
   );
 };
