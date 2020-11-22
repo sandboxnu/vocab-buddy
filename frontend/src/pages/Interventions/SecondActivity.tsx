@@ -62,42 +62,65 @@ const ButtonContainer = styled.div`
 
 const UnselectedImage = styled.img`
   border-radius: 20px;
-  margin: 20px;
   padding: 10px;
 
   :hover {
     cursor: pointer;
     opacity: 0.8;
   }
+
+  @media (min-width: 601px) {
+    margin: 20px;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;
 
 const CorrectImage = styled.img`
   border-radius: 20px;
-  margin: 20px;
+  border: 10px solid ${SEA_FOAM};
 
   :hover {
     cursor: pointer;
     opacity: 0.8;
   }
 
-  border: 10px solid ${SEA_FOAM};
+  @media (min-width: 601px) {
+    margin: 20px;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;
 
 const IncorrectImage = styled.img`
   border-radius: 20px;
-  margin: 20px;
+  border: 10px solid ${CORAL};
 
   :hover {
     cursor: pointer;
     opacity: 0.8;
   }
 
-  border: 10px solid ${CORAL};
+  @media (min-width: 601px) {
+    margin: 20px;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;
 
 const ImageContainer = styled.div`
   display: inline-block;
   position: relative;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;
 
 const RedCircle = styled.div`
