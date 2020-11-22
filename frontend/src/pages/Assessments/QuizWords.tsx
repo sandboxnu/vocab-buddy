@@ -10,7 +10,7 @@ import { Assessment, AssessmentResult } from "../../models/types";
 
 interface QuizWordsProps {
   assessment: Assessment;
-  updateWords: (results: AssessmentResult[]) => void;
+  updateWords: (results: AssessmentResult[], isFinished: boolean, currentIdx: number) => void;
 }
 
 const Container = styled.div`
@@ -89,13 +89,14 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
 
   const nextWord = () => {
     if (wordResponses.filter((response) => !response.correct).length >= 2) {
-      updateWords(wordResponses);
+      updateWords(wordResponses, true, currentIndex);
     } else if (currentIndex < assessment.words.length - 1) {
+      updateWords(wordResponses, false, currentIndex + 1);
       setShuffled([]);
       setSelectedIndex(-1);
       setCurrentIndex(currentIndex + 1);
     } else {
-      updateWords(wordResponses);
+      updateWords(wordResponses, true, currentIndex);
     }
   };
 

@@ -29,10 +29,10 @@ function* watchGetAssessment(action: Action) {
 }
 
 function* watchUpdateAssessment(action: Action) {
-  let { responses, id } : UpdateAssessmentAction = action.payload;
+  let { responses, id, isFinished, currentIdx } : UpdateAssessmentAction = action.payload;
   try {
-    yield call(() => firebaseInteractor.updateAssessment(id, responses))
-    yield put(updateAssessment.success())
+    yield call(() => firebaseInteractor.updateAssessment(id, responses, currentIdx))
+    yield put(updateAssessment.success({ isFinished }))
   } catch (error) {
     yield put(updateAssessment.error(error))
   }

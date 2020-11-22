@@ -7,7 +7,9 @@ interface GetAssessmentAction {
 
 export interface UpdateAssessmentAction {
   responses: AssessmentResult[],
-  id: string
+  id: string,
+  isFinished: boolean,
+  currentIdx: number,
 }
 
 export const getAssessment = {
@@ -25,13 +27,18 @@ export const getAssessment = {
   }),
 };
 
+export interface UpdateAssessmentSuccess {
+  isFinished: boolean
+}
+
 export const updateAssessment = {
-  request: ({ responses, id } : UpdateAssessmentAction) : Action => ({
+  request: ({ responses, id, isFinished, currentIdx } : UpdateAssessmentAction) : Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_REQUEST,
-    payload: { responses, id }
+    payload: { responses, id, isFinished, currentIdx }
   }),
-  success: (): Action => ({
-    type: ActionTypes.UPDATE_ASSESSMENT_SUCCESS
+  success: ( { isFinished } : UpdateAssessmentSuccess): Action => ({
+    type: ActionTypes.UPDATE_ASSESSMENT_SUCCESS,
+    payload: { isFinished }
   }),
   error: (error: Error): Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_ERROR,

@@ -9,7 +9,7 @@ import QuizWords from "./QuizWords";
 interface QuizProps {
   getAssessment: (id: string) => void;
   assessment: Assessment;
-  updateAssessment: (responses: AssessmentResult[], id: string) => void;
+  updateAssessment: (responses: AssessmentResult[], id: string, isFinished: boolean, currentIdx: number) => void;
   isFinished: boolean
 }
 
@@ -20,7 +20,7 @@ const connector = connect(
   }),
   {
     getAssessment: getAssessmentAction.request,
-    updateAssessment: (responses: AssessmentResult[], id: string) => updateAssessment.request({ responses, id })
+    updateAssessment: (responses: AssessmentResult[], id: string, isFinished: boolean, currentIdx: number ) => updateAssessment.request({ responses, id, isFinished, currentIdx })
   }
 );
 
@@ -41,8 +41,8 @@ const Quiz = ({ getAssessment, assessment, updateAssessment, isFinished }: QuizP
   if (!assessment) {
     return <h1>Loading...</h1>;
   } else {
-    const updateAssessmentWords = (responses: AssessmentResult[]) => {
-      updateAssessment(responses, params.id);
+    const updateAssessmentWords = (responses: AssessmentResult[], isFinished: boolean, currentIdx: number) => {
+      updateAssessment(responses, params.id, isFinished, currentIdx);
     }
     return <QuizWords assessment={assessment} updateWords={updateAssessmentWords} />;
   }
