@@ -15,6 +15,8 @@ import { getCurrentInterventions } from "./data/reducer";
 
 interface FirstActivityProps {
   title: string,
+  activityIdx: number,
+  wordIdx: number,
   prompt: string,
   imageUrl: string,
   interventions: Interventions,
@@ -123,6 +125,8 @@ const connector = connect(
 
 const FirstActivity = ({
   title,
+  activityIdx,
+  wordIdx,
   prompt,
   imageUrl,
   interventions,
@@ -130,8 +134,6 @@ const FirstActivity = ({
   updateIntervention,
 }: FirstActivityProps): ReactElement => {
 
-  const activityIdx = interventions && interventions.activityIdx;
-  const wordIdx = interventions && interventions.wordIdx;
   const nextActivityIdx = getNextActivityIdx(activityIdx, wordIdx, maxWordLength);
 
   return (

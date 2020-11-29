@@ -15,6 +15,8 @@ import { Interventions } from "../../models/types";
 
 interface ThirdActivityProps {
   title: string,
+  activityIdx: number,
+  wordIdx: number,
   prompt: string,
   imageUrl: string,
   answer: boolean,
@@ -142,9 +144,18 @@ const connector = connect(
   }
 );
 
-const ThirdActivity  = ({ title, prompt, imageUrl, answer, interventions, maxWordLength, updateIntervention }: ThirdActivityProps) : ReactElement => {
-  const activityIdx = interventions && interventions.activityIdx;
-  const wordIdx = interventions && interventions.wordIdx;
+const ThirdActivity  = ({ 
+  title,
+  activityIdx,
+  wordIdx, 
+  prompt, 
+  imageUrl, 
+  answer, 
+  interventions, 
+  maxWordLength, 
+  updateIntervention 
+}: ThirdActivityProps) : ReactElement => {
+
   const nextActivityIdx = getNextActivityIdx(activityIdx, wordIdx, maxWordLength);
   
   return (

@@ -39,7 +39,7 @@ const Activities: FunctionComponent<ActivityProps> = ({ interventions, getInterv
   const ActivityComponent = (idx: number): ReactElement => {
     switch (idx) {
       case 0:
-        return (<FirstActivity title={title} prompt={activities.a1.prompt} imageUrl={activities.a1.url} maxWordLength={wordList.length} />);
+        return (<FirstActivity title={title} prompt={activities.a1.prompt} imageUrl={activities.a1.url} activityIdx={currentActivityIdx} wordIdx={currentWordIdx} maxWordLength={wordList.length} />);
       case 1: {
         const correctChoice = {
           url: activities.a2.correctUrl,
@@ -56,12 +56,12 @@ const Activities: FunctionComponent<ActivityProps> = ({ interventions, getInterv
           ? [correctChoice, incorrectChoice]
           : [incorrectChoice, correctChoice];
       
-        return (<SecondActivity title={title} prompt={activities.a2.prompt} imageUrls={imageUrls} maxWordLength={wordList.length} />);
+        return (<SecondActivity title={title} prompt={activities.a2.prompt} imageUrls={imageUrls} activityIdx={currentActivityIdx} wordIdx={currentWordIdx} maxWordLength={wordList.length} />);
       }
       case 2:
-        return (<ThirdActivity title={title} prompt={activities.a3.prompt} imageUrl={activities.a3.url} answer={activities.a3.correctAnswer} maxWordLength={wordList.length}/>);
+        return (<ThirdActivity title={title} prompt={activities.a3.prompt} imageUrl={activities.a3.url} answer={activities.a3.correctAnswer} activityIdx={currentActivityIdx} wordIdx={currentWordIdx} maxWordLength={wordList.length}/>);
       case 3:
-        return (<FourthActivity title={title} prompt={activities.a4.prompt} imageUrl={activities.a4.url} maxWordLength={wordList.length}/>);
+        return (<FourthActivity title={title} prompt={activities.a4.prompt} imageUrl={activities.a4.url} activityIdx={currentActivityIdx} wordIdx={currentWordIdx} maxWordLength={wordList.length}/>);
       default:
         return <>Error Loading Interventions</>;
     }

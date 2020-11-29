@@ -15,6 +15,8 @@ import { Interventions } from "../../models/types";
 
 interface SecondActivityProps {
   title: string;
+  activityIdx: number,
+  wordIdx: number,
   prompt: string,
   imageUrls: ImageProps[],
   maxWordLength: number,
@@ -216,6 +218,8 @@ const CloudImageRight = styled(CloudImage)`
 
 const SecondActivity = ({
   title,
+  activityIdx,
+  wordIdx,
   prompt,
   imageUrls,
   interventions,
@@ -235,8 +239,6 @@ const SecondActivity = ({
     else return <UnselectedImage src={url} onClick={onClick} />;
   };
   
-  const activityIdx = interventions && interventions.activityIdx;
-  const wordIdx = interventions && interventions.wordIdx;
   const nextActivityIdx = getNextActivityIdx(activityIdx, wordIdx, maxWordLength);
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
