@@ -1,11 +1,12 @@
-import React, { ReactElement, useState } from "react";
-import Layout from "../../components/Layout";
-import styled from "styled-components";
-import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
-import PromptSpeech from "../../components/PromptSpeech";
-import ReplayButton from "../../components/ReplayButton";
-import PurpleButton from "../../components/PurpleButton";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import React, { ReactElement, useState } from "react";
+import styled from "styled-components";
+import Blocker from "../../components/Blocker";
+import Layout from "../../components/Layout";
+import PromptSpeech from "../../components/PromptSpeech";
+import PurpleButton from "../../components/PurpleButton";
+import ReplayButton from "../../components/ReplayButton";
+import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
 
 interface SecondActivityProps {
   title: string;
@@ -156,6 +157,8 @@ const StyledCheckOutlined = styled(CheckOutlined)`
   margin-top: 20px;
 `;
 
+const StyledDivForClicks = styled.div``;
+
 const correctUrl = {
   url:
     "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule3.png?alt=media&token=cb4f4cf6-a1d0-465d-a972-087230d2ff05",
@@ -214,26 +217,30 @@ const SecondActivity = ({
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
-          {imageUrls.map((img, index) => (
-            <ImageContainer>
-              <Image
-                url={img.url}
-                correct={img.correct}
-                selected={index === selectedIndex}
-                onClick={() => setSelectedIndex(index)}
-              />
-              {!img.correct && index === selectedIndex && (
-                <RedCircle>
-                  <StyledCloseOutlined />
-                </RedCircle>
-              )}
-              {img.correct && index === selectedIndex && (
-                <GreenCircle>
-                  <StyledCheckOutlined />
-                </GreenCircle>
-              )}
-            </ImageContainer>
-          ))}
+          <Blocker afterSeconds={15} message='Click on an image' repeatable={false}>
+            <StyledDivForClicks>
+              {imageUrls.map((img, index) => (
+                <ImageContainer>
+                  <Image
+                    url={img.url}
+                    correct={img.correct}
+                    selected={index === selectedIndex}
+                    onClick={() => setSelectedIndex(index)}
+                  />
+                  {!img.correct && index === selectedIndex && (
+                    <RedCircle>
+                      <StyledCloseOutlined />
+                    </RedCircle>
+                  )}
+                  {img.correct && index === selectedIndex && (
+                    <GreenCircle>
+                      <StyledCheckOutlined />
+                    </GreenCircle>
+                  )}
+                </ImageContainer>
+              ))}
+            </StyledDivForClicks>
+          </Blocker>
           <ButtonContainer>
             <PurpleButton text="next" top={20} />
           </ButtonContainer>
