@@ -157,6 +157,8 @@ const StyledCheckOutlined = styled(CheckOutlined)`
   margin-top: 20px;
 `;
 
+const StyledDivForClicks = styled.div``;
+
 const correctUrl = {
   url:
     "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule3.png?alt=media&token=cb4f4cf6-a1d0-465d-a972-087230d2ff05",
@@ -216,7 +218,7 @@ const SecondActivity = ({
             />
           </Prompt>
           <Blocker afterSeconds={15} message='Click on an image' repeatable={false}>
-            <div>
+            <StyledDivForClicks>
               {imageUrls.map((img, index) => (
                 <ImageContainer>
                   <Image
@@ -237,7 +239,7 @@ const SecondActivity = ({
                   )}
                 </ImageContainer>
               ))}
-            </div>
+            </StyledDivForClicks>
           </Blocker>
           <ButtonContainer>
             <PurpleButton text="next" top={20} />
