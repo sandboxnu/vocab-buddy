@@ -1,7 +1,7 @@
 module.exports = {
   overrides: [
     {
-      files: "*.ts",
+      files: "*.tsx",
       options: {
         singleQuote: true,
         printWidth: 80,
