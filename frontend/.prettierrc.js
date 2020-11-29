@@ -3,7 +3,7 @@ module.exports = {
     {
       files: "*.tsx",
       options: {
-        singleQuote: true,
+        singleQuote: false,
         printWidth: 70,
         endOfLine: "lf",
         semi: true,

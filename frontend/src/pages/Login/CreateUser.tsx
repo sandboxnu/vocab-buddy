@@ -1,20 +1,20 @@
-import { Alert } from 'antd';
+import { Alert } from "antd";
 import React, {
   FunctionComponent,
   ReactElement,
   useEffect,
   useState,
-} from 'react';
-import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
-import CloudGroup from '../../components/CloudGroup';
-import Layout from '../../components/Layout';
-import PurpleButton from '../../components/PurpleButton';
-import { TextInput } from '../../components/TextInput';
-import { INK, SEA_FOAM } from '../../constants/colors';
-import { authenticationRequest } from './data/actions';
-import { AccountType, CreateUserParams } from '../../models/types';
+} from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import CloudGroup from "../../components/CloudGroup";
+import Layout from "../../components/Layout";
+import PurpleButton from "../../components/PurpleButton";
+import { TextInput } from "../../components/TextInput";
+import { INK, SEA_FOAM } from "../../constants/colors";
+import { authenticationRequest } from "./data/actions";
+import { AccountType, CreateUserParams } from "../../models/types";
 
 const LoginHoldingDiv = styled.div`
   display: flex;
@@ -52,7 +52,7 @@ interface RadioTextProps {
 }
 const RadioText = styled.p`
   border-bottom: ${({ isActive }: RadioTextProps) =>
-    !isActive ? '0px solid clear' : `4px solid ${SEA_FOAM}`};
+    !isActive ? "0px solid clear" : `4px solid ${SEA_FOAM}`};
   flex: 1;
   margin-right: 15px;
 
@@ -128,7 +128,7 @@ interface NameTextInputProps {
 const NameTextInput = styled(TextInput)`
   flex: 3;
   margin-right: ${({ isStudent }: NameTextInputProps) =>
-    isStudent ? '15px' : '0px'};
+    isStudent ? "15px" : "0px"};
 `;
 
 const AgeTextInput = styled(TextInput)`
@@ -156,32 +156,32 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
   signedIn,
   createUser,
 }): ReactElement => {
-  let [email, setEmail] = useState('');
-  let [password, setPassword] = useState('');
-  let [confirmPassword, setConfirmPassword] = useState('');
-  let [name, setName] = useState('');
-  let [accountType, setAccountType] = useState('STUDENT');
-  let [age, setAge] = useState('');
-  let [error, setError] = useState('');
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  let [confirmPassword, setConfirmPassword] = useState("");
+  let [name, setName] = useState("");
+  let [accountType, setAccountType] = useState("STUDENT");
+  let [age, setAge] = useState("");
+  let [error, setError] = useState("");
   let createUserWithCheck = () => {
     if (confirmPassword !== password) {
       setError(
-        'you need to confirm the password with the same password'
+        "you need to confirm the password with the same password"
       );
     } else if (
-      (accountType === 'STUDENT' && !age) ||
+      (accountType === "STUDENT" && !age) ||
       !name ||
       !password ||
       !email
     ) {
-      setError('please fill in all fields');
+      setError("please fill in all fields");
     } else {
       createUser({
         email,
         password,
         name,
         accountType: accountType as AccountType,
-        age: accountType === 'RESEARCHER' ? null : parseInt(age),
+        age: accountType === "RESEARCHER" ? null : parseInt(age),
       });
     }
   };
@@ -190,7 +190,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
 
   useEffect(() => {
     if (signedIn) {
-      history.push('/dashboard');
+      history.push("/dashboard");
     }
   }, [signedIn, history]);
   // For right now, go to dashboard when signed in
@@ -204,7 +204,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
             message={error}
             type="error"
             closable
-            onClose={() => setError('')}
+            onClose={() => setError("")}
           />
         )}
         <CloudGroup />
@@ -216,14 +216,14 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
               <HorizontalDiv>
                 <HorizontalDiv>
                   <RadioText
-                    isActive={accountType === 'STUDENT'}
-                    onClick={() => setAccountType('STUDENT')}
+                    isActive={accountType === "STUDENT"}
+                    onClick={() => setAccountType("STUDENT")}
                   >
                     student
                   </RadioText>
                   <RadioText
-                    isActive={accountType === 'RESEARCHER'}
-                    onClick={() => setAccountType('RESEARCHER')}
+                    isActive={accountType === "RESEARCHER"}
+                    onClick={() => setAccountType("RESEARCHER")}
                   >
                     researcher
                   </RadioText>
@@ -236,9 +236,9 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
                   value={name}
                   type="text"
                   text="name"
-                  isStudent={accountType === 'STUDENT'}
+                  isStudent={accountType === "STUDENT"}
                 />
-                {accountType === 'STUDENT' && (
+                {accountType === "STUDENT" && (
                   <AgeTextInput
                     onChange={(e) => {
                       if (parseInt(e.target.value) != null) {
@@ -272,14 +272,14 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
               />
 
               <StyledPurpleButton
-                text={'sign up'}
+                text={"sign up"}
                 top={0}
                 onClick={() => createUserWithCheck()}
               />
 
               <HorizontalDiv>
                 Have an account?
-                <LoginButton onClick={() => history.push('/')}>
+                <LoginButton onClick={() => history.push("/")}>
                   login
                 </LoginButton>
               </HorizontalDiv>
