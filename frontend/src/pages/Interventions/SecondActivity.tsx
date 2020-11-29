@@ -215,8 +215,8 @@ const SecondActivity = ({
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
-          <Blocker afterSeconds={15} message='Click on an image' repeatable={false}>
-            <div>
+          <Blocker afterSeconds={5} message='Click on an image' repeatable={false}>
+            <>
               {imageUrls.map((img, index) => (
                 <ImageContainer>
                   <Image
@@ -237,7 +237,7 @@ const SecondActivity = ({
                   )}
                 </ImageContainer>
               ))}
-            </div>
+            </>
           </Blocker>
           <ButtonContainer>
             <PurpleButton text="next" top={20} />
