@@ -10,15 +10,23 @@ export default function* interventionSaga() {
 }
 
 function* root() {
-  yield takeLatest(ActionTypes.GET_INTERVENTIONS_REQUEST, watchGetInterventions);
-  yield takeLatest(ActionTypes.UPDATE_INTERVENTION_REQUEST, watchUpdateIntervention);
+  yield takeLatest(
+    ActionTypes.GET_INTERVENTIONS_REQUEST,
+    watchGetInterventions
+  );
+  yield takeLatest(
+    ActionTypes.UPDATE_INTERVENTION_REQUEST,
+    watchUpdateIntervention
+  );
 }
 
 function* watchGetInterventions() {
   try {
     let interventions;
     const updateWithSuccess = async () => {
-      interventions = await firebaseInteractor.getIntervention("CYf3VgYXDn72omXhuy0A");
+      interventions = await firebaseInteractor.getIntervention(
+        "CYf3VgYXDn72omXhuy0A"
+      );
     };
     yield call(updateWithSuccess);
     yield put(getInterventions.success({ interventions }));
@@ -27,14 +35,16 @@ function* watchGetInterventions() {
   }
 }
 
-function* watchUpdateIntervention(action : Action) {
+function* watchUpdateIntervention(action: Action) {
   try {
-    let { wordIdx, activityIdx } = action.payload;
+    let { setId, wordIdx, activityIdx } = action.payload;
     let interventions;
     const updateAndGetNewInterventions = async () => {
-      await firebaseInteractor.updateIntervention(wordIdx, activityIdx);
-      interventions = await firebaseInteractor.getIntervention("CYf3VgYXDn72omXhuy0A");
-    }
+      await firebaseInteractor.updateIntervention(setId, wordIdx, activityIdx);
+      interventions = await firebaseInteractor.getIntervention(
+        "CYf3VgYXDn72omXhuy0A"
+      );
+    };
     yield call(updateAndGetNewInterventions);
     yield put(updateIntervention.success({ interventions }));
   } catch (error) {

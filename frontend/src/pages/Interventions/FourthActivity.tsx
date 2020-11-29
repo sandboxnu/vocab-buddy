@@ -1,28 +1,35 @@
-import React, { ReactElement } from "react";
-import styled from "styled-components";
-import Layout from "../../components/Layout";
-import PromptSpeech from "../../components/PromptSpeech";
-import ReplayButton from "../../components/ReplayButton";
-import DelayedNextButton from "../../components/DelayedNextButton";
-import CloudImage from "../../components/CloudImage";
-import { SKY } from "../../constants/colors";
-import { connect } from "react-redux";
-import { updateIntervention } from "./data/actions"; 
-import { 
-  getNextWordIdx, 
-  getNextActivityIdx } from "../../constants/utils";
-import { Interventions } from "../../models/types";
-import { getCurrentInterventions } from "./data/reducer"; 
+import React, { ReactElement } from 'react';
+import styled from 'styled-components';
+import Layout from '../../components/Layout';
+import PromptSpeech from '../../components/PromptSpeech';
+import ReplayButton from '../../components/ReplayButton';
+import DelayedNextButton from '../../components/DelayedNextButton';
+import CloudImage from '../../components/CloudImage';
+import { SKY } from '../../constants/colors';
+import { connect } from 'react-redux';
+import { updateIntervention } from './data/actions';
+import {
+  getNextWordIdx,
+  getNextActivityIdx,
+} from '../../constants/utils';
 
 interface FourthActivityProps {
   title: string;
-  activityIdx: number,
-  wordIdx: number,
-  prompt: string,
+  setId: string;
+  activityIdx: number;
+  wordIdx: number;
+  prompt: string;
   imageUrl: string;
-  interventions: Interventions, 
-  maxWordLength: number,
-  updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
+  maxWordLength: number;
+  updateIntervention: ({
+    setId,
+    wordIdx,
+    activityIdx,
+  }: {
+    setId: string;
+    wordIdx: number;
+    activityIdx: number;
+  }) => void;
 }
 
 const Container = styled.div`
@@ -38,14 +45,14 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -87,11 +94,10 @@ const CloudImageLeft = styled(CloudImage)`
   left: 0;
   width: 15%;
 
-  
   @media (max-width: 900px) {
     @media (max-height: 800px) {
-    height: 0px;
-  }
+      height: 0px;
+    }
     width: 20%;
     bottom: 1.5em;
   }
@@ -115,46 +121,54 @@ const CloudImageRight = styled(CloudImage)`
   }
 `;
 
-const connector = connect(
-  (state) => ({
-    interventions: getCurrentInterventions(state),
-  }),
-  {
-    updateIntervention: updateIntervention.request,
-  }
-);
+const connector = connect(null, {
+  updateIntervention: updateIntervention.request,
+});
 
 const FourthActivity = ({
   title,
+  setId,
   activityIdx,
   wordIdx,
   prompt,
   imageUrl,
-  interventions,
-  maxWordLength, 
+  maxWordLength,
   updateIntervention,
 }: FourthActivityProps): ReactElement => {
   const nextWordIdx = getNextWordIdx(wordIdx, maxWordLength);
-  const nextActivityIdx = getNextActivityIdx(activityIdx, wordIdx, maxWordLength);
+  const nextActivityIdx = getNextActivityIdx(
+    activityIdx,
+    wordIdx,
+    maxWordLength
+  );
   return (
     <Layout>
       <Container>
-        <CloudImageLeft direction='left' />
-        <CloudImageRight direction='right' />
+        <CloudImageLeft direction="left" />
+        <CloudImageRight direction="right" />
         <MainContent>
           <DescriptionText>review with new picture</DescriptionText>
-          <WordTitle>
-            {title}
-          </WordTitle>
+          <WordTitle>{title}</WordTitle>
           <Prompt>
             <PromptSpeech
               prompt={prompt}
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
-          <Image src={imageUrl}/>
+          <Image src={imageUrl} />
           <ButtonContainer>
-            <DelayedNextButton text={"next"} top={20} delay={1000} onClick={() => updateIntervention({wordIdx: nextWordIdx, activityIdx: nextActivityIdx})} />
+            <DelayedNextButton
+              text={'next'}
+              top={20}
+              delay={1000}
+              onClick={() =>
+                updateIntervention({
+                  setId,
+                  wordIdx: nextWordIdx,
+                  activityIdx: nextActivityIdx,
+                })
+              }
+            />
           </ButtonContainer>
         </MainContent>
       </Container>

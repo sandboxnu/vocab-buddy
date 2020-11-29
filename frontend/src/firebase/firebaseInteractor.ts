@@ -13,7 +13,7 @@ import {
   InterventionWord,
   Review,
   User,
-  Word
+  Word,
 } from "../models/types";
 
 // Your web app's Firebase configuration
@@ -122,15 +122,19 @@ export default class FirebaseInteractor {
    * update intervention idx number
    */
   async updateIntervention(
+    setId: string,
     wordIdx: number,
     activityIdx: number
   ) {
-    let interventions = await this.db.collection("interventions").get();
-    let intervention = interventions.docs[0];
-    intervention.ref.update({
+    let interventions = await this.db
+      .collection("interventions")
+      .doc(setId)
+      .get();
+    let intervention = interventions.ref;
+    intervention.update({
       wordIdx,
       activityIdx,
-    })
+    });
   }
 
   /**
@@ -139,11 +143,14 @@ export default class FirebaseInteractor {
    * @returns { Promise<Assessment> }
    */
   async getAssessment(firebaseId: string): Promise<Assessment> {
-    let assessmentRef = await this.db.collection("assessments").doc(firebaseId).get();
+    let assessmentRef = await this.db
+      .collection("assessments")
+      .doc(firebaseId)
+      .get();
     // Hardcoding first assessment for now
     let assessment = assessmentRef.data();
     if (assessment == null) {
-      throw new Error(`Assessment with id ${firebaseId} does not exist`)
+      throw new Error(`Assessment with id ${firebaseId} does not exist`);
     }
     let { id, currentIndex, words } = assessment;
 
@@ -169,9 +176,16 @@ export default class FirebaseInteractor {
   }
 
   async updateAssessment(id: string, responses: AssessmentResult[]) {
-    await Promise.all(responses.map(async (response) => {
-      return await this.db.collection("assessments").doc(id).collection("results").doc(response.word).set({correct: response.correct});
-    }))
+    await Promise.all(
+      responses.map(async (response) => {
+        return await this.db
+          .collection("assessments")
+          .doc(id)
+          .collection("results")
+          .doc(response.word)
+          .set({ correct: response.correct });
+      })
+    );
   }
 
   async getWord(id: string): Promise<Word> {

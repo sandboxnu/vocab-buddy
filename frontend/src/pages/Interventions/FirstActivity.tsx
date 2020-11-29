@@ -1,27 +1,33 @@
-import React, { ReactElement } from "react";
-import styled from "styled-components";
-import Blocker from "../../components/Blocker";
-import Layout from "../../components/Layout";
-import PromptSpeech from "../../components/PromptSpeech";
-import CloudImage from "../../components/CloudImage";
-import DelayedNextButton from "../../components/DelayedNextButton";
+import React, { ReactElement } from 'react';
+import styled from 'styled-components';
+import Blocker from '../../components/Blocker';
+import Layout from '../../components/Layout';
+import PromptSpeech from '../../components/PromptSpeech';
+import CloudImage from '../../components/CloudImage';
+import DelayedNextButton from '../../components/DelayedNextButton';
 import ReplayButton from '../../components/ReplayButton';
-import { SKY } from "../../constants/colors";
-import { connect } from "react-redux";
-import { updateIntervention } from "./data/actions"; 
-import { getNextActivityIdx } from "../../constants/utils";
-import { Interventions } from "../../models/types";
-import { getCurrentInterventions } from "./data/reducer"; 
+import { SKY } from '../../constants/colors';
+import { connect } from 'react-redux';
+import { updateIntervention } from './data/actions';
+import { getNextActivityIdx } from '../../constants/utils';
 
 interface FirstActivityProps {
-  title: string,
-  activityIdx: number,
-  wordIdx: number,
-  prompt: string,
-  imageUrl: string,
-  interventions: Interventions,
-  maxWordLength: number,
-  updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
+  title: string;
+  setId: string;
+  activityIdx: number;
+  wordIdx: number;
+  prompt: string;
+  imageUrl: string;
+  maxWordLength: number;
+  updateIntervention: ({
+    setId,
+    wordIdx,
+    activityIdx,
+  }: {
+    setId: string;
+    wordIdx: number;
+    activityIdx: number;
+  }) => void;
 }
 
 const Container = styled.div`
@@ -37,14 +43,14 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -86,11 +92,10 @@ const CloudImageLeft = styled(CloudImage)`
   left: 0;
   width: 15%;
 
-  
   @media (max-width: 900px) {
     @media (max-height: 800px) {
-    height: 0px;
-  }
+      height: 0px;
+    }
     width: 20%;
     bottom: 1.5em;
   }
@@ -114,48 +119,59 @@ const CloudImageRight = styled(CloudImage)`
   }
 `;
 
-const connector = connect(
-  (state) => ({
-    interventions: getCurrentInterventions(state),
-  }),
-  {
-    updateIntervention: updateIntervention.request,
-  }
-);
+const connector = connect(null, {
+  updateIntervention: updateIntervention.request,
+});
 
 const FirstActivity = ({
   title,
+  setId,
   activityIdx,
   wordIdx,
   prompt,
   imageUrl,
-  interventions,
   maxWordLength,
   updateIntervention,
 }: FirstActivityProps): ReactElement => {
-
-  const nextActivityIdx = getNextActivityIdx(activityIdx, wordIdx, maxWordLength);
+  const nextActivityIdx = getNextActivityIdx(
+    activityIdx,
+    wordIdx,
+    maxWordLength
+  );
 
   return (
     <Layout>
       <Container>
-        <CloudImageLeft direction='left' />
-        <CloudImageRight direction='right' />
+        <CloudImageLeft direction="left" />
+        <CloudImageRight direction="right" />
         <MainContent>
           <DescriptionText>introduction + definition</DescriptionText>
-          <WordTitle>
-            {title}
-          </WordTitle>
+          <WordTitle>{title}</WordTitle>
           <Prompt>
             <PromptSpeech
               prompt={prompt}
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
-          <Image src={imageUrl}/>
+          <Image src={imageUrl} />
           <ButtonContainer>
-            <Blocker afterSeconds={5} message='Click on the next button to continue' repeatable={false}>
-              <DelayedNextButton text={"next"} top={20} delay={2000} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />
+            <Blocker
+              afterSeconds={5}
+              message="Click on the next button to continue"
+              repeatable={false}
+            >
+              <DelayedNextButton
+                text={'next'}
+                top={20}
+                delay={2000}
+                onClick={() =>
+                  updateIntervention({
+                    setId,
+                    wordIdx,
+                    activityIdx: nextActivityIdx,
+                  })
+                }
+              />
             </Blocker>
           </ButtonContainer>
         </MainContent>

@@ -1,28 +1,34 @@
-import React, {ReactElement} from "react";
-import { connect } from "react-redux";
-import styled from "styled-components";
-import Layout from "../../components/Layout";
+import React, { ReactElement } from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import Layout from '../../components/Layout';
 import ReplayButton from '../../components/ReplayButton';
-import { SKY } from "../../constants/colors";
-import AutoPrompt from "../../components/AutoPrompt";
-import CloudImage from "../../components/CloudImage";
-import YesNoSelection from "../../components/YesNoSelection";
-import DelayedNextButton from "../../components/DelayedNextButton";
-import { getCurrentInterventions } from "./data/reducer"; 
-import { updateIntervention } from "./data/actions"; 
-import { getNextActivityIdx } from "../../constants/utils";
-import { Interventions } from "../../models/types";
+import { SKY } from '../../constants/colors';
+import AutoPrompt from '../../components/AutoPrompt';
+import CloudImage from '../../components/CloudImage';
+import YesNoSelection from '../../components/YesNoSelection';
+import DelayedNextButton from '../../components/DelayedNextButton';
+import { updateIntervention } from './data/actions';
+import { getNextActivityIdx } from '../../constants/utils';
 
 interface ThirdActivityProps {
-  title: string,
-  activityIdx: number,
-  wordIdx: number,
-  prompt: string,
-  imageUrl: string,
-  answer: boolean,
-  interventions: Interventions,
-  maxWordLength: number,
-  updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
+  title: string;
+  setId: string;
+  activityIdx: number;
+  wordIdx: number;
+  prompt: string;
+  imageUrl: string;
+  answer: boolean;
+  maxWordLength: number;
+  updateIntervention: ({
+    setId,
+    wordIdx,
+    activityIdx,
+  }: {
+    setId: string;
+    wordIdx: number;
+    activityIdx: number;
+  }) => void;
 }
 
 const Container = styled.div`
@@ -38,20 +44,20 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
   text-transfom: lowercase;
   word-wrap: break-word;
- 
+
   @media (max-width: 600px) {
     font-size: 30px;
   }
@@ -80,7 +86,7 @@ const Image = styled.img`
 const ButtonContainer = styled.div`
   display: flex;
   margin-top: 20px;
-  
+
   @media (max-width: 900px) {
     flex-direction: column;
     justify-content: center;
@@ -90,15 +96,14 @@ const ButtonContainer = styled.div`
     flex-direction: row;
     justify-content: space-between;
   }
-  
 `;
 
 const NextContainer = styled.div`
-display: flex;
+  display: flex;
   justify-content: space-between;
-  
+
   @media (max-width: 900px) {
-    width:100%;
+    width: 100%;
   }
 `;
 
@@ -107,11 +112,10 @@ const CloudImageLeft = styled(CloudImage)`
   left: 0;
   width: 15%;
 
-  
   @media (max-width: 900px) {
     @media (max-height: 800px) {
-    height: 0px;
-  }
+      height: 0px;
+    }
     width: 20%;
     bottom: 1.5em;
   }
@@ -135,55 +139,65 @@ const CloudImageRight = styled(CloudImage)`
   }
 `;
 
-const connector = connect(
-  (state) => ({
-    interventions: getCurrentInterventions(state),
-  }),
-  {
-    updateIntervention: updateIntervention.request,
-  }
-);
+const connector = connect(null, {
+  updateIntervention: updateIntervention.request,
+});
 
-const ThirdActivity  = ({ 
+const ThirdActivity = ({
   title,
+  setId,
   activityIdx,
-  wordIdx, 
-  prompt, 
-  imageUrl, 
-  answer, 
-  interventions, 
-  maxWordLength, 
-  updateIntervention 
-}: ThirdActivityProps) : ReactElement => {
+  wordIdx,
+  prompt,
+  imageUrl,
+  answer,
+  maxWordLength,
+  updateIntervention,
+}: ThirdActivityProps): ReactElement => {
+  const nextActivityIdx = getNextActivityIdx(
+    activityIdx,
+    wordIdx,
+    maxWordLength
+  );
 
-  const nextActivityIdx = getNextActivityIdx(activityIdx, wordIdx, maxWordLength);
-  
   return (
-      <Layout>
-        <Container>
-          <CloudImageLeft direction='left' />
-          <CloudImageRight direction='right' />
-          <MainContent>
-            <DescriptionText>
-              yes or no context question
-            </DescriptionText>
-            <WordTitle>
-              {title}
-            </WordTitle>
-            <Prompt>
-              <AutoPrompt prompt={prompt} button={<ReplayButton scale={0.8}/>} />
-            </Prompt>
-            <Image src={imageUrl}/>
-            <ButtonContainer>
-              <YesNoSelection correctAnswer={answer} />
-              <NextContainer>
-                <DelayedNextButton text="next" top={20} delay={1000} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />
-              </NextContainer>
-            </ButtonContainer>
-
-          </MainContent>
-        </Container>
-      </Layout>);
-}
+    <Layout>
+      <Container>
+        <CloudImageLeft direction="left" />
+        <CloudImageRight direction="right" />
+        <MainContent>
+          <DescriptionText>
+            yes or no context question
+          </DescriptionText>
+          <WordTitle>{title}</WordTitle>
+          <Prompt>
+            <AutoPrompt
+              prompt={prompt}
+              button={<ReplayButton scale={0.8} />}
+            />
+          </Prompt>
+          <Image src={imageUrl} />
+          <ButtonContainer>
+            <YesNoSelection correctAnswer={answer} />
+            <NextContainer>
+              <DelayedNextButton
+                text="next"
+                top={20}
+                delay={1000}
+                onClick={() =>
+                  updateIntervention({
+                    setId,
+                    wordIdx,
+                    activityIdx: nextActivityIdx,
+                  })
+                }
+              />
+            </NextContainer>
+          </ButtonContainer>
+        </MainContent>
+      </Container>
+    </Layout>
+  );
+};
 
 export default connector(ThirdActivity);

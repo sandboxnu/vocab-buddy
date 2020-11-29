@@ -1,27 +1,34 @@
-import React, { ReactElement, useState } from "react";
-import { connect } from "react-redux";
-import Layout from "../../components/Layout";
-import styled from "styled-components";
-import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
-import PromptSpeech from "../../components/PromptSpeech";
-import ReplayButton from "../../components/ReplayButton";
-import CloudImage from "../../components/CloudImage";
-import DelayedNextButton from "../../components/DelayedNextButton";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { getCurrentInterventions } from "./data/reducer"; 
-import { updateIntervention } from "./data/actions"; 
-import { getNextActivityIdx } from "../../constants/utils";
-import { Interventions } from "../../models/types";
+import React, { ReactElement, useState } from 'react';
+import { connect } from 'react-redux';
+import Layout from '../../components/Layout';
+import styled from 'styled-components';
+import { CORAL, SEA_FOAM, SKY } from '../../constants/colors';
+import PromptSpeech from '../../components/PromptSpeech';
+import ReplayButton from '../../components/ReplayButton';
+import CloudImage from '../../components/CloudImage';
+import DelayedNextButton from '../../components/DelayedNextButton';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { getCurrentInterventions } from './data/reducer';
+import { updateIntervention } from './data/actions';
+import { getNextActivityIdx } from '../../constants/utils';
 
 interface SecondActivityProps {
   title: string;
-  activityIdx: number,
-  wordIdx: number,
-  prompt: string,
-  imageUrls: ImageProps[],
-  maxWordLength: number,
-  interventions: Interventions,
-  updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
+  setId: string;
+  activityIdx: number;
+  wordIdx: number;
+  prompt: string;
+  imageUrls: ImageProps[];
+  maxWordLength: number;
+  updateIntervention: ({
+    setId,
+    wordIdx,
+    activityIdx,
+  }: {
+    setId: string;
+    wordIdx: number;
+    activityIdx: number;
+  }) => void;
 }
 
 interface ImageProps {
@@ -44,14 +51,14 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -174,25 +181,15 @@ const StyledCheckOutlined = styled(CheckOutlined)`
   margin-top: 20px;
 `;
 
-const connector = connect(
-  (state) => ({
-    interventions: getCurrentInterventions(state),
-  }),
-  {
-    updateIntervention: updateIntervention.request,
-  }
-);
-
 const CloudImageLeft = styled(CloudImage)`
   position: absolute;
   left: 0;
   width: 15%;
 
-  
   @media (max-width: 900px) {
     @media (max-height: 800px) {
-    height: 0px;
-  }
+      height: 0px;
+    }
     width: 20%;
     bottom: 1.5em;
   }
@@ -216,43 +213,49 @@ const CloudImageRight = styled(CloudImage)`
   }
 `;
 
+const connector = connect(null, {
+  updateIntervention: updateIntervention.request,
+});
+
 const SecondActivity = ({
   title,
+  setId,
   activityIdx,
   wordIdx,
   prompt,
   imageUrls,
-  interventions,
   maxWordLength,
-  updateIntervention
+  updateIntervention,
 }: SecondActivityProps): ReactElement => {
-
   const Image = ({
     url,
     correct,
     selected,
     onClick,
   }: ImageProps): ReactElement => {
-    if (selected && correct) return <CorrectImage src={url} onClick={onClick} />;
+    if (selected && correct)
+      return <CorrectImage src={url} onClick={onClick} />;
     else if (selected && !correct)
       return <IncorrectImage src={url} onClick={onClick} />;
     else return <UnselectedImage src={url} onClick={onClick} />;
   };
-  
-  const nextActivityIdx = getNextActivityIdx(activityIdx, wordIdx, maxWordLength);
+
+  const nextActivityIdx = getNextActivityIdx(
+    activityIdx,
+    wordIdx,
+    maxWordLength
+  );
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   return (
     <Layout>
       <Container>
-      <CloudImageLeft direction='left' />
-      <CloudImageRight direction='right' />
+        <CloudImageLeft direction="left" />
+        <CloudImageRight direction="right" />
         <MainContent>
           <DescriptionText>example vs. non-example</DescriptionText>
-          <WordTitle>
-            {title}
-          </WordTitle>
+          <WordTitle>{title}</WordTitle>
           <Prompt>
             <PromptSpeech
               prompt={prompt}
@@ -280,7 +283,18 @@ const SecondActivity = ({
             </ImageContainer>
           ))}
           <ButtonContainer>
-            <DelayedNextButton text="next" top={20} delay={1000} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />
+            <DelayedNextButton
+              text="next"
+              top={20}
+              delay={1000}
+              onClick={() =>
+                updateIntervention({
+                  setId,
+                  wordIdx,
+                  activityIdx: nextActivityIdx,
+                })
+              }
+            />
           </ButtonContainer>
         </MainContent>
       </Container>
