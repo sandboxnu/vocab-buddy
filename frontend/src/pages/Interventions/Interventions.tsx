@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import LandingPage from '../../components/LandingPage';
 import { ASSESSMENTS_LANDING } from '../../constants/images';
 import { useHistory } from 'react-router-dom';

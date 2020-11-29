@@ -1,13 +1,5 @@
-import React, {
-  FunctionComponent,
-  ReactElement,
-  useEffect,
-} from 'react';
-import Layout from '../../components/Layout';
-import { connect } from 'react-redux';
-import { getCurrentInterventions } from '../Interventions/data/reducer';
+import React, { FunctionComponent, ReactElement } from 'react';
 import { ActivityList } from '../../models/types';
-import { getInterventions } from './data/actions';
 import FirstActivity from '../Interventions/FirstActivity';
 import SecondActivity from '../Interventions/SecondActivity';
 import ThirdActivity from '../Interventions/ThirdActivity';
