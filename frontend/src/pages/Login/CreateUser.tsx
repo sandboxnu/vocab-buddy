@@ -1,15 +1,20 @@
 import { Alert } from 'antd';
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
-import styled from "styled-components";
-import CloudImage from "../../components/CloudImage";
-import Layout from "../../components/Layout";
-import PurpleButton from "../../components/PurpleButton";
-import { TextInput } from "../../components/TextInput";
-import { INK, SEA_FOAM } from "../../constants/colors";
-import { authenticationRequest } from "./data/actions";
-import { AccountType, CreateUserParams } from "../../models/types";
+import React, {
+  FunctionComponent,
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
+import CloudGroup from '../../components/CloudGroup';
+import Layout from '../../components/Layout';
+import PurpleButton from '../../components/PurpleButton';
+import { TextInput } from '../../components/TextInput';
+import { INK, SEA_FOAM } from '../../constants/colors';
+import { authenticationRequest } from './data/actions';
+import { AccountType, CreateUserParams } from '../../models/types';
 
 const LoginHoldingDiv = styled.div`
   display: flex;
@@ -46,7 +51,8 @@ interface RadioTextProps {
   isActive: boolean;
 }
 const RadioText = styled.p`
-  border-bottom: ${({isActive} : RadioTextProps) => !isActive ? '0px solid clear' : `4px solid ${SEA_FOAM}`};
+  border-bottom: ${({ isActive }: RadioTextProps) =>
+    !isActive ? '0px solid clear' : `4px solid ${SEA_FOAM}`};
   flex: 1;
   margin-right: 15px;
 
@@ -57,7 +63,7 @@ const RadioText = styled.p`
   line-height: 26px;
 
   :hover {
-    cursor: default
+    cursor: default;
   }
 `;
 
@@ -67,39 +73,6 @@ const SignUpHeader = styled.h1`
   font-weight: bold;
   font-size: 56px;
 `;
-
-const CloudImageLeft = styled(CloudImage)`
-  position: absolute;
-  left: 0;
-  width: 15%;
-
-  
-  @media (max-width: 900px) {
-    @media (max-height: 800px) {
-    height: 0px;
-  }
-    width: 20%;
-    bottom: 1.5em;
-  }
-
-  @media (min-width: 901px) {
-    top: 30%;
-  }
-`;
-
-const CloudImageRight = styled(CloudImage)`
-  position: absolute;
-  right: 0;
-  width: 15%;
-  @media (max-width: 900px) {
-    top: 3em;
-    width: 20%;
-  }
-
-  @media (min-width: 901px) {
-    bottom: 30%;
-  }
-`
 
 const EvenSpacedDiv = styled.div`
   @media (max-width: 900px) {
@@ -154,7 +127,8 @@ interface NameTextInputProps {
 }
 const NameTextInput = styled(TextInput)`
   flex: 3;
-  margin-right: ${({isStudent} : NameTextInputProps) => isStudent ? '15px' : '0px'}
+  margin-right: ${({ isStudent }: NameTextInputProps) =>
+    isStudent ? '15px' : '0px'};
 `;
 
 const AgeTextInput = styled(TextInput)`
@@ -169,24 +143,46 @@ const connector = connect((state) => state, {
 
 interface CreateUserProps {
   signedIn: boolean;
-  createUser: ({ email, password, name, accountType, age } : CreateUserParams) => void 
+  createUser: ({
+    email,
+    password,
+    name,
+    accountType,
+    age,
+  }: CreateUserParams) => void;
 }
 
-const CreateUser : FunctionComponent<CreateUserProps> = ({ signedIn, createUser }) : ReactElement => {
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
-  let [confirmPassword, setConfirmPassword] = useState("");
-  let [name, setName] = useState("");
-  let [accountType, setAccountType] = useState("STUDENT");
-  let [age, setAge] = useState("");
-  let [error, setError] = useState("");
+const CreateUser: FunctionComponent<CreateUserProps> = ({
+  signedIn,
+  createUser,
+}): ReactElement => {
+  let [email, setEmail] = useState('');
+  let [password, setPassword] = useState('');
+  let [confirmPassword, setConfirmPassword] = useState('');
+  let [name, setName] = useState('');
+  let [accountType, setAccountType] = useState('STUDENT');
+  let [age, setAge] = useState('');
+  let [error, setError] = useState('');
   let createUserWithCheck = () => {
     if (confirmPassword !== password) {
-      setError("you need to confirm the password with the same password");
-    } else if ((accountType === "STUDENT" && !age) || !name || !password || !email) {
-      setError("please fill in all fields");
+      setError(
+        'you need to confirm the password with the same password'
+      );
+    } else if (
+      (accountType === 'STUDENT' && !age) ||
+      !name ||
+      !password ||
+      !email
+    ) {
+      setError('please fill in all fields');
     } else {
-      createUser({ email, password, name, accountType: accountType as AccountType, age: accountType === "RESEARCHER" ? null : parseInt(age) });
+      createUser({
+        email,
+        password,
+        name,
+        accountType: accountType as AccountType,
+        age: accountType === 'RESEARCHER' ? null : parseInt(age),
+      });
     }
   };
 
@@ -194,51 +190,66 @@ const CreateUser : FunctionComponent<CreateUserProps> = ({ signedIn, createUser 
 
   useEffect(() => {
     if (signedIn) {
-      history.push("/dashboard");
+      history.push('/dashboard');
     }
   }, [signedIn, history]);
   // For right now, go to dashboard when signed in
 
-  return ( 
+  return (
     <Layout hideBar={true}>
       <>
-        {error && <StyledAlert banner message={error} type='error' closable onClose={() => setError("")}/>}
-        <CloudImageLeft direction='left' />
-        <CloudImageRight direction='right' />
+        {error && (
+          <StyledAlert
+            banner
+            message={error}
+            type="error"
+            closable
+            onClose={() => setError('')}
+          />
+        )}
+        <CloudGroup />
         <LoginHoldingDiv>
           <HorizontalDiv>
-            <EvenSpacedDiv/>
+            <EvenSpacedDiv />
             <ActuallyCreateUserDiv>
               <SignUpHeader>sign up</SignUpHeader>
               <HorizontalDiv>
                 <HorizontalDiv>
-                <RadioText isActive={accountType === "STUDENT"} onClick={() => setAccountType("STUDENT")}>
-                  student
-                </RadioText>
-                <RadioText isActive={accountType === "RESEARCHER"} onClick={() => setAccountType("RESEARCHER")}>
-                  researcher
-                </RadioText>
+                  <RadioText
+                    isActive={accountType === 'STUDENT'}
+                    onClick={() => setAccountType('STUDENT')}
+                  >
+                    student
+                  </RadioText>
+                  <RadioText
+                    isActive={accountType === 'RESEARCHER'}
+                    onClick={() => setAccountType('RESEARCHER')}
+                  >
+                    researcher
+                  </RadioText>
                 </HorizontalDiv>
                 <EvenSpacedDiv />
               </HorizontalDiv>
               <HorizontalDiv>
-              <NameTextInput
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                type="text"
-                text="name"
-                isStudent={accountType === "STUDENT"}
-              />
-              {accountType === "STUDENT" && <AgeTextInput
-                onChange={(e) => {
-                  if (parseInt(e.target.value) != null) {
-                    setAge(e.target.value);
-                  }
-                }}
-                value={age}
-                type="number"
-                text="age"
-                />}
+                <NameTextInput
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
+                  type="text"
+                  text="name"
+                  isStudent={accountType === 'STUDENT'}
+                />
+                {accountType === 'STUDENT' && (
+                  <AgeTextInput
+                    onChange={(e) => {
+                      if (parseInt(e.target.value) != null) {
+                        setAge(e.target.value);
+                      }
+                    }}
+                    value={age}
+                    type="number"
+                    text="age"
+                  />
+                )}
               </HorizontalDiv>
               <TextInput
                 onChange={(event) => setEmail(event.target.value)}
@@ -259,25 +270,24 @@ const CreateUser : FunctionComponent<CreateUserProps> = ({ signedIn, createUser 
                 expectedValue={password}
                 text="confirm password"
               />
-                
+
               <StyledPurpleButton
-                text={"sign up"}
+                text={'sign up'}
                 top={0}
                 onClick={() => createUserWithCheck()}
               />
 
               <HorizontalDiv>
-              Have an account?   
-              <LoginButton onClick={() => history.push("/")}>
-                login
-              </LoginButton>
+                Have an account?
+                <LoginButton onClick={() => history.push('/')}>
+                  login
+                </LoginButton>
               </HorizontalDiv>
             </ActuallyCreateUserDiv>
             <EvenSpacedDiv />
           </HorizontalDiv>
         </LoginHoldingDiv>
-    </>
-       
+      </>
     </Layout>
   );
 };

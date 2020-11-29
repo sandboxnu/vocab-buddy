@@ -1,15 +1,12 @@
 import React, { ReactElement, useState } from 'react';
-import { connect } from 'react-redux';
 import Layout from '../../components/Layout';
 import styled from 'styled-components';
 import { CORAL, SEA_FOAM, SKY } from '../../constants/colors';
 import PromptSpeech from '../../components/PromptSpeech';
 import ReplayButton from '../../components/ReplayButton';
-import CloudImage from '../../components/CloudImage';
+import CloudGroup from '../../components/CloudGroup';
 import DelayedNextButton from '../../components/DelayedNextButton';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { updateIntervention } from './data/actions';
-import { getNextActivityIdx } from '../../constants/utils';
 import Blocker from '../../components/Blocker';
 
 interface SecondActivityProps {
@@ -171,38 +168,6 @@ const StyledCheckOutlined = styled(CheckOutlined)`
 
 const StyledDivForClicks = styled.div``;
 
-const CloudImageLeft = styled(CloudImage)`
-  position: absolute;
-  left: 0;
-  width: 15%;
-
-  @media (max-width: 900px) {
-    @media (max-height: 800px) {
-      height: 0px;
-    }
-    width: 20%;
-    bottom: 1.5em;
-  }
-
-  @media (min-width: 901px) {
-    top: 30%;
-  }
-`;
-
-const CloudImageRight = styled(CloudImage)`
-  position: absolute;
-  right: 0;
-  width: 15%;
-  @media (max-width: 900px) {
-    top: 3em;
-    width: 20%;
-  }
-
-  @media (min-width: 901px) {
-    bottom: 30%;
-  }
-`;
-
 const SecondActivity = ({
   title,
   prompt,
@@ -227,8 +192,7 @@ const SecondActivity = ({
   return (
     <Layout>
       <Container>
-        <CloudImageLeft direction="left" />
-        <CloudImageRight direction="right" />
+        <CloudGroup />
         <MainContent>
           <DescriptionText>example vs. non-example</DescriptionText>
           <WordTitle>{title}</WordTitle>

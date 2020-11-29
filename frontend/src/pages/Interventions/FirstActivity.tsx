@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Blocker from '../../components/Blocker';
 import Layout from '../../components/Layout';
 import PromptSpeech from '../../components/PromptSpeech';
-import CloudImage from '../../components/CloudImage';
+import CloudGroup from '../../components/CloudGroup';
 import DelayedNextButton from '../../components/DelayedNextButton';
 import ReplayButton from '../../components/ReplayButton';
 import { SKY } from '../../constants/colors';
@@ -72,38 +72,6 @@ const ButtonContainer = styled.div`
   justify-content: end;
 `;
 
-const CloudImageLeft = styled(CloudImage)`
-  position: absolute;
-  left: 0;
-  width: 15%;
-
-  @media (max-width: 900px) {
-    @media (max-height: 800px) {
-      height: 0px;
-    }
-    width: 20%;
-    bottom: 1.5em;
-  }
-
-  @media (min-width: 901px) {
-    top: 30%;
-  }
-`;
-
-const CloudImageRight = styled(CloudImage)`
-  position: absolute;
-  right: 0;
-  width: 15%;
-  @media (max-width: 900px) {
-    top: 3em;
-    width: 20%;
-  }
-
-  @media (min-width: 901px) {
-    bottom: 30%;
-  }
-`;
-
 const FirstActivity = ({
   title,
   prompt,
@@ -113,8 +81,7 @@ const FirstActivity = ({
   return (
     <Layout>
       <Container>
-        <CloudImageLeft direction="left" />
-        <CloudImageRight direction="right" />
+        <CloudGroup />
         <MainContent>
           <DescriptionText>introduction + definition</DescriptionText>
           <WordTitle>{title}</WordTitle>
