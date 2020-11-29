@@ -10,6 +10,7 @@ import { SKY } from '../../constants/colors';
 import { connect } from 'react-redux';
 import { updateIntervention } from './data/actions';
 import { getNextActivityIdx } from '../../constants/utils';
+import ExpandableImage from '../../components/ExpandableImage';
 
 interface FirstActivityProps {
   title: string;
@@ -72,7 +73,7 @@ const Prompt = styled.div`
   width: max-content;
 `;
 
-const Image = styled.img`
+const Image = styled(ExpandableImage)`
   border-radius: 20px;
   min-width: 600px;
 

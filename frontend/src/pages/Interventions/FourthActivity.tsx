@@ -12,6 +12,7 @@ import {
   getNextWordIdx,
   getNextActivityIdx,
 } from '../../constants/utils';
+import ExpandableImage from '../../components/ExpandableImage';
 
 interface FourthActivityProps {
   title: string;
@@ -74,7 +75,7 @@ const Prompt = styled.div`
   width: max-content;
 `;
 
-const Image = styled.img`
+const Image = styled(ExpandableImage)`
   border-radius: 20px;
   min-width: 600px;
 
