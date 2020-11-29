@@ -4,7 +4,9 @@ import Layout from '../../components/Layout';
 import PromptSpeech from '../../components/PromptSpeech';
 import ReplayButton from '../../components/ReplayButton';
 import DelayedNextButton from '../../components/DelayedNextButton';
+import Blocker from '../../components/Blocker';
 import CloudImage from '../../components/CloudImage';
+import ExpandableImage from '../../components/ExpandableImage';
 import { SKY } from '../../constants/colors';
 import { connect } from 'react-redux';
 import { updateIntervention } from './data/actions';
@@ -12,25 +14,12 @@ import {
   getNextWordIdx,
   getNextActivityIdx,
 } from '../../constants/utils';
-import ExpandableImage from '../../components/ExpandableImage';
 
 interface FourthActivityProps {
   title: string;
-  setId: string;
-  activityIdx: number;
-  wordIdx: number;
   prompt: string;
   imageUrl: string;
-  maxWordLength: number;
-  updateIntervention: ({
-    setId,
-    wordIdx,
-    activityIdx,
-  }: {
-    setId: string;
-    wordIdx: number;
-    activityIdx: number;
-  }) => void;
+  updateIntervention: () => void;
 }
 
 const Container = styled.div`
@@ -122,26 +111,12 @@ const CloudImageRight = styled(CloudImage)`
   }
 `;
 
-const connector = connect(null, {
-  updateIntervention: updateIntervention.request,
-});
-
 const FourthActivity = ({
   title,
-  setId,
-  activityIdx,
-  wordIdx,
   prompt,
   imageUrl,
-  maxWordLength,
   updateIntervention,
 }: FourthActivityProps): ReactElement => {
-  const nextWordIdx = getNextWordIdx(wordIdx, maxWordLength);
-  const nextActivityIdx = getNextActivityIdx(
-    activityIdx,
-    wordIdx,
-    maxWordLength
-  );
   return (
     <Layout>
       <Container>
@@ -158,18 +133,18 @@ const FourthActivity = ({
           </Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
-            <DelayedNextButton
-              text={'next'}
-              top={20}
-              delay={1000}
-              onClick={() =>
-                updateIntervention({
-                  setId,
-                  wordIdx: nextWordIdx,
-                  activityIdx: nextActivityIdx,
-                })
-              }
-            />
+            <Blocker
+              afterSeconds={30}
+              message="Click on the next button to continue"
+              repeatable={false}
+            >
+              <DelayedNextButton
+                text={'next'}
+                top={20}
+                delay={1000}
+                onClick={updateIntervention}
+              />
+            </Blocker>
           </ButtonContainer>
         </MainContent>
       </Container>
@@ -177,4 +152,4 @@ const FourthActivity = ({
   );
 };
 
-export default connector(FourthActivity);
+export default FourthActivity;

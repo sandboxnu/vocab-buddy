@@ -8,27 +8,15 @@ import ReplayButton from '../../components/ReplayButton';
 import CloudImage from '../../components/CloudImage';
 import DelayedNextButton from '../../components/DelayedNextButton';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { getCurrentInterventions } from './data/reducer';
 import { updateIntervention } from './data/actions';
 import { getNextActivityIdx } from '../../constants/utils';
+import Blocker from '../../components/Blocker';
 
 interface SecondActivityProps {
   title: string;
-  setId: string;
-  activityIdx: number;
-  wordIdx: number;
   prompt: string;
   imageUrls: ImageProps[];
-  maxWordLength: number;
-  updateIntervention: ({
-    setId,
-    wordIdx,
-    activityIdx,
-  }: {
-    setId: string;
-    wordIdx: number;
-    activityIdx: number;
-  }) => void;
+  updateIntervention: () => void;
 }
 
 interface ImageProps {
@@ -181,6 +169,8 @@ const StyledCheckOutlined = styled(CheckOutlined)`
   margin-top: 20px;
 `;
 
+const StyledDivForClicks = styled.div``;
+
 const CloudImageLeft = styled(CloudImage)`
   position: absolute;
   left: 0;
@@ -213,18 +203,10 @@ const CloudImageRight = styled(CloudImage)`
   }
 `;
 
-const connector = connect(null, {
-  updateIntervention: updateIntervention.request,
-});
-
 const SecondActivity = ({
   title,
-  setId,
-  activityIdx,
-  wordIdx,
   prompt,
   imageUrls,
-  maxWordLength,
   updateIntervention,
 }: SecondActivityProps): ReactElement => {
   const Image = ({
@@ -239,12 +221,6 @@ const SecondActivity = ({
       return <IncorrectImage src={url} onClick={onClick} />;
     else return <UnselectedImage src={url} onClick={onClick} />;
   };
-
-  const nextActivityIdx = getNextActivityIdx(
-    activityIdx,
-    wordIdx,
-    maxWordLength
-  );
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
@@ -262,38 +238,40 @@ const SecondActivity = ({
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
-          {imageUrls.map((img, index) => (
-            <ImageContainer>
-              <Image
-                url={img.url}
-                correct={img.correct}
-                selected={index === selectedIndex}
-                onClick={() => setSelectedIndex(index)}
-              />
-              {!img.correct && index === selectedIndex && (
-                <RedCircle>
-                  <StyledCloseOutlined />
-                </RedCircle>
-              )}
-              {img.correct && index === selectedIndex && (
-                <GreenCircle>
-                  <StyledCheckOutlined />
-                </GreenCircle>
-              )}
-            </ImageContainer>
-          ))}
+          <Blocker
+            afterSeconds={15}
+            message="Click on an image"
+            repeatable={false}
+          >
+            <StyledDivForClicks>
+              {imageUrls.map((img, index) => (
+                <ImageContainer>
+                  <Image
+                    url={img.url}
+                    correct={img.correct}
+                    selected={index === selectedIndex}
+                    onClick={() => setSelectedIndex(index)}
+                  />
+                  {!img.correct && index === selectedIndex && (
+                    <RedCircle>
+                      <StyledCloseOutlined />
+                    </RedCircle>
+                  )}
+                  {img.correct && index === selectedIndex && (
+                    <GreenCircle>
+                      <StyledCheckOutlined />
+                    </GreenCircle>
+                  )}
+                </ImageContainer>
+              ))}
+            </StyledDivForClicks>
+          </Blocker>
           <ButtonContainer>
             <DelayedNextButton
               text="next"
               top={20}
               delay={1000}
-              onClick={() =>
-                updateIntervention({
-                  setId,
-                  wordIdx,
-                  activityIdx: nextActivityIdx,
-                })
-              }
+              onClick={updateIntervention}
             />
           </ButtonContainer>
         </MainContent>
@@ -302,4 +280,4 @@ const SecondActivity = ({
   );
 };
 
-export default connector(SecondActivity);
+export default SecondActivity;

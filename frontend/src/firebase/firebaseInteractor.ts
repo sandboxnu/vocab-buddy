@@ -126,11 +126,7 @@ export default class FirebaseInteractor {
     wordIdx: number,
     activityIdx: number
   ) {
-    let interventions = await this.db
-      .collection("interventions")
-      .doc(setId)
-      .get();
-    let intervention = interventions.ref;
+    let intervention = await this.db.collection("interventions").doc(setId);
     intervention.update({
       wordIdx,
       activityIdx,

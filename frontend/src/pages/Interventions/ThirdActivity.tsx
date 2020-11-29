@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
 import ReplayButton from '../../components/ReplayButton';
@@ -8,27 +7,13 @@ import AutoPrompt from '../../components/AutoPrompt';
 import CloudImage from '../../components/CloudImage';
 import YesNoSelection from '../../components/YesNoSelection';
 import DelayedNextButton from '../../components/DelayedNextButton';
-import { updateIntervention } from './data/actions';
-import { getNextActivityIdx } from '../../constants/utils';
 
 interface ThirdActivityProps {
   title: string;
-  setId: string;
-  activityIdx: number;
-  wordIdx: number;
   prompt: string;
   imageUrl: string;
   answer: boolean;
-  maxWordLength: number;
-  updateIntervention: ({
-    setId,
-    wordIdx,
-    activityIdx,
-  }: {
-    setId: string;
-    wordIdx: number;
-    activityIdx: number;
-  }) => void;
+  updateIntervention: () => void;
 }
 
 const Container = styled.div`
@@ -55,7 +40,7 @@ const WordTitle = styled.p`
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
-  text-transfom: lowercase;
+  text-transform: lowercase;
   word-wrap: break-word;
 
   @media (max-width: 600px) {
@@ -138,28 +123,13 @@ const CloudImageRight = styled(CloudImage)`
     bottom: 30%;
   }
 `;
-
-const connector = connect(null, {
-  updateIntervention: updateIntervention.request,
-});
-
 const ThirdActivity = ({
   title,
-  setId,
-  activityIdx,
-  wordIdx,
   prompt,
   imageUrl,
   answer,
-  maxWordLength,
   updateIntervention,
 }: ThirdActivityProps): ReactElement => {
-  const nextActivityIdx = getNextActivityIdx(
-    activityIdx,
-    wordIdx,
-    maxWordLength
-  );
-
   return (
     <Layout>
       <Container>
@@ -184,13 +154,7 @@ const ThirdActivity = ({
                 text="next"
                 top={20}
                 delay={1000}
-                onClick={() =>
-                  updateIntervention({
-                    setId,
-                    wordIdx,
-                    activityIdx: nextActivityIdx,
-                  })
-                }
+                onClick={updateIntervention}
               />
             </NextContainer>
           </ButtonContainer>
@@ -200,4 +164,4 @@ const ThirdActivity = ({
   );
 };
 
-export default connector(ThirdActivity);
+export default ThirdActivity;

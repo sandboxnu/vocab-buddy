@@ -7,28 +7,13 @@ import CloudImage from '../../components/CloudImage';
 import DelayedNextButton from '../../components/DelayedNextButton';
 import ReplayButton from '../../components/ReplayButton';
 import { SKY } from '../../constants/colors';
-import { connect } from 'react-redux';
-import { updateIntervention } from './data/actions';
-import { getNextActivityIdx } from '../../constants/utils';
 import ExpandableImage from '../../components/ExpandableImage';
 
 interface FirstActivityProps {
   title: string;
-  setId: string;
-  activityIdx: number;
-  wordIdx: number;
   prompt: string;
   imageUrl: string;
-  maxWordLength: number;
-  updateIntervention: ({
-    setId,
-    wordIdx,
-    activityIdx,
-  }: {
-    setId: string;
-    wordIdx: number;
-    activityIdx: number;
-  }) => void;
+  updateIntervention: () => void;
 }
 
 const Container = styled.div`
@@ -74,7 +59,6 @@ const Prompt = styled.div`
 `;
 
 const Image = styled(ExpandableImage)`
-  border-radius: 20px;
   min-width: 600px;
 
   @media (max-width: 900px) {
@@ -120,26 +104,12 @@ const CloudImageRight = styled(CloudImage)`
   }
 `;
 
-const connector = connect(null, {
-  updateIntervention: updateIntervention.request,
-});
-
 const FirstActivity = ({
   title,
-  setId,
-  activityIdx,
-  wordIdx,
   prompt,
   imageUrl,
-  maxWordLength,
   updateIntervention,
 }: FirstActivityProps): ReactElement => {
-  const nextActivityIdx = getNextActivityIdx(
-    activityIdx,
-    wordIdx,
-    maxWordLength
-  );
-
   return (
     <Layout>
       <Container>
@@ -157,7 +127,7 @@ const FirstActivity = ({
           <Image src={imageUrl} />
           <ButtonContainer>
             <Blocker
-              afterSeconds={5}
+              afterSeconds={30}
               message="Click on the next button to continue"
               repeatable={false}
             >
@@ -165,13 +135,7 @@ const FirstActivity = ({
                 text={'next'}
                 top={20}
                 delay={2000}
-                onClick={() =>
-                  updateIntervention({
-                    setId,
-                    wordIdx,
-                    activityIdx: nextActivityIdx,
-                  })
-                }
+                onClick={updateIntervention}
               />
             </Blocker>
           </ButtonContainer>
@@ -181,4 +145,4 @@ const FirstActivity = ({
   );
 };
 
-export default connector(FirstActivity);
+export default FirstActivity;

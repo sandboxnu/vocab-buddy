@@ -11,11 +11,16 @@ interface ClickedProps {
 }
 
 const Image = styled.img`
+  border-radius: 20px;
   transform: scale(
     ${({ isExpanded: isShrunk }: ClickedProps) =>
       isShrunk ? 1.1 : 1}
   );
   transition: transform 0.5s;
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const ExpandableImage = ({

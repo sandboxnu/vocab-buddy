@@ -7,15 +7,25 @@ import Layout from '../../components/Layout';
 import { connect } from 'react-redux';
 import { getCurrentInterventions } from '../Interventions/data/reducer';
 import { Interventions } from '../../models/types';
-import { getInterventions } from './data/actions';
-import FirstActivity from '../Interventions/FirstActivity';
-import SecondActivity from '../Interventions/SecondActivity';
-import ThirdActivity from '../Interventions/ThirdActivity';
-import FourthActivity from '../Interventions/FourthActivity';
+import { getInterventions, updateIntervention } from './data/actions';
+import ActivitiesComponent from '../Interventions/ActivitiesComponent';
+import {
+  getNextActivityIdx,
+  getNextWordIdx,
+} from '../../constants/utils';
 
 interface ActivityProps {
   interventions: Interventions;
   getInterventions: () => void;
+  updateIntervention: ({
+    setId,
+    wordIdx,
+    activityIdx,
+  }: {
+    setId: string;
+    wordIdx: number;
+    activityIdx: number;
+  }) => void;
 }
 
 const connector = connect(
@@ -24,106 +34,54 @@ const connector = connect(
   }),
   {
     getInterventions: getInterventions.request,
+    updateIntervention: updateIntervention.request,
   }
 );
 
 const Activities: FunctionComponent<ActivityProps> = ({
   interventions,
   getInterventions,
+  updateIntervention,
 }): ReactElement => {
   useEffect(() => {
     if (!interventions) getInterventions();
   }, [interventions, getInterventions]);
 
-  const setId = interventions && interventions.setId;
-  const currentWordIdx = interventions && interventions.wordIdx;
-  const currentActivityIdx =
-    interventions && interventions.activityIdx;
-  const wordList = interventions && interventions.wordList;
-  const activities = wordList && wordList[currentWordIdx].activities;
-  const title = wordList && wordList[currentWordIdx].word.value;
+  if (!interventions) {
+    return <Layout>Loading</Layout>;
+  } else {
+    const setId = interventions.setId;
+    const currentWordIdx = interventions.wordIdx;
+    const currentActivityIdx = interventions.activityIdx;
+    const wordList = interventions.wordList;
+    const activities = wordList[currentWordIdx].activities;
+    const title = wordList[currentWordIdx].word.value;
+    const nextWordIdx = getNextWordIdx(
+      currentActivityIdx,
+      currentWordIdx,
+      wordList.length
+    );
+    const nextActivityIdx = getNextActivityIdx(
+      currentActivityIdx,
+      currentWordIdx,
+      wordList.length
+    );
 
-  const ActivityComponent = (idx: number): ReactElement => {
-    switch (idx) {
-      case 0:
-        return (
-          <FirstActivity
-            title={title}
-            setId={setId}
-            prompt={activities.a1.prompt}
-            imageUrl={activities.a1.url}
-            activityIdx={currentActivityIdx}
-            wordIdx={currentWordIdx}
-            maxWordLength={wordList.length}
-          />
-        );
-      case 1: {
-        const correctChoice = {
-          url: activities.a2.correctUrl,
-          correct: true,
-        };
-
-        const incorrectChoice = {
-          url: activities.a2.incorrectUrl,
-          correct: false,
-        };
-
-        const imageUrls =
-          Math.floor(Math.random() * 2) === 0
-            ? [correctChoice, incorrectChoice]
-            : [incorrectChoice, correctChoice];
-
-        return (
-          <SecondActivity
-            title={title}
-            setId={setId}
-            prompt={activities.a2.prompt}
-            imageUrls={imageUrls}
-            activityIdx={currentActivityIdx}
-            wordIdx={currentWordIdx}
-            maxWordLength={wordList.length}
-          />
-        );
-      }
-      case 2:
-        return (
-          <ThirdActivity
-            title={title}
-            setId={setId}
-            prompt={activities.a3.prompt}
-            imageUrl={activities.a3.url}
-            answer={activities.a3.correctAnswer}
-            activityIdx={currentActivityIdx}
-            wordIdx={currentWordIdx}
-            maxWordLength={wordList.length}
-          />
-        );
-      case 3:
-        return (
-          <FourthActivity
-            title={title}
-            setId={setId}
-            prompt={activities.a4.prompt}
-            imageUrl={activities.a4.url}
-            activityIdx={currentActivityIdx}
-            wordIdx={currentWordIdx}
-            maxWordLength={wordList.length}
-          />
-        );
-      default:
-        return <>Error Loading Interventions</>;
-    }
-  };
-
-  return (
-    <>
-      {wordList ? (
-        ActivityComponent(currentActivityIdx)
-      ) : (
-        <Layout>Loading</Layout>
-      )}
-    </>
-  );
+    return (
+      <ActivitiesComponent
+        idx={currentActivityIdx}
+        title={title}
+        activities={activities}
+        updateIntervention={() =>
+          updateIntervention({
+            setId,
+            wordIdx: nextWordIdx,
+            activityIdx: nextActivityIdx,
+          })
+        }
+      />
+    );
+  }
 };
 
 export default connector(Activities);

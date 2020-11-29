@@ -1,5 +1,9 @@
-export const getNextWordIdx = (wordIdx: number, maxWordLength: number) => {
-  return wordIdx + (1 % maxWordLength);
+export const getNextWordIdx = (
+  activityIdx: number,
+  wordIdx: number,
+  maxWordLength: number
+) => {
+  return activityIdx === 3 ? (wordIdx + 1) % maxWordLength : wordIdx;
 };
 
 export const getNextActivityIdx = (
