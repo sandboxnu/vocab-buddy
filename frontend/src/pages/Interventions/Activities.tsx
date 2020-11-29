@@ -6,6 +6,8 @@ import {
 import { Interventions } from "../../models/types";
 import { getInterventions } from "./data/actions";
 import FirstActivity from "../Interventions/FirstActivity";
+import SecondActivity from "../Interventions/SecondActivity";
+import ThirdActivity from "../Interventions/ThirdActivity";
 import FourthActivity from "../Interventions/FourthActivity";
 
 interface ActivityProps {
@@ -37,15 +39,31 @@ const Activities: FunctionComponent<ActivityProps> = ({ interventions, getInterv
   const ActivityComponent = (idx: number): ReactElement => {
     switch (idx) {
       case 0:
-        return (<FirstActivity title={title} imageUrl={activities.a1.url}/>);
-      case 1:
-        return (<FourthActivity title={title} imageUrl={activities.a1.url}/>);
+        return (<FirstActivity title={title} prompt={activities.a1.prompt} imageUrl={activities.a1.url} maxWordLength={wordList.length} />);
+      case 1: {
+        const correctChoice = {
+          url: activities.a2.correctUrl,
+          correct: true,
+        };
+        
+        const incorrectChoice = {
+          url: activities.a2.incorrectUrl,
+          correct: false,
+        };
+
+        const imageUrls =
+        Math.floor(Math.random() * 2) === 0
+          ? [correctChoice, incorrectChoice]
+          : [incorrectChoice, correctChoice];
+      
+        return (<SecondActivity title={title} prompt={activities.a2.prompt} imageUrls={imageUrls} maxWordLength={wordList.length} />);
+      }
       case 2:
-        return <></>;
+        return (<ThirdActivity title={title} prompt={activities.a3.prompt} imageUrl={activities.a3.url} answer={activities.a3.correctAnswer} maxWordLength={wordList.length}/>);
       case 3:
-        return (<FourthActivity title={title} imageUrl={activities.a1.url}/>);
+        return (<FourthActivity title={title} prompt={activities.a4.prompt} imageUrl={activities.a4.url} maxWordLength={wordList.length}/>);
       default:
-        return <></>;
+        return <>Error Loading Interventions</>;
     }
   }
 

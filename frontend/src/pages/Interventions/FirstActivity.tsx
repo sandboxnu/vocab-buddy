@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Blocker from "../../components/Blocker";
 import Layout from "../../components/Layout";
 import PromptSpeech from "../../components/PromptSpeech";
-import PurpleButton from "../../components/PurpleButton";
+import CloudImage from "../../components/CloudImage";
+import DelayedNextButton from "../../components/DelayedNextButton";
 import ReplayButton from '../../components/ReplayButton';
 import { SKY } from "../../constants/colors";
 import { connect } from "react-redux";
@@ -14,8 +15,10 @@ import { getCurrentInterventions } from "./data/reducer";
 
 interface FirstActivityProps {
   title: string,
+  prompt: string,
   imageUrl: string,
   interventions: Interventions,
+  maxWordLength: number,
   updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
 }
 
@@ -76,6 +79,38 @@ const ButtonContainer = styled.div`
   justify-content: end;
 `;
 
+const CloudImageLeft = styled(CloudImage)`
+  position: absolute;
+  left: 0;
+  width: 15%;
+
+  
+  @media (max-width: 900px) {
+    @media (max-height: 800px) {
+    height: 0px;
+  }
+    width: 20%;
+    bottom: 1.5em;
+  }
+
+  @media (min-width: 901px) {
+    top: 30%;
+  }
+`;
+
+const CloudImageRight = styled(CloudImage)`
+  position: absolute;
+  right: 0;
+  width: 15%;
+  @media (max-width: 900px) {
+    top: 3em;
+    width: 20%;
+  }
+
+  @media (min-width: 901px) {
+    bottom: 30%;
+  }
+`;
 
 const connector = connect(
   (state) => ({
@@ -88,18 +123,22 @@ const connector = connect(
 
 const FirstActivity = ({
   title,
+  prompt,
   imageUrl,
   interventions,
+  maxWordLength,
   updateIntervention,
 }: FirstActivityProps): ReactElement => {
 
   const activityIdx = interventions && interventions.activityIdx;
   const wordIdx = interventions && interventions.wordIdx;
-  const nextActivityIdx = getNextActivityIdx(activityIdx);
+  const nextActivityIdx = getNextActivityIdx(activityIdx, wordIdx, maxWordLength);
 
   return (
     <Layout>
       <Container>
+        <CloudImageLeft direction='left' />
+        <CloudImageRight direction='right' />
         <MainContent>
           <DescriptionText>introduction + definition</DescriptionText>
           <WordTitle>
@@ -107,14 +146,14 @@ const FirstActivity = ({
           </WordTitle>
           <Prompt>
             <PromptSpeech
-              prompt="Look at that miniscule ant! It is really, really, small."
+              prompt={prompt}
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
           <Image src={imageUrl}/>
           <ButtonContainer>
             <Blocker afterSeconds={5} message='Click on the next button to continue' repeatable={false}>
-              <PurpleButton text={"next"} top={20} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />
+              <DelayedNextButton text={"next"} top={20} delay={2000} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />
             </Blocker>
           </ButtonContainer>
         </MainContent>

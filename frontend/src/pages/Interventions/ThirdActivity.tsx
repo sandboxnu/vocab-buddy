@@ -1,4 +1,5 @@
 import React, {ReactElement} from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import ReplayButton from '../../components/ReplayButton';
@@ -7,12 +8,19 @@ import AutoPrompt from "../../components/AutoPrompt";
 import CloudImage from "../../components/CloudImage";
 import YesNoSelection from "../../components/YesNoSelection";
 import DelayedNextButton from "../../components/DelayedNextButton";
+import { getCurrentInterventions } from "./data/reducer"; 
+import { updateIntervention } from "./data/actions"; 
+import { getNextActivityIdx } from "../../constants/utils";
+import { Interventions } from "../../models/types";
 
 interface ThirdActivityProps {
-  title: string, // the word
+  title: string,
   prompt: string,
   imageUrl: string,
   answer: boolean,
+  interventions: Interventions,
+  maxWordLength: number,
+  updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
 }
 
 const Container = styled.div`
@@ -125,8 +133,20 @@ const CloudImageRight = styled(CloudImage)`
   }
 `;
 
-const ThirdActivity  = ({ prompt, imageUrl, answer }: ThirdActivityProps) : ReactElement => {
+const connector = connect(
+  (state) => ({
+    interventions: getCurrentInterventions(state),
+  }),
+  {
+    updateIntervention: updateIntervention.request,
+  }
+);
 
+const ThirdActivity  = ({ title, prompt, imageUrl, answer, interventions, maxWordLength, updateIntervention }: ThirdActivityProps) : ReactElement => {
+  const activityIdx = interventions && interventions.activityIdx;
+  const wordIdx = interventions && interventions.wordIdx;
+  const nextActivityIdx = getNextActivityIdx(activityIdx, wordIdx, maxWordLength);
+  
   return (
       <Layout>
         <Container>
@@ -137,19 +157,16 @@ const ThirdActivity  = ({ prompt, imageUrl, answer }: ThirdActivityProps) : Reac
               yes or no context question
             </DescriptionText>
             <WordTitle>
-              {/* {title} */}
-              minuscule
+              {title}
             </WordTitle>
             <Prompt>
-              <AutoPrompt prompt="“Look at that miniscule ant! It is really, really, small.”" button={<ReplayButton scale={0.8}/>} />
+              <AutoPrompt prompt={prompt} button={<ReplayButton scale={0.8}/>} />
             </Prompt>
-            {/* <Image src={imageUrl}/> */}
-            <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule2.png?alt=media&amp;token=f14c983c-6fff-475d-84ba-07b7b86ea2d5" />
-
+            <Image src={imageUrl}/>
             <ButtonContainer>
               <YesNoSelection correctAnswer={answer} />
               <NextContainer>
-                <DelayedNextButton text="next" top={20} delay={10000}/>;
+                <DelayedNextButton text="next" top={20} delay={1000} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />
               </NextContainer>
             </ButtonContainer>
 
@@ -158,4 +175,4 @@ const ThirdActivity  = ({ prompt, imageUrl, answer }: ThirdActivityProps) : Reac
       </Layout>);
 }
 
-export default ThirdActivity;
+export default connector(ThirdActivity);

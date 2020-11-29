@@ -67,7 +67,7 @@ export interface Example {
 export interface Context {
   prompt: string;
   url: string;
-  answer: boolean;
+  correctAnswer: boolean;
 }
 
 /**

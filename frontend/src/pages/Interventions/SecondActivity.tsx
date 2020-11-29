@@ -1,16 +1,32 @@
 import React, { ReactElement, useState } from "react";
+import { connect } from "react-redux";
 import Layout from "../../components/Layout";
 import styled from "styled-components";
 import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
 import PromptSpeech from "../../components/PromptSpeech";
 import ReplayButton from "../../components/ReplayButton";
-import PurpleButton from "../../components/PurpleButton";
+import CloudImage from "../../components/CloudImage";
+import DelayedNextButton from "../../components/DelayedNextButton";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { getCurrentInterventions } from "./data/reducer"; 
+import { updateIntervention } from "./data/actions"; 
+import { getNextActivityIdx } from "../../constants/utils";
+import { Interventions } from "../../models/types";
 
 interface SecondActivityProps {
   title: string;
-  correctUrl: string;
-  incorrectUrl: string;
+  prompt: string,
+  imageUrls: ImageProps[],
+  maxWordLength: number,
+  interventions: Interventions,
+  updateIntervention: ({ wordIdx, activityIdx }: {wordIdx: number, activityIdx: number}) => void,
+}
+
+interface ImageProps {
+  url: string;
+  correct: boolean;
+  selected?: boolean;
+  onClick?: () => void;
 }
 
 const Container = styled.div`
@@ -156,61 +172,88 @@ const StyledCheckOutlined = styled(CheckOutlined)`
   margin-top: 20px;
 `;
 
-const correctUrl = {
-  url:
-    "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule3.png?alt=media&token=cb4f4cf6-a1d0-465d-a972-087230d2ff05",
-  correct: true,
-};
+const connector = connect(
+  (state) => ({
+    interventions: getCurrentInterventions(state),
+  }),
+  {
+    updateIntervention: updateIntervention.request,
+  }
+);
 
-const incorrectUrl = {
-  url:
-    "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule1.png?alt=media&token=cbf2618d-68c1-48a1-9fc1-f46f6284d761",
-  correct: false,
-};
+const CloudImageLeft = styled(CloudImage)`
+  position: absolute;
+  left: 0;
+  width: 15%;
 
-const imageUrls =
-  Math.floor(Math.random() * 2) === 0
-    ? [correctUrl, incorrectUrl]
-    : [incorrectUrl, correctUrl];
+  
+  @media (max-width: 900px) {
+    @media (max-height: 800px) {
+    height: 0px;
+  }
+    width: 20%;
+    bottom: 1.5em;
+  }
 
-interface ImageProps {
-  url: string;
-  correct: boolean;
-  selected: boolean;
-  onClick: () => void;
-}
+  @media (min-width: 901px) {
+    top: 30%;
+  }
+`;
 
-const Image = ({
-  url,
-  correct,
-  selected,
-  onClick,
-}: ImageProps): ReactElement => {
-  if (selected && correct) return <CorrectImage src={url} onClick={onClick} />;
-  else if (selected && !correct)
-    return <IncorrectImage src={url} onClick={onClick} />;
-  else return <UnselectedImage src={url} onClick={onClick} />;
-};
+const CloudImageRight = styled(CloudImage)`
+  position: absolute;
+  right: 0;
+  width: 15%;
+  @media (max-width: 900px) {
+    top: 3em;
+    width: 20%;
+  }
+
+  @media (min-width: 901px) {
+    bottom: 30%;
+  }
+`;
 
 const SecondActivity = ({
   title,
-  correctUrl,
-  incorrectUrl,
+  prompt,
+  imageUrls,
+  interventions,
+  maxWordLength,
+  updateIntervention
 }: SecondActivityProps): ReactElement => {
+
+  const Image = ({
+    url,
+    correct,
+    selected,
+    onClick,
+  }: ImageProps): ReactElement => {
+    if (selected && correct) return <CorrectImage src={url} onClick={onClick} />;
+    else if (selected && !correct)
+      return <IncorrectImage src={url} onClick={onClick} />;
+    else return <UnselectedImage src={url} onClick={onClick} />;
+  };
+  
+  const activityIdx = interventions && interventions.activityIdx;
+  const wordIdx = interventions && interventions.wordIdx;
+  const nextActivityIdx = getNextActivityIdx(activityIdx, wordIdx, maxWordLength);
+
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   return (
     <Layout>
       <Container>
+      <CloudImageLeft direction='left' />
+      <CloudImageRight direction='right' />
         <MainContent>
           <DescriptionText>example vs. non-example</DescriptionText>
           <WordTitle>
-            {/* {title} */}
-            Miniscule
+            {title}
           </WordTitle>
           <Prompt>
             <PromptSpeech
-              prompt="Miniscule. Touch the picture that shows miniscule."
+              prompt={prompt}
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
@@ -235,7 +278,7 @@ const SecondActivity = ({
             </ImageContainer>
           ))}
           <ButtonContainer>
-            <PurpleButton text="next" top={20} />
+            <DelayedNextButton text="next" top={20} delay={1000} onClick={() => updateIntervention({wordIdx, activityIdx: nextActivityIdx})} />
           </ButtonContainer>
         </MainContent>
       </Container>
@@ -243,4 +286,4 @@ const SecondActivity = ({
   );
 };
 
-export default SecondActivity;
+export default connector(SecondActivity);

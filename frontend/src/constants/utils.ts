@@ -1,8 +1,8 @@
-export const getNextWordIdx = (wordIdx: number) => {
-  return wordIdx+1;
+export const getNextWordIdx = (wordIdx: number, maxWordLength: number) => {
+  return maxWordLength-1 === wordIdx ? wordIdx : wordIdx+1;
 }
 
-export const getNextActivityIdx = (activityIdx: number) => {
-  // TODO: change to 3
-  return activityIdx === 1 ? 0 : activityIdx+1;
+export const getNextActivityIdx = (activityIdx: number, wordIdx: number, maxWordLength: number) => {
+  // TODO: change the first case to maxWordLength-1 === wordIdx ? activityIdx : 0
+  return activityIdx === 3 ? 0 : activityIdx+1;
 }
