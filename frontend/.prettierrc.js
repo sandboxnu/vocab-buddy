@@ -4,7 +4,7 @@ module.exports = {
       files: "*.tsx",
       options: {
         singleQuote: true,
-        printWidth: 80,
+        printWidth: 70,
         endOfLine: "lf",
         semi: true,
         tabWidth: 2,
