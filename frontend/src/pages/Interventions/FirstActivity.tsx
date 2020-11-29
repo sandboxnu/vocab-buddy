@@ -5,6 +5,7 @@ import Layout from "../../components/Layout";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
 import ReplayButton from '../../components/ReplayButton';
+import ExpandableImage from "../../components/ExpandableImage";
 import { SKY } from "../../constants/colors";
 
 interface FirstActivityProps {
@@ -54,7 +55,7 @@ const Prompt = styled.div`
   width: max-content;
 `;
 
-const Image = styled.img`
+const Image = styled(ExpandableImage)`
   border-radius: 20px;
   min-width: 600px;
 
