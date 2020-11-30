@@ -153,10 +153,13 @@ export default class FirebaseInteractor {
     return { id, currentIndex, words: actualWords, firebaseId: assessment.id };
   }
 
-  async updateAssessment(id: string, responses: AssessmentResult[]) {
+  async updateAssessment(id: string, responses: AssessmentResult[], currentIdx: number) {
     await Promise.all(responses.map(async (response) => {
       return await this.db.collection("assessments").doc(id).collection("results").doc(response.word).set({correct: response.correct});
-    }))
+    }));
+    await this.db.collection("assessments").doc(id).update({
+      currentIndex: currentIdx
+    });
   }
 
   async getWord(id: string): Promise<Word> {
