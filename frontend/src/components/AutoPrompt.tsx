@@ -24,7 +24,7 @@ const AutoPrompt = ({ prompt, button, delay = 500 } : SpeechProp) : ReactElement
 };
 
 AutoPrompt.defaultProps = {
-  delay: 500
+  delay: 8000
 }
 
 export default AutoPrompt;
