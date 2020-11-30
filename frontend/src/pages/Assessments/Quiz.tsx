@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Assessment, AssessmentResult } from "../../models/types";
-import { getAssessment as getAssessmentAction, updateAssessment } from "./data/actions";
+import { getAssessment as getAssessmentAction, updateAssessment, UpdateAssessmentAction } from "./data/actions";
 import { getAssessment as getAssessmentReducer, getIsFinished } from "./data/reducer";
 import QuizWords from "./QuizWords";
 
 interface QuizProps {
   getAssessment: (id: string) => void;
   assessment: Assessment;
-  updateAssessment: (responses: AssessmentResult[], id: string, isFinished: boolean, currentIdx: number) => void;
+  updateAssessment: (action: UpdateAssessmentAction) => void;
   isFinished: boolean
 }
 
@@ -20,7 +20,7 @@ const connector = connect(
   }),
   {
     getAssessment: getAssessmentAction.request,
-    updateAssessment: (responses: AssessmentResult[], id: string, isFinished: boolean, currentIdx: number ) => updateAssessment.request({ responses, id, isFinished, currentIdx })
+    updateAssessment: updateAssessment.request
   }
 );
 
@@ -37,12 +37,13 @@ const Quiz = ({ getAssessment, assessment, updateAssessment, isFinished }: QuizP
   useEffect(() => {
     if (!assessment) getAssessment(params.id);
   }, [assessment, getAssessment, params]);
+  
 
   if (!assessment) {
     return <h1>Loading...</h1>;
   } else {
     const updateAssessmentWords = (responses: AssessmentResult[], isFinished: boolean, currentIdx: number) => {
-      updateAssessment(responses, params.id, isFinished, currentIdx);
+      updateAssessment({ responses, id: params.id, isFinished, currentIdx });
     }
     return <QuizWords assessment={assessment} updateWords={updateAssessmentWords} />;
   }

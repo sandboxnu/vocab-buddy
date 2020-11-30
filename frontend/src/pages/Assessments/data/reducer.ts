@@ -32,7 +32,7 @@ const assessmentReducer = (
       return {
         ...state,
         finished: isFinished,
-        assessment: undefined,
+        assessment: isFinished ? undefined : state.assessment,
       }
     default:
       return state;
