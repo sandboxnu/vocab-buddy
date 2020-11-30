@@ -1,12 +1,13 @@
-import React, {FunctionComponent, ReactElement, useEffect} from "react";
+import React, {ReactElement, useEffect} from "react";
 import PromptSpeech from "./PromptSpeech";
 
 interface SpeechProp {
   prompt: string;
   button: ReactElement;
+  delay: number;
 }
 
-const AutoPrompt : FunctionComponent<SpeechProp> = ({ prompt, button }) : ReactElement => {
+const AutoPrompt = ({ prompt, button, delay = 500 } : SpeechProp) : ReactElement => {
 
   const talk = () => {
     let x = window.speechSynthesis;
@@ -15,11 +16,15 @@ const AutoPrompt : FunctionComponent<SpeechProp> = ({ prompt, button }) : ReactE
 
   useEffect(() => {
     talk();
-     const interval = setInterval(talk, 8000);
+     const interval = setInterval(talk, delay);
      return () => clearInterval(interval);
    })
 
   return <PromptSpeech prompt={prompt} button={button}/>;
 };
+
+AutoPrompt.defaultProps = {
+  delay: 500
+}
 
 export default AutoPrompt;

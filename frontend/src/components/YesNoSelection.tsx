@@ -25,9 +25,6 @@ const YesNoButton = styled(PurpleButton)`
 margin-left: 10px;
 margin-right: 10px;
 
-  :hover {
-  }
-
 
     @media (max-width: 900px) {
     width:100%;
@@ -36,21 +33,31 @@ margin-right: 10px;
   ${({highlight}: SelectionProp) => {
   if (highlight === 1) {
     return `
-    border: 5px solid ${SEA_FOAM}; 
+    border: 5px solid ${SEA_FOAM};
+    :hover {
+      border: 5px solid ${SEA_FOAM};
+    }
   `
   } else if (highlight === 0) {
     return `
     border: 5px solid ${CORAL}; 
+    :hover {
+      border: 5px solid ${CORAL};
+    }
   `
   } else {
     return `
     border: 0px solid ${CORAL}; 
+    :hover {
+      border: 0px solid ${CORAL};
+    }
   `
   }
   }
-}
 };
 `;
+
+
 
 const CheckCorrect = styled(CheckCircleFilled)`
 color: ${SEA_FOAM};
@@ -62,37 +69,20 @@ color: ${CORAL};
 
 const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({correctAnswer}): ReactElement => {
   let [selected, setSelected] = useState(-1);
-  const answer = correctAnswer ? 1 : 0;
+
+  const select = (num: number) => {
+    selected === -1 && setSelected(num)
+  }
 
   return (
     <Blocker afterSeconds={15} repeatable={false} message='Yes or No?'>
       <YesNoContainer>
-      {selected === answer ?
-      <>
-        <YesNoButton highlight={1} onClick={() => setSelected(1)} text="yes" top={20}
+      <YesNoButton highlight={selected === 1 ? correctAnswer ? 1 : 0 : -1} onClick={() => select(1)} text="yes" top={20}
                          check={<CheckCorrect/>}
                          icon={<LikeFilled/>}/>
-            <YesNoButton highlight={0} onClick={() => setSelected(0)} text="no" top={20}
-                         check = {<CheckIncorrect/>}
-                         icon={<DislikeFilled/>}/>
-      </> : 
-      selected === -1 ?
-              <>
-                <YesNoButton highlight={-1} onClick={() => setSelected(1)} text="yes" top={20}
-                             icon={<LikeFilled/>}/>
-                <YesNoButton highlight={-1} onClick={() => setSelected(0)} text="no" top={20}
-                             icon={<DislikeFilled/>}/>
-
-              </>
-              :
-              <>
-                <YesNoButton highlight={1} onClick={() => setSelected(1)} text="yes" top={20}
-                             check = {<CheckCorrect/>}
-                             icon={<LikeFilled/>}/>
-                <YesNoButton highlight={0} onClick={() => setSelected(0)} text="no" top={20}
-                             check = {<CheckIncorrect/>}
-                             icon={<DislikeFilled/>}/>
-              </>}
+      <YesNoButton highlight={selected === 0 ? correctAnswer ? 0 : 1 : -1} onClick={() => select(0)} text="no" top={20}
+                    check = {<CheckIncorrect/>}
+                    icon={<DislikeFilled/>}/>
 
       </YesNoContainer>
           
