@@ -141,7 +141,7 @@ const ThirdActivity  = ({ prompt, imageUrl, answer }: ThirdActivityProps) : Reac
               minuscule
             </WordTitle>
             <Prompt>
-              <AutoPrompt prompt="“Look at that miniscule ant! It is really, really, small.”" button={<ReplayButton scale={0.8}/>} />
+              <AutoPrompt prompt="“Look at that miniscule ant! It is really, really, small.”" button={<ReplayButton scale={0.8}/>} delay={30000}/>
             </Prompt>
             {/* <Image src={imageUrl}/> */}
             <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule2.png?alt=media&amp;token=f14c983c-6fff-475d-84ba-07b7b86ea2d5" />
