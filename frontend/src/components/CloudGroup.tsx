@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
-import styled from 'styled-components';
-import CloudImage from './CloudImage';
+import React, { ReactElement } from "react";
+import styled from "styled-components";
+import CloudImage from "./CloudImage";
 
 const CloudImageLeft = styled(CloudImage)`
   position: absolute;
@@ -14,7 +14,6 @@ const CloudImageLeft = styled(CloudImage)`
     width: 20%;
     bottom: 1.5em;
   }
-
   @media (min-width: 901px) {
     top: 30%;
   }
@@ -28,7 +27,6 @@ const CloudImageRight = styled(CloudImage)`
     top: 3em;
     width: 20%;
   }
-
   @media (min-width: 901px) {
     bottom: 30%;
   }

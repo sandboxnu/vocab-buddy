@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react';
-import styled from 'styled-components';
-import Layout from '../../components/Layout';
-import ReplayButton from '../../components/ReplayButton';
-import { SKY } from '../../constants/colors';
-import AutoPrompt from '../../components/AutoPrompt';
-import CloudGroup from '../../components/CloudGroup';
-import YesNoSelection from '../../components/YesNoSelection';
-import DelayedNextButton from '../../components/DelayedNextButton';
+import React, { ReactElement } from "react";
+import styled from "styled-components";
+import Layout from "../../components/Layout";
+import ReplayButton from "../../components/ReplayButton";
+import { SKY } from "../../constants/colors";
+import AutoPrompt from "../../components/AutoPrompt";
+import CloudGroup from "../../components/CloudGroup";
+import YesNoSelection from "../../components/YesNoSelection";
+import DelayedNextButton from "../../components/DelayedNextButton";
 
 interface ThirdActivityProps {
   title: string;
@@ -29,14 +29,14 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -110,20 +110,16 @@ const ThirdActivity = ({
           <WordTitle>{title}</WordTitle>
           <Prompt>
             <AutoPrompt
-              prompt={prompt}
+              prompt="“Look at that miniscule ant! It is really, really, small.”"
               button={<ReplayButton scale={0.8} />}
+              delay={30000}
             />
           </Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
             <YesNoSelection correctAnswer={answer} />
             <NextContainer>
-              <DelayedNextButton
-                text="next"
-                top={20}
-                delay={1000}
-                onClick={updateIntervention}
-              />
+              <DelayedNextButton text="next" top={20} delay={10000} />
             </NextContainer>
           </ButtonContainer>
         </MainContent>

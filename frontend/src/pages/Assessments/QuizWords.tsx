@@ -4,13 +4,18 @@ import Layout from "../../components/Layout";
 import PlayButton from "../../components/PlayButton";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
+import CloudGroup from "../../components/CloudGroup";
 import WordImages from "../../components/WordImages";
 import { CLOUD } from "../../constants/colors";
 import { Assessment, AssessmentResult } from "../../models/types";
 
 interface QuizWordsProps {
   assessment: Assessment;
-  updateWords: (results: AssessmentResult[]) => void;
+  updateWords: (
+    results: AssessmentResult[],
+    isFinished: boolean,
+    currentIdx: number
+  ) => void;
 }
 
 const Container = styled.div`
@@ -77,8 +82,12 @@ const shuffleImages = (images: any[]) => {
 };
 
 const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
-  let [currentIndex, setCurrentIndex] = useState(assessment.currentIndex);
-  let [wordResponses, setWordResponses] = useState<AssessmentResult[]>([]);
+  let [currentIndex, setCurrentIndex] = useState(
+    assessment.currentIndex
+  );
+  let [wordResponses, setWordResponses] = useState<
+    AssessmentResult[]
+  >([]);
   let [selectedIndex, setSelectedIndex] = useState(-1);
   let word = assessment.words[currentIndex];
   let images = [word.correctImage].concat(word.incorrectImages);
@@ -88,37 +97,52 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
   }
 
   const nextWord = () => {
-    if (wordResponses.filter((response) => !response.correct).length >= 2) {
-      updateWords(wordResponses);
+    if (
+      wordResponses.filter((response) => !response.correct).length >=
+      2
+    ) {
+      updateWords(wordResponses, true, currentIndex);
     } else if (currentIndex < assessment.words.length - 1) {
+      updateWords(wordResponses, false, currentIndex + 1);
       setShuffled([]);
       setSelectedIndex(-1);
       setCurrentIndex(currentIndex + 1);
     } else {
-      updateWords(wordResponses);
+      updateWords(wordResponses, true, currentIndex);
     }
   };
 
   return (
     <Layout>
       <Container>
+        <CloudGroup />
         <MainContent>
           <WordTitle>{word.value}</WordTitle>
           <Prompt>
-            <PromptText>Touch the picture that shows {word.value}.</PromptText>
+            <PromptText>
+              Touch the picture that shows {word.value}.
+            </PromptText>
             <PromptSpeech
               prompt={`Touch the picture that shows ${word.value}.`}
               button={<PlayButton scale={0.8} />}
             />
           </Prompt>
           <ImageContainer>
-            <WordImages images={shuffled}
-                        selected={selectedIndex} 
-                        hasValue={selectedIndex !== -1} 
-                        setSelected={idx => {
-                          setSelectedIndex(idx)
-                          setWordResponses(wordResponses.concat([{word: word.id, correct: shuffled[idx] === word.correctImage}]))
-                         } }/>
+            <WordImages
+              images={shuffled}
+              selected={selectedIndex}
+              setSelected={(idx) => {
+                setSelectedIndex(idx);
+                setWordResponses(
+                  wordResponses.concat([
+                    {
+                      word: word.id,
+                      correct: shuffled[idx] === word.correctImage,
+                    },
+                  ])
+                );
+              }}
+            />
           </ImageContainer>
           <ButtonContainer>
             <PurpleButton text={"next"} onClick={nextWord} />

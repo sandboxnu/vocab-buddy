@@ -2,16 +2,14 @@ import React, { FunctionComponent, ReactElement } from "react";
 import styled from "styled-components";
 import { SEA_FOAM } from "../constants/colors";
 
-
 interface ImagesProp {
-  images: string[],
+  images: string[];
   setSelected: (index: number) => void;
-  hasValue: boolean,
-  selected: number
+  selected: number;
 }
 
 interface ImageProp {
-  highlight: boolean,
+  highlight: boolean;
 }
 
 const Image = styled.img`
@@ -24,21 +22,33 @@ const Image = styled.img`
     opacity: 0.8;
   }
 
-  ${({highlight}: ImageProp) => highlight && `
+  ${({ highlight }: ImageProp) =>
+    highlight &&
+    `
     border: 10px solid ${SEA_FOAM};
   `};
 `;
 
-const WordImages: FunctionComponent<ImagesProp> = ({ images, hasValue, setSelected, selected })  : ReactElement => {
+const WordImages: FunctionComponent<ImagesProp> = ({
+  images,
+  setSelected,
+  selected,
+}): ReactElement => {
   const selectIndex = (idx: number) => {
-    if (!hasValue) {
-      setSelected(idx);
-    }
-  }
+    setSelected(idx);
+  };
   return (
     <>
-    {images.map((img: string, idx: number) => {
-      return (<Image src={img} key={idx} highlight={selected===idx} onClick={() => selectIndex(idx)} />)})}
+      {images.map((img: string, idx: number) => {
+        return (
+          <Image
+            src={img}
+            key={idx}
+            highlight={selected === idx}
+            onClick={() => selectIndex(idx)}
+          />
+        );
+      })}
     </>
   );
 };
