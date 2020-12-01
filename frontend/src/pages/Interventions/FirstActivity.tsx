@@ -1,13 +1,13 @@
-import React, { ReactElement } from 'react';
-import styled from 'styled-components';
-import Blocker from '../../components/Blocker';
-import Layout from '../../components/Layout';
-import PromptSpeech from '../../components/PromptSpeech';
-import CloudGroup from '../../components/CloudGroup';
-import DelayedNextButton from '../../components/DelayedNextButton';
-import ReplayButton from '../../components/ReplayButton';
-import { SKY } from '../../constants/colors';
-import ExpandableImage from '../../components/ExpandableImage';
+import React, { ReactElement } from "react";
+import styled from "styled-components";
+import Blocker from "../../components/Blocker";
+import Layout from "../../components/Layout";
+import AutoPrompt from "../../components/AutoPrompt";
+import CloudGroup from "../../components/CloudGroup";
+import DelayedNextButton from "../../components/DelayedNextButton";
+import ReplayButton from "../../components/ReplayButton";
+import { SKY } from "../../constants/colors";
+import ExpandableImage from "../../components/ExpandableImage";
 
 interface FirstActivityProps {
   title: string;
@@ -29,14 +29,14 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -86,9 +86,10 @@ const FirstActivity = ({
           <DescriptionText>introduction + definition</DescriptionText>
           <WordTitle>{title}</WordTitle>
           <Prompt>
-            <PromptSpeech
+            <AutoPrompt
               prompt={prompt}
               button={<ReplayButton scale={0.8} />}
+              delay={10000}
             />
           </Prompt>
           <Image src={imageUrl} />
@@ -99,7 +100,7 @@ const FirstActivity = ({
               repeatable={false}
             >
               <DelayedNextButton
-                text={'next'}
+                text={"next"}
                 top={20}
                 delay={2000}
                 onClick={updateIntervention}

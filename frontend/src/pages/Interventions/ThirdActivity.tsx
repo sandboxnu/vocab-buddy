@@ -110,16 +110,21 @@ const ThirdActivity = ({
           <WordTitle>{title}</WordTitle>
           <Prompt>
             <AutoPrompt
-              prompt="“Look at that miniscule ant! It is really, really, small.”"
+              prompt={prompt}
               button={<ReplayButton scale={0.8} />}
-              delay={30000}
+              delay={10000}
             />
           </Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
             <YesNoSelection correctAnswer={answer} />
             <NextContainer>
-              <DelayedNextButton text="next" top={20} delay={10000} />
+              <DelayedNextButton
+                text="next"
+                top={20}
+                delay={3000}
+                onClick={updateIntervention}
+              />
             </NextContainer>
           </ButtonContainer>
         </MainContent>

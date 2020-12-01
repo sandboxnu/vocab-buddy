@@ -1,13 +1,13 @@
-import React, { ReactElement } from 'react';
-import styled from 'styled-components';
-import Layout from '../../components/Layout';
-import PromptSpeech from '../../components/PromptSpeech';
-import ReplayButton from '../../components/ReplayButton';
-import DelayedNextButton from '../../components/DelayedNextButton';
-import Blocker from '../../components/Blocker';
-import CloudGroup from '../../components/CloudGroup';
-import ExpandableImage from '../../components/ExpandableImage';
-import { SKY } from '../../constants/colors';
+import React, { ReactElement } from "react";
+import styled from "styled-components";
+import Layout from "../../components/Layout";
+import AutoPrompt from "../../components/AutoPrompt";
+import ReplayButton from "../../components/ReplayButton";
+import DelayedNextButton from "../../components/DelayedNextButton";
+import Blocker from "../../components/Blocker";
+import CloudGroup from "../../components/CloudGroup";
+import ExpandableImage from "../../components/ExpandableImage";
+import { SKY } from "../../constants/colors";
 
 interface FourthActivityProps {
   title: string;
@@ -29,14 +29,14 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -87,9 +87,10 @@ const FourthActivity = ({
           <DescriptionText>review with new picture</DescriptionText>
           <WordTitle>{title}</WordTitle>
           <Prompt>
-            <PromptSpeech
+            <AutoPrompt
               prompt={prompt}
               button={<ReplayButton scale={0.8} />}
+              delay={30000}
             />
           </Prompt>
           <Image src={imageUrl} />
@@ -100,7 +101,7 @@ const FourthActivity = ({
               repeatable={false}
             >
               <DelayedNextButton
-                text={'next'}
+                text={"next"}
                 top={20}
                 delay={1000}
                 onClick={updateIntervention}
