@@ -4,6 +4,7 @@ import Layout from "../../components/Layout";
 import PlayButton from "../../components/PlayButton";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
+import CloudGroup from "../../components/CloudGroup";
 import WordImages from "../../components/WordImages";
 import { CLOUD } from "../../constants/colors";
 import { Assessment, AssessmentResult } from "../../models/types";
@@ -103,6 +104,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
   return (
     <Layout>
       <Container>
+        <CloudGroup />
         <MainContent>
           <WordTitle>{word.value}</WordTitle>
           <Prompt>
@@ -114,8 +116,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
           </Prompt>
           <ImageContainer>
             <WordImages images={shuffled}
-                        selected={selectedIndex} 
-                        hasValue={selectedIndex !== -1} 
+                        selected={selectedIndex}
                         setSelected={idx => {
                           setSelectedIndex(idx)
                           setWordResponses(wordResponses.concat([{word: word.id, correct: shuffled[idx] === word.correctImage}]))
