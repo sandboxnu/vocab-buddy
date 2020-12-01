@@ -6,7 +6,6 @@ import { SEA_FOAM } from "../constants/colors";
 interface ImagesProp {
   images: string[],
   setSelected: (index: number) => void;
-  hasValue: boolean,
   selected: number
 }
 
@@ -29,11 +28,9 @@ const Image = styled.img`
   `};
 `;
 
-const WordImages: FunctionComponent<ImagesProp> = ({ images, hasValue, setSelected, selected })  : ReactElement => {
+const WordImages: FunctionComponent<ImagesProp> = ({ images, setSelected, selected })  : ReactElement => {
   const selectIndex = (idx: number) => {
-    if (!hasValue) {
       setSelected(idx);
-    }
   }
   return (
     <>

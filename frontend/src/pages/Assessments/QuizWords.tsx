@@ -114,8 +114,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
           </Prompt>
           <ImageContainer>
             <WordImages images={shuffled}
-                        selected={selectedIndex} 
-                        hasValue={selectedIndex !== -1} 
+                        selected={selectedIndex}
                         setSelected={idx => {
                           setSelectedIndex(idx)
                           setWordResponses(wordResponses.concat([{word: word.id, correct: shuffled[idx] === word.correctImage}]))
