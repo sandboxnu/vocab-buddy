@@ -1,4 +1,9 @@
-import { Action, ActionTypes, Assessment, AssessmentResult } from "../../../models/types";
+import {
+  Action,
+  ActionTypes,
+  Assessment,
+  AssessmentResult,
+} from "../../../models/types";
 
 interface GetAssessmentAction {
   error?: string;
@@ -6,16 +11,16 @@ interface GetAssessmentAction {
 }
 
 export interface UpdateAssessmentAction {
-  responses: AssessmentResult[],
-  id: string,
-  isFinished: boolean,
-  currentIdx: number,
+  responses: AssessmentResult[];
+  id: string;
+  isFinished: boolean;
+  currentIdx: number;
 }
 
 export const getAssessment = {
   request: (id: string): Action => ({
     type: ActionTypes.GET_ASSESSMENT_REQUEST,
-    payload: { id }
+    payload: { id },
   }),
   error: ({ error }: GetAssessmentAction): Action => ({
     type: ActionTypes.GET_ASSESSMENT_ERROR,
@@ -28,20 +33,25 @@ export const getAssessment = {
 };
 
 export interface UpdateAssessmentSuccess {
-  isFinished: boolean
+  isFinished: boolean;
 }
 
 export const updateAssessment = {
-  request: ({ responses, id, isFinished, currentIdx } : UpdateAssessmentAction) : Action => ({
+  request: ({
+    responses,
+    id,
+    isFinished,
+    currentIdx,
+  }: UpdateAssessmentAction): Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_REQUEST,
-    payload: { responses, id, isFinished, currentIdx }
+    payload: { responses, id, isFinished, currentIdx },
   }),
-  success: ( { isFinished } : UpdateAssessmentSuccess): Action => ({
+  success: ({ isFinished }: UpdateAssessmentSuccess): Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_SUCCESS,
-    payload: { isFinished }
+    payload: { isFinished },
   }),
   error: (error: Error): Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_ERROR,
-    payload: { error }
-  })
-}
+    payload: { error },
+  }),
+};

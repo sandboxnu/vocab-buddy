@@ -2,15 +2,18 @@ import React, { ReactElement } from "react";
 import styled from "styled-components";
 import Blocker from "../../components/Blocker";
 import Layout from "../../components/Layout";
-import PromptSpeech from "../../components/PromptSpeech";
-import PurpleButton from "../../components/PurpleButton";
-import ReplayButton from '../../components/ReplayButton';
-import ExpandableImage from "../../components/ExpandableImage";
+import AutoPrompt from "../../components/AutoPrompt";
+import CloudGroup from "../../components/CloudGroup";
+import DelayedNextButton from "../../components/DelayedNextButton";
+import ReplayButton from "../../components/ReplayButton";
 import { SKY } from "../../constants/colors";
+import ExpandableImage from "../../components/ExpandableImage";
 
 interface FirstActivityProps {
   title: string;
+  prompt: string;
   imageUrl: string;
+  updateIntervention: () => void;
 }
 
 const Container = styled.div`
@@ -56,7 +59,6 @@ const Prompt = styled.div`
 `;
 
 const Image = styled(ExpandableImage)`
-  border-radius: 20px;
   min-width: 600px;
 
   @media (max-width: 900px) {
@@ -72,28 +74,37 @@ const ButtonContainer = styled.div`
 
 const FirstActivity = ({
   title,
+  prompt,
   imageUrl,
+  updateIntervention,
 }: FirstActivityProps): ReactElement => {
   return (
     <Layout>
       <Container>
+        <CloudGroup />
         <MainContent>
           <DescriptionText>introduction + definition</DescriptionText>
-          <WordTitle>
-            {/* {title} */}
-            Miniscule
-          </WordTitle>
+          <WordTitle>{title}</WordTitle>
           <Prompt>
-            <PromptSpeech
-              prompt="Look at that miniscule ant! It is really, really, small."
+            <AutoPrompt
+              prompt={prompt}
               button={<ReplayButton scale={0.8} />}
+              delay={10000}
             />
           </Prompt>
-          {/* <Image src={imageUrl}/> */}
-          <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule2.png?alt=media&amp;token=f14c983c-6fff-475d-84ba-07b7b86ea2d5" />
+          <Image src={imageUrl} />
           <ButtonContainer>
-            <Blocker afterSeconds={30} message='Click on the next button to continue' repeatable={false}>
-              <PurpleButton text={"next"} top={20}/>
+            <Blocker
+              afterSeconds={30}
+              message="Click on the next button to continue"
+              repeatable={false}
+            >
+              <DelayedNextButton
+                text={"next"}
+                top={20}
+                delay={2000}
+                onClick={updateIntervention}
+              />
             </Blocker>
           </ButtonContainer>
         </MainContent>

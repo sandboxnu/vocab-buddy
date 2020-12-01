@@ -13,7 +13,7 @@ import {
   InterventionWord,
   Review,
   User,
-  Word
+  Word,
 } from "../models/types";
 
 // Your web app's Firebase configuration
@@ -119,16 +119,34 @@ export default class FirebaseInteractor {
   }
 
   /**
+   * update intervention idx number
+   */
+  async updateIntervention(
+    setId: string,
+    wordIdx: number,
+    activityIdx: number
+  ) {
+    let intervention = await this.db.collection("interventions").doc(setId);
+    intervention.update({
+      wordIdx,
+      activityIdx,
+    });
+  }
+
+  /**
    * Gets all possible words.
    *
    * @returns { Promise<Assessment> }
    */
   async getAssessment(firebaseId: string): Promise<Assessment> {
-    let assessmentRef = await this.db.collection("assessments").doc(firebaseId).get();
+    let assessmentRef = await this.db
+      .collection("assessments")
+      .doc(firebaseId)
+      .get();
     // Hardcoding first assessment for now
     let assessment = assessmentRef.data();
     if (assessment == null) {
-      throw new Error(`Assessment with id ${firebaseId} does not exist`)
+      throw new Error(`Assessment with id ${firebaseId} does not exist`);
     }
     let { id, currentIndex, words } = assessment;
 
@@ -153,12 +171,23 @@ export default class FirebaseInteractor {
     return { id, currentIndex, words: actualWords, firebaseId: assessment.id };
   }
 
-  async updateAssessment(id: string, responses: AssessmentResult[], currentIdx: number) {
-    await Promise.all(responses.map(async (response) => {
-      return await this.db.collection("assessments").doc(id).collection("results").doc(response.word).set({correct: response.correct});
-    }));
+  async updateAssessment(
+    id: string,
+    responses: AssessmentResult[],
+    currentIdx: number
+  ) {
+    await Promise.all(
+      responses.map(async (response) => {
+        return await this.db
+          .collection("assessments")
+          .doc(id)
+          .collection("results")
+          .doc(response.word)
+          .set({ correct: response.correct });
+      })
+    );
     await this.db.collection("assessments").doc(id).update({
-      currentIndex: currentIdx
+      currentIndex: currentIdx,
     });
   }
 

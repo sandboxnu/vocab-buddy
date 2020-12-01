@@ -1,17 +1,26 @@
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import React, { ReactElement, useState } from "react";
-import styled from "styled-components";
-import Blocker from "../../components/Blocker";
-import Layout from "../../components/Layout";
-import PromptSpeech from "../../components/PromptSpeech";
-import PurpleButton from "../../components/PurpleButton";
-import ReplayButton from "../../components/ReplayButton";
-import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
+import React, { ReactElement, useState } from 'react';
+import Layout from '../../components/Layout';
+import styled from 'styled-components';
+import { CORAL, SEA_FOAM, SKY } from '../../constants/colors';
+import PromptSpeech from '../../components/PromptSpeech';
+import ReplayButton from '../../components/ReplayButton';
+import CloudGroup from '../../components/CloudGroup';
+import DelayedNextButton from '../../components/DelayedNextButton';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import Blocker from '../../components/Blocker';
 
 interface SecondActivityProps {
   title: string;
-  correctUrl: string;
-  incorrectUrl: string;
+  prompt: string;
+  imageUrls: ImageProps[];
+  updateIntervention: () => void;
+}
+
+interface ImageProps {
+  url: string;
+  correct: boolean;
+  selected?: boolean;
+  onClick?: () => void;
 }
 
 const Container = styled.div`
@@ -27,14 +36,14 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -159,65 +168,45 @@ const StyledCheckOutlined = styled(CheckOutlined)`
 
 const StyledDivForClicks = styled.div``;
 
-const correctUrl = {
-  url:
-    "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule3.png?alt=media&token=cb4f4cf6-a1d0-465d-a972-087230d2ff05",
-  correct: true,
-};
-
-const incorrectUrl = {
-  url:
-    "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule1.png?alt=media&token=cbf2618d-68c1-48a1-9fc1-f46f6284d761",
-  correct: false,
-};
-
-const imageUrls =
-  Math.floor(Math.random() * 2) === 0
-    ? [correctUrl, incorrectUrl]
-    : [incorrectUrl, correctUrl];
-
-interface ImageProps {
-  url: string;
-  correct: boolean;
-  selected: boolean;
-  onClick: () => void;
-}
-
-const Image = ({
-  url,
-  correct,
-  selected,
-  onClick,
-}: ImageProps): ReactElement => {
-  if (selected && correct) return <CorrectImage src={url} onClick={onClick} />;
-  else if (selected && !correct)
-    return <IncorrectImage src={url} onClick={onClick} />;
-  else return <UnselectedImage src={url} onClick={onClick} />;
-};
-
 const SecondActivity = ({
   title,
-  correctUrl,
-  incorrectUrl,
+  prompt,
+  imageUrls,
+  updateIntervention,
 }: SecondActivityProps): ReactElement => {
+  const Image = ({
+    url,
+    correct,
+    selected,
+    onClick,
+  }: ImageProps): ReactElement => {
+    if (selected && correct)
+      return <CorrectImage src={url} onClick={onClick} />;
+    else if (selected && !correct)
+      return <IncorrectImage src={url} onClick={onClick} />;
+    else return <UnselectedImage src={url} onClick={onClick} />;
+  };
+
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   return (
     <Layout>
       <Container>
+        <CloudGroup />
         <MainContent>
           <DescriptionText>example vs. non-example</DescriptionText>
-          <WordTitle>
-            {/* {title} */}
-            Miniscule
-          </WordTitle>
+          <WordTitle>{title}</WordTitle>
           <Prompt>
             <PromptSpeech
-              prompt="Miniscule. Touch the picture that shows miniscule."
+              prompt={prompt}
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
-          <Blocker afterSeconds={15} message='Click on an image' repeatable={false}>
+          <Blocker
+            afterSeconds={15}
+            message="Click on an image"
+            repeatable={false}
+          >
             <StyledDivForClicks>
               {imageUrls.map((img, index) => (
                 <ImageContainer>
@@ -242,7 +231,12 @@ const SecondActivity = ({
             </StyledDivForClicks>
           </Blocker>
           <ButtonContainer>
-            <PurpleButton text="next" top={20} />
+            <DelayedNextButton
+              text="next"
+              top={20}
+              delay={1000}
+              onClick={updateIntervention}
+            />
           </ButtonContainer>
         </MainContent>
       </Container>

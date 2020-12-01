@@ -1,11 +1,12 @@
-import React, { ReactElement } from 'react';
-import styled from 'styled-components';
-import CloudImage from './CloudImage';
+import React, { ReactElement } from "react";
+import styled from "styled-components";
+import CloudImage from "./CloudImage";
 
 const CloudImageLeft = styled(CloudImage)`
   position: absolute;
   left: 0;
   width: 15%;
+
   @media (max-width: 900px) {
     @media (max-height: 800px) {
       height: 0px;
