@@ -4,6 +4,7 @@ import Layout from "../../components/Layout";
 import PlayButton from "../../components/PlayButton";
 import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
+import CloudGroup from "../../components/CloudGroup";
 import WordImages from "../../components/WordImages";
 import { CLOUD } from "../../constants/colors";
 import { Assessment, AssessmentResult } from "../../models/types";
@@ -103,6 +104,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
   return (
     <Layout>
       <Container>
+        <CloudGroup />
         <MainContent>
           <WordTitle>{word.value}</WordTitle>
           <Prompt>
