@@ -57,31 +57,19 @@ margin-right: 10px;
 };
 `;
 
-
-
-const CheckCorrect = styled(CheckCircleFilled)`
-color: ${SEA_FOAM};
-`;
-
-const CheckIncorrect = styled(CheckCircleFilled)`
-color: ${CORAL};
-`;
+const EmptyDiv = styled.div``;
 
 const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({correctAnswer}): ReactElement => {
   let [selected, setSelected] = useState(-1);
 
-  const select = (num: number) => {
-    selected === -1 && setSelected(num)
-  }
-
   return (
     <Blocker afterSeconds={15} repeatable={false} message='Yes or No?'>
       <YesNoContainer>
-      <YesNoButton highlight={selected === 1 ? correctAnswer ? 1 : 0 : -1} onClick={() => select(1)} text="yes" top={20}
-                         check={<CheckCorrect/>}
+      <YesNoButton highlight={selected === 1 ? correctAnswer ? 1 : 0 : -1} onClick={() => setSelected(1)} text="yes" top={20}
+                         check={selected === 1 ? correctAnswer ? <CheckCircleFilled style={{color: SEA_FOAM}}/> : <CheckCircleFilled style={{color: CORAL}}/> : <EmptyDiv/>}
                          icon={<LikeFilled/>}/>
-      <YesNoButton highlight={selected === 0 ? correctAnswer ? 0 : 1 : -1} onClick={() => select(0)} text="no" top={20}
-                    check = {<CheckIncorrect/>}
+      <YesNoButton highlight={selected === 0 ? correctAnswer ? 0 : 1 : -1} onClick={() => setSelected(0)} text="no" top={20}
+                    check = {selected === 0 ? correctAnswer ? <CheckCircleFilled style={{color: CORAL}}/> : <CheckCircleFilled style={{color: SEA_FOAM}}/> : <EmptyDiv/>}
                     icon={<DislikeFilled/>}/>
 
       </YesNoContainer>
