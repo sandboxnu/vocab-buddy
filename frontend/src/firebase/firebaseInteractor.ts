@@ -174,7 +174,9 @@ export default class FirebaseInteractor {
   async updateAssessment(
     id: string,
     responses: AssessmentResult[],
-    currentIdx: number
+    currentIdx: number,
+    startTime: Date,
+    endTime: Date | null
   ) {
     await Promise.all(
       responses.map(async (response) => {
@@ -188,6 +190,8 @@ export default class FirebaseInteractor {
     );
     await this.db.collection("assessments").doc(id).update({
       currentIndex: currentIdx,
+      startTime,
+      endTime,
     });
   }
 

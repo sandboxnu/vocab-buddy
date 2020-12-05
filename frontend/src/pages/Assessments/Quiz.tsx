@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Assessment, AssessmentResult } from "../../models/types";
@@ -43,9 +43,12 @@ const Quiz = ({
 }: QuizProps) => {
   let history = useHistory();
   let params = useParams<QuizParams>();
+  const [startTime] = useState(new Date());
+
   if (isFinished) {
     history.push("/dashboard");
   }
+
   useEffect(() => {
     if (!assessment) getAssessment(params.id);
   }, [assessment, getAssessment, params]);
@@ -58,11 +61,15 @@ const Quiz = ({
       isFinished: boolean,
       currentIdx: number
     ) => {
+      let endTime = null;
+      if (isFinished) endTime = new Date();
       updateAssessment({
         responses,
         id: params.id,
         isFinished,
         currentIdx,
+        startTime,
+        endTime: endTime,
       });
     };
     return (
