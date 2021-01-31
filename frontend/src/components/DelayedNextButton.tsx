@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import React, {MouseEvent, ReactElement, useState} from "react";
+import React, {MouseEvent, ReactElement, useState, useEffect } from "react";
 import styled from "styled-components";
 import { INK, INK_HOVER } from "../constants/colors";
 
@@ -40,10 +40,17 @@ const DelayedNextButton = ({ className = "", text, top, onClick, icon, delay}: N
 
   let [shown, setShown] = useState(false);
 
-  setTimeout(()=> {
-    setShown(true);
-  }, delay);
+  useEffect(
+    () => {
+      let timer1 = setTimeout(()=> {
+        setShown(true);
+      }, delay);
 
+      // this will clear Timeout when component unmount like in willComponentUnmount
+      return () => {
+        clearTimeout(timer1)
+      }
+    }, [delay]);
 
   return (
       shown ?

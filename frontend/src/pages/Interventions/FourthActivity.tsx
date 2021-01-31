@@ -1,14 +1,19 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
-import PromptSpeech from "../../components/PromptSpeech";
+import AutoPrompt from "../../components/AutoPrompt";
 import ReplayButton from "../../components/ReplayButton";
-import PurpleButton from "../../components/PurpleButton";
+import DelayedNextButton from "../../components/DelayedNextButton";
+import Blocker from "../../components/Blocker";
+import CloudGroup from "../../components/CloudGroup";
+import ExpandableImage from "../../components/ExpandableImage";
 import { SKY } from "../../constants/colors";
 
 interface FourthActivityProps {
   title: string;
+  prompt: string;
   imageUrl: string;
+  updateIntervention: () => void;
 }
 
 const Container = styled.div`
@@ -53,7 +58,7 @@ const Prompt = styled.div`
   width: max-content;
 `;
 
-const Image = styled.img`
+const Image = styled(ExpandableImage)`
   border-radius: 20px;
   min-width: 600px;
 
@@ -70,27 +75,38 @@ const ButtonContainer = styled.div`
 
 const FourthActivity = ({
   title,
+  prompt,
   imageUrl,
+  updateIntervention,
 }: FourthActivityProps): ReactElement => {
   return (
     <Layout>
       <Container>
+        <CloudGroup />
         <MainContent>
           <DescriptionText>review with new picture</DescriptionText>
-          <WordTitle>
-            {/* {title} */}
-            Miniscule
-          </WordTitle>
+          <WordTitle>{title}</WordTitle>
           <Prompt>
-            <PromptSpeech
-              prompt="Say, miniscule means really, really small"
+            <AutoPrompt
+              prompt={prompt}
               button={<ReplayButton scale={0.8} />}
+              delay={30000}
             />
           </Prompt>
-          {/* <Image src={imageUrl}/> */}
-          <Image src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/jSyyDnxzx41VFQNQbbEw%2Fminiscule3.png?alt=media&token=cb4f4cf6-a1d0-465d-a972-087230d2ff05" />
+          <Image src={imageUrl} />
           <ButtonContainer>
-            <PurpleButton text={"next"} top={20} />
+            <Blocker
+              afterSeconds={30}
+              message="Click on the next button to continue"
+              repeatable={false}
+            >
+              <DelayedNextButton
+                text={"next"}
+                top={20}
+                delay={1000}
+                onClick={updateIntervention}
+              />
+            </Blocker>
           </ButtonContainer>
         </MainContent>
       </Container>

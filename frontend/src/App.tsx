@@ -11,6 +11,7 @@ import Assessments from "./pages/Assessments/Assessments";
 import Quiz from "./pages/Assessments/Quiz";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Interventions from "./pages/Interventions/Interventions";
+import Activities from "./pages/Interventions/Activities";
 import CreateUser from "./pages/Login/CreateUser";
 import Login from "./pages/Login/Login";
 import Reward from "./pages/Interventions/Reward";
@@ -24,6 +25,7 @@ const App = (): ReactElement => {
         <Route path="/sign_up" component={CreateUser} />
         <AuthenticatedRoute path="/dashboard" component={Dashboard} />
         <AuthenticatedRoute exact path="/interventions" component={Interventions} />
+        <AuthenticatedRoute exact path="/interventions/:id" component={Activities} />
         <AuthenticatedRoute exact path="/assessments/:id" component={Quiz} />
         <AuthenticatedRoute path="/reward" component={Reward} />
         <AuthenticatedRoute path="/assessments" component={Assessments} />

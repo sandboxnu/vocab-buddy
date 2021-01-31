@@ -15,14 +15,18 @@ const interventionReducer = (
         ...state,
         ...payload.interventions,
       };
+    case ActionTypes.UPDATE_INTERVENTION_SUCCESS:
+      return {
+        ...payload.interventions, 
+      };
     default:
       return state;
   }
 };
 
-// is this correct?
-export const getAllInterventions = (state: RootStateOrAny) => {
-  return state.interventions.wordList;
+
+export const getCurrentInterventions = (state: RootStateOrAny) => {
+  return state.interventions;
 };
 
 export default interventionReducer;
