@@ -15,6 +15,7 @@ import { TextInput } from "../../components/TextInput";
 import { INK, SEA_FOAM } from "../../constants/colors";
 import { authenticationRequest } from "./data/actions";
 import { AccountType, CreateUserParams } from "../../models/types";
+import { getSignedIn } from "./data/reducer";
 
 const LoginHoldingDiv = styled.div`
   display: flex;
@@ -137,9 +138,14 @@ const AgeTextInput = styled(TextInput)`
 `;
 
 // An example of using a connector
-const connector = connect((state) => state, {
-  createUser: authenticationRequest.createUser,
-});
+const connector = connect(
+  (state) => ({
+    signedIn: getSignedIn(state),
+  }),
+  {
+    createUser: authenticationRequest.createUser,
+  }
+);
 
 interface CreateUserProps {
   signedIn: boolean;
