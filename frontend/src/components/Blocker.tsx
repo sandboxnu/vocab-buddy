@@ -40,8 +40,6 @@ const BodyText = styled.p`
 const BlockerContainer = styled.div``;
 
 const SliderContainer = styled.div`
-  position: relative;
-  background-color: blue;
   display: flex;
   justify-content: center;
 `;
@@ -49,34 +47,54 @@ const SliderContainer = styled.div`
 const BackgroundImage = styled.img``;
 
 const StarImage = styled.img`
-  position: absolute;
   left: 0;
   center: y;
   height: 100%;
 `;
 
+interface SliderProps {
+  progress: number;
+}
+
 const Slider = styled.input`
     -webkit-appearance: none;  /* Override default CSS styles */
-    appearance: none;
+    // appearance: none;
     width: 100%; /* Full-width */
-    height: 25px; /* Specified height */
-    background: ${SKY} /* Grey background */
+    height: 4px; /* Specified height */
+    background: ${SKY}; /* Grey background */
     outline: none; /* Remove outline */
-    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-    transition: opacity .2s;
+    margin: 28px;
 
     ::-webkit-slider-thumb {
         -webkit-appearance: none;
-        appearance: none;
+        height: 50px;
+        width: 50px;
         background: url(${star});
+        background-size: contain;
+        background-repeat: no-repeat;
         cursor: pointer;
+        margin-left: ${({ progress }: SliderProps) =>
+          ((progress - 50) / 50) * 10}px;
     }
 
     ::-moz-range-thumb {
         background: url(${star};
+        height: 50px;
+        width: 50px;
+        background-size: contain;
+        background-repeat: no-repeat;
         cursor: pointer;
-      }
+        margin-left: ${({ progress }: SliderProps) =>
+          ((progress - 50) / 50) * 10}px;
+    }
+
+        ::-webkit-slider-runnable-track {
+
+        }
+
+        ::-moz-range-track {
+
+        }
 `;
 
 const Blocker: FunctionComponent<BlockerProps> = ({
@@ -88,6 +106,8 @@ const Blocker: FunctionComponent<BlockerProps> = ({
   const [lastTap, setLastTap] = useState(new Date());
   const [currentTime, setCurrentTime] = useState(new Date());
   const [hasShown, setHasShown] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   let onClick = children.props.onClick;
   let newOnClick = () => {
     if (onClick) {
@@ -116,6 +136,11 @@ const Blocker: FunctionComponent<BlockerProps> = ({
     }
   };
 
+  if (progress === 100) {
+    finishedShowing();
+    setProgress(0);
+  }
+
   return (
     <>
       <Modal
@@ -124,17 +149,24 @@ const Blocker: FunctionComponent<BlockerProps> = ({
         afterClose={finishedShowing}
         onOk={finishedShowing}
         closable={false}
-        cancelButtonProps={{ style: { display: "none" } }}
         footer={null}
         centered
+        destroyOnClose
       >
         <BlockerContainer>
-          <TitleText>Oops!</TitleText>
+          <TitleText>oops!</TitleText>
           <BodyText>drag the star to the end to continue.</BodyText>
           <SliderContainer>
-            <Slider type="range" min="0" max="1" />
-            {/* <BackgroundImage src={slider}/>
-                  <StarImage src={star}/> */}
+            <Slider
+              type="range"
+              min="0"
+              max="100"
+              value={progress}
+              onChange={(event) =>
+                setProgress(parseInt(event.target.value))
+              }
+              progress={progress}
+            />
           </SliderContainer>
         </BlockerContainer>
       </Modal>
