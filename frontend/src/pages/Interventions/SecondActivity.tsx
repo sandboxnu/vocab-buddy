@@ -1,13 +1,13 @@
-import React, { ReactElement, useState } from 'react';
-import Layout from '../../components/Layout';
-import styled from 'styled-components';
-import { CORAL, SEA_FOAM, SKY } from '../../constants/colors';
-import PromptSpeech from '../../components/PromptSpeech';
-import ReplayButton from '../../components/ReplayButton';
-import CloudGroup from '../../components/CloudGroup';
-import DelayedNextButton from '../../components/DelayedNextButton';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import Blocker from '../../components/Blocker';
+import React, { ReactElement, useState } from "react";
+import Layout from "../../components/Layout";
+import styled from "styled-components";
+import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
+import PromptSpeech from "../../components/PromptSpeech";
+import ReplayButton from "../../components/ReplayButton";
+import CloudGroup from "../../components/CloudGroup";
+import DelayedNextButton from "../../components/DelayedNextButton";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import Blocker from "../../components/Blocker";
 
 interface SecondActivityProps {
   title: string;
@@ -36,14 +36,14 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -202,11 +202,7 @@ const SecondActivity = ({
               button={<ReplayButton scale={0.8} />}
             />
           </Prompt>
-          <Blocker
-            afterSeconds={15}
-            message="Click on an image"
-            repeatable={false}
-          >
+          <Blocker afterSeconds={15} repeatable={false}>
             <StyledDivForClicks>
               {imageUrls.map((img, index) => (
                 <ImageContainer>

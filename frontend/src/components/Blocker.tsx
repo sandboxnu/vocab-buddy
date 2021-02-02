@@ -5,15 +5,14 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { Range } from "react-range";
 import styled from "styled-components";
-import slider from "../assets/slider.svg";
 import star from "../assets/star.svg";
-import { SKY } from "../constants/colors";
+import background from "../assets/slider.svg";
 
 interface BlockerProps {
   children: ReactElement;
   afterSeconds: number;
-  message: string;
   repeatable: boolean;
 }
 
@@ -41,72 +40,44 @@ const BlockerContainer = styled.div``;
 
 const SliderContainer = styled.div`
   display: flex;
-  justify-content: center;
-`;
-
-const BackgroundImage = styled.img``;
-
-const StarImage = styled.img`
-  left: 0;
-  center: y;
-  height: 100%;
+  justify-content: stretch;
+  margin: 0px 20px;
 `;
 
 interface SliderProps {
   progress: number;
 }
 
-const Slider = styled.input`
-    -webkit-appearance: none;  /* Override default CSS styles */
-    // appearance: none;
-    width: 100%; /* Full-width */
-    height: 4px; /* Specified height */
-    background: ${SKY}; /* Grey background */
-    outline: none; /* Remove outline */
-    margin: 28px;
+const SliderDiv = styled.div`
+  height: 100px;
+  width: 100%;
+`;
 
-    ::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        height: 50px;
-        width: 50px;
-        background: url(${star});
-        background-size: contain;
-        background-repeat: no-repeat;
-        cursor: pointer;
-        margin-left: ${({ progress }: SliderProps) =>
-          ((progress - 50) / 50) * 10}px;
-    }
+const SliderTrack = styled.img`
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+`;
 
-    ::-moz-range-thumb {
-        background: url(${star};
-        height: 50px;
-        width: 50px;
-        background-size: contain;
-        background-repeat: no-repeat;
-        cursor: pointer;
-        margin-left: ${({ progress }: SliderProps) =>
-          ((progress - 50) / 50) * 10}px;
-    }
-
-        ::-webkit-slider-runnable-track {
-
-        }
-
-        ::-moz-range-track {
-
-        }
+const SliderThumbDiv = styled.div`
+  background: url(${star});
+  height: 75px;
+  width: 75px;
+  background-size: contain;
+  background-repeat: no-repeat;
 `;
 
 const Blocker: FunctionComponent<BlockerProps> = ({
   afterSeconds,
   children,
-  message,
   repeatable,
 }): ReactElement => {
   const [lastTap, setLastTap] = useState(new Date());
   const [currentTime, setCurrentTime] = useState(new Date());
   const [hasShown, setHasShown] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(2);
 
   let onClick = children.props.onClick;
   let newOnClick = () => {
@@ -126,7 +97,7 @@ const Blocker: FunctionComponent<BlockerProps> = ({
     return () => clearInterval(interval);
   }, []);
   const timeSince = currentTime.getTime() - lastTap.getTime();
-  let shouldShowBlocker = timeSince >= 2 * 1000;
+  let shouldShowBlocker = timeSince >= afterSeconds * 1000;
 
   const finishedShowing = () => {
     if (repeatable) {
@@ -152,12 +123,13 @@ const Blocker: FunctionComponent<BlockerProps> = ({
         footer={null}
         centered
         destroyOnClose
+        transitionName=""
       >
         <BlockerContainer>
           <TitleText>oops!</TitleText>
           <BodyText>drag the star to the end to continue.</BodyText>
           <SliderContainer>
-            <Slider
+            {/* <Slider
               type="range"
               min="0"
               max="100"
@@ -166,7 +138,25 @@ const Blocker: FunctionComponent<BlockerProps> = ({
                 setProgress(parseInt(event.target.value))
               }
               progress={progress}
-            />
+            /> */}
+            {
+              <Range
+                values={[progress]}
+                min={0}
+                max={100}
+                step={1}
+                onChange={(values) => setProgress(values[0])}
+                renderTrack={({ props, children }) => (
+                  <SliderDiv {...props}>
+                    <SliderTrack src={background} />
+                    {children}
+                  </SliderDiv>
+                )}
+                renderThumb={({ props }) => (
+                  <SliderThumbDiv {...props}></SliderThumbDiv>
+                )}
+              />
+            }{" "}
           </SliderContainer>
         </BlockerContainer>
       </Modal>
