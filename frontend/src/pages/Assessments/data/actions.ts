@@ -15,6 +15,7 @@ export interface UpdateAssessmentAction {
   id: string;
   isFinished: boolean;
   currentIdx: number;
+  duration?: number;
 }
 
 export const getAssessment = {
@@ -42,9 +43,10 @@ export const updateAssessment = {
     id,
     isFinished,
     currentIdx,
+    duration,
   }: UpdateAssessmentAction): Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_REQUEST,
-    payload: { responses, id, isFinished, currentIdx },
+    payload: { responses, id, isFinished, currentIdx, duration },
   }),
   success: ({ isFinished }: UpdateAssessmentSuccess): Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_SUCCESS,

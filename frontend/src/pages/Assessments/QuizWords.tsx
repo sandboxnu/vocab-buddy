@@ -11,10 +11,12 @@ import { Assessment, AssessmentResult } from "../../models/types";
 
 interface QuizWordsProps {
   assessment: Assessment;
+  startTime: Date;
   updateWords: (
     results: AssessmentResult[],
     isFinished: boolean,
-    currentIdx: number
+    currentIdx: number,
+    duration?: number
   ) => void;
 }
 
@@ -81,7 +83,11 @@ const shuffleImages = (images: any[]) => {
   return images;
 };
 
-const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
+const QuizWords = ({
+  assessment,
+  startTime,
+  updateWords,
+}: QuizWordsProps) => {
   let [currentIndex, setCurrentIndex] = useState(
     assessment.currentIndex
   );
@@ -101,14 +107,18 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
       wordResponses.filter((response) => !response.correct).length >=
       2
     ) {
-      updateWords(wordResponses, true, currentIndex);
+      let curDate = new Date();
+      let duration = (curDate.getTime() - startTime.getTime()) / 1000;
+      updateWords(wordResponses, true, currentIndex, duration);
     } else if (currentIndex < assessment.words.length - 1) {
       updateWords(wordResponses, false, currentIndex + 1);
       setShuffled([]);
       setSelectedIndex(-1);
       setCurrentIndex(currentIndex + 1);
     } else {
-      updateWords(wordResponses, true, currentIndex);
+      let curDate = new Date();
+      let duration = (curDate.getTime() - startTime.getTime()) / 1000;
+      updateWords(wordResponses, true, currentIndex, duration);
     }
   };
 
