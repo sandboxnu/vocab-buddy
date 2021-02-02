@@ -129,34 +129,22 @@ const Blocker: FunctionComponent<BlockerProps> = ({
           <TitleText>oops!</TitleText>
           <BodyText>drag the star to the end to continue.</BodyText>
           <SliderContainer>
-            {/* <Slider
-              type="range"
-              min="0"
-              max="100"
-              value={progress}
-              onChange={(event) =>
-                setProgress(parseInt(event.target.value))
-              }
-              progress={progress}
-            /> */}
-            {
-              <Range
-                values={[progress]}
-                min={0}
-                max={100}
-                step={1}
-                onChange={(values) => setProgress(values[0])}
-                renderTrack={({ props, children }) => (
-                  <SliderDiv {...props}>
-                    <SliderTrack src={background} />
-                    {children}
-                  </SliderDiv>
-                )}
-                renderThumb={({ props }) => (
-                  <SliderThumbDiv {...props}></SliderThumbDiv>
-                )}
-              />
-            }{" "}
+            <Range
+              values={[progress]}
+              min={0}
+              max={100}
+              step={1}
+              onChange={(values) => setProgress(values[0])}
+              renderTrack={({ props, children }) => (
+                <SliderDiv {...props}>
+                  <SliderTrack src={background} />
+                  {children}
+                </SliderDiv>
+              )}
+              renderThumb={({ props }) => (
+                <SliderThumbDiv {...props}></SliderThumbDiv>
+              )}
+            />
           </SliderContainer>
         </BlockerContainer>
       </Modal>
