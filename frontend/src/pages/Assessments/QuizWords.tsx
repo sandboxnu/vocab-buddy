@@ -16,7 +16,7 @@ interface QuizWordsProps {
     results: AssessmentResult[],
     isFinished: boolean,
     currentIdx: number,
-    duration?: number
+    duration: number
   ) => void;
 }
 
@@ -95,7 +95,6 @@ const QuizWords = ({
     AssessmentResult[]
   >([]);
   let [selectedIndex, setSelectedIndex] = useState(-1);
-
   let [wordStartTime, setWordStartTime] = useState(new Date());
 
   let word = assessment.words[currentIndex];

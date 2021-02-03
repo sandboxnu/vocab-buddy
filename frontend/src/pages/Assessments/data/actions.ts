@@ -15,7 +15,7 @@ export interface UpdateAssessmentAction {
   id: string;
   isFinished: boolean;
   currentIdx: number;
-  duration?: number;
+  duration: number;
 }
 
 export const getAssessment = {
