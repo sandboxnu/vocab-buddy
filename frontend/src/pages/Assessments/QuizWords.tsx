@@ -103,21 +103,19 @@ const QuizWords = ({
   }
 
   const nextWord = () => {
+    let curDate = new Date();
+    let duration = (curDate.getTime() - startTime.getTime()) / 1000;
     if (
       wordResponses.filter((response) => !response.correct).length >=
       2
     ) {
-      let curDate = new Date();
-      let duration = (curDate.getTime() - startTime.getTime()) / 1000;
       updateWords(wordResponses, true, currentIndex, duration);
     } else if (currentIndex < assessment.words.length - 1) {
-      updateWords(wordResponses, false, currentIndex + 1);
+      updateWords(wordResponses, false, currentIndex + 1, duration);
       setShuffled([]);
       setSelectedIndex(-1);
       setCurrentIndex(currentIndex + 1);
     } else {
-      let curDate = new Date();
-      let duration = (curDate.getTime() - startTime.getTime()) / 1000;
       updateWords(wordResponses, true, currentIndex, duration);
     }
   };
