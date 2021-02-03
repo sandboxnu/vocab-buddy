@@ -6,6 +6,7 @@ export interface Assessment {
   words: Word[];
   currentIndex: number;
   firebaseId: string;
+  duration?: number;
 }
 
 /**
@@ -116,12 +117,12 @@ export enum ActionTypes {
   SIGN_OUT_REQUEST = "SIGN_OUT_REQUEST",
   SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS",
   SIGN_OUT_ERROR = "SIGN_OUT_ERROR",
-  UPDATE_INTERVENTION_REQUEST = 'UPDATE_INTERVENTION_REQUEST',
-  UPDATE_INTERVENTION_ERROR = 'UPDATE_INTERVENTION_ERROR',
-  UPDATE_INTERVENTION_SUCCESS = 'UPDATE_INTERVENTION_SUCCESS',
+  UPDATE_INTERVENTION_REQUEST = "UPDATE_INTERVENTION_REQUEST",
+  UPDATE_INTERVENTION_ERROR = "UPDATE_INTERVENTION_ERROR",
+  UPDATE_INTERVENTION_SUCCESS = "UPDATE_INTERVENTION_SUCCESS",
   UPDATE_ASSESSMENT_REQUEST = "UPDATE_ASSESSMENT_REQUEST",
   UPDATE_ASSESSMENT_SUCCESS = "UPDATE_ASSESSMENT_SUCCESS",
-  UPDATE_ASSESSMENT_ERROR = "UPDATE_ASSESSMENT_ERROR"
+  UPDATE_ASSESSMENT_ERROR = "UPDATE_ASSESSMENT_ERROR",
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense
@@ -161,6 +162,6 @@ export interface DashboardState {
 }
 
 export interface AssessmentResult {
-  word: string,
-  correct: boolean
+  word: string;
+  correct: boolean;
 }

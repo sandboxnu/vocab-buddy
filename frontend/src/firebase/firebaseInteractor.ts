@@ -171,15 +171,10 @@ export default class FirebaseInteractor {
     return { id, currentIndex, words: actualWords, firebaseId: assessment.id };
   }
 
-  async submitAsssessment(duration: number) {
-    //TODO
-  }
-
   async updateAssessment(
     id: string,
     responses: AssessmentResult[],
     currentIdx: number,
-    isFinished: boolean,
     duration?: number
   ) {
     await Promise.all(
@@ -192,10 +187,16 @@ export default class FirebaseInteractor {
           .set({ correct: response.correct });
       })
     );
-
-    await this.db.collection("assessments").doc(id).update({
-      currentIndex: currentIdx,
-    });
+    if (duration) {
+      await this.db.collection("assessments").doc(id).update({
+        currentIndex: currentIdx,
+        duration: duration,
+      });
+    } else {
+      await this.db.collection("assessments").doc(id).update({
+        currentIndex: currentIdx,
+      });
+    }
   }
 
   async getWord(id: string): Promise<Word> {

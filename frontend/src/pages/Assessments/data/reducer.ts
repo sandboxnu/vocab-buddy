@@ -7,7 +7,7 @@ const initialState: RootStateOrAny = { assessment: null, finished: false };
 interface AssessmentState {
   assessment?: Assessment;
   finished: boolean;
-  startTime?: Date;
+  duration?: boolean;
 }
 
 const assessmentReducer = (

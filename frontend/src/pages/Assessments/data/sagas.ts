@@ -45,13 +45,7 @@ function* watchUpdateAssessment(action: Action) {
   }: UpdateAssessmentAction = action.payload;
   try {
     yield call(() =>
-      firebaseInteractor.updateAssessment(
-        id,
-        responses,
-        currentIdx,
-        isFinished,
-        duration
-      )
+      firebaseInteractor.updateAssessment(id, responses, currentIdx, duration)
     );
     yield put(updateAssessment.success({ isFinished }));
   } catch (error) {
