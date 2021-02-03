@@ -95,6 +95,9 @@ const QuizWords = ({
     AssessmentResult[]
   >([]);
   let [selectedIndex, setSelectedIndex] = useState(-1);
+
+  let [wordStartTime, setWordStartTime] = useState(new Date());
+
   let word = assessment.words[currentIndex];
   let images = [word.correctImage].concat(word.incorrectImages);
   let [shuffled, setShuffled] = useState<string[]>([]);
@@ -104,18 +107,24 @@ const QuizWords = ({
 
   const nextWord = () => {
     let curDate = new Date();
-    let duration = (curDate.getTime() - startTime.getTime()) / 1000;
+    let duration =
+      (curDate.getTime() - wordStartTime.getTime()) / 1000;
+    setWordStartTime(curDate);
+
     if (
       wordResponses.filter((response) => !response.correct).length >=
       2
     ) {
+      // There are at least 2 incorrect
       updateWords(wordResponses, true, currentIndex, duration);
     } else if (currentIndex < assessment.words.length - 1) {
+      // We still have words
       updateWords(wordResponses, false, currentIndex + 1, duration);
       setShuffled([]);
       setSelectedIndex(-1);
       setCurrentIndex(currentIndex + 1);
     } else {
+      // All words exhausted
       updateWords(wordResponses, true, currentIndex, duration);
     }
   };

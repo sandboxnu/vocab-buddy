@@ -188,9 +188,11 @@ export default class FirebaseInteractor {
       })
     );
     if (duration) {
+      const increment = firebase.firestore.FieldValue.increment(duration);
+
       await this.db.collection("assessments").doc(id).update({
         currentIndex: currentIdx,
-        duration: duration,
+        duration: increment,
       });
     } else {
       await this.db.collection("assessments").doc(id).update({
