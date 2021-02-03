@@ -6,7 +6,6 @@ export interface Assessment {
   words: Word[];
   currentIndex: number;
   firebaseId: string;
-  duration?: number;
 }
 
 /**

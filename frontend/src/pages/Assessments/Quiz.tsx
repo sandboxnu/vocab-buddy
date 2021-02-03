@@ -43,7 +43,6 @@ const Quiz = ({
 }: QuizProps) => {
   let history = useHistory();
   let params = useParams<QuizParams>();
-  const [startTime] = useState(new Date());
   if (isFinished) {
     history.push("/dashboard");
   }
@@ -71,7 +70,6 @@ const Quiz = ({
     return (
       <QuizWords
         assessment={assessment}
-        startTime={startTime}
         updateWords={updateAssessmentWords}
       />
     );

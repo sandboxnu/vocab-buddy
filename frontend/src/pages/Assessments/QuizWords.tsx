@@ -11,7 +11,6 @@ import { Assessment, AssessmentResult } from "../../models/types";
 
 interface QuizWordsProps {
   assessment: Assessment;
-  startTime: Date;
   updateWords: (
     results: AssessmentResult[],
     isFinished: boolean,
@@ -83,11 +82,7 @@ const shuffleImages = (images: any[]) => {
   return images;
 };
 
-const QuizWords = ({
-  assessment,
-  startTime,
-  updateWords,
-}: QuizWordsProps) => {
+const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
   let [currentIndex, setCurrentIndex] = useState(
     assessment.currentIndex
   );
