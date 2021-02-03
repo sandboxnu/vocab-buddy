@@ -175,7 +175,7 @@ export default class FirebaseInteractor {
     id: string,
     responses: AssessmentResult[],
     currentIdx: number,
-    duration: number
+    durationInSeconds: number
   ) {
     await Promise.all(
       responses.map(async (response) => {
@@ -188,11 +188,13 @@ export default class FirebaseInteractor {
       })
     );
 
-    const increment = firebase.firestore.FieldValue.increment(duration);
+    const increment = firebase.firestore.FieldValue.increment(
+      durationInSeconds
+    );
 
     await this.db.collection("assessments").doc(id).update({
       currentIndex: currentIdx,
-      duration: increment,
+      durationInSeconds: increment,
     });
   }
 
