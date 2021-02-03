@@ -15,7 +15,7 @@ interface QuizWordsProps {
     results: AssessmentResult[],
     isFinished: boolean,
     currentIdx: number,
-    duration: number
+    durationInSeconds: number
   ) => void;
 }
 
@@ -101,7 +101,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
 
   const nextWord = () => {
     let curDate = new Date();
-    let duration =
+    let durationInSeconds =
       (curDate.getTime() - wordStartTime.getTime()) / 1000;
     setWordStartTime(curDate);
 
@@ -110,16 +110,31 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
       2
     ) {
       // There are at least 2 incorrect
-      updateWords(wordResponses, true, currentIndex, duration);
+      updateWords(
+        wordResponses,
+        true,
+        currentIndex,
+        durationInSeconds
+      );
     } else if (currentIndex < assessment.words.length - 1) {
       // We still have words
-      updateWords(wordResponses, false, currentIndex + 1, duration);
+      updateWords(
+        wordResponses,
+        false,
+        currentIndex + 1,
+        durationInSeconds
+      );
       setShuffled([]);
       setSelectedIndex(-1);
       setCurrentIndex(currentIndex + 1);
     } else {
       // All words exhausted
-      updateWords(wordResponses, true, currentIndex, duration);
+      updateWords(
+        wordResponses,
+        true,
+        currentIndex,
+        durationInSeconds
+      );
     }
   };
 
