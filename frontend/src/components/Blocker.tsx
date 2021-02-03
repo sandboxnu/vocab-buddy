@@ -9,6 +9,7 @@ import { Range } from "react-range";
 import styled from "styled-components";
 import star from "../assets/star.svg";
 import background from "../assets/slider.svg";
+import { SEA_FOAM } from "../constants/colors";
 
 interface BlockerProps {
   children: ReactElement;
@@ -67,6 +68,11 @@ const SliderThumbDiv = styled.div`
   width: 75px;
   background-size: contain;
   background-repeat: no-repeat;
+
+  :focus {
+    outline: 3spx solid ${SEA_FOAM} !important;
+    outline-offset: 2px;
+  }
 `;
 
 const Blocker: FunctionComponent<BlockerProps> = ({
