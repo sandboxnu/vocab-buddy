@@ -70,8 +70,9 @@ const SliderThumbDiv = styled.div`
   background-repeat: no-repeat;
 
   :focus {
-    outline: 3spx solid ${SEA_FOAM} !important;
-    outline-offset: 2px;
+    box-shadow: 0 0 0 3px ${SEA_FOAM};
+    outline: none;
+    border-radius: 10px;
   }
 `;
 
