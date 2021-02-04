@@ -14,7 +14,9 @@ const Assessments: FunctionComponent = (): ReactElement => {
       title="assessments"
       subtitle="Select the correct images to match the target words."
       image={ASSESSMENTS_LANDING}
-      onBegin={() => history.push(`/assessments/oiBN8aE5tqEFK2gXJUpl`)}
+      onBegin={() =>
+        history.push(`/assessments/oiBN8aE5tqEFK2gXJUpl`)
+      }
     />
   );
 };

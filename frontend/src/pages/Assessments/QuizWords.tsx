@@ -14,7 +14,8 @@ interface QuizWordsProps {
   updateWords: (
     results: AssessmentResult[],
     isFinished: boolean,
-    currentIdx: number
+    currentIdx: number,
+    durationInSeconds: number
   ) => void;
 }
 
@@ -89,6 +90,8 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
     AssessmentResult[]
   >([]);
   let [selectedIndex, setSelectedIndex] = useState(-1);
+  let [wordStartTime, setWordStartTime] = useState(new Date());
+
   let word = assessment.words[currentIndex];
   let images = [word.correctImage].concat(word.incorrectImages);
   let [shuffled, setShuffled] = useState<string[]>([]);
@@ -97,18 +100,41 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
   }
 
   const nextWord = () => {
+    let curDate = new Date();
+    let durationInSeconds =
+      (curDate.getTime() - wordStartTime.getTime()) / 1000;
+    setWordStartTime(curDate);
+
     if (
       wordResponses.filter((response) => !response.correct).length >=
       2
     ) {
-      updateWords(wordResponses, true, currentIndex);
+      // There are at least 2 incorrect
+      updateWords(
+        wordResponses,
+        true,
+        currentIndex,
+        durationInSeconds
+      );
     } else if (currentIndex < assessment.words.length - 1) {
-      updateWords(wordResponses, false, currentIndex + 1);
+      // We still have words
+      updateWords(
+        wordResponses,
+        false,
+        currentIndex + 1,
+        durationInSeconds
+      );
       setShuffled([]);
       setSelectedIndex(-1);
       setCurrentIndex(currentIndex + 1);
     } else {
-      updateWords(wordResponses, true, currentIndex);
+      // All words exhausted
+      updateWords(
+        wordResponses,
+        true,
+        currentIndex,
+        durationInSeconds
+      );
     }
   };
 
