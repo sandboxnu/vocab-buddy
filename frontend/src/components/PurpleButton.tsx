@@ -4,16 +4,16 @@ import styled from "styled-components";
 import { INK, INK_HOVER } from "../constants/colors";
 
 interface PurpleButtonProps {
-  top?: number,
-  text?: string | '',
-  onClick?:((event: MouseEvent<HTMLInputElement>) => void),
-  check?: ReactElement,
-  icon?: ReactElement,
-  className: string
+  top?: number;
+  text?: string | "";
+  onClick?: (event: MouseEvent<HTMLInputElement>) => void;
+  check?: ReactElement;
+  icon?: ReactElement;
+  className: string;
 }
 
 const ButtonContainer = styled(Button)`
-  background: ${INK};
+  background: ${INK} !important;
   border: none;
   border-radius: 12px;
   font-size: 16px;
@@ -32,7 +32,7 @@ const ButtonContainer = styled(Button)`
   }
 
   :hover {
-    background: ${INK_HOVER};
+    background: ${INK_HOVER} !important;
   }
 
   @media (max-width: 600px) {
@@ -40,19 +40,29 @@ const ButtonContainer = styled(Button)`
   }
 `;
 
-const PurpleButton = ({ className = "", text, top, onClick, icon, check}: PurpleButtonProps)  : ReactElement => {
+const PurpleButton = ({
+  className = "",
+  text,
+  top,
+  onClick,
+  icon,
+  check,
+}: PurpleButtonProps): ReactElement => {
   return (
-    <ButtonContainer className={className} top={top} onClick={onClick}>
+    <ButtonContainer
+      className={className}
+      top={top}
+      onClick={onClick}
+    >
       {check}
       {text}
       {icon}
-
     </ButtonContainer>
   );
 };
 
 PurpleButton.defaultProps = {
-  className: ""
-}
+  className: "",
+};
 
 export default PurpleButton;

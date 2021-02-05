@@ -70,11 +70,7 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
   let [selected, setSelected] = useState(-1);
 
   return (
-    <Blocker
-      afterSeconds={15}
-      repeatable={false}
-      message="Yes or No?"
-    >
+    <Blocker afterSeconds={15} repeatable={false}>
       <YesNoContainer>
         <YesNoButton
           highlight={selected === 1 ? (correctAnswer ? 1 : 0) : -1}

@@ -94,11 +94,7 @@ const FirstActivity = ({
           </Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
-            <Blocker
-              afterSeconds={30}
-              message="Click on the next button to continue"
-              repeatable={false}
-            >
+            <Blocker afterSeconds={30} repeatable={false}>
               <DelayedNextButton
                 text={"next"}
                 top={20}

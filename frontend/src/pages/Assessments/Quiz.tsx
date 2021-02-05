@@ -56,13 +56,15 @@ const Quiz = ({
     const updateAssessmentWords = (
       responses: AssessmentResult[],
       isFinished: boolean,
-      currentIdx: number
+      currentIdx: number,
+      durationInSeconds: number
     ) => {
       updateAssessment({
         responses,
         id: params.id,
         isFinished,
         currentIdx,
+        durationInSeconds,
       });
     };
     return (
