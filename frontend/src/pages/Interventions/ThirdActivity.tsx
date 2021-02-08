@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import ReplayButton from "../../components/ReplayButton";
-import { SKY } from "../../constants/colors";
+import { REPLAY_HOVER, SKY } from "../../constants/colors";
 import AutoPrompt from "../../components/AutoPrompt";
 import CloudGroup from "../../components/CloudGroup";
 import YesNoSelection from "../../components/YesNoSelection";
@@ -56,6 +56,10 @@ const Prompt = styled.div`
   margin-bottom: 20px;
   padding: 1px 5px;
   width: max-content;
+
+  :hover {
+    background-color: ${REPLAY_HOVER};
+  }
 `;
 
 const Image = styled.img`
