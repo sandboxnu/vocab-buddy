@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect } from "react";
 import PromptSpeech from "./PromptSpeech";
 
 interface SpeechProp {
@@ -12,22 +12,18 @@ const AutoPrompt = ({
   button,
   delay = 500,
 }: SpeechProp): ReactElement => {
-  let [hasDoneInitial, setHasDoneInitial] = useState(false);
+  const talk = () => {
+    let x = window.speechSynthesis;
+    setTimeout(() => {
+      x.speak(new SpeechSynthesisUtterance(prompt));
+    }, 500);
+  };
 
   useEffect(() => {
-    const talk = () => {
-      let x = window.speechSynthesis;
-      setTimeout(() => {
-        x.speak(new SpeechSynthesisUtterance(prompt));
-      }, 500);
-    };
-    if (!hasDoneInitial) {
-      talk();
-      setHasDoneInitial(true);
-    }
+    talk();
     const interval = setInterval(talk, delay);
     return () => clearInterval(interval);
-  }, [delay, hasDoneInitial, prompt]);
+  }, []);
 
   return <PromptSpeech prompt={prompt} button={button} />;
 };
