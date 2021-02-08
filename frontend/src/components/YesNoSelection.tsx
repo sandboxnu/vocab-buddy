@@ -3,11 +3,7 @@ import {
   DislikeFilled,
   LikeFilled,
 } from "@ant-design/icons";
-import React, {
-  FunctionComponent,
-  ReactElement,
-  useState,
-} from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import styled from "styled-components";
 import { CORAL, SEA_FOAM } from "../constants/colors";
 import Blocker from "./Blocker";
