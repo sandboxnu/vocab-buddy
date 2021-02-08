@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import ReplayButton from "../../components/ReplayButton";
@@ -99,6 +99,7 @@ const ThirdActivity = ({
   answer,
   updateIntervention,
 }: ThirdActivityProps): ReactElement => {
+  let [selected, setSelected] = useState(-1);
   return (
     <Layout>
       <Container>
@@ -117,13 +118,18 @@ const ThirdActivity = ({
           </Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
-            <YesNoSelection correctAnswer={answer} />
+            <YesNoSelection
+              correctAnswer={answer}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <NextContainer>
               <DelayedNextButton
                 text="next"
                 top={20}
                 delay={3000}
                 onClick={updateIntervention}
+                canBeShown={selected !== -1}
               />
             </NextContainer>
           </ButtonContainer>

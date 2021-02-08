@@ -15,6 +15,8 @@ import PurpleButton from "./PurpleButton";
 
 interface YesNoSelectionProps {
   correctAnswer: boolean;
+  selected: number;
+  setSelected: (selected: number) => void;
 }
 
 interface SelectionProp {
@@ -66,9 +68,9 @@ const EmptyDiv = styled.div``;
 
 const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
   correctAnswer,
+  selected,
+  setSelected,
 }): ReactElement => {
-  let [selected, setSelected] = useState(-1);
-
   return (
     <Blocker afterSeconds={15} repeatable={false}>
       <YesNoContainer>
