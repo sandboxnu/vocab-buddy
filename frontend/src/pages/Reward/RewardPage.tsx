@@ -78,7 +78,7 @@ const RewardPage = ({
         <CloudGroup />
         {score === maxBalloon ? (
           <TitleContainer>
-            Congradulations! You have popped all the balloons :)
+            Congratulations! You have popped all the balloons :)
             Redirecting to Dashboard...
           </TitleContainer>
         ) : (
