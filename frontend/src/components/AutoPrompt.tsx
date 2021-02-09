@@ -23,7 +23,7 @@ const AutoPrompt = ({
     talk();
     const interval = setInterval(talk, delay);
     return () => clearInterval(interval);
-  });
+  }, []);
 
   return <PromptSpeech prompt={prompt} button={button} />;
 };

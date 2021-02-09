@@ -232,6 +232,7 @@ const SecondActivity = ({
               top={20}
               delay={1000}
               onClick={updateIntervention}
+              canBeShown={selectedIndex !== -1}
             />
           </ButtonContainer>
         </MainContent>

@@ -41,6 +41,8 @@ const ButtonContainer = styled(Button)`
   }
 `;
 
+type DelayedNextButton = NextButtonProps & { canBeShown: boolean };
+
 const DelayedNextButton = ({
   className = "",
   text,
@@ -48,7 +50,8 @@ const DelayedNextButton = ({
   onClick,
   icon,
   delay,
-}: NextButtonProps): ReactElement => {
+  canBeShown,
+}: DelayedNextButton): ReactElement => {
   let [shown, setShown] = useState(false);
 
   useEffect(() => {
@@ -62,7 +65,7 @@ const DelayedNextButton = ({
     };
   }, [delay]);
 
-  return shown ? (
+  return shown && canBeShown ? (
     <ButtonContainer
       className={className}
       top={top}
