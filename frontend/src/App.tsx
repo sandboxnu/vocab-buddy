@@ -31,6 +31,11 @@ const App = (): ReactElement => {
         />
         <AuthenticatedRoute
           exact
+          path="/interventions/reward"
+          component={Reward}
+        />
+        <AuthenticatedRoute
+          exact
           path="/interventions/:id"
           component={Activities}
         />
@@ -39,7 +44,6 @@ const App = (): ReactElement => {
           path="/assessments/:id"
           component={Quiz}
         />
-        <AuthenticatedRoute path="/reward" component={Reward} />
         <AuthenticatedRoute
           path="/assessments"
           component={Assessments}
