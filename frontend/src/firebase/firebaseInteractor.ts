@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import { shuffle } from "../constants/utils";
 import {
   AccountType,
   Assessment,
@@ -202,21 +203,21 @@ export default class FirebaseInteractor {
     responses: AssessmentResult[]
   ): Promise<void> {
     let incorrectWords = responses.filter((response) => !response.correct);
-    incorrectWords.sort((a: any, b: any) => {
-      if (Math.random() > 0.5) return 1;
-      else return -1;
-    });
+    shuffle(incorrectWords);
     for (let i = 0; i < 8; i++) {
+      // Add 3 words per intervention (wrapping around for now)
       let wordList = [
         incorrectWords[(i * 3) % incorrectWords.length].word,
-        incorrectWords[i * 3 + (1 % incorrectWords.length)].word,
-        incorrectWords[i * 3 + (2 % incorrectWords.length)].word,
+        incorrectWords[(i * 3 + 1) % incorrectWords.length].word,
+        incorrectWords[(i * 3 + 2) % incorrectWords.length].word,
       ];
       await this.db.collection("interventions").add({
         activityIdx: 0,
         wordIdx: 0,
         wordList,
+        // Assign it to the current user
         userId: this.auth.currentUser?.uid,
+        // Decide which session the intervention is in
         interventionSession: i,
       });
     }
