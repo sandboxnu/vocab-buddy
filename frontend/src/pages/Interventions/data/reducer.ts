@@ -5,7 +5,7 @@ interface InterventionState {
   interventions?: Interventions;
 }
 
-const initialState: RootStateOrAny = { intervention: null };
+const initialState: RootStateOrAny = { interventions: null };
 
 const interventionReducer = (
   state: InterventionState = initialState,

@@ -48,6 +48,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
   interventions,
   getInterventions,
   updateIntervention,
+  finishedIntervention,
 }): ReactElement => {
   useEffect(() => {
     if (!interventions) getInterventions();

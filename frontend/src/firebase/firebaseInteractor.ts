@@ -134,6 +134,40 @@ export default class FirebaseInteractor {
   }
 
   /**
+   * Creates a new assessment with all of the words from a given intervention.
+   */
+  async createAssessmentFromIntervention(setId: string) {
+    let interventionReq = await this.db.collection("interventions").doc(setId);
+    let intervention = await interventionReq.get();
+    let interventionData = intervention.data();
+    if (interventionData == null) {
+      throw new Error(`Intervention with id ${setId} does not exist`);
+    }
+
+    let wordList = interventionData.wordList;
+    let newAssessment = this.db.collection("assessments").doc();
+
+    for (let word of wordList) {
+      let wordData = await this.getWord(word);
+
+      let newWordData = {
+        correctImage: wordData.correctImage,
+        dateCreated: wordData.createdAt,
+        incorrectImages: wordData.incorrectImages,
+        value: wordData.value,
+      };
+
+      await newAssessment.collection("words").doc(word).set(newWordData);
+    }
+    let initialAssessmentFields = {
+      currentIndex: 0,
+      durationInSeconds: 0,
+      words: wordList,
+    };
+    await newAssessment.set(initialAssessmentFields);
+  }
+
+  /**
    * Gets all possible words.
    *
    * @returns { Promise<Assessment> }

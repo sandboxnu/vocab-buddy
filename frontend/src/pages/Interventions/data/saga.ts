@@ -61,11 +61,8 @@ function* watchUpdateIntervention(action: Action) {
 function* watchFinishedIntervention(action: Action) {
   try {
     let { setId } = action.payload;
-    let interventions;
     const createNewAssessment = async () => {
-      console.log("HI");
-      //await firebaseInteractor.updateIntervention(setId, wordIdx, activityIdx);
-      //interventions = await firebaseInteractor.getIntervention(setId);
+      await firebaseInteractor.createAssessmentFromIntervention(setId);
     };
     yield call(createNewAssessment);
     yield put(finishedIntervention.success({}));
