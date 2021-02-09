@@ -100,6 +100,7 @@ const FirstActivity = ({
                 top={20}
                 delay={2000}
                 onClick={updateIntervention}
+                canBeShown
               />
             </Blocker>
           </ButtonContainer>
