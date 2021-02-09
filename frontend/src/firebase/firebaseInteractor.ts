@@ -137,8 +137,10 @@ export default class FirebaseInteractor {
    * Creates a new assessment with all of the words from a given intervention.
    */
   async createAssessmentFromIntervention(setId: string) {
-    let interventionReq = await this.db.collection("interventions").doc(setId);
-    let intervention = await interventionReq.get();
+    let intervention = await this.db
+      .collection("interventions")
+      .doc(setId)
+      .get();
     let interventionData = intervention.data();
     if (interventionData == null) {
       throw new Error(`Intervention with id ${setId} does not exist`);
@@ -163,6 +165,7 @@ export default class FirebaseInteractor {
       currentIndex: 0,
       durationInSeconds: 0,
       words: wordList,
+      userId: this.auth.currentUser?.uid,
     };
     await newAssessment.set(initialAssessmentFields);
   }
