@@ -1,4 +1,9 @@
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  ReactElement,
+  useEffect,
+  useState,
+} from "react";
 import { connect } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -53,7 +58,7 @@ const LoginSwitchingDiv = styled.div`
   width: 100%;
   @media (max-width: 900px) {
     flex-direction: column;
-    padding: 7em 0em 7em 0em
+    padding: 7em 0em 7em 0em;
   }
 
   @media (min-width: 901px) {
@@ -67,7 +72,7 @@ const ActuallyLoginDiv = styled.div`
   flex-direction: column;
   justify-content: space-between;
   @media (max-width: 900px) {
-    padding: 1em 2.5em 0em 2.5em
+    padding: 1em 2.5em 0em 2.5em;
   }
 `;
 
@@ -102,8 +107,7 @@ const EvenSpacedDiv = styled.div`
   @media (min-width: 901px) {
     flex: 1;
   }
-`; 
-
+`;
 
 const LoginImage = styled.img`
   flex: 5;
@@ -122,40 +126,47 @@ const LoginImage = styled.img`
 const StyledPurpleButton = styled(PurpleButton)`
   flex: 1;
   width: 100%;
-  margin: 5px 0px 15px 0px;
+  margin: 16px 0px;
+  padding: 10px;
 `;
 
-
 // An example of using a connector
-const connector = connect((state) => ({
-  signedIn: getSignedIn(state),
-}), {
-  signIn: authenticationRequest.signIn,
-  resetPassword: authenticationRequest.resetPassword,
-});
+const connector = connect(
+  (state) => ({
+    signedIn: getSignedIn(state),
+  }),
+  {
+    signIn: authenticationRequest.signIn,
+    resetPassword: authenticationRequest.resetPassword,
+  }
+);
 
-const loginIllustration = 'https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/login_illustration.png?alt=media&token=1a270ca5-e24b-4327-83af-89972e0e112e';
+const loginIllustration =
+  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/login_illustration.png?alt=media&token=1a270ca5-e24b-4327-83af-89972e0e112e";
 
 interface LoginProps {
-  signedIn : boolean;
-  signIn : ({email, password} : LoginParams) => void;
-  resetPassword : ({email} : ResetPasswordParams) => void;
+  signedIn: boolean;
+  signIn: ({ email, password }: LoginParams) => void;
+  resetPassword: ({ email }: ResetPasswordParams) => void;
 }
 
 interface State {
   redirect: string;
 }
 
-const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword }) : ReactElement => {
+const Login: FunctionComponent<LoginProps> = ({
+  signedIn,
+  signIn,
+  resetPassword,
+}): ReactElement => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let history = useHistory();
   let location = useLocation();
-  let redirect : string | null = null;
+  let redirect: string | null = null;
   if (location.state != null) {
     redirect = (location.state as State).redirect;
   }
-  
 
   let doResetPassword = () => {
     let email = prompt("What is your email?");
@@ -165,7 +176,7 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
     }
 
     resetPassword({ email });
-  }
+  };
 
   useEffect(() => {
     if (signedIn) {
@@ -174,7 +185,6 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
       } else {
         history.push("/dashboard");
       }
-     
     }
   }, [signedIn, history, redirect]);
 
@@ -183,7 +193,7 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
       <LoginSwitchingDiv>
         <LoginInfoDiv>
           <EvenSpacedDiv />
-          <LoginImage src={loginIllustration}/>
+          <LoginImage src={loginIllustration} />
           <EvenSpacedDiv />
         </LoginInfoDiv>
         <LoginHoldingDiv>
@@ -202,7 +212,9 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
                 value={password}
                 type="password"
                 text="password"
-                onKeyDown={(e) => e.key === 'Enter' && signIn({ email, password })}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && signIn({ email, password })
+                }
               />
 
               <StyledPurpleButton
@@ -215,10 +227,12 @@ const Login : FunctionComponent<LoginProps> = ({ signedIn, signIn, resetPassword
                 forgot password
               </ResetUserButton>
               <HorizontalDiv>
-              Don't have an account?   
-              <CreateUserButton onClick={() => history.push("/sign_up")}>
-                sign up
-              </CreateUserButton>
+                Don't have an account?
+                <CreateUserButton
+                  onClick={() => history.push("/sign_up")}
+                >
+                  sign up
+                </CreateUserButton>
               </HorizontalDiv>
             </ActuallyLoginDiv>
             <EvenSpacedDiv />
