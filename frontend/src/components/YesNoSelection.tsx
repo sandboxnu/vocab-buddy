@@ -37,24 +37,15 @@ const YesNoButton = styled(PurpleButton)`
   ${({ highlight }: SelectionProp) => {
     if (highlight === 1) {
       return `
-    border: 5px solid ${SEA_FOAM};
-    :hover {
-      border: 5px solid ${SEA_FOAM};
-    }
+    border: 5px solid ${SEA_FOAM} !important;
   `;
     } else if (highlight === 0) {
       return `
-    border: 5px solid ${CORAL}; 
-    :hover {
-      border: 5px solid ${CORAL};
-    }
+    border: 5px solid ${CORAL} !important; 
   `;
     } else {
       return `
-    border: 0px solid ${CORAL}; 
-    :hover {
-      border: 0px solid ${CORAL};
-    }
+    border: 0px solid ${CORAL} !important; 
   `;
     }
   }};
