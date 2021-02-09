@@ -105,7 +105,8 @@ const LoginButton = styled.button`
 const StyledPurpleButton = styled(PurpleButton)`
   flex: 1;
   width: 100%;
-  margin: 5px 0px 15px 0px;
+  margin: 16px 0px;
+  padding: 10px;
 `;
 
 const StyledAlert = styled(Alert)`
