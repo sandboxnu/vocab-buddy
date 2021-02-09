@@ -1,7 +1,11 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../../../firebase/firebaseInteractor";
 import { Action, ActionTypes } from "../../../models/types";
-import { getInterventions, updateIntervention } from "./actions";
+import {
+  getInterventions,
+  updateIntervention,
+  finishedIntervention,
+} from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -17,6 +21,10 @@ function* root() {
   yield takeLatest(
     ActionTypes.UPDATE_INTERVENTION_REQUEST,
     watchUpdateIntervention
+  );
+  yield takeLatest(
+    ActionTypes.FINISHED_INTERVENTION_REQUEST,
+    watchFinishedIntervention
   );
 }
 
@@ -47,5 +55,21 @@ function* watchUpdateIntervention(action: Action) {
     yield put(updateIntervention.success({ interventions }));
   } catch (error) {
     yield put(updateIntervention.error({ error }));
+  }
+}
+
+function* watchFinishedIntervention(action: Action) {
+  try {
+    let { setId } = action.payload;
+    let interventions;
+    const createNewAssessment = async () => {
+      console.log("HI");
+      //await firebaseInteractor.updateIntervention(setId, wordIdx, activityIdx);
+      //interventions = await firebaseInteractor.getIntervention(setId);
+    };
+    yield call(createNewAssessment);
+    yield put(finishedIntervention.success({}));
+  } catch (error) {
+    yield put(finishedIntervention.error({ error }));
   }
 }

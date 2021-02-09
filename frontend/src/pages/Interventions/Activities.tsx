@@ -2,17 +2,21 @@ import React, {
   FunctionComponent,
   ReactElement,
   useEffect,
-} from 'react';
-import Layout from '../../components/Layout';
-import { connect } from 'react-redux';
-import { getCurrentInterventions } from '../Interventions/data/reducer';
-import { Interventions } from '../../models/types';
-import { getInterventions, updateIntervention } from './data/actions';
-import ActivitiesComponent from '../Interventions/ActivitiesComponent';
+} from "react";
+import Layout from "../../components/Layout";
+import { connect } from "react-redux";
+import { getCurrentInterventions } from "../Interventions/data/reducer";
+import { Interventions } from "../../models/types";
+import {
+  finishedIntervention,
+  getInterventions,
+  updateIntervention,
+} from "./data/actions";
+import ActivitiesComponent from "../Interventions/ActivitiesComponent";
 import {
   getNextActivityIdx,
   getNextWordIdx,
-} from '../../constants/utils';
+} from "../../constants/utils";
 
 interface ActivityProps {
   interventions: Interventions;
@@ -26,6 +30,7 @@ interface ActivityProps {
     wordIdx: number;
     activityIdx: number;
   }) => void;
+  finishedIntervention: ({ setId }: { setId: string }) => void;
 }
 
 const connector = connect(
@@ -35,6 +40,7 @@ const connector = connect(
   {
     getInterventions: getInterventions.request,
     updateIntervention: updateIntervention.request,
+    finishedIntervention: finishedIntervention.request,
   }
 );
 
