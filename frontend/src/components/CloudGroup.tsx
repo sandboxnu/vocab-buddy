@@ -2,6 +2,8 @@ import React, { ReactElement } from "react";
 import styled from "styled-components";
 import CloudImage from "./CloudImage";
 
+const Container = styled.div``;
+
 const CloudImageLeft = styled(CloudImage)`
   position: absolute;
   left: 0;
@@ -34,10 +36,10 @@ const CloudImageRight = styled(CloudImage)`
 
 const CloudGroup = (): ReactElement => {
   return (
-    <>
+    <Container>
       <CloudImageLeft direction="left" />
       <CloudImageRight direction="right" />
-    </>
+    </Container>
   );
 };
 

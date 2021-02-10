@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Redirect,
   Route,
-  Switch
+  Switch,
 } from "react-router-dom";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Assessments from "./pages/Assessments/Assessments";
@@ -14,6 +14,7 @@ import Interventions from "./pages/Interventions/Interventions";
 import Activities from "./pages/Interventions/Activities";
 import CreateUser from "./pages/Login/CreateUser";
 import Login from "./pages/Login/Login";
+import Reward from "./pages/Reward/Reward";
 
 const App = (): ReactElement => {
   return (
@@ -23,10 +24,30 @@ const App = (): ReactElement => {
         <Route exact path="/login" component={Login} />
         <Route path="/sign_up" component={CreateUser} />
         <AuthenticatedRoute path="/dashboard" component={Dashboard} />
-        <AuthenticatedRoute exact path="/interventions" component={Interventions} />
-        <AuthenticatedRoute exact path="/interventions/:id" component={Activities} />
-        <AuthenticatedRoute exact path="/assessments/:id" component={Quiz} />
-        <AuthenticatedRoute path="/assessments" component={Assessments} />
+        <AuthenticatedRoute
+          exact
+          path="/interventions"
+          component={Interventions}
+        />
+        <AuthenticatedRoute
+          exact
+          path="/interventions/reward"
+          component={Reward}
+        />
+        <AuthenticatedRoute
+          exact
+          path="/interventions/:id"
+          component={Activities}
+        />
+        <AuthenticatedRoute
+          exact
+          path="/assessments/:id"
+          component={Quiz}
+        />
+        <AuthenticatedRoute
+          path="/assessments"
+          component={Assessments}
+        />
       </Switch>
     </Router>
   );

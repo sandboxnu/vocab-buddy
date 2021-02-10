@@ -2,17 +2,18 @@ import React, {
   FunctionComponent,
   ReactElement,
   useEffect,
-} from 'react';
-import Layout from '../../components/Layout';
-import { connect } from 'react-redux';
-import { getCurrentInterventions } from '../Interventions/data/reducer';
-import { Interventions } from '../../models/types';
-import { getInterventions, updateIntervention } from './data/actions';
-import ActivitiesComponent from '../Interventions/ActivitiesComponent';
+} from "react";
+import { useHistory } from "react-router-dom";
+import Layout from "../../components/Layout";
+import { connect } from "react-redux";
+import { getCurrentInterventions } from "../Interventions/data/reducer";
+import { Interventions } from "../../models/types";
+import { getInterventions, updateIntervention } from "./data/actions";
+import ActivitiesComponent from "../Interventions/ActivitiesComponent";
 import {
   getNextActivityIdx,
   getNextWordIdx,
-} from '../../constants/utils';
+} from "../../constants/utils";
 
 interface ActivityProps {
   interventions: Interventions;
@@ -47,37 +48,47 @@ const Activities: FunctionComponent<ActivityProps> = ({
     if (!interventions) getInterventions();
   }, [interventions, getInterventions]);
 
-  if (!interventions) {
-    return <Layout>Loading</Layout>;
-  } else {
-    const setId = interventions.setId;
-    const currentWordIdx = interventions.wordIdx;
-    const currentActivityIdx = interventions.activityIdx;
-    const wordList = interventions.wordList;
-    const activities = wordList[currentWordIdx].activities;
-    const title = wordList[currentWordIdx].word.value;
-    const nextWordIdx = getNextWordIdx(
+  const setId = interventions && interventions.setId;
+  const currentWordIdx = interventions && interventions.wordIdx;
+  const currentActivityIdx =
+    interventions && interventions.activityIdx;
+  const wordList = interventions && interventions.wordList;
+  const activities = wordList && wordList[currentWordIdx].activities;
+  const title = wordList && wordList[currentWordIdx].word.value;
+  const nextWordIdx =
+    wordList &&
+    getNextWordIdx(
       currentActivityIdx,
       currentWordIdx,
       wordList.length
     );
-    const nextActivityIdx = getNextActivityIdx(
+  const nextActivityIdx =
+    wordList &&
+    getNextActivityIdx(
       currentActivityIdx,
       currentWordIdx,
       wordList.length
     );
 
+  const history = useHistory();
+
+  if (!interventions) {
+    return <Layout>Loading</Layout>;
+  } else {
     return (
       <ActivitiesComponent
         idx={currentActivityIdx}
         title={title}
         activities={activities}
         updateIntervention={() =>
-          updateIntervention({
-            setId,
-            wordIdx: nextWordIdx,
-            activityIdx: nextActivityIdx,
-          })
+          currentWordIdx === wordList.length - 1 &&
+          nextActivityIdx === 0
+            ? history.push(`/interventions/reward`)
+            : updateIntervention({
+                setId,
+                wordIdx: nextWordIdx,
+                activityIdx: nextActivityIdx,
+              })
         }
       />
     );
