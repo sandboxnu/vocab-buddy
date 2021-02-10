@@ -202,6 +202,13 @@ export default class FirebaseInteractor {
   async createInterventionFromAssessment(
     responses: AssessmentResult[]
   ): Promise<void> {
+    let documents = await this.db
+      .collection("interventions")
+      .where("userId", "==", this.auth.currentUser?.uid)
+      .get();
+    if (documents.docs.length > 0) {
+      return;
+    }
     let incorrectWords = responses.filter((response) => !response.correct);
     shuffle(incorrectWords);
     for (let i = 0; i < 8; i++) {
@@ -218,7 +225,7 @@ export default class FirebaseInteractor {
         // Assign it to the current user
         userId: this.auth.currentUser?.uid,
         // Decide which session the intervention is in
-        interventionSession: i,
+        session: i,
       });
     }
   }
