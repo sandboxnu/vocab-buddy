@@ -13,12 +13,13 @@ const Container = styled.div``;
 
 const TitleContainer = styled.p`
   font-family: Rubik;
-  font-size: 20px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 700;
   letter-spacing: 0px;
-  padding-top: 20px;
+  margin: 20px 0 0 0;
   text-align: center;
+  text-transform: lowercase;
 `;
 
 const SubtitleContainer = styled.p`
@@ -27,24 +28,33 @@ const SubtitleContainer = styled.p`
   font-style: normal;
   font-weight: 700;
   letter-spacing: 0px;
-  padding-top: 20px;
   text-align: center;
+  text-transform: lowercase;
 `;
 
 const ImageContainer = styled.div`
-  flex: 1;
-  padding-top: 30px;
-  width: 100%;
-  background: ${ASSESSMENTS_LANDING};
   display: flex;
-  align-items: center;
+  padding-top: 30px;
+  justify-content: center;
+
+  @media (max-width: 900px) {
+    width: 100%;
+    flex: 1;
+  }
 `;
 
 const Image = styled.img`
-  width: 100%;
-  flex: 1;
+  @media (max-width: 900px) {
+    width: 100%;
+    flex: 1;
+  }
 `;
 
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
 const AssessmentRewardPage = ({}: AssessmentRewardPageProps): ReactElement => {
   const history = useHistory();
 
@@ -60,12 +70,16 @@ const AssessmentRewardPage = ({}: AssessmentRewardPageProps): ReactElement => {
         <ImageContainer>
           <Image src={ASSESSMENTS_LANDING} alt="image-landing" />
         </ImageContainer>
-        <PurpleButton
-          text={"back to dashboard"}
-          onClick={() => {
-            history.push("/dashboard");
-          }}
-        />
+        <ButtonContainer>
+          <PurpleButton
+            padding={5}
+            top={20}
+            text={"back to dashboard"}
+            onClick={() => {
+              history.push("/dashboard");
+            }}
+          />
+        </ButtonContainer>
         <CloudGroup />
       </Container>
     </Layout>

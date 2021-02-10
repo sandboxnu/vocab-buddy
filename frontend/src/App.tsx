@@ -35,6 +35,10 @@ const App = (): ReactElement => {
           component={Activities}
         />
         <AuthenticatedRoute
+          path="/assessments/reward"
+          component={AssessmentRewardPage}
+        />
+        <AuthenticatedRoute
           exact
           path="/assessments/:id"
           component={Quiz}
@@ -42,10 +46,6 @@ const App = (): ReactElement => {
         <AuthenticatedRoute
           path="/assessments"
           component={Assessments}
-        />
-        <AuthenticatedRoute
-          path="/assessment_reward"
-          component={AssessmentRewardPage}
         />
       </Switch>
     </Router>
