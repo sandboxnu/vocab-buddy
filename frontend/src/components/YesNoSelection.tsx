@@ -3,11 +3,7 @@ import {
   DislikeFilled,
   LikeFilled,
 } from "@ant-design/icons";
-import React, {
-  FunctionComponent,
-  ReactElement,
-  useState,
-} from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import styled from "styled-components";
 import { CORAL, SEA_FOAM } from "../constants/colors";
 import Blocker from "./Blocker";
@@ -15,6 +11,8 @@ import PurpleButton from "./PurpleButton";
 
 interface YesNoSelectionProps {
   correctAnswer: boolean;
+  selected: number;
+  setSelected: (selected: number) => void;
 }
 
 interface SelectionProp {
@@ -39,24 +37,15 @@ const YesNoButton = styled(PurpleButton)`
   ${({ highlight }: SelectionProp) => {
     if (highlight === 1) {
       return `
-    border: 5px solid ${SEA_FOAM};
-    :hover {
-      border: 5px solid ${SEA_FOAM};
-    }
+    border: 5px solid ${SEA_FOAM} !important;
   `;
     } else if (highlight === 0) {
       return `
-    border: 5px solid ${CORAL}; 
-    :hover {
-      border: 5px solid ${CORAL};
-    }
+    border: 5px solid ${CORAL} !important; 
   `;
     } else {
       return `
-    border: 0px solid ${CORAL}; 
-    :hover {
-      border: 0px solid ${CORAL};
-    }
+    border: 0px solid ${CORAL} !important; 
   `;
     }
   }};
@@ -66,9 +55,9 @@ const EmptyDiv = styled.div``;
 
 const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
   correctAnswer,
+  selected,
+  setSelected,
 }): ReactElement => {
-  let [selected, setSelected] = useState(-1);
-
   return (
     <Blocker afterSeconds={15} repeatable={false}>
       <YesNoContainer>

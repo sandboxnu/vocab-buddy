@@ -101,6 +101,7 @@ const FourthActivity = ({
                 top={20}
                 delay={1000}
                 onClick={updateIntervention}
+                canBeShown
               />
             </Blocker>
           </ButtonContainer>
