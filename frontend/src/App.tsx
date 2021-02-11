@@ -14,7 +14,8 @@ import Interventions from "./pages/Interventions/Interventions";
 import Activities from "./pages/Interventions/Activities";
 import CreateUser from "./pages/Login/CreateUser";
 import Login from "./pages/Login/Login";
-import Reward from "./pages/Reward/Reward";
+import AssessmentRewardPage from "./pages/Reward/AssessmentsReward/AssessmentRewardPage";
+import Reward from "./pages/Reward/InterventionsReward/Reward";
 
 const App = (): ReactElement => {
   return (
@@ -30,9 +31,17 @@ const App = (): ReactElement => {
           component={Interventions}
         />
         <AuthenticatedRoute
-          exact
           path="/interventions/reward"
           component={Reward}
+        />
+        <AuthenticatedRoute
+          exact
+          path="/interventions/:id"
+          component={Activities}
+        />
+        <AuthenticatedRoute
+          path="/assessments/reward"
+          component={AssessmentRewardPage}
         />
         <AuthenticatedRoute
           exact
