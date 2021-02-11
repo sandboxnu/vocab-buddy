@@ -149,18 +149,6 @@ export default class FirebaseInteractor {
     let wordList = interventionData.wordList;
     let newAssessment = this.db.collection("assessments").doc();
 
-    for (let word of wordList) {
-      let wordData = await this.getWord(word);
-
-      let newWordData = {
-        correctImage: wordData.correctImage,
-        dateCreated: wordData.createdAt,
-        incorrectImages: wordData.incorrectImages,
-        value: wordData.value,
-      };
-
-      await newAssessment.collection("words").doc(word).set(newWordData);
-    }
     let initialAssessmentFields = {
       currentIndex: 0,
       durationInSeconds: 0,
