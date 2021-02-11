@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import { shuffle } from "../constants/utils";
 import {
   AccountType,
   Assessment,
@@ -198,6 +199,37 @@ export default class FirebaseInteractor {
     });
   }
 
+  async createInterventionFromAssessment(
+    responses: AssessmentResult[]
+  ): Promise<void> {
+    let documents = await this.db
+      .collection("interventions")
+      .where("userId", "==", this.auth.currentUser?.uid)
+      .get();
+    if (documents.docs.length > 0) {
+      return;
+    }
+    let incorrectWords = responses.filter((response) => !response.correct);
+    shuffle(incorrectWords);
+    for (let i = 0; i < 8; i++) {
+      // Add 3 words per intervention (wrapping around for now)
+      let wordList = [
+        incorrectWords[(i * 3) % incorrectWords.length].word,
+        incorrectWords[(i * 3 + 1) % incorrectWords.length].word,
+        incorrectWords[(i * 3 + 2) % incorrectWords.length].word,
+      ];
+      await this.db.collection("interventions").add({
+        activityIdx: 0,
+        wordIdx: 0,
+        wordList,
+        // Assign it to the current user
+        userId: this.auth.currentUser?.uid,
+        // Decide which session the intervention is in
+        session: i,
+      });
+    }
+  }
+
   async getWord(id: string): Promise<Word> {
     let word = (await this.db.collection("words").doc(id).get()).data();
     if (word == null) {
@@ -225,19 +257,17 @@ export default class FirebaseInteractor {
     for (let word of intervention.wordList as string[]) {
       // Get the word
       let actualWord = await this.getWord(word);
+      let wordRef = this.db
+        .collection("words")
+        .doc(word)
+        .collection("intervention-set");
       // Get each activity from firebase
       let activity1 = (
-        await interventionRef.ref.collection(word).doc("activity1").get()
+        await wordRef.doc("activity1").get()
       ).data() as Definition;
-      let activity2 = (
-        await interventionRef.ref.collection(word).doc("activity2").get()
-      ).data() as Example;
-      let activity3 = (
-        await interventionRef.ref.collection(word).doc("activity3").get()
-      ).data() as Context;
-      let activity4 = (
-        await interventionRef.ref.collection(word).doc("activity4").get()
-      ).data() as Review;
+      let activity2 = (await wordRef.doc("activity2").get()).data() as Example;
+      let activity3 = (await wordRef.doc("activity3").get()).data() as Context;
+      let activity4 = (await wordRef.doc("activity4").get()).data() as Review;
       interventionWords.push({
         word: actualWord,
         activities: {

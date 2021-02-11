@@ -1,13 +1,10 @@
-import React, { ReactElement, useState, useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import Layout from "../components/Layout";
-import CloudGroup from "../components/CloudGroup";
-import PurpleButton from "../components/PurpleButton";
-import { INK } from "../constants/colors";
-import { ASSESSMENTS_LANDING } from "../constants/images";
-
-interface AssessmentRewardPageProps {}
+import Layout from "../../../components/Layout";
+import CloudGroup from "../../../components/CloudGroup";
+import PurpleButton from "../../../components/PurpleButton";
+import { ASSESSMENTS_LANDING } from "../../../constants/images";
 
 const Container = styled.div``;
 
@@ -55,7 +52,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
-const AssessmentRewardPage = ({}: AssessmentRewardPageProps): ReactElement => {
+const AssessmentRewardPage = (): ReactElement => {
   const history = useHistory();
 
   useEffect(() => {});
