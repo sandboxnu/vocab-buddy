@@ -10,6 +10,7 @@ interface PurpleButtonProps {
   check?: ReactElement;
   icon?: ReactElement;
   className: string;
+  padding?: number;
 }
 
 const ButtonContainer = styled(Button)`
@@ -20,7 +21,8 @@ const ButtonContainer = styled(Button)`
   font-weight: 700;
   height: 50px;
   margin-bottom: 20px;
-  width: 120px;
+  min-width: 120px;
+  padding: 0 ${({ padding }: PurpleButtonProps) => padding}em;
 
   margin-top: ${(prop: PurpleButtonProps) => prop.top}px;
   span {
@@ -47,12 +49,14 @@ const PurpleButton = ({
   onClick,
   icon,
   check,
+  padding,
 }: PurpleButtonProps): ReactElement => {
   return (
     <ButtonContainer
       className={className}
       top={top}
       onClick={onClick}
+      padding={padding}
     >
       {check}
       {text}

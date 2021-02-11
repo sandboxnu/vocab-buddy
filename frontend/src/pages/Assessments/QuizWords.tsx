@@ -8,6 +8,7 @@ import CloudGroup from "../../components/CloudGroup";
 import WordImages from "../../components/WordImages";
 import { CLOUD } from "../../constants/colors";
 import { Assessment, AssessmentResult } from "../../models/types";
+import { shuffle } from "../../constants/utils";
 
 interface QuizWordsProps {
   assessment: Assessment;
@@ -75,10 +76,7 @@ const ButtonContainer = styled.div`
 `;
 
 const shuffleImages = (images: any[]) => {
-  images.sort((a: any, b: any) => {
-    if (Math.random() > 0.5) return 1;
-    else return -1;
-  });
+  shuffle(images);
   return images;
 };
 

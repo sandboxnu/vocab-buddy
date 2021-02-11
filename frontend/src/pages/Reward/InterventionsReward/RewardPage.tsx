@@ -1,9 +1,9 @@
 import React, { ReactElement, useState, useEffect } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import CloudGroup from "../../components/CloudGroup";
-import Balloon from "../../components/Balloon";
-import Layout from "../../components/Layout";
+import CloudGroup from "../../../components/CloudGroup";
+import Balloon from "../../../components/Balloon";
+import Layout from "../../../components/Layout";
 import seedrandom from "seedrandom";
 
 interface RewardPageProps {

@@ -52,6 +52,11 @@ function* watchUpdateAssessment(action: Action) {
         durationInSeconds
       )
     );
+    if (isFinished) {
+      yield call(() =>
+        firebaseInteractor.createInterventionFromAssessment(responses)
+      );
+    }
     yield put(updateAssessment.success({ isFinished }));
   } catch (error) {
     yield put(updateAssessment.error(error));

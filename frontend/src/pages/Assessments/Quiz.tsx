@@ -44,7 +44,7 @@ const Quiz = ({
   let history = useHistory();
   let params = useParams<QuizParams>();
   if (isFinished) {
-    history.push("/dashboard");
+    history.push("/assessments/reward");
   }
   useEffect(() => {
     if (!assessment) getAssessment(params.id);
