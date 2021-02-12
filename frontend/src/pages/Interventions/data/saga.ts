@@ -62,7 +62,7 @@ function* watchFinishedIntervention(action: Action) {
   try {
     let { setId } = action.payload;
     const createNewAssessment = async () => {
-      await firebaseInteractor.createAssessmentFromIntervention(setId);
+      await firebaseInteractor.createAssessmentFromPreviousAssessment(setId);
     };
     yield call(createNewAssessment);
     yield put(finishedIntervention.success({}));
