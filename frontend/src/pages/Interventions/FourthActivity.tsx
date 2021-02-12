@@ -7,7 +7,7 @@ import DelayedNextButton from "../../components/DelayedNextButton";
 import Blocker from "../../components/Blocker";
 import CloudGroup from "../../components/CloudGroup";
 import ExpandableImage from "../../components/ExpandableImage";
-import { REPLAY_HOVER, SKY } from "../../constants/colors";
+import { SKY, SKY_RGBA } from "../../constants/colors";
 
 interface FourthActivityProps {
   title: string;
@@ -58,7 +58,7 @@ const Prompt = styled.div`
   width: max-content;
 
   :hover {
-    background-color: ${REPLAY_HOVER};
+    background-color: ${SKY_RGBA(0.8)};
   }
 `;
 

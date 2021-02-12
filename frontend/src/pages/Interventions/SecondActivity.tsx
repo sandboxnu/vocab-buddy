@@ -3,9 +3,9 @@ import Layout from "../../components/Layout";
 import styled from "styled-components";
 import {
   CORAL,
-  REPLAY_HOVER,
   SEA_FOAM,
   SKY,
+  SKY_RGBA,
 } from "../../constants/colors";
 import PromptSpeech from "../../components/PromptSpeech";
 import ReplayButton from "../../components/ReplayButton";
@@ -70,7 +70,7 @@ const Prompt = styled.div`
   width: max-content;
 
   :hover {
-    background-color: ${REPLAY_HOVER};
+    background-color: ${SKY_RGBA(0.8)};
   }
 `;
 
