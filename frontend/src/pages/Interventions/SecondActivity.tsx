@@ -1,7 +1,12 @@
 import React, { ReactElement, useState } from "react";
 import Layout from "../../components/Layout";
 import styled from "styled-components";
-import { CORAL, SEA_FOAM, SKY } from "../../constants/colors";
+import {
+  CORAL,
+  SEA_FOAM,
+  SKY,
+  SKY_RGBA,
+} from "../../constants/colors";
 import PromptSpeech from "../../components/PromptSpeech";
 import ReplayButton from "../../components/ReplayButton";
 import CloudGroup from "../../components/CloudGroup";
@@ -63,6 +68,10 @@ const Prompt = styled.div`
   margin-bottom: 20px;
   padding: 1px 5px;
   width: max-content;
+
+  :hover {
+    background-color: ${SKY_RGBA(0.8)};
+  }
 `;
 
 const ButtonContainer = styled.div`

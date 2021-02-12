@@ -6,7 +6,7 @@ import AutoPrompt from "../../components/AutoPrompt";
 import CloudGroup from "../../components/CloudGroup";
 import DelayedNextButton from "../../components/DelayedNextButton";
 import ReplayButton from "../../components/ReplayButton";
-import { SKY } from "../../constants/colors";
+import { SKY, SKY_RGBA } from "../../constants/colors";
 import ExpandableImage from "../../components/ExpandableImage";
 
 interface FirstActivityProps {
@@ -56,6 +56,10 @@ const Prompt = styled.div`
   margin-bottom: 20px;
   padding: 1px 5px;
   width: max-content;
+
+  :hover {
+    background-color: ${SKY_RGBA(0.8)};
+  }
 `;
 
 const Image = styled(ExpandableImage)`

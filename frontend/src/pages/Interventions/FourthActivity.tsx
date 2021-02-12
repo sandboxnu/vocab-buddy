@@ -7,7 +7,7 @@ import DelayedNextButton from "../../components/DelayedNextButton";
 import Blocker from "../../components/Blocker";
 import CloudGroup from "../../components/CloudGroup";
 import ExpandableImage from "../../components/ExpandableImage";
-import { SKY } from "../../constants/colors";
+import { SKY, SKY_RGBA } from "../../constants/colors";
 
 interface FourthActivityProps {
   title: string;
@@ -56,6 +56,10 @@ const Prompt = styled.div`
   margin-bottom: 20px;
   padding: 1px 5px;
   width: max-content;
+
+  :hover {
+    background-color: ${SKY_RGBA(0.8)};
+  }
 `;
 
 const Image = styled(ExpandableImage)`
