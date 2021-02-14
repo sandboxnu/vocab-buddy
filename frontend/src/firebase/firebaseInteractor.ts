@@ -152,7 +152,7 @@ export default class FirebaseInteractor {
 
     let wordList: string[] = [];
     results.forEach(function (result) {
-      if (!result.get("correct")) {
+      if (!result.data().correct) {
         wordList.push(result.id);
       }
     });
