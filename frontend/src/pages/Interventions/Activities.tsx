@@ -8,7 +8,11 @@ import Layout from "../../components/Layout";
 import { connect } from "react-redux";
 import { getCurrentInterventions } from "../Interventions/data/reducer";
 import { Interventions } from "../../models/types";
-import { getInterventions, updateIntervention } from "./data/actions";
+import {
+  finishedIntervention,
+  getInterventions,
+  updateIntervention,
+} from "./data/actions";
 import ActivitiesComponent from "../Interventions/ActivitiesComponent";
 import {
   getNextActivityIdx,
@@ -27,6 +31,7 @@ interface ActivityProps {
     wordIdx: number;
     activityIdx: number;
   }) => void;
+  finishedIntervention: ({ setId }: { setId: string }) => void;
 }
 
 const connector = connect(
@@ -36,6 +41,7 @@ const connector = connect(
   {
     getInterventions: getInterventions.request,
     updateIntervention: updateIntervention.request,
+    finishedIntervention: finishedIntervention.request,
   }
 );
 
@@ -43,6 +49,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
   interventions,
   getInterventions,
   updateIntervention,
+  finishedIntervention,
 }): ReactElement => {
   useEffect(() => {
     if (!interventions) getInterventions();
@@ -80,16 +87,21 @@ const Activities: FunctionComponent<ActivityProps> = ({
         idx={currentActivityIdx}
         title={title}
         activities={activities}
-        updateIntervention={() =>
-          currentWordIdx === wordList.length - 1 &&
-          nextActivityIdx === 0
-            ? history.push(`/interventions/reward`)
-            : updateIntervention({
-                setId,
-                wordIdx: nextWordIdx,
-                activityIdx: nextActivityIdx,
-              })
-        }
+        updateIntervention={() => {
+          if (
+            currentWordIdx === wordList.length - 1 &&
+            nextActivityIdx === 0
+          ) {
+            history.push(`/interventions/reward`);
+            finishedIntervention({ setId });
+          } else {
+            updateIntervention({
+              setId,
+              wordIdx: nextWordIdx,
+              activityIdx: nextActivityIdx,
+            });
+          }
+        }}
       />
     );
   }

@@ -45,3 +45,22 @@ export const updateIntervention = {
     payload: { error },
   }),
 };
+
+interface FinishedInterventionAction {
+  setId?: string;
+  error?: string;
+}
+
+export const finishedIntervention = {
+  request: ({ setId }: FinishedInterventionAction): Action => ({
+    type: ActionTypes.FINISHED_INTERVENTION_REQUEST,
+    payload: { setId },
+  }),
+  success: ({}: FinishedInterventionAction): Action => ({
+    type: ActionTypes.FINISHED_INTERVENTION_SUCCESS,
+  }),
+  error: ({ error }: FinishedInterventionAction): Action => ({
+    type: ActionTypes.FINISHED_INTERVENTION_ERROR,
+    payload: { error },
+  }),
+};

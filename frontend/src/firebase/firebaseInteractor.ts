@@ -135,6 +135,39 @@ export default class FirebaseInteractor {
   }
 
   /**
+   * Creates a new assessment with all of the incorrect words from a previous assessment.
+   */
+  async createAssessmentFromPreviousAssessment(setId: string) {
+    // hardcode a single assessment for now
+    // later we can infer the assessment id from the setId
+    let assessmentId = "oiBN8aE5tqEFK2gXJUpl";
+    let results = await this.db
+      .collection("assessments")
+      .doc(assessmentId)
+      .collection("results")
+      .get();
+    if (results == null) {
+      throw new Error(`Assessment with id ${assessmentId} does not exist`);
+    }
+
+    let wordList: string[] = [];
+    results.forEach(function (result) {
+      if (!result.data().correct) {
+        wordList.push(result.id);
+      }
+    });
+    let newAssessment = this.db.collection("assessments").doc();
+
+    let initialAssessmentFields = {
+      currentIndex: 0,
+      durationInSeconds: 0,
+      words: wordList,
+      userId: this.auth.currentUser?.uid,
+    };
+    await newAssessment.set(initialAssessmentFields);
+  }
+
+  /**
    * Gets all possible words.
    *
    * @returns { Promise<Assessment> }
