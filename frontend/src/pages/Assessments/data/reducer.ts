@@ -7,6 +7,7 @@ const initialState: RootStateOrAny = { assessment: null, finished: false };
 interface AssessmentState {
   assessment?: Assessment;
   finished: boolean;
+  assessmentId?: string;
 }
 
 const assessmentReducer = (
@@ -24,15 +25,24 @@ const assessmentReducer = (
           currentIndex: payload.assessment.currentIndex,
           words: payload.assessment.words,
           firebaseId: payload.assessment.firebaseId,
+          sessionId: payload.assessment.sessionId,
         },
         finished: false,
       };
     case ActionTypes.UPDATE_ASSESSMENT_SUCCESS:
       let { isFinished }: UpdateAssessmentSuccess = payload;
       return {
-        ...state,
         finished: isFinished,
         assessment: isFinished ? undefined : state.assessment,
+      };
+    case ActionTypes.GET_CURRENT_ASSESSMENT_SUCCESS:
+      return {
+        ...state,
+        assessmentId: payload.id,
+      };
+    case ActionTypes.SIGN_OUT_SUCCESS:
+      return {
+        finished: false,
       };
     default:
       return state;
@@ -45,6 +55,10 @@ export const getAssessment = (state: RootStateOrAny) => {
 
 export const getIsFinished = (state: RootStateOrAny) => {
   return state.assessment.finished;
+};
+
+export const getAssessmentId = (state: RootStateOrAny) => {
+  return state.assessment.assessmentId;
 };
 
 export default assessmentReducer;

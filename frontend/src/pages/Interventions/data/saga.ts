@@ -5,6 +5,7 @@ import {
   getInterventions,
   updateIntervention,
   finishedIntervention,
+  getCurrentIntervention,
 } from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
@@ -26,14 +27,18 @@ function* root() {
     ActionTypes.FINISHED_INTERVENTION_REQUEST,
     watchFinishedIntervention
   );
+  yield takeLatest(
+    ActionTypes.GET_CURRENT_INTERVENTIONS_REQUEST,
+    watchGetCurrentIntervention
+  );
 }
 
-function* watchGetInterventions() {
+function* watchGetInterventions(action: Action) {
   try {
     let interventions;
     const updateWithSuccess = async () => {
       interventions = await firebaseInteractor.getIntervention(
-        "CYf3VgYXDn72omXhuy0A"
+        action.payload.id
       );
     };
     yield call(updateWithSuccess);
@@ -68,5 +73,18 @@ function* watchFinishedIntervention(action: Action) {
     yield put(finishedIntervention.success({}));
   } catch (error) {
     yield put(finishedIntervention.error({ error }));
+  }
+}
+
+function* watchGetCurrentIntervention(action: Action) {
+  try {
+    let interventionId = "";
+    const getCurrent = async () => {
+      interventionId = await firebaseInteractor.getCurrentExerciseId();
+    };
+    yield call(getCurrent);
+    yield put(getCurrentIntervention.success({ id: interventionId }));
+  } catch (error) {
+    yield put(getCurrentIntervention.error(error));
   }
 }

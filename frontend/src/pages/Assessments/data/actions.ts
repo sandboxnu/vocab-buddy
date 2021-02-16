@@ -3,6 +3,7 @@ import {
   ActionTypes,
   Assessment,
   AssessmentResult,
+  SessionId,
 } from "../../../models/types";
 
 interface GetAssessmentAction {
@@ -13,6 +14,7 @@ interface GetAssessmentAction {
 export interface UpdateAssessmentAction {
   responses: AssessmentResult[];
   id: string;
+  sessionId: SessionId;
   isFinished: boolean;
   currentIdx: number;
   durationInSeconds: number;
@@ -54,6 +56,24 @@ export const updateAssessment = {
   }),
   error: (error: Error): Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_ERROR,
+    payload: { error },
+  }),
+};
+
+export interface GetCurrentAssessmentProps {
+  id: String;
+}
+
+export const getCurrentAssessment = {
+  request: (): Action => ({
+    type: ActionTypes.GET_CURRENT_ASSESSMENT_REQUEST,
+  }),
+  success: ({ id }: GetCurrentAssessmentProps): Action => ({
+    type: ActionTypes.GET_CURRENT_ASSESSMENT_SUCCESS,
+    payload: { id },
+  }),
+  error: (error: Error): Action => ({
+    type: ActionTypes.GET_CURRENT_ASSESSSMENT_ERROR,
     payload: { error },
   }),
 };
