@@ -79,45 +79,12 @@ const ButtonContainer = styled.div`
   justify-content: end;
 `;
 
-const UnselectedImage = styled.img`
+interface ColoredImageProps {
+  color: string;
+}
+const ColoredImage = styled.img`
   border-radius: 20px;
-  padding: 10px;
-
-  :hover {
-    cursor: pointer;
-    opacity: 0.8;
-  }
-
-  @media (min-width: 601px) {
-    margin: 20px;
-  }
-
-  @media (max-width: 600px) {
-    width: 100%;
-  }
-`;
-
-const CorrectImage = styled.img`
-  border-radius: 20px;
-  border: 10px solid ${SEA_FOAM};
-
-  :hover {
-    cursor: pointer;
-    opacity: 0.8;
-  }
-
-  @media (min-width: 601px) {
-    margin: 20px;
-  }
-
-  @media (max-width: 600px) {
-    width: 100%;
-  }
-`;
-
-const IncorrectImage = styled.img`
-  border-radius: 20px;
-  border: 10px solid ${CORAL};
+  border: 10px solid ${({ color }: ColoredImageProps) => color};
 
   :hover {
     cursor: pointer;
@@ -176,6 +143,20 @@ const StyledCheckOutlined = styled(CheckOutlined)`
 `;
 
 const StyledDivForClicks = styled.div``;
+const Image = ({
+  url,
+  correct,
+  selected,
+  onClick,
+}: ImageProps): ReactElement => {
+  return (
+    <ColoredImage
+      src={url}
+      onClick={onClick}
+      color={selected ? (correct ? SEA_FOAM : CORAL) : "transparent"}
+    />
+  );
+};
 
 const SecondActivity = ({
   title,
@@ -183,19 +164,6 @@ const SecondActivity = ({
   imageUrls,
   updateIntervention,
 }: SecondActivityProps): ReactElement => {
-  const Image = ({
-    url,
-    correct,
-    selected,
-    onClick,
-  }: ImageProps): ReactElement => {
-    if (selected && correct)
-      return <CorrectImage src={url} onClick={onClick} />;
-    else if (selected && !correct)
-      return <IncorrectImage src={url} onClick={onClick} />;
-    else return <UnselectedImage src={url} onClick={onClick} />;
-  };
-
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   return (
