@@ -58,7 +58,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
   let params = useParams<ActivityParams>();
   useEffect(() => {
     if (!interventions) getInterventions(params.id);
-  }, [interventions, getInterventions]);
+  }, [interventions, getInterventions, params.id]);
 
   const setId = interventions && interventions.setId;
   const currentWordIdx = interventions && interventions.wordIdx;

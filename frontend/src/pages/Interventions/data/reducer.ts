@@ -4,6 +4,7 @@ import { RootStateOrAny } from "react-redux";
 interface InterventionState {
   interventions?: Interventions;
   interventionId?: string;
+  error?: Error;
 }
 
 const initialState: RootStateOrAny = { interventions: null };
@@ -31,6 +32,11 @@ const interventionReducer = (
         ...state,
         interventionId: payload.id,
       };
+    case ActionTypes.GET_CURRENT_INTERVENTIONS_ERROR:
+      return {
+        ...state,
+        error: payload.error,
+      };
     case ActionTypes.SIGN_OUT_SUCCESS:
       return {};
     default:
@@ -44,6 +50,10 @@ export const getCurrentInterventions = (state: RootStateOrAny) => {
 
 export const getInterventionId = (state: RootStateOrAny) => {
   return state.interventions.interventionId;
+};
+
+export const getError = (state: RootStateOrAny) => {
+  return state.interventions.error;
 };
 
 export default interventionReducer;

@@ -76,7 +76,7 @@ function* watchGetCurrentAssessment(action: Action) {
   try {
     let assessmentId = "";
     const getCurrent = async () => {
-      assessmentId = await firebaseInteractor.getCurrentExerciseId();
+      assessmentId = await firebaseInteractor.getCurrentExerciseId(true);
     };
     yield call(getCurrent);
     yield put(getCurrentAssessment.success({ id: assessmentId }));

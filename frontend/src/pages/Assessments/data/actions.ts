@@ -73,7 +73,7 @@ export const getCurrentAssessment = {
     payload: { id },
   }),
   error: (error: Error): Action => ({
-    type: ActionTypes.GET_CURRENT_ASSESSSMENT_ERROR,
+    type: ActionTypes.GET_CURRENT_ASSESSMENT_ERROR,
     payload: { error },
   }),
 };

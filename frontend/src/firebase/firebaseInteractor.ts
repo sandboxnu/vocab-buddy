@@ -125,7 +125,8 @@ export default class FirebaseInteractor {
         accountType: userData.accountType as AccountType,
         age: userData.age as number,
         sessionId: userData.sessionId || -1,
-        onAssessment: userData.onAssessment || true,
+        onAssessment:
+          userData.onAssessment === undefined ? true : userData.onAssessment,
         currentInterventionOrAssessment:
           userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
       };
@@ -381,8 +382,11 @@ export default class FirebaseInteractor {
     };
   }
 
-  async getCurrentExerciseId(): Promise<string> {
+  async getCurrentExerciseId(wantsAssessment: boolean): Promise<string> {
     await this.createCurrentUser();
+    if (this.currentUser?.onAssessment !== wantsAssessment) {
+      throw new Error("oops, you cannot do this yet");
+    }
     return this.currentUser!.currentInterventionOrAssessment;
   }
 

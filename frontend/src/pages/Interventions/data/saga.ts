@@ -80,7 +80,7 @@ function* watchGetCurrentIntervention(action: Action) {
   try {
     let interventionId = "";
     const getCurrent = async () => {
-      interventionId = await firebaseInteractor.getCurrentExerciseId();
+      interventionId = await firebaseInteractor.getCurrentExerciseId(false);
     };
     yield call(getCurrent);
     yield put(getCurrentIntervention.success({ id: interventionId }));

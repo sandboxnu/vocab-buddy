@@ -8,6 +8,7 @@ interface AssessmentState {
   assessment?: Assessment;
   finished: boolean;
   assessmentId?: string;
+  error?: Error;
 }
 
 const assessmentReducer = (
@@ -44,6 +45,11 @@ const assessmentReducer = (
       return {
         finished: false,
       };
+    case ActionTypes.GET_CURRENT_ASSESSMENT_ERROR:
+      return {
+        ...state,
+        error: payload.error,
+      };
     default:
       return state;
   }
@@ -55,6 +61,10 @@ export const getAssessment = (state: RootStateOrAny) => {
 
 export const getIsFinished = (state: RootStateOrAny) => {
   return state.assessment.finished;
+};
+
+export const getError = (state: RootStateOrAny) => {
+  return state.assessment.error;
 };
 
 export const getAssessmentId = (state: RootStateOrAny) => {
