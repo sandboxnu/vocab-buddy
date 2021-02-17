@@ -135,7 +135,7 @@ export default class FirebaseInteractor {
   }
 
   /**
-   * Creates a new assessment with all of the incorrect words the given intervention.
+   * Creates a new assessment with all of the incorrect words from the given intervention.
    */
   async createAssessmentFromIntervention(setId: string) {
     let intervention = await this.db
