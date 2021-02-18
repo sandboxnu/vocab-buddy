@@ -46,9 +46,17 @@ export const updateAssessment = {
     isFinished,
     currentIdx,
     durationInSeconds,
+    sessionId,
   }: UpdateAssessmentAction): Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_REQUEST,
-    payload: { responses, id, isFinished, currentIdx, durationInSeconds },
+    payload: {
+      responses,
+      id,
+      isFinished,
+      currentIdx,
+      durationInSeconds,
+      sessionId,
+    },
   }),
   success: ({ isFinished }: UpdateAssessmentSuccess): Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_SUCCESS,

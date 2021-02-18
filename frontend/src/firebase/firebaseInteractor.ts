@@ -124,7 +124,7 @@ export default class FirebaseInteractor {
         name: userData.name as string,
         accountType: userData.accountType as AccountType,
         age: userData.age as number,
-        sessionId: userData.sessionId || -1,
+        sessionId: userData.sessionId === undefined ? -1 : userData.sessionId,
         onAssessment:
           userData.onAssessment === undefined ? true : userData.onAssessment,
         currentInterventionOrAssessment:
@@ -198,7 +198,7 @@ export default class FirebaseInteractor {
       durationInSeconds: 0,
       words: wordList,
       userId: this.auth.currentUser?.uid,
-      sessionId: this.currentUser?.sessionId,
+      session: this.currentUser?.sessionId,
     };
     await newAssessment.set(initialAssessmentFields);
     await this.updateCurrentUser({
@@ -247,7 +247,7 @@ export default class FirebaseInteractor {
       currentIndex,
       words: actualWords,
       firebaseId: assessment.id,
-      sessionId: assessment.session || -1,
+      sessionId: assessment.session === undefined ? -1 : 0,
     };
   }
 
@@ -291,7 +291,7 @@ export default class FirebaseInteractor {
         sessionId: sessionId < 9 ? ((sessionId + 1) as SessionId) : sessionId,
         onAssessment: false,
         currentInterventionOrAssessment: documents.docs.filter(
-          (doc) => doc.data().sessionId === sessionId + 1
+          (doc) => doc.data().session === sessionId + 1
         )[0]?.id,
       });
       return;
