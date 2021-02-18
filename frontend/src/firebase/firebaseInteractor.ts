@@ -135,27 +135,19 @@ export default class FirebaseInteractor {
   }
 
   /**
-   * Creates a new assessment with all of the incorrect words from a previous assessment.
+   * Creates a new assessment with all of the incorrect words from the given intervention.
    */
-  async createAssessmentFromPreviousAssessment(setId: string) {
-    // hardcode a single assessment for now
-    // later we can infer the assessment id from the setId
-    let assessmentId = "oiBN8aE5tqEFK2gXJUpl";
-    let results = await this.db
-      .collection("assessments")
-      .doc(assessmentId)
-      .collection("results")
+  async createAssessmentFromIntervention(setId: string) {
+    let intervention = await this.db
+      .collection("interventions")
+      .doc(setId)
       .get();
-    if (results == null) {
-      throw new Error(`Assessment with id ${assessmentId} does not exist`);
+    let interventionData = intervention.data();
+    if (interventionData == null) {
+      throw new Error(`Intervention with id ${setId} does not exist`);
     }
 
-    let wordList: string[] = [];
-    results.forEach(function (result) {
-      if (!result.data().correct) {
-        wordList.push(result.id);
-      }
-    });
+    let wordList = interventionData.wordList;
     let newAssessment = this.db.collection("assessments").doc();
 
     let initialAssessmentFields = {
