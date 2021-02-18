@@ -142,7 +142,6 @@ export default class FirebaseInteractor {
     let wordIds = words.docs.map((word) => word.id);
     let newAssessmentFields = {
       currentIndex: 0,
-      // do we need to include in the beginning?
       durationInSeconds: 0,
       words: wordIds,
       userId: this.auth.currentUser?.uid,
