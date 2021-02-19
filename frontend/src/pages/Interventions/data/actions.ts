@@ -6,8 +6,9 @@ interface GetInterventionsAction {
 }
 
 export const getInterventions = {
-  request: (): Action => ({
+  request: (id: string): Action => ({
     type: ActionTypes.GET_INTERVENTIONS_REQUEST,
+    payload: { id },
   }),
   error: ({ error }: GetInterventionsAction): Action => ({
     type: ActionTypes.GET_INTERVENTIONS_ERROR,
@@ -16,6 +17,24 @@ export const getInterventions = {
   success: ({ interventions }: GetInterventionsAction): Action => ({
     type: ActionTypes.GET_INTERVENTIONS_SUCCESS,
     payload: { interventions },
+  }),
+};
+
+export interface GetCurrentInterventionProps {
+  id: String;
+}
+
+export const getCurrentIntervention = {
+  request: (): Action => ({
+    type: ActionTypes.GET_CURRENT_INTERVENTIONS_REQUEST,
+  }),
+  success: ({ id }: GetCurrentInterventionProps): Action => ({
+    type: ActionTypes.GET_CURRENT_INTERVENTIONS_SUCCESS,
+    payload: { id },
+  }),
+  error: (error: Error): Action => ({
+    type: ActionTypes.GET_CURRENT_INTERVENTIONS_ERROR,
+    payload: { error },
   }),
 };
 

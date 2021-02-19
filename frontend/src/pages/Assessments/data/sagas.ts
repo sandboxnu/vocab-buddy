@@ -3,6 +3,7 @@ import FirebaseInteractor from "../../../firebase/firebaseInteractor";
 import { Action, ActionTypes } from "../../../models/types";
 import {
   getAssessment,
+  getCurrentAssessment,
   updateAssessment,
   UpdateAssessmentAction,
 } from "./actions";
@@ -18,6 +19,10 @@ function* root() {
   yield takeLatest(
     ActionTypes.UPDATE_ASSESSMENT_REQUEST,
     watchUpdateAssessment
+  );
+  yield takeLatest(
+    ActionTypes.GET_CURRENT_ASSESSMENT_REQUEST,
+    watchGetCurrentAssessment
   );
 }
 
@@ -39,6 +44,7 @@ function* watchUpdateAssessment(action: Action) {
   let {
     responses,
     id,
+    sessionId,
     isFinished,
     currentIdx,
     durationInSeconds,
@@ -54,11 +60,27 @@ function* watchUpdateAssessment(action: Action) {
     );
     if (isFinished) {
       yield call(() =>
-        firebaseInteractor.createInterventionFromAssessment(responses)
+        firebaseInteractor.createInterventionFromAssessment(
+          sessionId,
+          responses
+        )
       );
     }
     yield put(updateAssessment.success({ isFinished }));
   } catch (error) {
     yield put(updateAssessment.error(error));
+  }
+}
+
+function* watchGetCurrentAssessment(action: Action) {
+  try {
+    let assessmentId = "";
+    const getCurrent = async () => {
+      assessmentId = await firebaseInteractor.getCurrentExerciseId(true);
+    };
+    yield call(getCurrent);
+    yield put(getCurrentAssessment.success({ id: assessmentId }));
+  } catch (error) {
+    yield put(getCurrentAssessment.error(error));
   }
 }

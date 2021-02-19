@@ -3,6 +3,8 @@ import { RootStateOrAny } from "react-redux";
 
 interface InterventionState {
   interventions?: Interventions;
+  interventionId?: string;
+  error?: Error;
 }
 
 const initialState: RootStateOrAny = { interventions: null };
@@ -24,10 +26,19 @@ const interventionReducer = (
         interventions: payload.interventions,
       };
     case ActionTypes.FINISHED_INTERVENTION_SUCCESS:
+      return {};
+    case ActionTypes.GET_CURRENT_INTERVENTIONS_SUCCESS:
       return {
         ...state,
-        interventions: undefined,
+        interventionId: payload.id,
       };
+    case ActionTypes.GET_CURRENT_INTERVENTIONS_ERROR:
+      return {
+        ...state,
+        error: payload.error,
+      };
+    case ActionTypes.SIGN_OUT_SUCCESS:
+      return {};
     default:
       return state;
   }
@@ -35,6 +46,14 @@ const interventionReducer = (
 
 export const getCurrentInterventions = (state: RootStateOrAny) => {
   return state.interventions.interventions;
+};
+
+export const getInterventionId = (state: RootStateOrAny) => {
+  return state.interventions.interventionId;
+};
+
+export const getError = (state: RootStateOrAny) => {
+  return state.interventions.error;
 };
 
 export default interventionReducer;

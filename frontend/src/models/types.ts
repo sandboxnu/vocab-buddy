@@ -3,6 +3,7 @@
  */
 export interface Assessment {
   id: number;
+  sessionId: SessionId;
   words: Word[];
   currentIndex: number;
   firebaseId: string;
@@ -24,6 +25,7 @@ export interface Word {
  */
 export interface Interventions {
   setId: string;
+  sessionId: SessionId;
   wordList: InterventionWord[]; // list of Intervention words
   wordIdx: number; // current word you're on
   activityIdx: number; // current activity you're on
@@ -86,6 +88,9 @@ export interface User {
   name: string;
   accountType: AccountType;
   age: number;
+  sessionId: SessionId;
+  onAssessment: boolean;
+  currentInterventionOrAssessment: string;
 }
 
 /**
@@ -108,11 +113,17 @@ export enum ActionTypes {
   GET_ASSESSMENT_SUCCESS = "GET_ASSESSMENT_SUCCESS",
   GET_ASSESSMENT_REQUEST = "GET_ASSESSMENT_REQUEST",
   GET_ASSESSMENT_ERROR = "GET_ASSESSMENT_ERROR",
+  GET_CURRENT_ASSESSMENT_REQUEST = "GET_CURRENT_ASSESSMENT_REQUEST",
+  GET_CURRENT_ASSESSMENT_SUCCESS = "GET_CURRENT_ASSESSMENT_SUCCESS",
+  GET_CURRENT_ASSESSMENT_ERROR = "GET_CURRENT_ASSESSMENT_ERROR",
   RESET_PASSWORD = "RESETPASSWORD",
   RESET_PASSWORD_SUCCESS = "RESETPASSWORDSUCCESS",
   GET_INTERVENTIONS_REQUEST = "GET_INTERVENTIONS_REQUEST",
   GET_INTERVENTIONS_ERROR = "GET_INTERVENTIONS_ERROR",
   GET_INTERVENTIONS_SUCCESS = "GET_INTERVENTIONS_SUCCESS",
+  GET_CURRENT_INTERVENTIONS_REQUEST = "GET_CURRENT_INTERVENTIONS_REQUEST",
+  GET_CURRENT_INTERVENTIONS_SUCCESS = "GET_CURRENT_INTERVENTIONS_SUCCESS",
+  GET_CURRENT_INTERVENTIONS_ERROR = "GET_CURRENT_INTERVENTIONS_ERROR",
   SIGN_OUT_REQUEST = "SIGN_OUT_REQUEST",
   SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS",
   SIGN_OUT_ERROR = "SIGN_OUT_ERROR",
@@ -167,3 +178,5 @@ export interface AssessmentResult {
   word: string;
   correct: boolean;
 }
+
+export type SessionId = -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;

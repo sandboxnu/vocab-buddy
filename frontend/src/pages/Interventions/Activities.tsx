@@ -3,7 +3,7 @@ import React, {
   ReactElement,
   useEffect,
 } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
 import { connect } from "react-redux";
 import { getCurrentInterventions } from "../Interventions/data/reducer";
@@ -21,7 +21,7 @@ import {
 
 interface ActivityProps {
   interventions: Interventions;
-  getInterventions: () => void;
+  getInterventions: (id: string) => void;
   updateIntervention: ({
     setId,
     wordIdx,
@@ -32,6 +32,10 @@ interface ActivityProps {
     activityIdx: number;
   }) => void;
   finishedIntervention: ({ setId }: { setId: string }) => void;
+}
+
+interface ActivityParams {
+  id: string;
 }
 
 const connector = connect(
@@ -51,9 +55,10 @@ const Activities: FunctionComponent<ActivityProps> = ({
   updateIntervention,
   finishedIntervention,
 }): ReactElement => {
+  let params = useParams<ActivityParams>();
   useEffect(() => {
-    if (!interventions) getInterventions();
-  }, [interventions, getInterventions]);
+    if (!interventions) getInterventions(params.id);
+  }, [interventions, getInterventions, params.id]);
 
   const setId = interventions && interventions.setId;
   const currentWordIdx = interventions && interventions.wordIdx;

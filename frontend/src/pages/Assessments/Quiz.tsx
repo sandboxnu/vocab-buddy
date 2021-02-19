@@ -62,6 +62,7 @@ const Quiz = ({
       updateAssessment({
         responses,
         id: params.id,
+        sessionId: assessment.sessionId,
         isFinished,
         currentIdx,
         durationInSeconds,

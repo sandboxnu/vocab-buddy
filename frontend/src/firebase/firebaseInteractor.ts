@@ -13,6 +13,7 @@ import {
   Interventions,
   InterventionWord,
   Review,
+  SessionId,
   User,
   Word,
 } from "../models/types";
@@ -97,6 +98,14 @@ export default class FirebaseInteractor {
       age,
     });
     userAuth.user.sendEmailVerification();
+    if (accountType === "STUDENT") {
+      let initialAssessmentId = await this.createInitialAssessment();
+      this.db.collection("users").doc(userAuth.user.uid).update({
+        currentInterventionOrAssessment: initialAssessmentId,
+        sessionId: -1,
+        onAssessment: true,
+      });
+    }
   }
 
   async signInWithUsernameAndPassword(username: string, password: string) {
@@ -115,8 +124,32 @@ export default class FirebaseInteractor {
         name: userData.name as string,
         accountType: userData.accountType as AccountType,
         age: userData.age as number,
+        sessionId: userData.sessionId === undefined ? -1 : userData.sessionId,
+        onAssessment:
+          userData.onAssessment === undefined ? true : userData.onAssessment,
+        currentInterventionOrAssessment:
+          userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
       };
     }
+  }
+
+  async updateCurrentUser(user: Partial<User>) {
+    this.db.collection("users").doc(this.auth.currentUser?.uid).update(user);
+  }
+
+  async createInitialAssessment() {
+    let words = await this.db.collection("words").get();
+    let wordIds = words.docs.map((word) => word.id);
+    let newAssessmentFields = {
+      currentIndex: 0,
+      durationInSeconds: 0,
+      words: wordIds,
+      userId: this.auth.currentUser?.uid,
+      session: -1,
+    };
+    let newAssessment = this.db.collection("assessments").doc();
+    await newAssessment.set(newAssessmentFields);
+    return newAssessment.id;
   }
 
   /**
@@ -150,13 +183,19 @@ export default class FirebaseInteractor {
     let wordList = interventionData.wordList;
     let newAssessment = this.db.collection("assessments").doc();
 
+    await this.createCurrentUser();
     let initialAssessmentFields = {
       currentIndex: 0,
       durationInSeconds: 0,
       words: wordList,
       userId: this.auth.currentUser?.uid,
+      session: this.currentUser?.sessionId,
     };
     await newAssessment.set(initialAssessmentFields);
+    await this.updateCurrentUser({
+      onAssessment: true,
+      currentInterventionOrAssessment: newAssessment.id,
+    });
   }
 
   /**
@@ -194,7 +233,13 @@ export default class FirebaseInteractor {
     actualWords.sort(
       (word1, word2) => word1.createdAt.getTime() - word2.createdAt.getTime()
     );
-    return { id, currentIndex, words: actualWords, firebaseId: assessment.id };
+    return {
+      id,
+      currentIndex,
+      words: actualWords,
+      firebaseId: assessment.id,
+      sessionId: assessment.session === undefined ? -1 : 0,
+    };
   }
 
   async updateAssessment(
@@ -225,6 +270,7 @@ export default class FirebaseInteractor {
   }
 
   async createInterventionFromAssessment(
+    sessionId: SessionId,
     responses: AssessmentResult[]
   ): Promise<void> {
     let documents = await this.db
@@ -232,6 +278,13 @@ export default class FirebaseInteractor {
       .where("userId", "==", this.auth.currentUser?.uid)
       .get();
     if (documents.docs.length > 0) {
+      await this.updateCurrentUser({
+        sessionId: sessionId < 9 ? ((sessionId + 1) as SessionId) : sessionId,
+        onAssessment: false,
+        currentInterventionOrAssessment: documents.docs.filter(
+          (doc) => doc.data().session === sessionId + 1
+        )[0]?.id,
+      });
       return;
     }
     let incorrectWords = responses.filter((response) => !response.correct);
@@ -243,7 +296,7 @@ export default class FirebaseInteractor {
         incorrectWords[(i * 3 + 1) % incorrectWords.length].word,
         incorrectWords[(i * 3 + 2) % incorrectWords.length].word,
       ];
-      await this.db.collection("interventions").add({
+      let newIntervention = await this.db.collection("interventions").add({
         activityIdx: 0,
         wordIdx: 0,
         wordList,
@@ -252,6 +305,13 @@ export default class FirebaseInteractor {
         // Decide which session the intervention is in
         session: i,
       });
+      if (i === 0) {
+        await this.updateCurrentUser({
+          sessionId: 0,
+          onAssessment: false,
+          currentInterventionOrAssessment: newIntervention.id,
+        });
+      }
     }
   }
 
@@ -309,7 +369,16 @@ export default class FirebaseInteractor {
       wordList: interventionWords,
       activityIdx: intervention.activityIdx,
       wordIdx: intervention.wordIdx,
+      sessionId: intervention.session,
     };
+  }
+
+  async getCurrentExerciseId(wantsAssessment: boolean): Promise<string> {
+    await this.createCurrentUser();
+    if (this.currentUser?.onAssessment !== wantsAssessment) {
+      throw new Error("oops, you cannot do this yet");
+    }
+    return this.currentUser!.currentInterventionOrAssessment;
   }
 
   async resetPassword(email: string) {
