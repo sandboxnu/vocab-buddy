@@ -114,13 +114,13 @@ export default class FirebaseInteractor {
     await this.createCurrentUser();
   }
 
-  async createCurrentUser() {
-    let id = this.auth.currentUser?.uid;
-    let user = await this.db.collection("users").doc(id).get();
+  async getUser(id: string | undefined): Promise<User> {
+    let idToUse = id || this.auth.currentUser?.uid;
+    let user = await this.db.collection("users").doc(idToUse).get();
     let userData = user.data();
-    if (id != null && userData != null) {
-      this.currentUser = {
-        id: id,
+    if (idToUse != null && userData != null) {
+      return {
+        id: idToUse,
         name: userData.name as string,
         accountType: userData.accountType as AccountType,
         age: userData.age as number,
@@ -130,7 +130,15 @@ export default class FirebaseInteractor {
         currentInterventionOrAssessment:
           userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
       };
+    } else {
+      throw new Error("Invalid user");
     }
+  }
+
+  async createCurrentUser() {
+    try {
+      this.currentUser = await this.getUser(undefined);
+    } catch (error) {}
   }
 
   async updateCurrentUser(user: Partial<User>) {
