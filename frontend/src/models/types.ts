@@ -29,6 +29,8 @@ export interface Interventions {
   wordList: InterventionWord[]; // list of Intervention words
   wordIdx: number; // current word you're on
   activityIdx: number; // current activity you're on
+  activity2Correct?: boolean;
+  activity3Correct?: boolean;
 }
 
 /**

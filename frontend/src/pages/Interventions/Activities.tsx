@@ -26,10 +26,14 @@ interface ActivityProps {
     setId,
     wordIdx,
     activityIdx,
+    answer2Correct,
+    answer3Correct,
   }: {
     setId: string;
     wordIdx: number;
     activityIdx: number;
+    answer2Correct: boolean | undefined;
+    answer3Correct: boolean | undefined;
   }) => void;
   finishedIntervention: ({ setId }: { setId: string }) => void;
 }
@@ -92,7 +96,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
         idx={currentActivityIdx}
         title={title}
         activities={activities}
-        updateIntervention={() => {
+        updateIntervention={(correct) => {
           if (
             currentWordIdx === wordList.length - 1 &&
             nextActivityIdx === 0
@@ -104,6 +108,10 @@ const Activities: FunctionComponent<ActivityProps> = ({
               setId,
               wordIdx: nextWordIdx,
               activityIdx: nextActivityIdx,
+              answer2Correct:
+                currentActivityIdx === 1 ? correct : undefined,
+              answer3Correct:
+                currentActivityIdx === 2 ? correct : undefined,
             });
           }
         }}

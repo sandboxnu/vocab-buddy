@@ -158,13 +158,30 @@ export default class FirebaseInteractor {
   async updateIntervention(
     setId: string,
     wordIdx: number,
-    activityIdx: number
+    activityIdx: number,
+    activity2Correct?: boolean,
+    activity3Correct?: boolean
   ) {
     let intervention = await this.db.collection("interventions").doc(setId);
-    intervention.update({
+    let object: any = {
       wordIdx,
       activityIdx,
-    });
+    };
+
+    let wordList: string[] = (await intervention.get())?.data()?.wordList || [];
+    if (activity2Correct !== undefined) {
+      await intervention.collection("responses").doc(wordList[wordIdx]).set({
+        activity2Correct,
+      });
+    }
+
+    if (activity3Correct !== undefined) {
+      await intervention.collection("responses").doc(wordList[wordIdx]).update({
+        activity3Correct,
+      });
+    }
+
+    intervention.update(object);
   }
 
   /**
@@ -370,6 +387,8 @@ export default class FirebaseInteractor {
       activityIdx: intervention.activityIdx,
       wordIdx: intervention.wordIdx,
       sessionId: intervention.session,
+      activity2Correct: intervention.activity2Correct,
+      activity3Correct: intervention.activity3Correct,
     };
   }
 
