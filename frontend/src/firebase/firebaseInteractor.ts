@@ -387,8 +387,6 @@ export default class FirebaseInteractor {
       activityIdx: intervention.activityIdx,
       wordIdx: intervention.wordIdx,
       sessionId: intervention.session,
-      activity2Correct: intervention.activity2Correct,
-      activity3Correct: intervention.activity3Correct,
     };
   }
 
