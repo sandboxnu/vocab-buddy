@@ -138,7 +138,10 @@ export default class FirebaseInteractor {
   async createCurrentUser() {
     try {
       this.currentUser = await this.getUser(undefined);
-    } catch (error) {}
+    } catch (error) {
+      // Hopefully this does not happen.
+      console.log(error);
+    }
   }
 
   async updateCurrentUser(user: Partial<User>) {
