@@ -61,9 +61,32 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
           imageUrl={activities.a3.url}
           answer={activities.a3.correctAnswer}
           updateIntervention={updateIntervention}
+          key={0}
         />
       );
     case 3:
+      return (
+        <ThirdActivity
+          title={title}
+          prompt={activities.a3Part2.prompt}
+          imageUrl={activities.a3Part2.url}
+          answer={activities.a3Part2.correctAnswer}
+          updateIntervention={updateIntervention}
+          key={1}
+        />
+      );
+    case 4:
+      return (
+        <ThirdActivity
+          title={title}
+          prompt={activities.a3Part3.prompt}
+          imageUrl={activities.a3Part3.url}
+          answer={activities.a3Part3.correctAnswer}
+          updateIntervention={updateIntervention}
+          key={2}
+        />
+      );
+    case 5:
       return (
         <FourthActivity
           title={title}

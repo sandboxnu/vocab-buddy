@@ -28,12 +28,16 @@ interface ActivityProps {
     activityIdx,
     answer2Correct,
     answer3Correct,
+    answer3Part2Correct,
+    answer3Part3Correct,
   }: {
     setId: string;
     wordIdx: number;
     activityIdx: number;
     answer2Correct: boolean | undefined;
     answer3Correct: boolean | undefined;
+    answer3Part2Correct: boolean | undefined;
+    answer3Part3Correct: boolean | undefined;
   }) => void;
   finishedIntervention: ({ setId }: { setId: string }) => void;
 }
@@ -112,6 +116,10 @@ const Activities: FunctionComponent<ActivityProps> = ({
                 currentActivityIdx === 1 ? correct : undefined,
               answer3Correct:
                 currentActivityIdx === 2 ? correct : undefined,
+              answer3Part2Correct:
+                currentActivityIdx === 3 ? correct : undefined,
+              answer3Part3Correct:
+                currentActivityIdx === 4 ? correct : undefined,
             });
           }
         }}

@@ -43,6 +43,8 @@ export interface ActivityList {
   a1: Definition;
   a2: Example;
   a3: Context;
+  a3Part2: Context;
+  a3Part3: Context;
   a4: Review;
 }
 
