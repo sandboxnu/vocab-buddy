@@ -21,3 +21,12 @@ export function shuffle<T>(array: T[]) {
     else return -1;
   });
 }
+
+export function indexOf<T>(array: T[], test: (input: T) => boolean): number {
+  for (let idx = 0; idx < array.length; idx++) {
+    if (test(array[idx])) {
+      return idx;
+    }
+  }
+  return -1;
+}

@@ -13,12 +13,13 @@ import CloudGroup from "../../components/CloudGroup";
 import DelayedNextButton from "../../components/DelayedNextButton";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import Blocker from "../../components/Blocker";
+import { indexOf } from "../../constants/utils";
 
 interface SecondActivityProps {
   title: string;
   prompt: string;
   imageUrls: ImageProps[];
-  updateIntervention: () => void;
+  updateIntervention: (correct: boolean) => void;
 }
 
 interface ImageProps {
@@ -208,7 +209,12 @@ const SecondActivity = ({
               text="next"
               top={20}
               delay={1000}
-              onClick={updateIntervention}
+              onClick={() =>
+                updateIntervention(
+                  selectedIndex ===
+                    indexOf(imageUrls, (val) => val.correct)
+                )
+              }
               canBeShown={selectedIndex !== -1}
             />
           </ButtonContainer>

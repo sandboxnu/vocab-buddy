@@ -44,6 +44,8 @@ interface UpdateInterventionAction {
   wordIdx?: number;
   activityIdx?: number;
   interventions?: Interventions;
+  answer2Correct?: boolean;
+  answer3Correct?: boolean;
 }
 
 export const updateIntervention = {
@@ -51,10 +53,14 @@ export const updateIntervention = {
     setId,
     wordIdx,
     activityIdx,
-  }: UpdateInterventionAction): Action => ({
-    type: ActionTypes.UPDATE_INTERVENTION_REQUEST,
-    payload: { setId, wordIdx, activityIdx },
-  }),
+    answer2Correct,
+    answer3Correct,
+  }: UpdateInterventionAction): Action => {
+    return {
+      type: ActionTypes.UPDATE_INTERVENTION_REQUEST,
+      payload: { setId, wordIdx, activityIdx, answer2Correct, answer3Correct },
+    };
+  },
   success: ({ interventions }: UpdateInterventionAction): Action => ({
     type: ActionTypes.UPDATE_INTERVENTION_SUCCESS,
     payload: { interventions },
