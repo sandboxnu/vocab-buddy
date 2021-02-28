@@ -27,12 +27,19 @@ const dashboardReducer = (
         ...state,
         user: action.payload.user,
       };
-    default:
-      // If anything else happens, our user cache is probably bad, so remove it
+    case ActionTypes.FINISHED_INTERVENTION_SUCCESS:
       return {
         ...state,
         user: undefined,
       };
+    case ActionTypes.UPDATE_ASSESSMENT_REQUEST:
+      return {
+        ...state,
+        user: action.payload.isFinished ? undefined : state.user,
+      };
+    default:
+      // If anything else happens, our user cache is probably bad, so remove it
+      return state;
   }
 };
 
