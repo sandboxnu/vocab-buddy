@@ -54,6 +54,7 @@ function* watchUpdateIntervention(action: Action) {
       setId,
       wordIdx,
       activityIdx,
+      durationInSeconds,
       answer2Correct,
       answer3Correct,
     } = action.payload;
@@ -63,6 +64,7 @@ function* watchUpdateIntervention(action: Action) {
         setId,
         wordIdx,
         activityIdx,
+        durationInSeconds,
         answer2Correct,
         answer3Correct
       );

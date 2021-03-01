@@ -2,6 +2,7 @@ import React, {
   FunctionComponent,
   ReactElement,
   useEffect,
+  useState,
 } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
@@ -28,12 +29,14 @@ interface ActivityProps {
     activityIdx,
     answer2Correct,
     answer3Correct,
+    durationInSeconds,
   }: {
     setId: string;
     wordIdx: number;
     activityIdx: number;
     answer2Correct: boolean | undefined;
     answer3Correct: boolean | undefined;
+    durationInSeconds: number;
   }) => void;
   finishedIntervention: ({ setId }: { setId: string }) => void;
 }
@@ -63,6 +66,10 @@ const Activities: FunctionComponent<ActivityProps> = ({
   useEffect(() => {
     if (!interventions) getInterventions(params.id);
   }, [interventions, getInterventions, params.id]);
+
+  let [activityStartTime, setActivityStartTime] = useState(
+    new Date()
+  );
 
   const setId = interventions && interventions.setId;
   const currentWordIdx = interventions && interventions.wordIdx;
@@ -97,6 +104,10 @@ const Activities: FunctionComponent<ActivityProps> = ({
         title={title}
         activities={activities}
         updateIntervention={(correct) => {
+          let curDate = new Date();
+          let durationInSeconds =
+            (curDate.getTime() - activityStartTime.getTime()) / 1000;
+          setActivityStartTime(curDate);
           if (
             currentWordIdx === wordList.length - 1 &&
             nextActivityIdx === 0
@@ -112,6 +123,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
                 currentActivityIdx === 1 ? correct : undefined,
               answer3Correct:
                 currentActivityIdx === 2 ? correct : undefined,
+              durationInSeconds,
             });
           }
         }}
