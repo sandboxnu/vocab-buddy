@@ -1,5 +1,6 @@
 import {
   CheckCircleFilled,
+  CloseCircleFilled,
   DislikeFilled,
   LikeFilled,
 } from "@ant-design/icons";
@@ -71,7 +72,7 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
               correctAnswer ? (
                 <CheckCircleFilled style={{ color: SEA_FOAM }} />
               ) : (
-                <CheckCircleFilled style={{ color: CORAL }} />
+                <CloseCircleFilled style={{ color: CORAL }} />
               )
             ) : (
               <EmptyDiv />
@@ -86,10 +87,10 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
           top={20}
           check={
             selected === 0 ? (
-              correctAnswer ? (
-                <CheckCircleFilled style={{ color: CORAL }} />
-              ) : (
+              !correctAnswer ? (
                 <CheckCircleFilled style={{ color: SEA_FOAM }} />
+              ) : (
+                <CloseCircleFilled style={{ color: CORAL }} />
               )
             ) : (
               <EmptyDiv />
