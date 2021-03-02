@@ -87,10 +87,10 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
           top={20}
           check={
             selected === 0 ? (
-              !correctAnswer ? (
-                <CheckCircleFilled style={{ color: SEA_FOAM }} />
-              ) : (
+              correctAnswer ? (
                 <CloseCircleFilled style={{ color: CORAL }} />
+              ) : (
+                <CheckCircleFilled style={{ color: SEA_FOAM }} />
               )
             ) : (
               <EmptyDiv />
