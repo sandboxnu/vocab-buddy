@@ -171,7 +171,9 @@ export default class FirebaseInteractor {
     wordIdx: number,
     activityIdx: number,
     activity2Correct?: boolean,
-    activity3Correct?: boolean
+    activity3Correct?: boolean,
+    activity3Part2Correct?: boolean,
+    activity3Part3Correct?: boolean
   ) {
     let intervention = await this.db.collection("interventions").doc(setId);
     let object: any = {
@@ -189,6 +191,18 @@ export default class FirebaseInteractor {
     if (activity3Correct !== undefined) {
       await intervention.collection("responses").doc(wordList[wordIdx]).update({
         activity3Correct,
+      });
+    }
+
+    if (activity3Part2Correct !== undefined) {
+      await intervention.collection("responses").doc(wordList[wordIdx]).update({
+        activity3Part2Correct,
+      });
+    }
+
+    if (activity3Part3Correct !== undefined) {
+      await intervention.collection("responses").doc(wordList[wordIdx]).update({
+        activity3Part3Correct,
       });
     }
 
@@ -381,12 +395,20 @@ export default class FirebaseInteractor {
       let activity2 = (await wordRef.doc("activity2").get()).data() as Example;
       let activity3 = (await wordRef.doc("activity3").get()).data() as Context;
       let activity4 = (await wordRef.doc("activity4").get()).data() as Review;
+      let activity3Part2 = (
+        await wordRef.doc("activity3-part2").get()
+      ).data() as Context;
+      let activity3Part3 = (
+        await wordRef.doc("activity3-part3").get()
+      ).data() as Context;
       interventionWords.push({
         word: actualWord,
         activities: {
           a1: activity1,
           a2: activity2,
           a3: activity3,
+          a3Part2: activity3Part2,
+          a3Part3: activity3Part3,
           a4: activity4,
         },
       });
