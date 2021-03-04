@@ -5,9 +5,25 @@ import styled from "styled-components";
 import Layout from "../../components/Layout";
 import { SignOut } from "./data/actions";
 import { getIsSignedOut } from "./data/reducer";
-import { CLOUD } from "../../constants/colors";
+import { CLOUD, INK } from "../../constants/colors";
 
-const SignOutButton = styled.button``;
+const SignOutButton = styled.button`
+  position: absolute;
+  bottom: 64px;
+
+  background-color: #fff0;
+  border-width: 0px;
+  color: ${INK};
+  font-weight: bold;
+
+  :hover {
+    cursor: pointer;
+  }
+
+  :active {
+    opacity: 0.8;
+  }
+`;
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -113,7 +129,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             />
             <NameText>hi name!</NameText>
             <MenuButtonContainer></MenuButtonContainer>
-            <SignOutButton onClick={signOut}>sign out</SignOutButton>
+
+            <SignOutButton onClick={signOut}>log out</SignOutButton>
           </MenuContainer>
         </DashboardContainer>
       </>
