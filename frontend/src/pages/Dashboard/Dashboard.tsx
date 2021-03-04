@@ -1,4 +1,9 @@
-import React, { FunctionComponent, ReactElement } from "react";
+import React, {
+  FunctionComponent,
+  ReactElement,
+  useEffect,
+  useState,
+} from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -118,11 +123,15 @@ const SessionContainer = styled.div`
 
   min-width: 864px;
   min-height: 100%;
-  margin-left: 64px;
+  padding-left: 64px;
   padding-top: 64px;
   padding-bottom: 64px;
 
   background: blue;
+
+  @media (max-width: 600px) {
+    min-width: 100%;
+  }
 `;
 
 const NextSessionButton = styled(PurpleButton)``;
@@ -130,17 +139,33 @@ const NextSessionButton = styled(PurpleButton)``;
 const WeekProgressContainer = styled.div`
   min-width: 555px;
   min-height: 100%;
-  margin-left: 64px;
+
+  padding-left: 64px;
   padding-right: 64px;
   padding-top: 64px;
 
   background: green;
+
+  @media (max-width: 600px) {
+    min-width: 100%;
+  }
 `;
 
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
 }): ReactElement => {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const resizeScreen = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", resizeScreen);
+    return () => {
+      window.removeEventListener("resize", resizeScreen);
+    };
+  }, []);
+
   let history = useHistory();
   if (isSignedOut) {
     history.push("/login");
@@ -158,7 +183,9 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             <TitleText>hi name!</TitleText>
             <MenuButtonContainer></MenuButtonContainer>
 
-            <SignOutButton onClick={signOut}>log out</SignOutButton>
+            {screenWidth > 600 && (
+              <SignOutButton onClick={signOut}>log out</SignOutButton>
+            )}
           </MenuContainer>
 
           <SessionContainer>
