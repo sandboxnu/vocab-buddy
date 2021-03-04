@@ -48,6 +48,7 @@ const DashboardContainer = styled.div`
 
   @media (max-width: 600px) {
     flex-direction: column;
+    padding-right: 0px;
   }
 `;
 
@@ -84,7 +85,7 @@ const MenuButtonContainer = styled.div`
   height: 100px;
 `;
 
-const NameText = styled.p`
+const TitleText = styled.p`
   font-family: "Rubik";
   font-size: 26px;
   font-weight: 700;
@@ -109,6 +110,24 @@ const ProfilePicture = styled.img`
   }
 `;
 
+const SessionContainer = styled.div`
+  min-width: 864px;
+  min-height: 100%;
+  margin-left: 64px;
+
+  background: blue;
+`;
+
+const WeekProgressContainer = styled.div`
+  float: right;
+  min-width: 555px;
+  min-height: 100%;
+  margin-left: 64px;
+  padding-right: 64px;
+
+  background: green;
+`;
+
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
@@ -127,11 +146,38 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                 "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
               }
             />
-            <NameText>hi name!</NameText>
+            <TitleText>hi name!</TitleText>
             <MenuButtonContainer></MenuButtonContainer>
 
             <SignOutButton onClick={signOut}>log out</SignOutButton>
           </MenuContainer>
+
+          <SessionContainer>x</SessionContainer>
+
+          <WeekProgressContainer>
+            x
+            <p>
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
+              a a a a a a a a a a a a a a a a{" "}
+            </p>
+          </WeekProgressContainer>
         </DashboardContainer>
       </>
     </Layout>
