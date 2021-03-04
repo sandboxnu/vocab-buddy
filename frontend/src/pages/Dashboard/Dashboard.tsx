@@ -69,6 +69,10 @@ const NameText = styled.p`
   }
 `;
 
+const ProfilePicture = styled.img`
+  margin-bottom: 24px;
+`;
+
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
@@ -82,6 +86,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       <>
         <DashboardContainer>
           <MenuContainer>
+            <ProfilePicture
+              src={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+              }
+            />
             <NameText>hi name!</NameText>
             <SignOutButton onClick={signOut}>sign out</SignOutButton>
           </MenuContainer>
