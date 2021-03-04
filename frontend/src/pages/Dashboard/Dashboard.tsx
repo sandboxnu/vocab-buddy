@@ -6,6 +6,7 @@ import Layout from "../../components/Layout";
 import { SignOut } from "./data/actions";
 import { getIsSignedOut } from "./data/reducer";
 import { CLOUD, INK } from "../../constants/colors";
+import PurpleButton from "../../components/PurpleButton";
 
 const SignOutButton = styled.button`
   position: absolute;
@@ -111,13 +112,20 @@ const ProfilePicture = styled.img`
 `;
 
 const SessionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
   min-width: 864px;
   min-height: 100%;
   margin-left: 64px;
   padding-top: 64px;
+  padding-bottom: 64px;
 
   background: blue;
 `;
+
+const NextSessionButton = styled(PurpleButton)``;
 
 const WeekProgressContainer = styled.div`
   min-width: 555px;
@@ -155,7 +163,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
           <SessionContainer>
             <TitleText>next session</TitleText>
-            <p> button</p>
+            <NextSessionButton
+              onClick={() => {}}
+              text={"begin session #!"}
+            />
+
             <TitleText>list of sessions</TitleText>
           </SessionContainer>
 
