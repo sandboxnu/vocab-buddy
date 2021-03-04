@@ -164,6 +164,71 @@ const WeekProgressContainer = styled.div`
   }
 `;
 
+const ProgressStatsContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  min-width: 100%;
+`;
+
+const ProgressBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 30px 30px 30px;
+
+  flex: none;
+  order: 0;
+  flex-grow: 1;
+
+  max-width: calc(50% - 16px);
+  margin-bottom: 32px;
+
+  background: ${CLOUD};
+  border-radius: 12px;
+
+  @media (max-width: 600px) {
+    max-width: calc(50% - 12px);
+    margin-bottom: 24px;
+  }
+`;
+
+const ProgressStatNumber = styled.p`
+  font-family: "Rubik";
+  font-size: 56px;
+  font-weight: 700;
+  text-transform: lowercase;
+  color: ${INK};
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 0px 0px;
+
+  @media (max-width: 600px) {
+    font-size: 36px;
+  }
+`;
+
+const ProgressStatDescription = styled.p`
+  text-transform: lowercase;
+  font-family: Open Sans;
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: lowercase;
+  word-wrap: break-word;
+  text-align: center;
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 0px;
+
+  @media (max-width: 600px) {
+    font-size: 16px;
+  }
+`;
+
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
@@ -215,6 +280,35 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             <TitleText>this week</TitleText>
             <p>box</p>
             <TitleText>your progress</TitleText>
+            <ProgressStatsContainer>
+              <ProgressBox>
+                <ProgressStatNumber>14</ProgressStatNumber>
+                <ProgressStatDescription>
+                  day streak
+                </ProgressStatDescription>
+              </ProgressBox>
+
+              <ProgressBox>
+                <ProgressStatNumber>25</ProgressStatNumber>
+                <ProgressStatDescription>
+                  words learned
+                </ProgressStatDescription>
+              </ProgressBox>
+
+              <ProgressBox>
+                <ProgressStatNumber>4</ProgressStatNumber>
+                <ProgressStatDescription>
+                  assessments completed
+                </ProgressStatDescription>
+              </ProgressBox>
+
+              <ProgressBox>
+                <ProgressStatNumber>3</ProgressStatNumber>
+                <ProgressStatDescription>
+                  interventions completed
+                </ProgressStatDescription>
+              </ProgressBox>
+            </ProgressStatsContainer>
           </WeekProgressContainer>
         </DashboardContainer>
       </>
