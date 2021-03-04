@@ -131,10 +131,20 @@ const SessionContainer = styled.div`
 
   @media (max-width: 600px) {
     min-width: 100%;
+    padding-top: 48px;
+    padding-right: 24px;
+    padding-left: 24px;
   }
 `;
 
-const NextSessionButton = styled(PurpleButton)``;
+const NextSessionButton = styled(PurpleButton)`
+  width: 300px;
+  height: 100px;
+
+  @media (max-width: 600px) {
+    min-width: 100%;
+  }
+`;
 
 const WeekProgressContainer = styled.div`
   min-width: 555px;
@@ -148,6 +158,9 @@ const WeekProgressContainer = styled.div`
 
   @media (max-width: 600px) {
     min-width: 100%;
+    padding-top: 48px;
+    padding-right: 24px;
+    padding-left: 24px;
   }
 `;
 
