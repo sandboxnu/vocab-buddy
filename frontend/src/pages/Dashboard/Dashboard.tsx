@@ -55,6 +55,19 @@ const MenuContainer = styled.div`
   }
 `;
 
+// HELP
+// Thinking of making a 2-column grid with the left-hand column being fixed-width for icons
+const MenuButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+
+  background: red;
+  width: 100%;
+  height: 100px;
+`;
+
 const NameText = styled.p`
   font-family: "Rubik";
   font-size: 26px;
@@ -99,6 +112,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               }
             />
             <NameText>hi name!</NameText>
+            <MenuButtonContainer></MenuButtonContainer>
             <SignOutButton onClick={signOut}>sign out</SignOutButton>
           </MenuContainer>
         </DashboardContainer>
