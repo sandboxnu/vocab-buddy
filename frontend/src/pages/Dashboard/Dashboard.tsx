@@ -114,16 +114,17 @@ const SessionContainer = styled.div`
   min-width: 864px;
   min-height: 100%;
   margin-left: 64px;
+  padding-top: 64px;
 
   background: blue;
 `;
 
 const WeekProgressContainer = styled.div`
-  float: right;
   min-width: 555px;
   min-height: 100%;
   margin-left: 64px;
   padding-right: 64px;
+  padding-top: 64px;
 
   background: green;
 `;
@@ -152,31 +153,16 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             <SignOutButton onClick={signOut}>log out</SignOutButton>
           </MenuContainer>
 
-          <SessionContainer>x</SessionContainer>
+          <SessionContainer>
+            <TitleText>next session</TitleText>
+            <p> button</p>
+            <TitleText>list of sessions</TitleText>
+          </SessionContainer>
 
           <WeekProgressContainer>
-            x
-            <p>
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-              a a a a a a a a a a a a a a a a{" "}
-            </p>
+            <TitleText>this week</TitleText>
+            <p>box</p>
+            <TitleText>your progress</TitleText>
           </WeekProgressContainer>
         </DashboardContainer>
       </>
