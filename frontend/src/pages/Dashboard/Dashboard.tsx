@@ -54,6 +54,21 @@ const MenuContainer = styled.div`
   }
 `;
 
+const NameText = styled.p`
+  font-family: "Rubik";
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: lowercase;
+  word-wrap: break-word;
+
+  text-align: center;
+
+  @media (max-width: 600px) {
+    font-size: 30px;
+  }
+`;
+
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
@@ -67,7 +82,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       <>
         <DashboardContainer>
           <MenuContainer>
-            Image
+            <NameText>hi name!</NameText>
             <SignOutButton onClick={signOut}>sign out</SignOutButton>
           </MenuContainer>
         </DashboardContainer>
