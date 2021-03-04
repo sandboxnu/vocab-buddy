@@ -38,6 +38,7 @@ const DashboardContainer = styled.div`
 const MenuContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-height: 100%;
   width: 309px;
   border-radius: 0px 12px 0px 0px;
@@ -58,11 +59,8 @@ const NameText = styled.p`
   font-family: "Rubik";
   font-size: 26px;
   font-weight: 700;
-  margin-bottom: 10px;
   text-transform: lowercase;
   word-wrap: break-word;
-
-  text-align: center;
 
   @media (max-width: 600px) {
     font-size: 30px;
@@ -71,6 +69,15 @@ const NameText = styled.p`
 
 const ProfilePicture = styled.img`
   margin-bottom: 24px;
+
+  height: 183px;
+  width: 183px;
+
+  @media (max-width: 600px) {
+    font-size: 30px;
+    height: 148px;
+    width: 148px;
+  }
 `;
 
 const Dashboard: FunctionComponent<DashboardParams> = ({
