@@ -121,13 +121,11 @@ const SessionContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
 
-  min-width: 864px;
+  width: 48%;
   min-height: 100%;
   padding-left: 64px;
   padding-top: 64px;
   padding-bottom: 64px;
-
-  background: blue;
 
   @media (max-width: 600px) {
     min-width: 100%;
@@ -147,14 +145,12 @@ const NextSessionButton = styled(PurpleButton)`
 `;
 
 const WeekProgressContainer = styled.div`
-  min-width: 555px;
+  width: 36%;
   min-height: 100%;
 
   padding-left: 64px;
   padding-right: 64px;
   padding-top: 64px;
-
-  background: green;
 
   @media (max-width: 600px) {
     min-width: 100%;
