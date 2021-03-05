@@ -11,6 +11,7 @@ interface PurpleButtonProps {
   icon?: ReactElement;
   className: string;
   padding?: number;
+  disabled?: boolean;
 }
 
 const ButtonContainer = styled(Button)`
@@ -50,6 +51,7 @@ const PurpleButton = ({
   icon,
   check,
   padding,
+  disabled,
 }: PurpleButtonProps): ReactElement => {
   return (
     <ButtonContainer
@@ -57,6 +59,7 @@ const PurpleButton = ({
       top={top}
       onClick={onClick}
       padding={padding}
+      disabled={disabled}
     >
       {check}
       {text}

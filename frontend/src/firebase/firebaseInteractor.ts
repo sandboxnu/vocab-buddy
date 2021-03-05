@@ -114,13 +114,13 @@ export default class FirebaseInteractor {
     await this.createCurrentUser();
   }
 
-  async createCurrentUser() {
-    let id = this.auth.currentUser?.uid;
-    let user = await this.db.collection("users").doc(id).get();
+  async getUser(id: string | undefined): Promise<User> {
+    let idToUse = id || this.auth.currentUser?.uid;
+    let user = await this.db.collection("users").doc(idToUse).get();
     let userData = user.data();
-    if (id != null && userData != null) {
-      this.currentUser = {
-        id: id,
+    if (idToUse != null && userData != null) {
+      return {
+        id: idToUse,
         name: userData.name as string,
         accountType: userData.accountType as AccountType,
         age: userData.age as number,
@@ -130,6 +130,17 @@ export default class FirebaseInteractor {
         currentInterventionOrAssessment:
           userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
       };
+    } else {
+      throw new Error("Invalid user");
+    }
+  }
+
+  async createCurrentUser() {
+    try {
+      this.currentUser = await this.getUser(undefined);
+    } catch (error) {
+      // Hopefully this does not happen.
+      console.log(error);
     }
   }
 
@@ -158,13 +169,44 @@ export default class FirebaseInteractor {
   async updateIntervention(
     setId: string,
     wordIdx: number,
-    activityIdx: number
+    activityIdx: number,
+    activity2Correct?: boolean,
+    activity3Correct?: boolean,
+    activity3Part2Correct?: boolean,
+    activity3Part3Correct?: boolean
   ) {
     let intervention = await this.db.collection("interventions").doc(setId);
-    intervention.update({
+    let object: any = {
       wordIdx,
       activityIdx,
-    });
+    };
+
+    let wordList: string[] = (await intervention.get())?.data()?.wordList || [];
+    if (activity2Correct !== undefined) {
+      await intervention.collection("responses").doc(wordList[wordIdx]).set({
+        activity2Correct,
+      });
+    }
+
+    if (activity3Correct !== undefined) {
+      await intervention.collection("responses").doc(wordList[wordIdx]).update({
+        activity3Correct,
+      });
+    }
+
+    if (activity3Part2Correct !== undefined) {
+      await intervention.collection("responses").doc(wordList[wordIdx]).update({
+        activity3Part2Correct,
+      });
+    }
+
+    if (activity3Part3Correct !== undefined) {
+      await intervention.collection("responses").doc(wordList[wordIdx]).update({
+        activity3Part3Correct,
+      });
+    }
+
+    intervention.update(object);
   }
 
   /**
@@ -353,12 +395,20 @@ export default class FirebaseInteractor {
       let activity2 = (await wordRef.doc("activity2").get()).data() as Example;
       let activity3 = (await wordRef.doc("activity3").get()).data() as Context;
       let activity4 = (await wordRef.doc("activity4").get()).data() as Review;
+      let activity3Part2 = (
+        await wordRef.doc("activity3-part2").get()
+      ).data() as Context;
+      let activity3Part3 = (
+        await wordRef.doc("activity3-part3").get()
+      ).data() as Context;
       interventionWords.push({
         word: actualWord,
         activities: {
           a1: activity1,
           a2: activity2,
           a3: activity3,
+          a3Part2: activity3Part2,
+          a3Part3: activity3Part3,
           a4: activity4,
         },
       });

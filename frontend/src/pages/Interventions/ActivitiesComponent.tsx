@@ -1,15 +1,15 @@
-import React, { FunctionComponent, ReactElement } from 'react';
-import { ActivityList } from '../../models/types';
-import FirstActivity from '../Interventions/FirstActivity';
-import SecondActivity from '../Interventions/SecondActivity';
-import ThirdActivity from '../Interventions/ThirdActivity';
-import FourthActivity from '../Interventions/FourthActivity';
+import React, { FunctionComponent, ReactElement } from "react";
+import { ActivityList } from "../../models/types";
+import FirstActivity from "../Interventions/FirstActivity";
+import SecondActivity from "../Interventions/SecondActivity";
+import ThirdActivity from "../Interventions/ThirdActivity";
+import FourthActivity from "../Interventions/FourthActivity";
 
 interface ActivityComponentProp {
   idx: number;
   title: string;
   activities: ActivityList;
-  updateIntervention: () => void;
+  updateIntervention: (correct: boolean) => void;
 }
 
 const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
@@ -25,7 +25,7 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
           title={title}
           prompt={activities.a1.prompt}
           imageUrl={activities.a1.url}
-          updateIntervention={updateIntervention}
+          updateIntervention={() => updateIntervention(false)}
         />
       );
     case 1: {
@@ -61,15 +61,38 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
           imageUrl={activities.a3.url}
           answer={activities.a3.correctAnswer}
           updateIntervention={updateIntervention}
+          key={0}
         />
       );
     case 3:
+      return (
+        <ThirdActivity
+          title={title}
+          prompt={activities.a3Part2.prompt}
+          imageUrl={activities.a3Part2.url}
+          answer={activities.a3Part2.correctAnswer}
+          updateIntervention={updateIntervention}
+          key={1}
+        />
+      );
+    case 4:
+      return (
+        <ThirdActivity
+          title={title}
+          prompt={activities.a3Part3.prompt}
+          imageUrl={activities.a3Part3.url}
+          answer={activities.a3Part3.correctAnswer}
+          updateIntervention={updateIntervention}
+          key={2}
+        />
+      );
+    case 5:
       return (
         <FourthActivity
           title={title}
           prompt={activities.a4.prompt}
           imageUrl={activities.a4.url}
-          updateIntervention={updateIntervention}
+          updateIntervention={() => updateIntervention(false)}
         />
       );
     default:

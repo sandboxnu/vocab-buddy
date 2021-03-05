@@ -43,6 +43,8 @@ export interface ActivityList {
   a1: Definition;
   a2: Example;
   a3: Context;
+  a3Part2: Context;
+  a3Part3: Context;
   a4: Review;
 }
 
@@ -136,6 +138,9 @@ export enum ActionTypes {
   FINISHED_INTERVENTION_REQUEST = "FINISHED_INTERVENTION_REQUEST",
   FINISHED_INTERVENTION_SUCCESS = "FINISHED_INTERVENTION_SUCCESS",
   FINISHED_INTERVENTION_ERROR = "FINISHED_INTERVENTION_ERROR",
+  GET_DASHBOARD_DATA_REQUEST = "GET_DASHBOARD_DATA_REQUEST",
+  GET_DASHBOARD_DATA_SUCCESS = "GET_DASHBOARD_DATA_SUCCESS",
+  GET_DASHBOARD_DATA_ERROR = "GET_DASHBOARD_DATA_ERROR",
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense
@@ -172,6 +177,7 @@ export interface ResetPasswordParams {
 
 export interface DashboardState {
   isSignedOut: boolean;
+  user?: User;
 }
 
 export interface AssessmentResult {
