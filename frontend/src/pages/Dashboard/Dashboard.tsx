@@ -20,7 +20,7 @@ import { getCurrentUser, getIsSignedOut } from "./data/reducer";
 
 const SignOutButton = styled.button`
   position: absolute;
-  bottom: 64px;
+  bottom: 0px;
 
   background-color: #fff0;
   border-width: 0px;
@@ -72,7 +72,7 @@ const MenuContainer = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100%;
-  width: 309px;
+  min-width: 309px;
   border-radius: 0px 12px 0px 0px;
 
   padding: 64px 64px 64px 64px;
@@ -145,8 +145,10 @@ const SessionContainer = styled.div`
 `;
 
 const NextSessionButton = styled(PurpleButton)`
-  width: 300px;
+  min-width: 32%;
   height: 100px;
+  margin-bottom: 64px;
+  text-transform: lowercase;
 
   @media (max-width: 600px) {
     min-width: 100%;
@@ -234,6 +236,21 @@ const ProgressStatDescription = styled.p`
   }
 `;
 
+const WeekContainer = styled.div`
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 32px 0px;
+  background: ${CLOUD};
+  border-radius: 12px;
+  width: 100%
+  height: 18.5%;
+  padding-top: 32px;
+  padding-bottom: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+`;
+
 const getTitleOfButton = (user: User): string => {
   switch (user.sessionId) {
     case -1:
@@ -300,7 +317,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
           <SessionContainer>
             <TitleText>next session</TitleText>
-            <PurpleButton
+            <NextSessionButton
               text={getTitleOfButton(currentUser)}
               onClick={() =>
                 history.push(
@@ -317,7 +334,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
           <WeekProgressContainer>
             <TitleText>this week</TitleText>
-            <p>box</p>
+
+            <WeekContainer>
+              <p>stars!</p>
+            </WeekContainer>
+
             <TitleText>your progress</TitleText>
             <ProgressStatsContainer>
               <ProgressBox>
