@@ -267,6 +267,23 @@ const getTitleOfButton = (user: User): string => {
   }
 };
 
+interface StatParams {
+  number: number;
+  description: string;
+}
+
+const Stat: FunctionComponent<StatParams> = ({
+  number,
+  description,
+}) => {
+  return (
+    <ProgressBox>
+      <ProgressStatNumber>{number}</ProgressStatNumber>
+      <ProgressStatDescription>{description}</ProgressStatDescription>
+    </ProgressBox>
+  );
+};
+
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
@@ -343,33 +360,16 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
             <TitleText>your progress</TitleText>
             <ProgressStatsContainer>
-              <ProgressBox>
-                <ProgressStatNumber>14</ProgressStatNumber>
-                <ProgressStatDescription>
-                  day streak
-                </ProgressStatDescription>
-              </ProgressBox>
-
-              <ProgressBox>
-                <ProgressStatNumber>25</ProgressStatNumber>
-                <ProgressStatDescription>
-                  words learned
-                </ProgressStatDescription>
-              </ProgressBox>
-
-              <ProgressBox>
-                <ProgressStatNumber>4</ProgressStatNumber>
-                <ProgressStatDescription>
-                  assessments completed
-                </ProgressStatDescription>
-              </ProgressBox>
-
-              <ProgressBox>
-                <ProgressStatNumber>3</ProgressStatNumber>
-                <ProgressStatDescription>
-                  interventions completed
-                </ProgressStatDescription>
-              </ProgressBox>
+              <Stat number={14} description={"day streak"} />
+              <Stat number={25} description={"words learned"} />
+              <Stat
+                number={4}
+                description={"assessments completed"}
+              />
+              <Stat
+                number={3}
+                description={"interventions completed"}
+              />
             </ProgressStatsContainer>
           </WeekProgressContainer>
         </DashboardContainer>
