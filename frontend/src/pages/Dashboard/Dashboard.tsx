@@ -64,7 +64,7 @@ const DashboardContainer = styled.div`
   min-width: 100%;
   padding-top: 98px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     flex-direction: column;
     padding-right: 0px;
   }
@@ -82,7 +82,7 @@ const MenuContainer = styled.div`
 
   background: ${CLOUD};
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     width: 100%;
     min-height: 347px;
     border-radius: 0px 0px 0px 0px;
@@ -110,7 +110,7 @@ const TitleText = styled.p`
   text-transform: lowercase;
   word-wrap: break-word;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     font-size: 30px;
   }
 `;
@@ -121,7 +121,7 @@ const ProfilePicture = styled.img`
   height: 183px;
   width: 183px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     font-size: 30px;
     height: 148px;
     width: 148px;
@@ -139,7 +139,7 @@ const SessionContainer = styled.div`
   padding-top: 64px;
   padding-bottom: 64px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     min-width: 100%;
     padding-top: 48px;
     padding-right: 24px;
@@ -153,7 +153,7 @@ const NextSessionButton = styled(PurpleButton)`
   margin-bottom: 64px;
   text-transform: lowercase;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     min-width: 100%;
   }
 `;
@@ -166,7 +166,7 @@ const WeekProgressContainer = styled.div`
   padding-right: 64px;
   padding-top: 64px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     min-width: 100%;
     padding-top: 48px;
     padding-right: 24px;
@@ -198,7 +198,7 @@ const ProgressBox = styled.div`
   background: ${CLOUD};
   border-radius: 12px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     max-width: calc(50% - 12px);
     margin-bottom: 24px;
   }
@@ -215,7 +215,7 @@ const ProgressStatNumber = styled.p`
   flex-grow: 0;
   margin: 0px 0px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     font-size: 36px;
   }
 `;
@@ -234,7 +234,7 @@ const ProgressStatDescription = styled.p`
   flex-grow: 0;
   margin: 0px 0px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     font-size: 16px;
   }
 `;
