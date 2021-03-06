@@ -60,6 +60,7 @@ const SignOutButton = styled.button`
 const DashboardContainer = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between
   min-height: 100%;
   min-width: 100%;
   padding-top: 98px;
@@ -75,7 +76,7 @@ const MenuContainer = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100%;
-  min-width: 309px;
+  flex: 1;
   border-radius: 0px 12px 0px 0px;
 
   padding: 64px 64px 64px 64px;
@@ -90,8 +91,6 @@ const MenuContainer = styled.div`
   }
 `;
 
-// HELP
-// Thinking of making a 2-column grid with the left-hand column being fixed-width for icons
 const MenuButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -133,7 +132,7 @@ const SessionContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
 
-  width: 48%;
+  flex: 3;
   min-height: 100%;
   padding-left: 64px;
   padding-top: 64px;
@@ -159,7 +158,7 @@ const NextSessionButton = styled(PurpleButton)`
 `;
 
 const WeekProgressContainer = styled.div`
-  width: 36%;
+  flex: 2;
   min-height: 100%;
 
   padding-left: 64px;
@@ -188,7 +187,7 @@ const ProgressBox = styled.div`
   align-items: center;
   padding: 30px 30px 30px 30px;
 
-  flex: none;
+  flex: 1 0 50%;
   order: 0;
   flex-grow: 1;
 
