@@ -93,7 +93,7 @@ export const finishedIntervention = {
     type: ActionTypes.FINISHED_INTERVENTION_REQUEST,
     payload: { setId },
   }),
-  success: ({}: FinishedInterventionAction): Action => ({
+  success: (): Action => ({
     type: ActionTypes.FINISHED_INTERVENTION_SUCCESS,
   }),
   error: ({ error }: FinishedInterventionAction): Action => ({

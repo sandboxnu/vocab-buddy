@@ -86,7 +86,7 @@ function* watchFinishedIntervention(action: Action) {
       await firebaseInteractor.createAssessmentFromIntervention(setId);
     };
     yield call(createNewAssessment);
-    yield put(finishedIntervention.success({}));
+    yield put(finishedIntervention.success());
   } catch (error) {
     yield put(finishedIntervention.error({ error }));
   }

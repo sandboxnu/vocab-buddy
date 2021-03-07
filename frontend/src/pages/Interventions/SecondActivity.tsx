@@ -166,7 +166,6 @@ const SecondActivity = ({
   updateIntervention,
 }: SecondActivityProps): ReactElement => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [hasSelected, setHasSelected] = useState(false);
 
   return (
     <Layout>
@@ -190,8 +189,7 @@ const SecondActivity = ({
                     correct={img.correct}
                     selected={index === selectedIndex}
                     onClick={() => {
-                      !hasSelected && setSelectedIndex(index);
-                      setHasSelected(true);
+                      selectedIndex === -1 && setSelectedIndex(index);
                     }}
                   />
                   {!img.correct && index === selectedIndex && (
