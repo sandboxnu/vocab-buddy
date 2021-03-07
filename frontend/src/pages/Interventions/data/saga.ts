@@ -77,7 +77,7 @@ function* watchUpdateIntervention(action: Action) {
     yield call(updateAndGetNewInterventions);
     yield put(updateIntervention.success({ interventions }));
   } catch (error) {
-    yield put(updateIntervention.error({ error }));
+    yield put(updateIntervention.error(error));
   }
 }
 
