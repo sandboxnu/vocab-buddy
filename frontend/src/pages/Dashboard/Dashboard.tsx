@@ -40,9 +40,6 @@ const connector = connect(
 // But I am able to scroll down.. so it's not at the bottom.
 // If someone could help with the height stuff so there's no scrolling that would be great
 const SignOutButton = styled.button`
-  position: absolute;
-  bottom: 0px;
-
   background-color: #fff0;
   border-width: 0px;
   color: ${INK};
@@ -60,7 +57,7 @@ const SignOutButton = styled.button`
 const DashboardContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between
+  justify-content: space-between;
   min-height: 100%;
   min-width: 100%;
   padding-top: 98px;
@@ -75,6 +72,7 @@ const MenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   min-height: 100%;
   flex: 1;
   border-radius: 0px 12px 0px 0px;
@@ -112,6 +110,12 @@ const TitleText = styled.p`
   @media (max-width: 900px) {
     font-size: 30px;
   }
+`;
+
+const MenuTopDiv = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const ProfilePicture = styled.img`
@@ -321,14 +325,15 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       <>
         <DashboardContainer>
           <MenuContainer>
-            <ProfilePicture
-              src={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-              }
-            />
-            <TitleText>hi name!</TitleText>
-            <MenuButtonContainer></MenuButtonContainer>
-
+            <MenuTopDiv>
+              <ProfilePicture
+                src={
+                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+                }
+              />
+              <TitleText>hi name!</TitleText>
+              <MenuButtonContainer></MenuButtonContainer>
+            </MenuTopDiv>
             {screenWidth > 600 && (
               <SignOutButton onClick={signOut}>log out</SignOutButton>
             )}
