@@ -4,7 +4,11 @@ import {
   DislikeFilled,
   LikeFilled,
 } from "@ant-design/icons";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, {
+  FunctionComponent,
+  ReactElement,
+  useState,
+} from "react";
 import styled from "styled-components";
 import { CORAL, SEA_FOAM } from "../constants/colors";
 import Blocker from "./Blocker";
@@ -59,12 +63,17 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
   selected,
   setSelected,
 }): ReactElement => {
+  const [hasSelected, setHasSelected] = useState(false);
+
   return (
     <Blocker afterSeconds={15} repeatable={false}>
       <YesNoContainer>
         <YesNoButton
           highlight={selected === 1 ? (correctAnswer ? 1 : 0) : -1}
-          onClick={() => setSelected(1)}
+          onClick={() => {
+            !hasSelected && setSelected(1);
+            setHasSelected(true);
+          }}
           text="yes"
           top={20}
           check={
@@ -82,7 +91,10 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
         />
         <YesNoButton
           highlight={selected === 0 ? (correctAnswer ? 0 : 1) : -1}
-          onClick={() => setSelected(0)}
+          onClick={() => {
+            !hasSelected && setSelected(0);
+            setHasSelected(true);
+          }}
           text="no"
           top={20}
           check={
