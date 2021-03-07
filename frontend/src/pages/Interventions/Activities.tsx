@@ -27,16 +27,20 @@ interface ActivityProps {
     setId,
     wordIdx,
     activityIdx,
+    durationInSeconds,
     answer2Correct,
     answer3Correct,
-    durationInSeconds,
+    answer3Part2Correct,
+    answer3Part3Correct,
   }: {
     setId: string;
     wordIdx: number;
     activityIdx: number;
+    durationInSeconds: number;
     answer2Correct: boolean | undefined;
     answer3Correct: boolean | undefined;
-    durationInSeconds: number;
+    answer3Part2Correct: boolean | undefined;
+    answer3Part3Correct: boolean | undefined;
   }) => void;
   finishedIntervention: ({ setId }: { setId: string }) => void;
 }
@@ -119,11 +123,15 @@ const Activities: FunctionComponent<ActivityProps> = ({
               setId,
               wordIdx: nextWordIdx,
               activityIdx: nextActivityIdx,
+              durationInSeconds,
               answer2Correct:
                 currentActivityIdx === 1 ? correct : undefined,
               answer3Correct:
                 currentActivityIdx === 2 ? correct : undefined,
-              durationInSeconds,
+              answer3Part2Correct:
+                currentActivityIdx === 3 ? correct : undefined,
+              answer3Part3Correct:
+                currentActivityIdx === 4 ? correct : undefined,
             });
           }
         }}

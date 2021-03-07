@@ -47,6 +47,8 @@ interface UpdateInterventionAction {
   durationInSeconds?: number;
   answer2Correct?: boolean;
   answer3Correct?: boolean;
+  answer3Part2Correct?: boolean;
+  answer3Part3Correct?: boolean;
 }
 
 export const updateIntervention = {
@@ -57,6 +59,8 @@ export const updateIntervention = {
     durationInSeconds,
     answer2Correct,
     answer3Correct,
+    answer3Part2Correct,
+    answer3Part3Correct,
   }: UpdateInterventionAction): Action => {
     return {
       type: ActionTypes.UPDATE_INTERVENTION_REQUEST,
@@ -64,9 +68,11 @@ export const updateIntervention = {
         setId,
         wordIdx,
         activityIdx,
+        durationInSeconds,
         answer2Correct,
         answer3Correct,
-        durationInSeconds,
+        answer3Part2Correct,
+        answer3Part3Correct,
       },
     };
   },

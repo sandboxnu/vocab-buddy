@@ -57,6 +57,8 @@ function* watchUpdateIntervention(action: Action) {
       durationInSeconds,
       answer2Correct,
       answer3Correct,
+      answer3Part2Correct,
+      answer3Part3Correct,
     } = action.payload;
     let interventions;
     const updateAndGetNewInterventions = async () => {
@@ -66,7 +68,9 @@ function* watchUpdateIntervention(action: Action) {
         activityIdx,
         durationInSeconds,
         answer2Correct,
-        answer3Correct
+        answer3Correct,
+        answer3Part2Correct,
+        answer3Part3Correct
       );
       interventions = await firebaseInteractor.getIntervention(setId);
     };
