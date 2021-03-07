@@ -8,7 +8,12 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
-import { CLOUD, INK } from "../../constants/colors";
+import {
+  CLOUD,
+  INK,
+  SKY,
+  INCOMPLETE_GRAY,
+} from "../../constants/colors";
 import PurpleButton from "../../components/PurpleButton";
 import { User } from "../../models/types";
 import {
@@ -150,6 +155,65 @@ const SessionContainer = styled.div`
   }
 `;
 
+const SessionCardContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  min-width: 100%;
+  @media (max-width: 900px) {
+  }
+`;
+
+interface SessionCompletionProp {
+  isComplete: boolean;
+}
+
+const SessionBox = styled.div`
+  padding: 40px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 32px 16px 0px;
+
+  flex: 1 0 10%;
+  order: 0;
+  flex-grow: 1;
+
+  @media (max-width: 900px) {
+    padding: 32px;
+    margin: 12px 24px 12px 0px;
+  }
+
+  ${({ isComplete }: SessionCompletionProp) => {
+    if (isComplete) {
+      return `
+    background: ${SKY} !important;
+  `;
+    } else {
+      return `
+    background: ${INCOMPLETE_GRAY} !important; 
+  `;
+    }
+  }};
+`;
+
+const SessionNumber = styled.p`
+  font-weight: 700;
+  font-size: 18px;
+  text-align: center;
+`;
+
+const SessionImage = styled.img`
+  max-width: 35px;
+  margin-bottom: 24px;
+  @media (max-width: 900px) {
+    margin-bottom: 22px;
+  }
+`;
+
 const NextSessionButton = styled(PurpleButton)`
   min-width: 32%;
   height: 100px;
@@ -288,6 +352,25 @@ const Stat: FunctionComponent<StatParams> = ({
   );
 };
 
+interface SessionCardParams {
+  sessionNumber: number;
+  image: string;
+  isComplete: boolean;
+}
+
+const SessionCard: FunctionComponent<SessionCardParams> = ({
+  sessionNumber,
+  image,
+  isComplete,
+}) => {
+  return (
+    <SessionBox isComplete={isComplete}>
+      <SessionImage src={image} />
+      <SessionNumber>session {sessionNumber}</SessionNumber>
+    </SessionBox>
+  );
+};
+
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
@@ -354,6 +437,64 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             />
 
             <TitleText>list of sessions</TitleText>
+            <SessionCardContainer>
+              <SessionCard
+                sessionNumber={1}
+                image={
+                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+                }
+                isComplete={currentUser.sessionId >= 1}
+              />
+              <SessionCard
+                sessionNumber={2}
+                image={
+                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+                }
+                isComplete={currentUser.sessionId >= 2}
+              />
+              <SessionCard
+                sessionNumber={3}
+                image={
+                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+                }
+                isComplete={currentUser.sessionId >= 3}
+              />
+              <SessionCard
+                sessionNumber={4}
+                image={
+                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+                }
+                isComplete={currentUser.sessionId >= 4}
+              />
+              <SessionCard
+                sessionNumber={5}
+                image={
+                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+                }
+                isComplete={currentUser.sessionId >= 5}
+              />
+              <SessionCard
+                sessionNumber={6}
+                image={
+                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+                }
+                isComplete={currentUser.sessionId >= 6}
+              />
+              <SessionCard
+                sessionNumber={7}
+                image={
+                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+                }
+                isComplete={currentUser.sessionId >= 7}
+              />
+              <SessionCard
+                sessionNumber={8}
+                image={
+                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+                }
+                isComplete={currentUser.sessionId >= 8}
+              />
+            </SessionCardContainer>
           </SessionContainer>
 
           <WeekProgressContainer>
