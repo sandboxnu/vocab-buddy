@@ -188,7 +188,9 @@ const SecondActivity = ({
                     url={img.url}
                     correct={img.correct}
                     selected={index === selectedIndex}
-                    onClick={() => setSelectedIndex(index)}
+                    onClick={() => {
+                      selectedIndex === -1 && setSelectedIndex(index);
+                    }}
                   />
                   {!img.correct && index === selectedIndex && (
                     <RedCircle>
