@@ -170,16 +170,13 @@ export default class FirebaseInteractor {
     setId: string,
     wordIdx: number,
     activityIdx: number,
+    durationInSeconds: number,
     activity2Correct?: boolean,
     activity3Correct?: boolean,
     activity3Part2Correct?: boolean,
     activity3Part3Correct?: boolean
   ) {
     let intervention = await this.db.collection("interventions").doc(setId);
-    let object: any = {
-      wordIdx,
-      activityIdx,
-    };
 
     let wordList: string[] = (await intervention.get())?.data()?.wordList || [];
     if (activity2Correct !== undefined) {
@@ -205,6 +202,16 @@ export default class FirebaseInteractor {
         activity3Part3Correct,
       });
     }
+
+    const increment = firebase.firestore.FieldValue.increment(
+      durationInSeconds
+    );
+
+    let object: any = {
+      wordIdx,
+      activityIdx,
+      durationsInSeconds: increment,
+    };
 
     intervention.update(object);
   }

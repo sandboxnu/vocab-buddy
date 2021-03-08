@@ -39,15 +39,18 @@ export const getCurrentIntervention = {
 };
 
 interface UpdateInterventionAction {
-  setId?: string;
-  error?: string;
-  wordIdx?: number;
-  activityIdx?: number;
-  interventions?: Interventions;
+  setId: string;
+  wordIdx: number;
+  activityIdx: number;
+  durationInSeconds: number;
   answer2Correct?: boolean;
   answer3Correct?: boolean;
   answer3Part2Correct?: boolean;
   answer3Part3Correct?: boolean;
+}
+
+interface UpdateInterventionSuccess {
+  interventions?: Interventions;
 }
 
 export const updateIntervention = {
@@ -55,6 +58,7 @@ export const updateIntervention = {
     setId,
     wordIdx,
     activityIdx,
+    durationInSeconds,
     answer2Correct,
     answer3Correct,
     answer3Part2Correct,
@@ -66,6 +70,7 @@ export const updateIntervention = {
         setId,
         wordIdx,
         activityIdx,
+        durationInSeconds,
         answer2Correct,
         answer3Correct,
         answer3Part2Correct,
@@ -73,11 +78,11 @@ export const updateIntervention = {
       },
     };
   },
-  success: ({ interventions }: UpdateInterventionAction): Action => ({
+  success: ({ interventions }: UpdateInterventionSuccess): Action => ({
     type: ActionTypes.UPDATE_INTERVENTION_SUCCESS,
     payload: { interventions },
   }),
-  error: ({ error }: UpdateInterventionAction): Action => ({
+  error: (error: Error): Action => ({
     type: ActionTypes.UPDATE_INTERVENTION_ERROR,
     payload: { error },
   }),
