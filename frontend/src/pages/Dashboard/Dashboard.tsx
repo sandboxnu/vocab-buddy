@@ -125,7 +125,6 @@ const ProfilePicture = styled.img`
   width: 183px;
 
   @media (max-width: 900px) {
-    font-size: 30px;
     height: 148px;
     width: 148px;
   }
@@ -209,7 +208,7 @@ const ProgressBox = styled.div`
 
 const ProgressStatNumber = styled.p`
   font-family: "Rubik";
-  font-size: 56px;
+  font-size: 4vw;
   font-weight: 700;
   text-transform: lowercase;
   color: ${INK};
@@ -219,14 +218,14 @@ const ProgressStatNumber = styled.p`
   margin: 0px 0px;
 
   @media (max-width: 900px) {
-    font-size: 36px;
+    font-size: 6vw;
   }
 `;
 
 const ProgressStatDescription = styled.p`
   text-transform: lowercase;
   font-family: Open Sans;
-  font-size: 18px;
+  font-size: 1.25vw;
   font-weight: 400;
   text-transform: lowercase;
   word-wrap: break-word;
@@ -238,7 +237,7 @@ const ProgressStatDescription = styled.p`
   margin: 0px 0px;
 
   @media (max-width: 900px) {
-    font-size: 16px;
+    font-size: 3vw;
   }
 `;
 
@@ -334,7 +333,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               <TitleText>hi name!</TitleText>
               <MenuButtonContainer></MenuButtonContainer>
             </MenuTopDiv>
-            {screenWidth > 600 && (
+            {screenWidth > 900 && (
               <SignOutButton onClick={signOut}>log out</SignOutButton>
             )}
           </MenuContainer>
