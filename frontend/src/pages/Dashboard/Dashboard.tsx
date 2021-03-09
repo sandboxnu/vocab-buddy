@@ -36,9 +36,6 @@ const connector = connect(
   }
 );
 
-// TODO: this button is placed at the bottom of the menu,
-// But I am able to scroll down.. so it's not at the bottom.
-// If someone could help with the height stuff so there's no scrolling that would be great
 const SignOutButton = styled.button`
   background-color: #fff0;
   border-width: 0px;
