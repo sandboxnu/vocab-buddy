@@ -93,6 +93,7 @@ export interface User {
   sessionId: SessionId;
   onAssessment: boolean;
   currentInterventionOrAssessment: string;
+  daysActive: Array<string>;
 }
 
 /**

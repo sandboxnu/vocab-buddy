@@ -100,7 +100,9 @@ export default class FirebaseInteractor {
     userAuth.user.sendEmailVerification();
     if (accountType === "STUDENT") {
       let initialAssessmentId = await this.createInitialAssessment();
+      let currentDaysActive = new Array<String>();
       this.db.collection("users").doc(userAuth.user.uid).update({
+        daysActive: currentDaysActive,
         currentInterventionOrAssessment: initialAssessmentId,
         sessionId: -1,
         onAssessment: true,
@@ -129,6 +131,8 @@ export default class FirebaseInteractor {
           userData.onAssessment === undefined ? true : userData.onAssessment,
         currentInterventionOrAssessment:
           userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
+        daysActive:
+          userData.daysActive === undefined ? [] : userData.daysActive,
       };
     } else {
       throw new Error("Invalid user");
@@ -207,6 +211,42 @@ export default class FirebaseInteractor {
     }
 
     intervention.update(object);
+    this.updateDaysActive();
+  }
+
+  async updateDaysActive() {
+    let userId = this.auth.currentUser?.uid;
+
+    let today = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate()
+    );
+    let todayDayOfWeek = today.getDay();
+    let user = await this.getUser(undefined);
+    let daysActive = user.daysActive;
+    let clearPreviousWeek = false;
+    daysActive.forEach((dayString) => {
+      let day = new Date(dayString);
+      let daysApart = (today.getTime() - day.getTime()) / (1000 * 60 * 60 * 24);
+      let dayOfWeek = day.getDay();
+      if (today !== day && (dayOfWeek > todayDayOfWeek || daysApart >= 7)) {
+        clearPreviousWeek = true;
+      }
+    });
+
+    if (clearPreviousWeek) {
+      await this.db.collection("users").doc(userId).update({
+        daysActive: [],
+      });
+    }
+
+    await this.db
+      .collection("users")
+      .doc(userId)
+      .update({
+        daysActive: firebase.firestore.FieldValue.arrayUnion(today.toString()),
+      });
   }
 
   /**
@@ -309,6 +349,7 @@ export default class FirebaseInteractor {
       currentIndex: currentIdx,
       durationInSeconds: increment,
     });
+    this.updateDaysActive();
   }
 
   async createInterventionFromAssessment(
