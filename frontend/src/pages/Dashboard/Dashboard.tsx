@@ -17,6 +17,8 @@ import {
   SignOut,
 } from "./data/actions";
 import { getCurrentUser, getIsSignedOut } from "./data/reducer";
+import star from "../../assets/star.svg";
+import ellipse from "../../assets/ellipse.svg";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -238,6 +240,29 @@ const ProgressStatDescription = styled.p`
   }
 `;
 
+const DayLabel = styled.p<DayLabelType>`
+  font-weight: ${(props) => (props.isToday ? 700 : 400)};
+`;
+
+const Star = styled.img`
+  height: 51px;
+  width: 52px;
+
+  @media (max-width: 900px) {
+    height: 35px;
+    width: 36px;
+  }
+`;
+const Dot = styled.img`
+  height: 12px;
+  width: 12px;
+
+  @media (max-width: 900px) {
+    height: 10px;
+    width: 10px;
+  }
+`;
+
 const WeekContainer = styled.div`
   flex: none;
   order: 1;
@@ -267,10 +292,56 @@ const getTitleOfButton = (user: User): string => {
   }
 };
 
+const isDayActive = (dayNumber: number, user: User): boolean => {
+  let daysActive = user.daysActive;
+  daysActive.forEach((dayString) => {
+    let day = new Date(dayString);
+    let dayOfWeek = day.getDay();
+    console.log(dayOfWeek);
+    if (dayOfWeek == dayNumber) {
+      return true;
+    }
+  });
+  return false;
+};
+
+const isToday = (dayNumber: number): boolean => {
+  let today = new Date();
+  let dayOfWeek = today.getDay();
+  return dayNumber === dayOfWeek;
+};
+
 interface StatParams {
   number: number;
   description: string;
 }
+interface DayParams {
+  name: string;
+  day: number;
+  currentUser: User;
+}
+
+interface DayLabelType {
+  isToday?: boolean;
+}
+const DayOfWeek: FunctionComponent<DayParams> = ({
+  name,
+  day,
+  currentUser,
+}) => {
+  let istoday = isToday(day);
+  let isActive = isDayActive(day, currentUser);
+  return (
+    <div>
+      {isActive ? (
+        <Star src={star}> </Star>
+      ) : (
+        <Dot src={ellipse}></Dot>
+      )}
+      <DayLabel isToday={istoday}>{name}</DayLabel>
+    </div>
+  );
+};
 
 const Stat: FunctionComponent<StatParams> = ({
   number,
@@ -354,9 +425,42 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
           <WeekProgressContainer>
             <TitleText>this week</TitleText>
-
             <WeekContainer>
-              <p>stars!</p>
+              <DayOfWeek
+                name="su"
+                day={0}
+                currentUser={currentUser}
+              ></DayOfWeek>
+              <DayOfWeek
+                name="mo"
+                day={1}
+                currentUser={currentUser}
+              ></DayOfWeek>
+              <DayOfWeek
+                name="tu"
+                day={2}
+                currentUser={currentUser}
+              ></DayOfWeek>
+              <DayOfWeek
+                name="we"
+                day={3}
+                currentUser={currentUser}
+              ></DayOfWeek>
+              <DayOfWeek
+                name="th"
+                day={4}
+                currentUser={currentUser}
+              ></DayOfWeek>
+              <DayOfWeek
+                name="fr"
+                day={5}
+                currentUser={currentUser}
+              ></DayOfWeek>
+              <DayOfWeek
+                name="sa"
+                day={6}
+                currentUser={currentUser}
+              ></DayOfWeek>
             </WeekContainer>
 
             <TitleText>your progress</TitleText>
