@@ -278,18 +278,19 @@ const WeekContainer = styled.div`
   margin: 32px 0px 64px;
   background: ${CLOUD};
   border-radius: 12px;
-  width: 100%
-  height: 18.5%;
-  
-  @media (max-width: 900px) [
+  width: 100%;
+
+  @media (max-width: 900px) {
     margin: 24px 0px 48px;
-  ]
+    padding: 35px 20px;
+  }
 `;
 
 const DayContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 50px;
 `;
 
 const getTitleOfButton = (user: User): string => {
