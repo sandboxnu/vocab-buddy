@@ -100,7 +100,7 @@ export default class FirebaseInteractor {
     userAuth.user.sendEmailVerification();
     if (accountType === "STUDENT") {
       let initialAssessmentId = await this.createInitialAssessment();
-      let currentDaysActive = new Array<String>();
+      let currentDaysActive: string[] = [];
       this.db.collection("users").doc(userAuth.user.uid).update({
         daysActive: currentDaysActive,
         currentInterventionOrAssessment: initialAssessmentId,

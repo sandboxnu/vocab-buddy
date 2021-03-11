@@ -241,7 +241,7 @@ const ProgressStatDescription = styled.p`
 `;
 
 const DayLabel = styled.p<DayLabelType>`
-  font-weight: ${(props) => (props.isToday ? 700 : 400)};
+  font-weight: ${({ isToday }) => (isToday ? 700 : 400)};
   line-height: 0px;
 `;
 
@@ -448,7 +448,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                     name={label}
                     day={index}
                     currentUser={currentUser}
-                  ></DayOfWeek>
+                  />
                 );
               })}
             </WeekContainer>
