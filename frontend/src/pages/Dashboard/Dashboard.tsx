@@ -242,11 +242,13 @@ const ProgressStatDescription = styled.p`
 
 const DayLabel = styled.p<DayLabelType>`
   font-weight: ${(props) => (props.isToday ? 700 : 400)};
+  line-height: 0px;
 `;
 
 const Star = styled.img`
   height: 51px;
   width: 52px;
+  margin-bottom: 20px;
 
   @media (max-width: 900px) {
     height: 35px;
@@ -256,10 +258,12 @@ const Star = styled.img`
 const Dot = styled.img`
   height: 12px;
   width: 12px;
+  margin: 18px 20px 38px 20px;
 
   @media (max-width: 900px) {
     height: 10px;
     width: 10px;
+    margin: 12px 20px 32px 20px;
   }
 `;
 
@@ -267,15 +271,25 @@ const WeekContainer = styled.div`
   flex: none;
   order: 1;
   flex-grow: 0;
-  margin: 32px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 32px;
+  margin: 32px 0px 64px;
   background: ${CLOUD};
   border-radius: 12px;
   width: 100%
   height: 18.5%;
-  padding-top: 32px;
-  padding-bottom: 40px;
-  padding-left: 30px;
-  padding-right: 30px;
+  
+  @media (max-width: 900px) [
+    margin: 24px 0px 48px;
+  ]
+`;
+
+const DayContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const getTitleOfButton = (user: User): string => {
@@ -294,14 +308,14 @@ const getTitleOfButton = (user: User): string => {
 
 const isDayActive = (dayNumber: number, user: User): boolean => {
   let daysActive = user.daysActive;
-  daysActive.forEach((dayString) => {
+  for (let index in daysActive) {
+    let dayString = daysActive[index];
     let day = new Date(dayString);
     let dayOfWeek = day.getDay();
-    console.log(dayOfWeek);
-    if (dayOfWeek == dayNumber) {
+    if (dayOfWeek === dayNumber) {
       return true;
     }
-  });
+  }
   return false;
 };
 
@@ -332,14 +346,14 @@ const DayOfWeek: FunctionComponent<DayParams> = ({
   let istoday = isToday(day);
   let isActive = isDayActive(day, currentUser);
   return (
-    <div>
+    <DayContainer>
       {isActive ? (
-        <Star src={star}> </Star>
+        <Star src={star}></Star>
       ) : (
         <Dot src={ellipse}></Dot>
       )}
       <DayLabel isToday={istoday}>{name}</DayLabel>
-    </div>
+    </DayContainer>
   );
 };
 
@@ -366,6 +380,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     history.push("/login");
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa", "su"];
 
   useEffect(() => {
     const resizeScreen = () => {
@@ -426,41 +441,15 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
           <WeekProgressContainer>
             <TitleText>this week</TitleText>
             <WeekContainer>
-              <DayOfWeek
-                name="su"
-                day={0}
-                currentUser={currentUser}
-              ></DayOfWeek>
-              <DayOfWeek
-                name="mo"
-                day={1}
-                currentUser={currentUser}
-              ></DayOfWeek>
-              <DayOfWeek
-                name="tu"
-                day={2}
-                currentUser={currentUser}
-              ></DayOfWeek>
-              <DayOfWeek
-                name="we"
-                day={3}
-                currentUser={currentUser}
-              ></DayOfWeek>
-              <DayOfWeek
-                name="th"
-                day={4}
-                currentUser={currentUser}
-              ></DayOfWeek>
-              <DayOfWeek
-                name="fr"
-                day={5}
-                currentUser={currentUser}
-              ></DayOfWeek>
-              <DayOfWeek
-                name="sa"
-                day={6}
-                currentUser={currentUser}
-              ></DayOfWeek>
+              {dayLabels.map((label: string, index: number) => {
+                return (
+                  <DayOfWeek
+                    name={label}
+                    day={index}
+                    currentUser={currentUser}
+                  ></DayOfWeek>
+                );
+              })}
             </WeekContainer>
 
             <TitleText>your progress</TitleText>
