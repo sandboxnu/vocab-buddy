@@ -8,7 +8,7 @@ Vocab buddy is a web application that identities challenging words and creates c
 The application is currently developed and maintained by [Sandbox](https://www.sandboxnu.com), Northeastern's student-led software consultancy.
 
 ### Assessments
-Assessments are the quizzes/tests that a child will take before a set of interventions. They identity the skill gaps and chidlren' vocabulary knowledge. Each assessment consists of more than 10 wrods, where a child needs to select the best picture that matches the given word.
+Assessments are the quizzes/tests that a child will take before a set of interventions. They identity the skill gaps and children' vocabulary knowledge. Each assessment consists of more than 10 words, where a child needs to select the best picture that matches the given word.
 
 
 ### Interventions
