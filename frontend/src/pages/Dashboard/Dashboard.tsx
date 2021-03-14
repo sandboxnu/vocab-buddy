@@ -241,8 +241,17 @@ const ProgressStatDescription = styled.p`
 `;
 
 const DayLabel = styled.p<DayLabelType>`
+  font-size: 1.25vw;
   font-weight: ${({ isToday }) => (isToday ? 700 : 400)};
   line-height: 0px;
+
+  @media (max-width: 900px) {
+    font-size: 3vw;
+  }
+
+  @media (max-width: 425px) {
+    font-size: 4vw;
+  }
 `;
 
 const Star = styled.img`
@@ -263,7 +272,7 @@ const Dot = styled.img`
   @media (max-width: 900px) {
     height: 10px;
     width: 10px;
-    margin: 12px 20px 32px 20px;
+    margin: 12px 15px 32px 15px;
   }
 `;
 
@@ -307,8 +316,27 @@ const getTitleOfButton = (user: User): string => {
   }
 };
 
-const isDayActive = (dayNumber: number, user: User): boolean => {
-  let daysActive = user.daysActive;
+const filterByThisWeek = (dayString: string) => {
+  let today = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    new Date().getDate()
+  );
+  let todayDayOfWeek = today.getDay();
+  let day = new Date(dayString);
+  let daysApart =
+    (today.getTime() - day.getTime()) / (1000 * 60 * 60 * 24);
+  let dayOfWeek = day.getDay();
+  return !(
+    today !== day &&
+    (dayOfWeek > todayDayOfWeek || daysApart >= 7)
+  );
+};
+
+const isDayActive = (
+  dayNumber: number,
+  daysActive: string[]
+): boolean => {
   for (let index in daysActive) {
     let dayString = daysActive[index];
     let day = new Date(dayString);
@@ -333,7 +361,7 @@ interface StatParams {
 interface DayParams {
   name: string;
   day: number;
-  currentUser: User;
+  daysActiveThisWeek: string[];
 }
 
 interface DayLabelType {
@@ -342,10 +370,10 @@ interface DayLabelType {
 const DayOfWeek: FunctionComponent<DayParams> = ({
   name,
   day,
-  currentUser,
+  daysActiveThisWeek,
 }) => {
   let istoday = isToday(day);
-  let isActive = isDayActive(day, currentUser);
+  let isActive = isDayActive(day, daysActiveThisWeek);
   return (
     <DayContainer>
       {isActive ? (
@@ -381,7 +409,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     history.push("/login");
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa", "su"];
+  const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa"];
 
   useEffect(() => {
     const resizeScreen = () => {
@@ -397,11 +425,15 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     if (!currentUser) {
       getUser({});
     }
-  }, [currentUser, getUser]);
+  }, [currentUser, getUser, currentUser?.daysActive]);
 
   if (!currentUser) {
     return <h1>Loading</h1>;
   }
+
+  const daysActiveThisWeek = currentUser.daysActive.filter((day) =>
+    filterByThisWeek(day)
+  );
 
   return (
     <Layout shouldAddPadding={false}>
@@ -447,7 +479,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                   <DayOfWeek
                     name={label}
                     day={index}
-                    currentUser={currentUser}
+                    daysActiveThisWeek={daysActiveThisWeek}
                   />
                 );
               })}

@@ -229,24 +229,6 @@ export default class FirebaseInteractor {
       new Date().getMonth(),
       new Date().getDate()
     );
-    let todayDayOfWeek = today.getDay();
-    let user = await this.getUser(undefined);
-    let daysActive = user.daysActive;
-    let clearPreviousWeek = false;
-    daysActive.forEach((dayString) => {
-      let day = new Date(dayString);
-      let daysApart = (today.getTime() - day.getTime()) / (1000 * 60 * 60 * 24);
-      let dayOfWeek = day.getDay();
-      if (today !== day && (dayOfWeek > todayDayOfWeek || daysApart >= 7)) {
-        clearPreviousWeek = true;
-      }
-    });
-
-    if (clearPreviousWeek) {
-      await this.db.collection("users").doc(userId).update({
-        daysActive: [],
-      });
-    }
 
     await this.db
       .collection("users")
