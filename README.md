@@ -3,7 +3,7 @@
 
 [vocabbuddy.now.sh](vocabbuddy.now.sh)
 ## Introduction
-Vocab buddy is a web application that identities challenging words and creates corresponding learning interventions to young children expand their vocabulary development. It consists of 8 sessions of assessments and interventions to best track children's progress through out study. The project is developed with React, Redux sagas as frontend, as well as firebase as backend to store research data.
+Vocab buddy is a web application that identities challenging words and creates corresponding learning interventions to young children expand their vocabulary development. It consists of 8 sessions of assessments and interventions to best track children's progress through out study. The project is developed with React, Redux Saga as frontend, as well as firebase as backend to store research data.
 
 The application is currently developed and maintained by [Sandbox](https://www.sandboxnu.com), Northeastern's student-led software consultancy.
 
