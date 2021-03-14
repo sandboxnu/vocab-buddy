@@ -11,6 +11,7 @@ import { getCurrentIntervention } from "./data/actions";
 import { getError, getInterventionId } from "./data/reducer";
 import styled from "styled-components";
 import { Alert } from "antd";
+import ErrorToast from "../../components/ErrorToast";
 
 const connector = connect(
   (state) => ({
@@ -65,15 +66,12 @@ const Interventions: FunctionComponent<InterventionProps> = ({
         title="interventions"
         subtitle="start an intervention"
       />
-      {error && hasClickedButton && (
-        <StyledAlert
-          banner
-          message={error.message}
-          type="error"
-          closable
-          onClose={() => setHasClickedButton(false)}
-        />
-      )}
+      <ErrorToast
+        errorMessage={
+          error && hasClickedButton ? error.message : undefined
+        }
+        onClose={() => setHasClickedButton(false)}
+      />
     </>
   );
 };

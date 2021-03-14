@@ -7,6 +7,7 @@ import React, {
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import ErrorToast from "../../components/ErrorToast";
 import LandingPage from "../../components/LandingPage";
 import { ASSESSMENTS_LANDING } from "../../constants/images";
 import { getCurrentAssessment } from "./data/actions";
@@ -65,15 +66,12 @@ const Assessments: FunctionComponent<AssessmentsProps> = ({
           setHasClickedButton(true);
         }}
       />
-      {error && hasClickedButton && (
-        <StyledAlert
-          banner
-          message={error.message}
-          type="error"
-          closable
-          onClose={() => setHasClickedButton(false)}
-        />
-      )}
+      <ErrorToast
+        errorMessage={
+          error && hasClickedButton ? error.message : undefined
+        }
+        onClose={() => setHasClickedButton(false)}
+      />
     </>
   );
 };

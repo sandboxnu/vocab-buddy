@@ -16,19 +16,25 @@ import {
   GetDataRequestProps,
   SignOut,
 } from "./data/actions";
-import { getCurrentUser, getIsSignedOut } from "./data/reducer";
+import {
+  getCurrentUser,
+  getDashboardError,
+  getIsSignedOut,
+} from "./data/reducer";
 
 interface DashboardParams {
   isSignedOut: boolean;
   currentUser?: User;
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
+  error?: Error;
 }
 
 const connector = connect(
   (state) => ({
     isSignedOut: getIsSignedOut(state),
     currentUser: getCurrentUser(state),
+    error: getDashboardError(state),
   }),
   {
     signOut: SignOut.request,
@@ -289,12 +295,17 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   signOut,
   currentUser,
   getUser,
+  error,
 }): ReactElement => {
   let history = useHistory();
   if (isSignedOut) {
     history.push("/login");
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [
+    hasPerformedNetworkRequest,
+    setHasPerformedNetworkRequest,
+  ] = useState(false);
 
   useEffect(() => {
     const resizeScreen = () => {
@@ -309,8 +320,13 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   useEffect(() => {
     if (!currentUser) {
       getUser({});
+      setHasPerformedNetworkRequest(true);
     }
   }, [currentUser, getUser]);
+
+  if (error && hasPerformedNetworkRequest) {
+    history.push("/error");
+  }
 
   if (!currentUser) {
     return <h1>Loading</h1>;
