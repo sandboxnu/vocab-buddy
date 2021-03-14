@@ -16,11 +16,17 @@ import {
   GetDataRequestProps,
   SignOut,
 } from "./data/actions";
-import { getCurrentUser, getIsSignedOut } from "./data/reducer";
+import {
+  getCurrentUser,
+  getIsSignedOut,
+  getTotalWordsLearned,
+} from "./data/reducer";
+import userEvent from "@testing-library/user-event";
 
 interface DashboardParams {
   isSignedOut: boolean;
   currentUser?: User;
+  totalWordsLearned?: number;
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
 }
@@ -29,6 +35,7 @@ const connector = connect(
   (state) => ({
     isSignedOut: getIsSignedOut(state),
     currentUser: getCurrentUser(state),
+    totalWordsLearned: getTotalWordsLearned(state),
   }),
   {
     signOut: SignOut.request,
@@ -245,7 +252,7 @@ const WeekContainer = styled.div`
   margin: 32px 0px;
   background: ${CLOUD};
   border-radius: 12px;
-  width: 100%
+  width: 100%;
   height: 18.5%;
   padding-top: 32px;
   padding-bottom: 40px;
@@ -288,6 +295,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
   currentUser,
+  totalWordsLearned,
   getUser,
 }): ReactElement => {
   let history = useHistory();
@@ -307,12 +315,12 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   }, []);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser || totalWordsLearned === undefined) {
       getUser({});
     }
   }, [currentUser, getUser]);
 
-  if (!currentUser) {
+  if (!currentUser || totalWordsLearned === undefined) {
     return <h1>Loading</h1>;
   }
 
@@ -362,13 +370,19 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             <TitleText>your progress</TitleText>
             <ProgressStatsContainer>
               <Stat number={14} description={"day streak"} />
-              <Stat number={25} description={"words learned"} />
               <Stat
-                number={4}
+                number={totalWordsLearned}
+                description={"words learned"}
+              />
+              <Stat
+                number={currentUser.sessionId + 1}
                 description={"assessments completed"}
               />
               <Stat
-                number={3}
+                number={
+                  currentUser.sessionId +
+                  (currentUser.onAssessment ? 1 : 0)
+                }
                 description={"interventions completed"}
               />
             </ProgressStatsContainer>

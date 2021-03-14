@@ -29,12 +29,14 @@ function* watchSignOut() {
 function* watchGetDashboardData(action: Action) {
   let { id } = action.payload;
   let user;
+  let totalWordsLearned;
   const getValue = async () => {
     user = await firebaseInteractor.getUser(id);
+    totalWordsLearned = await firebaseInteractor.getTotalWordsLearned(id);
   };
   try {
     yield call(getValue);
-    yield put(GetData.success({ user }));
+    yield put(GetData.success({ user, totalWordsLearned }));
   } catch (error) {
     yield put(GetData.error({ error }));
   }
