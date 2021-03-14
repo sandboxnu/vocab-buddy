@@ -446,4 +446,29 @@ export default class FirebaseInteractor {
     await this.auth.signOut();
     this.currentUser = null;
   }
+
+  // Researcher dashboard functions
+
+  async getAllStudents(): Promise<User[]> {
+    let students = (
+      await this.db
+        .collection("users")
+        .where("accountType", "==", "STUDENT")
+        .get()
+    ).docs;
+
+    return students.map((student) => {
+      let studentData = student.data();
+      return {
+        id: studentData.id,
+        name: studentData.name,
+        accountType: studentData.accountType,
+        age: studentData.age,
+        sessionId: studentData.sessionId,
+        onAssessment: studentData.onAssessment,
+        currentInterventionOrAssessment:
+          studentData.currentInterventionOrAssessment,
+      };
+    });
+  }
 }
