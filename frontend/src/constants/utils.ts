@@ -62,8 +62,7 @@ export function dayStreak(dates: Date[]): number {
   for (let date of allDays.sort(
     (date1, date2) => date2.getTime() - date1.getTime()
   )) {
-    if (date.getTime() === dateToCompare.getTime()) {
-      console.log("HOW?");
+    if (datesEqual(date, dateToCompare)) {
       totalDayStreak++;
       goToPreviousDay(dateToCompare);
     } else {
