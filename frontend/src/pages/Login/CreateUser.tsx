@@ -1,4 +1,3 @@
-import { Alert } from "antd";
 import React, {
   FunctionComponent,
   ReactElement,
@@ -15,7 +14,7 @@ import { TextInput } from "../../components/TextInput";
 import { INK, SEA_FOAM } from "../../constants/colors";
 import { authenticationRequest } from "./data/actions";
 import { AccountType, CreateUserParams } from "../../models/types";
-import { getSignedIn } from "./data/reducer";
+import { getCreateUserError, getSignedIn } from "./data/reducer";
 import ErrorToast from "../../components/ErrorToast";
 
 const LoginHoldingDiv = styled.div`
@@ -110,21 +109,6 @@ const StyledPurpleButton = styled(PurpleButton)`
   padding: 10px;
 `;
 
-const StyledAlert = styled(Alert)`
-  position: absolute;
-  top: 10px;
-
-  @media (max-width: 900px) {
-    width: 100%;
-  }
-
-  @media (min-width: 901px) {
-    width: 50%;
-    left: 25%;
-  }
-  margin: auto;
-`;
-
 interface NameTextInputProps {
   isStudent: boolean;
 }
@@ -143,6 +127,7 @@ const AgeTextInput = styled(TextInput)`
 const connector = connect(
   (state) => ({
     signedIn: getSignedIn(state),
+    error: getCreateUserError(state),
   }),
   {
     createUser: authenticationRequest.createUser,

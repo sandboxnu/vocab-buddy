@@ -6,7 +6,6 @@ const initialState: State = {
 };
 
 const reducer = (state: State = initialState, action: Action): State => {
-  const payload = action.payload;
   switch (action.type) {
     case ActionTypes.AUTHENTICATION_SUCCESS:
       return {
@@ -45,7 +44,7 @@ export const getLoginError = (state: RootStateOrAny): Error => {
   return state.login.signInError;
 };
 
-export const getCreatUserError = (state: RootStateOrAny): Error => {
+export const getCreateUserError = (state: RootStateOrAny): Error => {
   return state.login.createUserError;
 };
 

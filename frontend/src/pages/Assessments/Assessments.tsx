@@ -1,4 +1,3 @@
-import { Alert } from "antd";
 import React, {
   FunctionComponent,
   ReactElement,
@@ -6,7 +5,6 @@ import React, {
 } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 import ErrorToast from "../../components/ErrorToast";
 import LandingPage from "../../components/LandingPage";
 import { ASSESSMENTS_LANDING } from "../../constants/images";
@@ -28,22 +26,6 @@ interface AssessmentsProps {
   getAssessmentRequest: () => void;
   error?: Error;
 }
-
-const StyledAlert = styled(Alert)`
-  position: absolute;
-  top: 10px;
-
-  @media (max-width: 900px) {
-    width: 100%;
-  }
-
-  @media (min-width: 901px) {
-    width: 50%;
-    left: 25%;
-  }
-  margin: auto;
-  z-index: 1000;
-`;
 
 const Assessments: FunctionComponent<AssessmentsProps> = ({
   assessmentId,

@@ -4,7 +4,6 @@ import {
   CreateUserParams,
   LoginParams,
   ResetPasswordParams,
-  Word,
 } from "../../../models/types";
 
 export const authenticationRequest = {
