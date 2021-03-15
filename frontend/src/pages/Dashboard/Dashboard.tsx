@@ -17,6 +17,8 @@ import {
   SignOut,
 } from "./data/actions";
 import { getCurrentUser, getIsSignedOut } from "./data/reducer";
+import star from "../../assets/star.svg";
+import ellipse from "../../assets/ellipse.svg";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -238,19 +240,66 @@ const ProgressStatDescription = styled.p`
   }
 `;
 
+const DayLabel = styled.p<DayLabelType>`
+  font-size: 1.25vw;
+  font-weight: ${({ isToday }) => (isToday ? 700 : 400)};
+  line-height: 0px;
+
+  @media (max-width: 900px) {
+    font-size: 3vw;
+  }
+
+  @media (max-width: 425px) {
+    font-size: 4vw;
+  }
+`;
+
+const Star = styled.img`
+  height: 51px;
+  width: 52px;
+  margin-bottom: 20px;
+
+  @media (max-width: 900px) {
+    height: 35px;
+    width: 36px;
+  }
+`;
+const Dot = styled.img`
+  height: 12px;
+  width: 12px;
+  margin: 18px 20px 38px 20px;
+
+  @media (max-width: 900px) {
+    height: 10px;
+    width: 10px;
+    margin: 12px 15px 32px 15px;
+  }
+`;
+
 const WeekContainer = styled.div`
   flex: none;
   order: 1;
   flex-grow: 0;
-  margin: 32px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 32px;
+  margin: 32px 0px 64px;
   background: ${CLOUD};
   border-radius: 12px;
-  width: 100%
-  height: 18.5%;
-  padding-top: 32px;
-  padding-bottom: 40px;
-  padding-left: 30px;
-  padding-right: 30px;
+  width: 100%;
+
+  @media (max-width: 900px) {
+    margin: 24px 0px 48px;
+    padding: 35px 20px;
+  }
+`;
+
+const DayContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50px;
 `;
 
 const getTitleOfButton = (user: User): string => {
@@ -267,10 +316,75 @@ const getTitleOfButton = (user: User): string => {
   }
 };
 
+const filterByThisWeek = (dayString: string) => {
+  let today = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    new Date().getDate()
+  );
+  let todayDayOfWeek = today.getDay();
+  let day = new Date(dayString);
+  let daysApart =
+    (today.getTime() - day.getTime()) / (1000 * 60 * 60 * 24);
+  let dayOfWeek = day.getDay();
+  return !(
+    today !== day &&
+    (dayOfWeek > todayDayOfWeek || daysApart >= 7)
+  );
+};
+
+const isDayActive = (
+  dayNumber: number,
+  daysActive: string[]
+): boolean => {
+  for (let index in daysActive) {
+    let dayString = daysActive[index];
+    let day = new Date(dayString);
+    let dayOfWeek = day.getDay();
+    if (dayOfWeek === dayNumber) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const isToday = (dayNumber: number): boolean => {
+  let today = new Date();
+  let dayOfWeek = today.getDay();
+  return dayNumber === dayOfWeek;
+};
+
 interface StatParams {
   number: number;
   description: string;
 }
+interface DayParams {
+  name: string;
+  day: number;
+  daysActiveThisWeek: string[];
+}
+
+interface DayLabelType {
+  isToday?: boolean;
+}
+const DayOfWeek: FunctionComponent<DayParams> = ({
+  name,
+  day,
+  daysActiveThisWeek,
+}) => {
+  let istoday = isToday(day);
+  let isActive = isDayActive(day, daysActiveThisWeek);
+  return (
+    <DayContainer>
+      {isActive ? (
+        <Star src={star}></Star>
+      ) : (
+        <Dot src={ellipse}></Dot>
+      )}
+      <DayLabel isToday={istoday}>{name}</DayLabel>
+    </DayContainer>
+  );
+};
 
 const Stat: FunctionComponent<StatParams> = ({
   number,
@@ -295,6 +409,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     history.push("/login");
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa"];
 
   useEffect(() => {
     const resizeScreen = () => {
@@ -310,11 +425,15 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     if (!currentUser) {
       getUser({});
     }
-  }, [currentUser, getUser]);
+  }, [currentUser, getUser, currentUser?.daysActive]);
 
   if (!currentUser) {
     return <h1>Loading</h1>;
   }
+
+  const daysActiveThisWeek = currentUser.daysActive.filter((day) =>
+    filterByThisWeek(day)
+  );
 
   return (
     <Layout shouldAddPadding={false}>
@@ -354,9 +473,16 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
           <WeekProgressContainer>
             <TitleText>this week</TitleText>
-
             <WeekContainer>
-              <p>stars!</p>
+              {dayLabels.map((label: string, index: number) => {
+                return (
+                  <DayOfWeek
+                    name={label}
+                    day={index}
+                    daysActiveThisWeek={daysActiveThisWeek}
+                  />
+                );
+              })}
             </WeekContainer>
 
             <TitleText>your progress</TitleText>
