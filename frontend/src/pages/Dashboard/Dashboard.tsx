@@ -13,26 +13,38 @@ import PurpleButton from "../../components/PurpleButton";
 import { User } from "../../models/types";
 import {
   GetData,
+  GetDataForResearchers,
+  GetDataForResearchersRequestProps,
   GetDataRequestProps,
   SignOut,
 } from "./data/actions";
-import { getCurrentUser, getIsSignedOut } from "./data/reducer";
+import {
+  getCurrentUser,
+  getDataForResearchers,
+  getIsSignedOut,
+} from "./data/reducer";
 
 interface DashboardParams {
   isSignedOut: boolean;
   currentUser?: User;
+  dataForResearchers?: User[];
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
+  getDataForResearchers: (
+    val: GetDataForResearchersRequestProps
+  ) => void;
 }
 
 const connector = connect(
   (state) => ({
     isSignedOut: getIsSignedOut(state),
     currentUser: getCurrentUser(state),
+    dataForResearchers: getDataForResearchers(state),
   }),
   {
     signOut: SignOut.request,
     getUser: GetData.request,
+    getDataForResearchers: GetDataForResearchers.request,
   }
 );
 
@@ -284,11 +296,28 @@ const Stat: FunctionComponent<StatParams> = ({
   );
 };
 
+interface ResearcherDashboardParams {
+  students: User[];
+}
+const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
+  students,
+}) => {
+  return (
+    <div>
+      {students.map((student) => (
+        <p>{student.name}</p>
+      ))}
+    </div>
+  );
+};
+
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
   currentUser,
   getUser,
+  dataForResearchers,
+  getDataForResearchers,
 }): ReactElement => {
   let history = useHistory();
   if (isSignedOut) {
@@ -312,6 +341,21 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     }
   }, [currentUser, getUser]);
 
+  useEffect(() => {
+    if (
+      !dataForResearchers &&
+      currentUser &&
+      currentUser.accountType === "RESEARCHER"
+    ) {
+      getDataForResearchers({});
+    }
+  }, [
+    currentUser,
+    getUser,
+    dataForResearchers,
+    getDataForResearchers,
+  ]);
+
   if (!currentUser) {
     return <h1>Loading</h1>;
   }
@@ -334,45 +378,52 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               <SignOutButton onClick={signOut}>log out</SignOutButton>
             )}
           </MenuContainer>
+          {currentUser.accountType == "STUDENT" ? (
+            <div>
+              <SessionContainer>
+                <TitleText>next session</TitleText>
+                <NextSessionButton
+                  text={getTitleOfButton(currentUser)}
+                  onClick={() =>
+                    history.push(
+                      currentUser.onAssessment
+                        ? "/assessments"
+                        : "/interventions"
+                    )
+                  }
+                  disabled={currentUser.sessionId === 9}
+                />
 
-          <SessionContainer>
-            <TitleText>next session</TitleText>
-            <NextSessionButton
-              text={getTitleOfButton(currentUser)}
-              onClick={() =>
-                history.push(
-                  currentUser.onAssessment
-                    ? "/assessments"
-                    : "/interventions"
-                )
-              }
-              disabled={currentUser.sessionId === 9}
-            />
+                <TitleText>list of sessions</TitleText>
+              </SessionContainer>
 
-            <TitleText>list of sessions</TitleText>
-          </SessionContainer>
+              <WeekProgressContainer>
+                <TitleText>this week</TitleText>
 
-          <WeekProgressContainer>
-            <TitleText>this week</TitleText>
+                <WeekContainer>
+                  <p>stars!</p>
+                </WeekContainer>
 
-            <WeekContainer>
-              <p>stars!</p>
-            </WeekContainer>
-
-            <TitleText>your progress</TitleText>
-            <ProgressStatsContainer>
-              <Stat number={14} description={"day streak"} />
-              <Stat number={25} description={"words learned"} />
-              <Stat
-                number={4}
-                description={"assessments completed"}
-              />
-              <Stat
-                number={3}
-                description={"interventions completed"}
-              />
-            </ProgressStatsContainer>
-          </WeekProgressContainer>
+                <TitleText>your progress</TitleText>
+                <ProgressStatsContainer>
+                  <Stat number={14} description={"day streak"} />
+                  <Stat number={25} description={"words learned"} />
+                  <Stat
+                    number={4}
+                    description={"assessments completed"}
+                  />
+                  <Stat
+                    number={3}
+                    description={"interventions completed"}
+                  />
+                </ProgressStatsContainer>
+              </WeekProgressContainer>
+            </div>
+          ) : (
+            <ResearcherDashboard
+              students={dataForResearchers || []}
+            ></ResearcherDashboard>
+          )}
         </DashboardContainer>
       </>
     </Layout>

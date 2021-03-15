@@ -141,6 +141,9 @@ export enum ActionTypes {
   GET_DASHBOARD_DATA_REQUEST = "GET_DASHBOARD_DATA_REQUEST",
   GET_DASHBOARD_DATA_SUCCESS = "GET_DASHBOARD_DATA_SUCCESS",
   GET_DASHBOARD_DATA_ERROR = "GET_DASHBOARD_DATA_ERROR",
+  GET_DATA_FOR_RESEARCHERS_REQUEST = "GET_DATA_FOR_RESEARCHERS_REQUEST",
+  GET_DATA_FOR_RESEARCHERS_SUCCESS = "GET_DATA_FOR_RESEARCHERS_SUCCESS",
+  GET_DATA_FOR_RESEARCHERS_ERROR = "GET_DATA_FOR_RESEARCHERS_ERROR",
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense
@@ -178,6 +181,7 @@ export interface ResetPasswordParams {
 export interface DashboardState {
   isSignedOut: boolean;
   user?: User;
+  students?: User[];
 }
 
 export interface AssessmentResult {

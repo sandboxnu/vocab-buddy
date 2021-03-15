@@ -1,7 +1,7 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../../../firebase/firebaseInteractor";
 import { Action, ActionTypes } from "../../../models/types";
-import { GetData, SignOut } from "./actions";
+import { GetData, GetDataForResearchers, SignOut } from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -14,6 +14,10 @@ function* root() {
   yield takeLatest(
     ActionTypes.GET_DASHBOARD_DATA_REQUEST,
     watchGetDashboardData
+  );
+  yield takeLatest(
+    ActionTypes.GET_DATA_FOR_RESEARCHERS_REQUEST,
+    watchGetDataForResearchers
   );
 }
 
@@ -37,5 +41,18 @@ function* watchGetDashboardData(action: Action) {
     yield put(GetData.success({ user }));
   } catch (error) {
     yield put(GetData.error({ error }));
+  }
+}
+
+function* watchGetDataForResearchers() {
+  let students;
+  const getValue = async () => {
+    students = await firebaseInteractor.getAllStudents();
+  };
+  try {
+    yield call(getValue);
+    yield put(GetDataForResearchers.success({ students }));
+  } catch (error) {
+    yield put(GetDataForResearchers.error({ error }));
   }
 }

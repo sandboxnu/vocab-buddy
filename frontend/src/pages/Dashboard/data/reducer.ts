@@ -27,6 +27,11 @@ const dashboardReducer = (
         ...state,
         user: action.payload.user,
       };
+    case ActionTypes.GET_DATA_FOR_RESEARCHERS_SUCCESS:
+      return {
+        ...state,
+        students: action.payload.students,
+      };
     case ActionTypes.FINISHED_INTERVENTION_SUCCESS:
       return {
         ...state,
@@ -49,6 +54,10 @@ export const getIsSignedOut = (state: RootStateOrAny) => {
 
 export const getCurrentUser = (state: RootStateOrAny) => {
   return state.dashboard.user;
+};
+
+export const getDataForResearchers = (state: RootStateOrAny) => {
+  return state.dashboard.students;
 };
 
 export default dashboardReducer;
