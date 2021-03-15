@@ -23,6 +23,7 @@ import {
 } from "./data/reducer";
 import star from "../../assets/star.svg";
 import ellipse from "../../assets/ellipse.svg";
+import { dayStreak } from "../../constants/utils";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -432,7 +433,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     if (!currentUser || totalWordsLearned === undefined) {
       getUser({});
     }
-  }, [currentUser, getUser, currentUser?.daysActive]);
+  }, [currentUser, getUser, totalWordsLearned]);
 
   if (!currentUser || totalWordsLearned === undefined) {
     return <h1>Loading</h1>;
@@ -494,7 +495,12 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
             <TitleText>your progress</TitleText>
             <ProgressStatsContainer>
-              <Stat number={14} description={"day streak"} />
+              <Stat
+                number={dayStreak(
+                  currentUser.daysActive.map((val) => new Date(val))
+                )}
+                description={"day streak"}
+              />
               <Stat
                 number={totalWordsLearned}
                 description={"words learned"}
