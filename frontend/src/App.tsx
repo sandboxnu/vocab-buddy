@@ -16,6 +16,7 @@ import CreateUser from "./pages/Login/CreateUser";
 import Login from "./pages/Login/Login";
 import AssessmentRewardPage from "./pages/Reward/AssessmentsReward/AssessmentRewardPage";
 import Reward from "./pages/Reward/InterventionsReward/Reward";
+import ErrorScreen from "./pages/Errors/ErrorScreen";
 
 const App = (): ReactElement => {
   return (
@@ -57,6 +58,8 @@ const App = (): ReactElement => {
           path="/assessments"
           component={Assessments}
         />
+        <Route path="/error" component={ErrorScreen} />
+        <Redirect to="/error" />
       </Switch>
     </Router>
   );

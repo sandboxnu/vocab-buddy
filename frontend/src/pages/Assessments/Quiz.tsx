@@ -9,6 +9,7 @@ import {
 } from "./data/actions";
 import {
   getAssessment as getAssessmentReducer,
+  getError,
   getIsFinished,
 } from "./data/reducer";
 import QuizWords from "./QuizWords";
@@ -18,12 +19,14 @@ interface QuizProps {
   assessment: Assessment;
   updateAssessment: (action: UpdateAssessmentAction) => void;
   isFinished: boolean;
+  error?: Error;
 }
 
 const connector = connect(
   (state) => ({
     assessment: getAssessmentReducer(state),
     isFinished: getIsFinished(state),
+    error: getError(state),
   }),
   {
     getAssessment: getAssessmentAction.request,
@@ -40,12 +43,18 @@ const Quiz = ({
   assessment,
   updateAssessment,
   isFinished,
+  error,
 }: QuizProps) => {
   let history = useHistory();
   let params = useParams<QuizParams>();
   if (isFinished) {
     history.push("/assessments/reward");
   }
+
+  if (error) {
+    history.push("/error");
+  }
+
   useEffect(() => {
     if (!assessment) getAssessment(params.id);
   }, [assessment, getAssessment, params]);

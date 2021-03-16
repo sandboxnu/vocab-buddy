@@ -33,6 +33,7 @@ const interventionReducer = (
         interventionId: payload.id,
       };
     case ActionTypes.GET_CURRENT_INTERVENTIONS_ERROR:
+    case ActionTypes.GET_INTERVENTIONS_ERROR:
       return {
         ...state,
         error: payload.error,

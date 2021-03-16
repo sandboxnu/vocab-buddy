@@ -7,13 +7,14 @@ import React, {
 import { connect } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import ErrorToast from "../../components/ErrorToast";
 import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
 import { TextInput } from "../../components/TextInput";
 import { INK, LOGIN_BACKGROUND } from "../../constants/colors";
 import { LoginParams, ResetPasswordParams } from "../../models/types";
 import { authenticationRequest } from "./data/actions";
-import { getSignedIn } from "./data/reducer";
+import { getLoginError, getSignedIn } from "./data/reducer";
 
 const ResetUserButton = styled.button`
   padding-left: 0;
@@ -134,6 +135,7 @@ const StyledPurpleButton = styled(PurpleButton)`
 const connector = connect(
   (state) => ({
     signedIn: getSignedIn(state),
+    error: getLoginError(state),
   }),
   {
     signIn: authenticationRequest.signIn,
@@ -148,6 +150,7 @@ interface LoginProps {
   signedIn: boolean;
   signIn: ({ email, password }: LoginParams) => void;
   resetPassword: ({ email }: ResetPasswordParams) => void;
+  error?: Error;
 }
 
 interface State {
@@ -158,9 +161,11 @@ const Login: FunctionComponent<LoginProps> = ({
   signedIn,
   signIn,
   resetPassword,
+  error,
 }): ReactElement => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
+  let [showError, setShowError] = useState(false);
   let history = useHistory();
   let location = useLocation();
   let redirect: string | null = null;
@@ -174,6 +179,8 @@ const Login: FunctionComponent<LoginProps> = ({
     if (email == null || email === "") {
       return;
     }
+
+    setShowError(true);
 
     resetPassword({ email });
   };
@@ -189,57 +196,66 @@ const Login: FunctionComponent<LoginProps> = ({
   }, [signedIn, history, redirect]);
 
   return (
-    <Layout hideBar={true}>
-      <LoginSwitchingDiv>
-        <LoginInfoDiv>
-          <EvenSpacedDiv />
-          <LoginImage src={loginIllustration} />
-          <EvenSpacedDiv />
-        </LoginInfoDiv>
-        <LoginHoldingDiv>
-          <HorizontalDiv>
+    <>
+      <Layout hideBar={true}>
+        <LoginSwitchingDiv>
+          <LoginInfoDiv>
             <EvenSpacedDiv />
-            <ActuallyLoginDiv>
-              <LoginHeader>login</LoginHeader>
-              <TextInput
-                onChange={(event) => setEmail(event.target.value)}
-                value={email}
-                type="email"
-                text="email address"
-              />
-              <TextInput
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                type="password"
-                text="password"
-                onKeyDown={(e) =>
-                  e.key === "Enter" && signIn({ email, password })
-                }
-              />
-
-              <StyledPurpleButton
-                text={"login"}
-                top={0}
-                onClick={() => signIn({ email, password })}
-              />
-
-              <ResetUserButton onClick={() => doResetPassword()}>
-                forgot password
-              </ResetUserButton>
-              <HorizontalDiv>
-                Don't have an account?
-                <CreateUserButton
-                  onClick={() => history.push("/sign_up")}
-                >
-                  sign up
-                </CreateUserButton>
-              </HorizontalDiv>
-            </ActuallyLoginDiv>
+            <LoginImage src={loginIllustration} />
             <EvenSpacedDiv />
-          </HorizontalDiv>
-        </LoginHoldingDiv>
-      </LoginSwitchingDiv>
-    </Layout>
+          </LoginInfoDiv>
+          <LoginHoldingDiv>
+            <HorizontalDiv>
+              <EvenSpacedDiv />
+              <ActuallyLoginDiv>
+                <LoginHeader>login</LoginHeader>
+                <TextInput
+                  onChange={(event) => setEmail(event.target.value)}
+                  value={email}
+                  type="email"
+                  text="email address"
+                />
+                <TextInput
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  type="password"
+                  text="password"
+                  onKeyDown={(e) =>
+                    e.key === "Enter" && signIn({ email, password })
+                  }
+                />
+
+                <StyledPurpleButton
+                  text={"login"}
+                  top={0}
+                  onClick={() => {
+                    setShowError(true);
+                    signIn({ email, password });
+                  }}
+                />
+
+                <ResetUserButton onClick={() => doResetPassword()}>
+                  forgot password
+                </ResetUserButton>
+                <HorizontalDiv>
+                  Don't have an account?
+                  <CreateUserButton
+                    onClick={() => history.push("/sign_up")}
+                  >
+                    sign up
+                  </CreateUserButton>
+                </HorizontalDiv>
+              </ActuallyLoginDiv>
+              <EvenSpacedDiv />
+            </HorizontalDiv>
+          </LoginHoldingDiv>
+        </LoginSwitchingDiv>
+      </Layout>
+      <ErrorToast
+        errorMessage={showError ? error?.message : undefined}
+        onClose={() => setShowError(false)}
+      />
+    </>
   );
 };
 
