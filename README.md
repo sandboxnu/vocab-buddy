@@ -1,7 +1,7 @@
 # vocab-buddy 
 <a href="#"><img src="https://cdn.rawgit.com/aleen42/badges/master/src/react.svg" alt="React Badge"></a> <a href="#"><img src="https://cdn.rawgit.com/aleen42/badges/master/src/typescript.svg" alt="Typescript Badge"></a>
 
-[vocabbuddy.now.sh](vocabbuddy.now.sh)
+[vocabbuddy.now.sh](https://vocabbuddy.now.sh)
 ## Introduction
 Vocab Buddy is a web application that identifies challenging words and creates corresponding learning interventions for young children to expand their vocabulary development. It consists of 8 sessions of assessments and interventions to best track a child's progress throughout the study. The project is developed with React, Redux Saga as frontend, as well as Firebase as backend to store research data.
 
