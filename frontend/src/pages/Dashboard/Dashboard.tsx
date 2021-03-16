@@ -8,9 +8,11 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
-import { CLOUD, INK } from "../../constants/colors";
+import { CLOUD, INK, SKY } from "../../constants/colors";
 import PurpleButton from "../../components/PurpleButton";
+import rocketSVG from "../../assets/rocket.svg";
 import { User } from "../../models/types";
+import { Dropdown, Menu } from "antd";
 import {
   GetData,
   GetDataForResearchers,
@@ -265,6 +267,67 @@ const WeekContainer = styled.div`
   padding-right: 30px;
 `;
 
+const ResearcherDashboardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 48px 40px 66px 40px;
+`;
+
+const AllStudentsContainer = styled.div`
+  flex: 7;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  @media (max-width: 900px) {
+    min-width: 100%;
+    padding-top: 48px;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+`;
+
+const ResearcherTopBar = styled.div`
+  flex: 7;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StudentFilter = styled(Dropdown)`
+  background: ${CLOUD};
+`;
+
+const StudentCardContainer = styled.div`
+  background: ${SKY};
+  border-radius: 12px;
+  padding: 32px 10px;
+  text-align: center;
+  flex: 0 1 calc(20% - 2em);
+  margin: 24px 0;
+  &:after {
+    content: "";
+    flex: auto;
+  }
+`;
+
+const Avatar = styled.img`
+  border-radius: 50%;
+`;
+
+const StudentCardLabel = styled.p`
+  font-family: Rubik;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: 0px;
+  text-align: center;
+  @media (max-width: 900px) {
+    font-size: 16px;
+    line-height: 25px;
+  }
+`;
+
 const getTitleOfButton = (user: User): string => {
   switch (user.sessionId) {
     case -1:
@@ -296,6 +359,36 @@ const Stat: FunctionComponent<StatParams> = ({
   );
 };
 
+interface StudentCardParams {
+  student: User;
+}
+
+const StudentCard: FunctionComponent<StudentCardParams> = ({
+  student,
+}) => {
+  return (
+    <StudentCardContainer>
+      <Avatar src={rocketSVG} />
+      <StudentCardLabel>{student.name}</StudentCardLabel>
+    </StudentCardContainer>
+  );
+};
+
+interface DropdownMenuInterface {}
+
+const menu = (
+  <Menu>
+    <Menu.Item key="0">
+      <a href="https://www.antgroup.com">1st menu item</a>
+    </Menu.Item>
+    <Menu.Item key="1">
+      <a href="https://www.aliyun.com">2nd menu item</a>
+    </Menu.Item>
+    <Menu.Divider />
+    <Menu.Item key="3">3rd menu item</Menu.Item>
+  </Menu>
+);
+
 interface ResearcherDashboardParams {
   students: User[];
 }
@@ -303,11 +396,17 @@ const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
   students,
 }) => {
   return (
-    <div>
-      {students.map((student) => (
-        <p>{student.name}</p>
-      ))}
-    </div>
+    <ResearcherDashboardContainer>
+      <ResearcherTopBar>
+        <TitleText>students</TitleText>
+        <Dropdown overlay={menu}>Click</Dropdown>
+      </ResearcherTopBar>
+      <AllStudentsContainer>
+        {students.map((student) => (
+          <StudentCard student={student} />
+        ))}
+      </AllStudentsContainer>
+    </ResearcherDashboardContainer>
   );
 };
 
@@ -379,7 +478,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             )}
           </MenuContainer>
           {currentUser.accountType == "STUDENT" ? (
-            <div>
+            <>
               <SessionContainer>
                 <TitleText>next session</TitleText>
                 <NextSessionButton
@@ -418,7 +517,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                   />
                 </ProgressStatsContainer>
               </WeekProgressContainer>
-            </div>
+            </>
           ) : (
             <ResearcherDashboard
               students={dataForResearchers || []}
