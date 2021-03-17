@@ -159,19 +159,6 @@ const SessionContainer = styled.div`
   }
 `;
 
-/*
-const SessionCardContainer = styled.div`
-  display: flex;
-  flex: 1;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  min-width: 100%;
-  @media (max-width: 900px) {
-  }
-`;
-
- */
-
 const SessionCardContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
