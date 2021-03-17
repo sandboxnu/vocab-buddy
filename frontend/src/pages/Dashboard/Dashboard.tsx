@@ -217,6 +217,7 @@ const SessionNumber = styled.p`
   font-weight: 700;
   font-size: 1.5vw;
   text-align: center;
+  white-space: nowrap;
 
   @media (max-width: 900px) {
     font-size: 3vw;
@@ -585,6 +586,9 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             <TitleText>list of sessions</TitleText>
 
             <SessionCardContainer>
+              // Will probably be cleaner once we do a .map to create
+              a SessionCard // It will be easier to do that once we
+              have an array of image links // For each session card
               <SessionCard
                 sessionNumber={1}
                 image={
