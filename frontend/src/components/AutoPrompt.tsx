@@ -23,6 +23,7 @@ const AutoPrompt = ({
     talk();
     const interval = setInterval(talk, delay);
     return () => clearInterval(interval);
+    // eslint-disable-next-line
   }, []);
 
   return <PromptSpeech prompt={prompt} button={button} />;

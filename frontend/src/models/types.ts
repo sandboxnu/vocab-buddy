@@ -93,6 +93,7 @@ export interface User {
   sessionId: SessionId;
   onAssessment: boolean;
   currentInterventionOrAssessment: string;
+  daysActive: string[];
 }
 
 /**
@@ -108,6 +109,7 @@ export enum ActionTypes {
   REQUEST = "REQUEST",
   SUCCESS = "SUCCESS",
   ERROR = "ERROR",
+  CREATE_USER_ERROR = "CREATE_USER_ERROR",
   CREATE_USER = "CREATEUSER",
   SIGN_IN = "SIGNIN",
   AUTHENTICATION_SUCCESS = "AUTHENTICATIONSUCCESS",
@@ -146,7 +148,8 @@ export enum ActionTypes {
 // i think we should make separate reducers to separate the different states if that makes sense
 export interface State {
   signedIn: boolean;
-  words: Word[] | null;
+  signInError?: Error;
+  createUserError?: Error;
 }
 
 // i think we should make separate actions as well
@@ -178,6 +181,7 @@ export interface ResetPasswordParams {
 export interface DashboardState {
   isSignedOut: boolean;
   user?: User;
+  error?: Error;
 }
 
 export interface AssessmentResult {

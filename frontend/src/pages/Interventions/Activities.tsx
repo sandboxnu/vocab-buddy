@@ -2,11 +2,15 @@ import React, {
   FunctionComponent,
   ReactElement,
   useEffect,
+  useState,
 } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
 import { connect } from "react-redux";
-import { getCurrentInterventions } from "../Interventions/data/reducer";
+import {
+  getCurrentInterventions,
+  getError,
+} from "../Interventions/data/reducer";
 import { Interventions } from "../../models/types";
 import {
   finishedIntervention,
@@ -21,11 +25,13 @@ import {
 
 interface ActivityProps {
   interventions: Interventions;
+  error?: Error;
   getInterventions: (id: string) => void;
   updateIntervention: ({
     setId,
     wordIdx,
     activityIdx,
+    durationInSeconds,
     answer2Correct,
     answer3Correct,
     answer3Part2Correct,
@@ -34,6 +40,7 @@ interface ActivityProps {
     setId: string;
     wordIdx: number;
     activityIdx: number;
+    durationInSeconds: number;
     answer2Correct: boolean | undefined;
     answer3Correct: boolean | undefined;
     answer3Part2Correct: boolean | undefined;
@@ -49,6 +56,7 @@ interface ActivityParams {
 const connector = connect(
   (state) => ({
     interventions: getCurrentInterventions(state),
+    error: getError(state),
   }),
   {
     getInterventions: getInterventions.request,
@@ -62,11 +70,16 @@ const Activities: FunctionComponent<ActivityProps> = ({
   getInterventions,
   updateIntervention,
   finishedIntervention,
+  error,
 }): ReactElement => {
   let params = useParams<ActivityParams>();
   useEffect(() => {
     if (!interventions) getInterventions(params.id);
   }, [interventions, getInterventions, params.id]);
+
+  let [activityStartTime, setActivityStartTime] = useState(
+    new Date()
+  );
 
   const setId = interventions && interventions.setId;
   const currentWordIdx = interventions && interventions.wordIdx;
@@ -92,6 +105,10 @@ const Activities: FunctionComponent<ActivityProps> = ({
 
   const history = useHistory();
 
+  if (error) {
+    history.push("/error");
+  }
+
   if (!interventions) {
     return <Layout>Loading</Layout>;
   } else {
@@ -101,6 +118,10 @@ const Activities: FunctionComponent<ActivityProps> = ({
         title={title}
         activities={activities}
         updateIntervention={(correct) => {
+          let curDate = new Date();
+          let durationInSeconds =
+            (curDate.getTime() - activityStartTime.getTime()) / 1000;
+          setActivityStartTime(curDate);
           if (
             currentWordIdx === wordList.length - 1 &&
             nextActivityIdx === 0
@@ -112,6 +133,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
               setId,
               wordIdx: nextWordIdx,
               activityIdx: nextActivityIdx,
+              durationInSeconds,
               answer2Correct:
                 currentActivityIdx === 1 ? correct : undefined,
               answer3Correct:

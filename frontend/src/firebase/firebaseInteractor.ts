@@ -100,7 +100,9 @@ export default class FirebaseInteractor {
     userAuth.user.sendEmailVerification();
     if (accountType === "STUDENT") {
       let initialAssessmentId = await this.createInitialAssessment();
+      let currentDaysActive: string[] = [];
       this.db.collection("users").doc(userAuth.user.uid).update({
+        daysActive: currentDaysActive,
         currentInterventionOrAssessment: initialAssessmentId,
         sessionId: -1,
         onAssessment: true,
@@ -129,6 +131,8 @@ export default class FirebaseInteractor {
           userData.onAssessment === undefined ? true : userData.onAssessment,
         currentInterventionOrAssessment:
           userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
+        daysActive:
+          userData.daysActive === undefined ? [] : userData.daysActive,
       };
     } else {
       throw new Error("Invalid user");
@@ -170,16 +174,13 @@ export default class FirebaseInteractor {
     setId: string,
     wordIdx: number,
     activityIdx: number,
+    durationInSeconds: number,
     activity2Correct?: boolean,
     activity3Correct?: boolean,
     activity3Part2Correct?: boolean,
     activity3Part3Correct?: boolean
   ) {
     let intervention = await this.db.collection("interventions").doc(setId);
-    let object: any = {
-      wordIdx,
-      activityIdx,
-    };
 
     let wordList: string[] = (await intervention.get())?.data()?.wordList || [];
     if (activity2Correct !== undefined) {
@@ -206,7 +207,35 @@ export default class FirebaseInteractor {
       });
     }
 
+    const increment = firebase.firestore.FieldValue.increment(
+      durationInSeconds
+    );
+
+    let object: any = {
+      wordIdx,
+      activityIdx,
+      durationsInSeconds: increment,
+    };
+
     intervention.update(object);
+    this.updateDaysActive();
+  }
+
+  async updateDaysActive() {
+    let userId = this.auth.currentUser?.uid;
+
+    let today = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate()
+    );
+
+    await this.db
+      .collection("users")
+      .doc(userId)
+      .update({
+        daysActive: firebase.firestore.FieldValue.arrayUnion(today.toString()),
+      });
   }
 
   /**
@@ -309,6 +338,7 @@ export default class FirebaseInteractor {
       currentIndex: currentIdx,
       durationInSeconds: increment,
     });
+    this.updateDaysActive();
   }
 
   async createInterventionFromAssessment(

@@ -21,19 +21,27 @@ import {
   GetDataRequestProps,
   SignOut,
 } from "./data/actions";
-import { getCurrentUser, getIsSignedOut } from "./data/reducer";
+import {
+  getCurrentUser,
+  getDashboardError,
+  getIsSignedOut,
+} from "./data/reducer";
+import star from "../../assets/star.svg";
+import ellipse from "../../assets/ellipse.svg";
 
 interface DashboardParams {
   isSignedOut: boolean;
   currentUser?: User;
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
+  error?: Error;
 }
 
 const connector = connect(
   (state) => ({
     isSignedOut: getIsSignedOut(state),
     currentUser: getCurrentUser(state),
+    error: getDashboardError(state),
   }),
   {
     signOut: SignOut.request,
@@ -41,9 +49,6 @@ const connector = connect(
   }
 );
 
-// TODO: this button is placed at the bottom of the menu,
-// But I am able to scroll down.. so it's not at the bottom.
-// If someone could help with the height stuff so there's no scrolling that would be great
 const SignOutButton = styled.button`
   background-color: #fff0;
   border-width: 0px;
@@ -130,7 +135,6 @@ const ProfilePicture = styled.img`
   width: 183px;
 
   @media (max-width: 900px) {
-    font-size: 30px;
     height: 148px;
     width: 148px;
   }
@@ -286,7 +290,7 @@ const ProgressBox = styled.div`
 
 const ProgressStatNumber = styled.p`
   font-family: "Rubik";
-  font-size: 56px;
+  font-size: 4vw;
   font-weight: 700;
   text-transform: lowercase;
   color: ${INK};
@@ -296,14 +300,14 @@ const ProgressStatNumber = styled.p`
   margin: 0px 0px;
 
   @media (max-width: 900px) {
-    font-size: 36px;
+    font-size: 6vw;
   }
 `;
 
 const ProgressStatDescription = styled.p`
   text-transform: lowercase;
   font-family: Open Sans;
-  font-size: 18px;
+  font-size: 1.25vw;
   font-weight: 400;
   text-transform: lowercase;
   word-wrap: break-word;
@@ -315,7 +319,43 @@ const ProgressStatDescription = styled.p`
   margin: 0px 0px;
 
   @media (max-width: 900px) {
-    font-size: 16px;
+    font-size: 3vw;
+  }
+`;
+
+const DayLabel = styled.p<DayLabelType>`
+  font-size: 1.25vw;
+  font-weight: ${({ isToday }) => (isToday ? 700 : 400)};
+  line-height: 0px;
+
+  @media (max-width: 900px) {
+    font-size: 3vw;
+  }
+
+  @media (max-width: 425px) {
+    font-size: 4vw;
+  }
+`;
+
+const Star = styled.img`
+  height: 51px;
+  width: 52px;
+  margin-bottom: 20px;
+
+  @media (max-width: 900px) {
+    height: 35px;
+    width: 36px;
+  }
+`;
+const Dot = styled.img`
+  height: 12px;
+  width: 12px;
+  margin: 18px 20px 38px 20px;
+
+  @media (max-width: 900px) {
+    height: 10px;
+    width: 10px;
+    margin: 12px 15px 32px 15px;
   }
 `;
 
@@ -323,15 +363,26 @@ const WeekContainer = styled.div`
   flex: none;
   order: 1;
   flex-grow: 0;
-  margin: 32px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 32px;
+  margin: 32px 0px 64px;
   background: ${CLOUD};
   border-radius: 12px;
-  width: 100%
-  height: 18.5%;
-  padding-top: 32px;
-  padding-bottom: 40px;
-  padding-left: 30px;
-  padding-right: 30px;
+  width: 100%;
+
+  @media (max-width: 900px) {
+    margin: 24px 0px 48px;
+    padding: 35px 20px;
+  }
+`;
+
+const DayContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50px;
 `;
 
 const getTitleOfButton = (user: User): string => {
@@ -348,10 +399,76 @@ const getTitleOfButton = (user: User): string => {
   }
 };
 
+const filterByThisWeek = (dayString: string) => {
+  let today = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    new Date().getDate()
+  );
+  let todayDayOfWeek = today.getDay();
+  let day = new Date(dayString);
+  let daysApart =
+    (today.getTime() - day.getTime()) / (1000 * 60 * 60 * 24);
+  let dayOfWeek = day.getDay();
+  return !(
+    today !== day &&
+    (dayOfWeek > todayDayOfWeek || daysApart >= 7)
+  );
+};
+
+const isDayActive = (
+  dayNumber: number,
+  daysActive: string[]
+): boolean => {
+  for (let index in daysActive) {
+    let dayString = daysActive[index];
+    let day = new Date(dayString);
+    let dayOfWeek = day.getDay();
+    if (dayOfWeek === dayNumber) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const isToday = (dayNumber: number): boolean => {
+  let today = new Date();
+  let dayOfWeek = today.getDay();
+  return dayNumber === dayOfWeek;
+};
+
 interface StatParams {
   number: number;
   description: string;
 }
+
+interface DayParams {
+  name: string;
+  day: number;
+  daysActiveThisWeek: string[];
+}
+
+interface DayLabelType {
+  isToday?: boolean;
+}
+const DayOfWeek: FunctionComponent<DayParams> = ({
+  name,
+  day,
+  daysActiveThisWeek,
+}) => {
+  let istoday = isToday(day);
+  let isActive = isDayActive(day, daysActiveThisWeek);
+  return (
+    <DayContainer>
+      {isActive ? (
+        <Star src={star}></Star>
+      ) : (
+        <Dot src={ellipse}></Dot>
+      )}
+      <DayLabel isToday={istoday}>{name}</DayLabel>
+    </DayContainer>
+  );
+};
 
 const Stat: FunctionComponent<StatParams> = ({
   number,
@@ -389,12 +506,19 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   signOut,
   currentUser,
   getUser,
+  error,
 }): ReactElement => {
   let history = useHistory();
   if (isSignedOut) {
     history.push("/login");
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  const [
+    hasPerformedNetworkRequest,
+    setHasPerformedNetworkRequest,
+  ] = useState(false);
+  const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa"];
 
   useEffect(() => {
     const resizeScreen = () => {
@@ -409,12 +533,21 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   useEffect(() => {
     if (!currentUser) {
       getUser({});
+      setHasPerformedNetworkRequest(true);
     }
-  }, [currentUser, getUser]);
+  }, [currentUser, getUser, currentUser?.daysActive]);
+
+  if (error && hasPerformedNetworkRequest) {
+    history.push("/error");
+  }
 
   if (!currentUser) {
     return <h1>Loading</h1>;
   }
+
+  const daysActiveThisWeek = currentUser.daysActive.filter((day) =>
+    filterByThisWeek(day)
+  );
 
   return (
     <Layout shouldAddPadding={false}>
@@ -430,7 +563,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               <TitleText>hi name!</TitleText>
               <MenuButtonContainer></MenuButtonContainer>
             </MenuTopDiv>
-            {screenWidth > 600 && (
+            {screenWidth > 900 && (
               <SignOutButton onClick={signOut}>log out</SignOutButton>
             )}
           </MenuContainer>
@@ -450,6 +583,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             />
 
             <TitleText>list of sessions</TitleText>
+
             <SessionCardContainer>
               <SessionCard
                 sessionNumber={1}
@@ -514,7 +648,15 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             <TitleText>this week</TitleText>
 
             <WeekContainer>
-              <p>stars!</p>
+              {dayLabels.map((label: string, index: number) => {
+                return (
+                  <DayOfWeek
+                    name={label}
+                    day={index}
+                    daysActiveThisWeek={daysActiveThisWeek}
+                  />
+                );
+              })}
             </WeekContainer>
 
             <TitleText>your progress</TitleText>

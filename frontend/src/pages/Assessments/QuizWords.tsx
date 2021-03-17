@@ -105,9 +105,9 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
 
     if (
       wordResponses.filter((response) => !response.correct).length >=
-      2
+      24
     ) {
-      // There are at least 2 incorrect
+      // There are at least 24 incorrect
       updateWords(
         wordResponses,
         true,

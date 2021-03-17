@@ -64,7 +64,9 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
       <YesNoContainer>
         <YesNoButton
           highlight={selected === 1 ? (correctAnswer ? 1 : 0) : -1}
-          onClick={() => setSelected(1)}
+          onClick={() => {
+            selected === -1 && setSelected(1);
+          }}
           text="yes"
           top={20}
           check={
@@ -82,7 +84,9 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
         />
         <YesNoButton
           highlight={selected === 0 ? (correctAnswer ? 0 : 1) : -1}
-          onClick={() => setSelected(0)}
+          onClick={() => {
+            selected === -1 && setSelected(0);
+          }}
           text="no"
           top={20}
           check={

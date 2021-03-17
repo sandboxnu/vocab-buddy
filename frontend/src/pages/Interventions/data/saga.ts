@@ -54,6 +54,7 @@ function* watchUpdateIntervention(action: Action) {
       setId,
       wordIdx,
       activityIdx,
+      durationInSeconds,
       answer2Correct,
       answer3Correct,
       answer3Part2Correct,
@@ -65,6 +66,7 @@ function* watchUpdateIntervention(action: Action) {
         setId,
         wordIdx,
         activityIdx,
+        durationInSeconds,
         answer2Correct,
         answer3Correct,
         answer3Part2Correct,
@@ -75,7 +77,7 @@ function* watchUpdateIntervention(action: Action) {
     yield call(updateAndGetNewInterventions);
     yield put(updateIntervention.success({ interventions }));
   } catch (error) {
-    yield put(updateIntervention.error({ error }));
+    yield put(updateIntervention.error(error));
   }
 }
 
@@ -86,7 +88,7 @@ function* watchFinishedIntervention(action: Action) {
       await firebaseInteractor.createAssessmentFromIntervention(setId);
     };
     yield call(createNewAssessment);
-    yield put(finishedIntervention.success({}));
+    yield put(finishedIntervention.success());
   } catch (error) {
     yield put(finishedIntervention.error({ error }));
   }
