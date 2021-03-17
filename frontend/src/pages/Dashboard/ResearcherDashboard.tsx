@@ -111,9 +111,9 @@ const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
     <ResearcherDashboardContainer>
       <ResearcherTopBar>
         <TitleText>students</TitleText>
-        <Dropdown overlay={menu}>
+        <StudentFilter overlay={menu}>
           <p>sort by: </p>
-        </Dropdown>
+        </StudentFilter>
       </ResearcherTopBar>
       <AllStudentsContainer>
         {students.map((student) => (
