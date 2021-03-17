@@ -9,8 +9,7 @@ import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCurrentIntervention } from "./data/actions";
 import { getError, getInterventionId } from "./data/reducer";
-import styled from "styled-components";
-import { Alert } from "antd";
+import ErrorToast from "../../components/ErrorToast";
 
 const connector = connect(
   (state) => ({
@@ -21,22 +20,6 @@ const connector = connect(
     getInterventionRequest: getCurrentIntervention.request,
   }
 );
-
-const StyledAlert = styled(Alert)`
-  position: absolute;
-  top: 10px;
-
-  @media (max-width: 900px) {
-    width: 100%;
-  }
-
-  @media (min-width: 901px) {
-    width: 50%;
-    left: 25%;
-  }
-  margin: auto;
-  z-index: 1000;
-`;
 
 interface InterventionProps {
   interventionId?: string;
@@ -65,15 +48,12 @@ const Interventions: FunctionComponent<InterventionProps> = ({
         title="interventions"
         subtitle="start an intervention"
       />
-      {error && hasClickedButton && (
-        <StyledAlert
-          banner
-          message={error.message}
-          type="error"
-          closable
-          onClose={() => setHasClickedButton(false)}
-        />
-      )}
+      <ErrorToast
+        errorMessage={
+          error && hasClickedButton ? error.message : undefined
+        }
+        onClose={() => setHasClickedButton(false)}
+      />
     </>
   );
 };

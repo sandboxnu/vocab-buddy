@@ -15,17 +15,20 @@ const dashboardReducer = (
         ...state,
         isSignedOut: true,
         user: undefined,
+        error: undefined,
       };
     case ActionTypes.AUTHENTICATION_SUCCESS:
       return {
         ...state,
         isSignedOut: false,
         user: undefined,
+        error: undefined,
       };
     case ActionTypes.GET_DASHBOARD_DATA_SUCCESS:
       return {
         ...state,
         user: action.payload.user,
+        error: undefined,
       };
     case ActionTypes.GET_DATA_FOR_RESEARCHERS_SUCCESS:
       return {
@@ -41,6 +44,11 @@ const dashboardReducer = (
       return {
         ...state,
         user: action.payload.isFinished ? undefined : state.user,
+      };
+    case ActionTypes.GET_DASHBOARD_DATA_ERROR:
+      return {
+        ...state,
+        error: action.payload.error,
       };
     default:
       // If anything else happens, our user cache is probably bad, so remove it
@@ -58,6 +66,10 @@ export const getCurrentUser = (state: RootStateOrAny) => {
 
 export const getDataForResearchers = (state: RootStateOrAny) => {
   return state.dashboard.students;
+};
+
+export const getDashboardError = (state: RootStateOrAny) => {
+  return state.dashboard.error;
 };
 
 export default dashboardReducer;

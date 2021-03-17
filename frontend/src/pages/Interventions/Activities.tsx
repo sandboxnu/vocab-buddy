@@ -7,7 +7,10 @@ import React, {
 import { useHistory, useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
 import { connect } from "react-redux";
-import { getCurrentInterventions } from "../Interventions/data/reducer";
+import {
+  getCurrentInterventions,
+  getError,
+} from "../Interventions/data/reducer";
 import { Interventions } from "../../models/types";
 import {
   finishedIntervention,
@@ -22,6 +25,7 @@ import {
 
 interface ActivityProps {
   interventions: Interventions;
+  error?: Error;
   getInterventions: (id: string) => void;
   updateIntervention: ({
     setId,
@@ -52,6 +56,7 @@ interface ActivityParams {
 const connector = connect(
   (state) => ({
     interventions: getCurrentInterventions(state),
+    error: getError(state),
   }),
   {
     getInterventions: getInterventions.request,
@@ -65,6 +70,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
   getInterventions,
   updateIntervention,
   finishedIntervention,
+  error,
 }): ReactElement => {
   let params = useParams<ActivityParams>();
   useEffect(() => {
@@ -98,6 +104,10 @@ const Activities: FunctionComponent<ActivityProps> = ({
     );
 
   const history = useHistory();
+
+  if (error) {
+    history.push("/error");
+  }
 
   if (!interventions) {
     return <Layout>Loading</Layout>;

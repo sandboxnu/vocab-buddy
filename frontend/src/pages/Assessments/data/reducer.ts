@@ -46,6 +46,7 @@ const assessmentReducer = (
         finished: false,
       };
     case ActionTypes.GET_CURRENT_ASSESSMENT_ERROR:
+    case ActionTypes.GET_ASSESSMENT_ERROR:
       return {
         ...state,
         error: payload.error,

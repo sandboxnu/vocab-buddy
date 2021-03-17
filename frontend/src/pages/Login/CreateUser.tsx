@@ -1,4 +1,3 @@
-import { Alert } from "antd";
 import React, {
   FunctionComponent,
   ReactElement,
@@ -15,7 +14,8 @@ import { TextInput } from "../../components/TextInput";
 import { INK, SEA_FOAM } from "../../constants/colors";
 import { authenticationRequest } from "./data/actions";
 import { AccountType, CreateUserParams } from "../../models/types";
-import { getSignedIn } from "./data/reducer";
+import { getCreateUserError, getSignedIn } from "./data/reducer";
+import ErrorToast from "../../components/ErrorToast";
 
 const LoginHoldingDiv = styled.div`
   display: flex;
@@ -109,21 +109,6 @@ const StyledPurpleButton = styled(PurpleButton)`
   padding: 10px;
 `;
 
-const StyledAlert = styled(Alert)`
-  position: absolute;
-  top: 10px;
-
-  @media (max-width: 900px) {
-    width: 100%;
-  }
-
-  @media (min-width: 901px) {
-    width: 50%;
-    left: 25%;
-  }
-  margin: auto;
-`;
-
 interface NameTextInputProps {
   isStudent: boolean;
 }
@@ -142,6 +127,7 @@ const AgeTextInput = styled(TextInput)`
 const connector = connect(
   (state) => ({
     signedIn: getSignedIn(state),
+    error: getCreateUserError(state),
   }),
   {
     createUser: authenticationRequest.createUser,
@@ -157,11 +143,13 @@ interface CreateUserProps {
     accountType,
     age,
   }: CreateUserParams) => void;
+  error?: Error;
 }
 
 const CreateUser: FunctionComponent<CreateUserProps> = ({
   signedIn,
   createUser,
+  error,
 }): ReactElement => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
@@ -169,10 +157,11 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
   let [name, setName] = useState("");
   let [accountType, setAccountType] = useState("STUDENT");
   let [age, setAge] = useState("");
-  let [error, setError] = useState("");
+  let [errorString, setErrorString] = useState("");
+  let [networkErrorShown, setNetworkErrorShown] = useState(false);
   let createUserWithCheck = () => {
     if (confirmPassword !== password) {
-      setError(
+      setErrorString(
         "you need to confirm the password with the same password"
       );
     } else if (
@@ -181,8 +170,9 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
       !password ||
       !email
     ) {
-      setError("please fill in all fields");
+      setErrorString("please fill in all fields");
     } else {
+      setNetworkErrorShown(true);
       createUser({
         email,
         password,
@@ -205,15 +195,6 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
   return (
     <Layout hideBar={true}>
       <>
-        {error && (
-          <StyledAlert
-            banner
-            message={error}
-            type="error"
-            closable
-            onClose={() => setError("")}
-          />
-        )}
         <CloudGroup />
         <LoginHoldingDiv>
           <HorizontalDiv>
@@ -294,6 +275,19 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
             <EvenSpacedDiv />
           </HorizontalDiv>
         </LoginHoldingDiv>
+        <ErrorToast
+          errorMessage={
+            errorString === ""
+              ? networkErrorShown
+                ? error?.message
+                : undefined
+              : errorString
+          }
+          onClose={() => {
+            setErrorString("");
+            setNetworkErrorShown(false);
+          }}
+        />
       </>
     </Layout>
   );
