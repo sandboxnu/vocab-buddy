@@ -155,6 +155,7 @@ const SessionContainer = styled.div`
   }
 `;
 
+/*
 const SessionCardContainer = styled.div`
   display: flex;
   flex: 1;
@@ -162,6 +163,20 @@ const SessionCardContainer = styled.div`
   justify-content: space-between;
   min-width: 100%;
   @media (max-width: 900px) {
+  }
+`;
+
+ */
+
+const SessionCardContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  min-width: 100%;
+  grid-gap: 32px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 24px;
   }
 `;
 
@@ -176,15 +191,9 @@ const SessionBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 16px 32px 16px 0px;
-
-  flex: 1 0 10%;
-  order: 0;
-  flex-grow: 1;
 
   @media (max-width: 900px) {
     padding: 32px;
-    margin: 12px 24px 12px 0px;
   }
 
   ${({ isComplete }: SessionCompletionProp) => {
@@ -202,8 +211,12 @@ const SessionBox = styled.div`
 
 const SessionNumber = styled.p`
   font-weight: 700;
-  font-size: 18px;
+  font-size: 1.5vw;
   text-align: center;
+
+  @media (max-width: 900px) {
+    font-size: 3vw;
+  }
 `;
 
 const SessionImage = styled.img`
