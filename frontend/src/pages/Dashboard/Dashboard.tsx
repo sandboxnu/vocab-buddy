@@ -493,6 +493,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               {dayLabels.map((label: string, index: number) => {
                 return (
                   <DayOfWeek
+                    key={index}
                     name={label}
                     day={index}
                     daysActiveThisWeek={daysActiveThisWeek}
