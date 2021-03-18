@@ -16,6 +16,7 @@ const dashboardReducer = (
         isSignedOut: true,
         user: undefined,
         totalWordsLearned: undefined,
+        error: undefined,
       };
     case ActionTypes.AUTHENTICATION_SUCCESS:
       return {
@@ -23,12 +24,14 @@ const dashboardReducer = (
         isSignedOut: false,
         user: undefined,
         totalWordsLearned: undefined,
+        error: undefined,
       };
     case ActionTypes.GET_DASHBOARD_DATA_SUCCESS:
       return {
         ...state,
         user: action.payload.user,
         totalWordsLearned: action.payload.totalWordsLearned,
+        error: undefined,
       };
     case ActionTypes.FINISHED_INTERVENTION_SUCCESS:
       return {
@@ -43,6 +46,11 @@ const dashboardReducer = (
         totalWordsLearned: action.payload.isFinished
           ? undefined
           : state.totalWordsLearned,
+      };
+    case ActionTypes.GET_DASHBOARD_DATA_ERROR:
+      return {
+        ...state,
+        error: action.payload.error,
       };
     default:
       // If anything else happens, our user cache is probably bad, so remove it
@@ -60,6 +68,10 @@ export const getCurrentUser = (state: RootStateOrAny) => {
 
 export const getTotalWordsLearned = (state: RootStateOrAny) => {
   return state.dashboard.totalWordsLearned;
+};
+
+export const getDashboardError = (state: RootStateOrAny) => {
+  return state.dashboard.error;
 };
 
 export default dashboardReducer;

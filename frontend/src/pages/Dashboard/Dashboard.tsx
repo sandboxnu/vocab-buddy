@@ -20,6 +20,7 @@ import {
   getCurrentUser,
   getIsSignedOut,
   getTotalWordsLearned,
+  getDashboardError,
 } from "./data/reducer";
 import star from "../../assets/star.svg";
 import ellipse from "../../assets/ellipse.svg";
@@ -31,6 +32,7 @@ interface DashboardParams {
   totalWordsLearned?: number;
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
+  error?: Error;
 }
 
 const connector = connect(
@@ -38,6 +40,7 @@ const connector = connect(
     isSignedOut: getIsSignedOut(state),
     currentUser: getCurrentUser(state),
     totalWordsLearned: getTotalWordsLearned(state),
+    error: getDashboardError(state),
   }),
   {
     signOut: SignOut.request,
@@ -411,12 +414,17 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   currentUser,
   totalWordsLearned,
   getUser,
+  error,
 }): ReactElement => {
   let history = useHistory();
   if (isSignedOut) {
     history.push("/login");
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [
+    hasPerformedNetworkRequest,
+    setHasPerformedNetworkRequest,
+  ] = useState(false);
   const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa"];
 
   useEffect(() => {
@@ -432,8 +440,13 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   useEffect(() => {
     if (!currentUser || totalWordsLearned === undefined) {
       getUser({});
+      setHasPerformedNetworkRequest(true);
     }
   }, [currentUser, getUser, totalWordsLearned]);
+
+  if (error && hasPerformedNetworkRequest) {
+    history.push("/error");
+  }
 
   if (!currentUser || totalWordsLearned === undefined) {
     return <h1>Loading</h1>;
