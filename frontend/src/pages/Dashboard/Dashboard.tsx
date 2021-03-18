@@ -18,15 +18,18 @@ import {
 } from "./data/actions";
 import {
   getCurrentUser,
-  getDashboardError,
   getIsSignedOut,
+  getTotalWordsLearned,
+  getDashboardError,
 } from "./data/reducer";
 import star from "../../assets/star.svg";
 import ellipse from "../../assets/ellipse.svg";
+import { dayStreak } from "../../constants/utils";
 
 interface DashboardParams {
   isSignedOut: boolean;
   currentUser?: User;
+  totalWordsLearned?: number;
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
   error?: Error;
@@ -36,6 +39,7 @@ const connector = connect(
   (state) => ({
     isSignedOut: getIsSignedOut(state),
     currentUser: getCurrentUser(state),
+    totalWordsLearned: getTotalWordsLearned(state),
     error: getDashboardError(state),
   }),
   {
@@ -408,6 +412,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
   currentUser,
+  totalWordsLearned,
   getUser,
   error,
 }): ReactElement => {
@@ -433,17 +438,17 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   }, []);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser || totalWordsLearned === undefined) {
       getUser({});
       setHasPerformedNetworkRequest(true);
     }
-  }, [currentUser, getUser, currentUser?.daysActive]);
+  }, [currentUser, getUser, totalWordsLearned]);
 
   if (error && hasPerformedNetworkRequest) {
     history.push("/error");
   }
 
-  if (!currentUser) {
+  if (!currentUser || totalWordsLearned === undefined) {
     return <h1>Loading</h1>;
   }
 
@@ -503,14 +508,25 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
             <TitleText>your progress</TitleText>
             <ProgressStatsContainer>
-              <Stat number={14} description={"day streak"} />
-              <Stat number={25} description={"words learned"} />
               <Stat
-                number={4}
+                number={dayStreak(
+                  currentUser.daysActive.map((val) => new Date(val))
+                )}
+                description={"day streak"}
+              />
+              <Stat
+                number={totalWordsLearned}
+                description={"words learned"}
+              />
+              <Stat
+                number={currentUser.sessionId + 1}
                 description={"assessments completed"}
               />
               <Stat
-                number={3}
+                number={
+                  currentUser.sessionId +
+                  (currentUser.onAssessment ? 1 : 0)
+                }
                 description={"interventions completed"}
               />
             </ProgressStatsContainer>
