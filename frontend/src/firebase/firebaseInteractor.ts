@@ -180,7 +180,7 @@ export default class FirebaseInteractor {
     activity3Part2Correct?: boolean,
     activity3Part3Correct?: boolean
   ) {
-    let intervention = await this.db
+    let intervention = this.db
       .collection("interventions")
       .doc(interventions.setId);
 
