@@ -171,7 +171,7 @@ export default class FirebaseInteractor {
    * update intervention idx number
    */
   async updateIntervention(
-    setId: string,
+    interventions: Interventions,
     wordIdx: number,
     activityIdx: number,
     durationInSeconds: number,
@@ -180,9 +180,11 @@ export default class FirebaseInteractor {
     activity3Part2Correct?: boolean,
     activity3Part3Correct?: boolean
   ) {
-    let intervention = await this.db.collection("interventions").doc(setId);
+    let intervention = await this.db
+      .collection("interventions")
+      .doc(interventions.setId);
 
-    let wordList: string[] = (await intervention.get())?.data()?.wordList || [];
+    let wordList: string[] = interventions.wordList.map((word) => word.word.id);
     if (activity2Correct !== undefined) {
       await intervention.collection("responses").doc(wordList[wordIdx]).set({
         activity2Correct,
