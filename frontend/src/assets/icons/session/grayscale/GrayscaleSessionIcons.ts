@@ -1,5 +1,6 @@
 // Session 1 icon should never be grayed out
 // The user always has session 1 unlocked
+// Import the colored icon just for consistency
 import Session1 from "../color/session1.svg";
 
 import Session2 from "./session2grayscale.svg";

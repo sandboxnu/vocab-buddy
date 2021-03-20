@@ -568,7 +568,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
             <SessionCardContainer>
               {sessionNumbers.map((label: number, index: number) => {
-                let complete = currentUser?.sessionId >= label;
+                let complete =
+                  currentUser?.sessionId >= label || label == 1;
                 return (
                   <SessionCard
                     sessionNumber={label}
