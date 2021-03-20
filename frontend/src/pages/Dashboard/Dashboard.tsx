@@ -187,17 +187,8 @@ const SessionBox = styled.div`
     padding: 32px;
   }
 
-  ${({ isComplete }: SessionCompletionProp) => {
-    if (isComplete) {
-      return `
-    background: ${SKY} !important;
-  `;
-    } else {
-      return `
-    background: ${INCOMPLETE_GRAY} !important; 
-  `;
-    }
-  }};
+  background: ${({ isComplete }: SessionCompletionProp) =>
+    isComplete ? SKY : INCOMPLETE_GRAY} !important;
 `;
 
 const SessionNumber = styled.p`
