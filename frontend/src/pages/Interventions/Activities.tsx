@@ -28,7 +28,7 @@ interface ActivityProps {
   error?: Error;
   getInterventions: (id: string) => void;
   updateIntervention: ({
-    setId,
+    intervention,
     wordIdx,
     activityIdx,
     durationInSeconds,
@@ -37,7 +37,7 @@ interface ActivityProps {
     answer3Part2Correct,
     answer3Part3Correct,
   }: {
-    setId: string;
+    intervention: Interventions;
     wordIdx: number;
     activityIdx: number;
     durationInSeconds: number;
@@ -130,7 +130,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
             finishedIntervention({ setId });
           } else {
             updateIntervention({
-              setId,
+              intervention: interventions,
               wordIdx: nextWordIdx,
               activityIdx: nextActivityIdx,
               durationInSeconds,
