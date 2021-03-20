@@ -181,6 +181,7 @@ export interface ResetPasswordParams {
 export interface DashboardState {
   isSignedOut: boolean;
   user?: User;
+  totalWordsLearned?: number;
   error?: Error;
 }
 

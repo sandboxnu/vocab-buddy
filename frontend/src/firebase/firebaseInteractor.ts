@@ -171,7 +171,7 @@ export default class FirebaseInteractor {
    * update intervention idx number
    */
   async updateIntervention(
-    setId: string,
+    interventions: Interventions,
     wordIdx: number,
     activityIdx: number,
     durationInSeconds: number,
@@ -180,9 +180,11 @@ export default class FirebaseInteractor {
     activity3Part2Correct?: boolean,
     activity3Part3Correct?: boolean
   ) {
-    let intervention = await this.db.collection("interventions").doc(setId);
+    let intervention = this.db
+      .collection("interventions")
+      .doc(interventions.setId);
 
-    let wordList: string[] = (await intervention.get())?.data()?.wordList || [];
+    let wordList: string[] = interventions.wordList.map((word) => word.word.id);
     if (activity2Correct !== undefined) {
       await intervention.collection("responses").doc(wordList[wordIdx]).set({
         activity2Correct,
@@ -279,7 +281,7 @@ export default class FirebaseInteractor {
       .collection("assessments")
       .doc(firebaseId)
       .get();
-    // Hardcoding first assessment for now
+
     let assessment = assessmentRef.data();
     if (assessment == null) {
       throw new Error(`Assessment with id ${firebaseId} does not exist`);
@@ -451,6 +453,23 @@ export default class FirebaseInteractor {
       wordIdx: intervention.wordIdx,
       sessionId: intervention.session,
     };
+  }
+
+  async getTotalWordsLearned(userId: string | undefined): Promise<number> {
+    let userIdToUse = userId ?? this.auth.currentUser?.uid;
+    let allAssessments = await this.db
+      .collection("assessments")
+      .where("userId", "==", userIdToUse)
+      .get();
+    let totalWords = 0;
+    for (let assessment of allAssessments.docs) {
+      if (assessment.data().sessionId === -1) {
+        continue;
+      }
+      let results = await assessment.ref.collection("results").get();
+      totalWords += results.docs.filter((doc) => doc.data().correct).length;
+    }
+    return totalWords;
   }
 
   async getCurrentExerciseId(wantsAssessment: boolean): Promise<string> {

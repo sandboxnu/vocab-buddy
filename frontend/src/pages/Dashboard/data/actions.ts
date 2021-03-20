@@ -14,6 +14,7 @@ export const SignOut = {
 
 interface GetDashboardDataResponse {
   user?: User;
+  totalWordsLearned?: number;
   error?: Error;
 }
 
@@ -26,9 +27,9 @@ export const GetData = {
     type: ActionTypes.GET_DASHBOARD_DATA_REQUEST,
     payload: { id },
   }),
-  success: ({ user }: GetDashboardDataResponse) => ({
+  success: ({ user, totalWordsLearned }: GetDashboardDataResponse) => ({
     type: ActionTypes.GET_DASHBOARD_DATA_SUCCESS,
-    payload: { user },
+    payload: { user, totalWordsLearned },
   }),
   error: ({ error }: GetDashboardDataResponse) => ({
     type: ActionTypes.GET_DASHBOARD_DATA_ERROR,
