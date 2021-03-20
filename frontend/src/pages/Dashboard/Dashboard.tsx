@@ -28,6 +28,8 @@ import {
 } from "./data/reducer";
 import star from "../../assets/star.svg";
 import ellipse from "../../assets/ellipse.svg";
+import ColoredSessionIcons from "../../assets/icons/session/color/ColoredSessionIcons";
+import GrayscaleSessionIcons from "../../assets/icons/session/grayscale/GrayscaleSessionIcons";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -203,7 +205,7 @@ const SessionNumber = styled.p`
 `;
 
 const SessionImage = styled.img`
-  max-width: 35px;
+  max-width: 100%;
   margin-bottom: 24px;
   @media (max-width: 900px) {
     margin-bottom: 22px;
@@ -498,6 +500,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     setHasPerformedNetworkRequest,
   ] = useState(false);
   const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa"];
+  const sessionNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
 
   useEffect(() => {
     const resizeScreen = () => {
@@ -564,66 +567,21 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             <TitleText>list of sessions</TitleText>
 
             <SessionCardContainer>
-              {/* Will probably be cleaner once we do a .map to create
-              a SessionCard // It will be easier to do that once we
-              have an array of image links // For each session card
-              */}
-              <SessionCard
-                sessionNumber={1}
-                image={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-                isComplete={currentUser.sessionId >= 1}
-              />
-              <SessionCard
-                sessionNumber={2}
-                image={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-                isComplete={currentUser.sessionId >= 2}
-              />
-              <SessionCard
-                sessionNumber={3}
-                image={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-                isComplete={currentUser.sessionId >= 3}
-              />
-              <SessionCard
-                sessionNumber={4}
-                image={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-                isComplete={currentUser.sessionId >= 4}
-              />
-              <SessionCard
-                sessionNumber={5}
-                image={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-                isComplete={currentUser.sessionId >= 5}
-              />
-              <SessionCard
-                sessionNumber={6}
-                image={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-                isComplete={currentUser.sessionId >= 6}
-              />
-              <SessionCard
-                sessionNumber={7}
-                image={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-                isComplete={currentUser.sessionId >= 7}
-              />
-              <SessionCard
-                sessionNumber={8}
-                image={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-                isComplete={currentUser.sessionId >= 8}
-              />
+              {sessionNumbers.map((label: number, index: number) => {
+                let complete = currentUser?.sessionId >= label;
+                return (
+                  <SessionCard
+                    sessionNumber={label}
+                    image={
+                      complete
+                        ? ColoredSessionIcons[index]
+                        : GrayscaleSessionIcons[index]
+                    }
+                    isComplete={complete}
+                    key={index}
+                  />
+                );
+              })}
             </SessionCardContainer>
           </SessionContainer>
 
