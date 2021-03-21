@@ -375,6 +375,7 @@ const DayContainer = styled.div`
 const ProfileGroup = styled.button`
   border: None;
   border-radius: 50%;
+  margin-bottom: 1em;
   padding: 0;
   position: relative;
 
@@ -390,8 +391,8 @@ const EditContainer = styled.div`
   background-color: rgba(32, 33, 36, 0.6);
   bottom: 0;
   height: 100%;
-  left: 0;
   justify-content: center;
+  left: 0;
   position: absolute;
   right: 0;
   opacity: 0;
