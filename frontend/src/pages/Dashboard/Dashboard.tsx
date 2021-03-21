@@ -67,13 +67,17 @@ const DashboardContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  min-height: 100%;
-  min-width: 100%;
+  align-items: stretch;
+  width: 100%;
   padding-top: 98px;
 
   @media (max-width: 900px) {
     flex-direction: column;
     padding-right: 0px;
+  }
+
+  @media (min-width: 901px) {
+    height: 100vh;
   }
 `;
 
@@ -86,7 +90,7 @@ const MenuContainer = styled.div`
   flex: 1;
   border-radius: 0px 12px 0px 0px;
 
-  padding: 64px 64px 64px 64px;
+  padding: 3vh 3vw;
 
   background: ${CLOUD};
 
@@ -145,10 +149,9 @@ const SessionContainer = styled.div`
   align-items: flex-start;
 
   flex: 3;
-  min-height: 100%;
-  padding-left: 64px;
-  padding-top: 64px;
-  padding-bottom: 64px;
+  padding-left: 3vw;
+  padding-top: 3vw;
+  padding-bottom: 3vw;
 
   @media (max-width: 900px) {
     min-width: 100%;
@@ -161,7 +164,7 @@ const SessionContainer = styled.div`
 const NextSessionButton = styled(PurpleButton)`
   min-width: 32%;
   height: 100px;
-  margin-bottom: 64px;
+  margin-bottom: 4vh;
   text-transform: lowercase;
 
   @media (max-width: 900px) {
@@ -171,11 +174,10 @@ const NextSessionButton = styled(PurpleButton)`
 
 const WeekProgressContainer = styled.div`
   flex: 2;
-  min-height: 100%;
 
-  padding-left: 64px;
-  padding-right: 64px;
-  padding-top: 64px;
+  padding-left: 4vw;
+  padding-right: 4vw;
+  padding-top: 4vh;
 
   @media (max-width: 900px) {
     min-width: 100%;
@@ -197,14 +199,14 @@ const ProgressBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px 30px 30px 30px;
+  padding: 3vh 2vw;
 
   flex: 1 0 50%;
   order: 0;
   flex-grow: 1;
 
   max-width: calc(50% - 16px);
-  margin-bottom: 32px;
+  margin-bottom: 2vh;
 
   background: ${CLOUD};
   border-radius: 12px;
@@ -293,8 +295,8 @@ const WeekContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 32px;
-  margin: 32px 0px 64px;
+  padding: 2vh 2vw;
+  margin: 3vh 0px 4vh;
   background: ${CLOUD};
   border-radius: 12px;
   width: 100%;
