@@ -28,6 +28,11 @@ const ProfileIcon = styled.img`
   :hover {
     cursor: pointer;
   }
+
+  @media (max-width: 900px) {
+    height: 100%;
+    width: 100%;
+  }
 `;
 
 const ProfileEditModal: FunctionComponent<ProfileEditModalProps> = ({

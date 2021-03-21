@@ -47,7 +47,7 @@ export const ChangeProfileIcon = {
     payload: { url },
   }),
   error: (error: Error) => ({
-    type: ActionTypes.CREATE_USER_ERROR,
+    type: ActionTypes.CHANGE_PROFILE_ICON_ERROR,
     payload: { error },
   }),
 };
