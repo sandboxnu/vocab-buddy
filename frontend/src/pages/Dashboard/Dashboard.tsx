@@ -32,6 +32,7 @@ import ellipse from "../../assets/ellipse.svg";
 import ColoredSessionIcons from "../../assets/icons/session/color/ColoredSessionIcons";
 import GrayscaleSessionIcons from "../../assets/icons/session/grayscale/GrayscaleSessionIcons";
 import { dayStreak } from "../../constants/utils";
+import ProfileEditModal from "../../components/ProfileEditModal";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -401,6 +402,7 @@ const EditContainer = styled.div`
 const EditText = styled.div`
   color: #fff;
   font-weight: 600;
+  font-size: 20px;
 `;
 
 const getTitleOfButton = (user: User): string => {
@@ -532,6 +534,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     history.push("/login");
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [showModal, setShowModal] = useState(false);
 
   const [
     hasPerformedNetworkRequest,
@@ -581,9 +584,12 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                     "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
                   }
                 />
-                <EditContainer>
+                <EditContainer
+                  onClick={() => setShowModal(!showModal)}
+                >
                   <EditText>edit</EditText>
                 </EditContainer>
+                <ProfileEditModal />
               </ProfileGroup>
               <TitleText>hi name!</TitleText>
               <MenuButtonContainer></MenuButtonContainer>
