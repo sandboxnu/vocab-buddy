@@ -185,6 +185,11 @@ const Login: FunctionComponent<LoginProps> = ({
     resetPassword({ email });
   };
 
+  const doSignIn = () => {
+    setShowError(true);
+    signIn({ email, password });
+  };
+
   useEffect(() => {
     if (signedIn) {
       if (redirect != null) {
@@ -220,18 +225,13 @@ const Login: FunctionComponent<LoginProps> = ({
                   value={password}
                   type="password"
                   text="password"
-                  onKeyDown={(e) =>
-                    e.key === "Enter" && signIn({ email, password })
-                  }
+                  onKeyDown={(e) => e.key === "Enter" && doSignIn()}
                 />
 
                 <StyledPurpleButton
                   text={"login"}
                   top={0}
-                  onClick={() => {
-                    setShowError(true);
-                    signIn({ email, password });
-                  }}
+                  onClick={() => doSignIn()}
                 />
 
                 <ResetUserButton onClick={() => doResetPassword()}>
