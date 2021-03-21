@@ -36,6 +36,10 @@ export function indexOf<T>(array: T[], test: (input: T) => boolean): number {
   return -1;
 }
 
+export function randomNumberBetween(bottom: number, top: number): number {
+  return Math.floor(Math.random() * (top - bottom)) + bottom;
+}
+
 function goToPreviousDay(date: Date) {
   // Javascript will convert May 1 -> April 30 if the date becomes negative (thanks Javascript)
   date.setDate(date.getDate() - 1);

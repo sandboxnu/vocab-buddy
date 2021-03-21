@@ -36,3 +36,18 @@ export const GetData = {
     payload: { error },
   }),
 };
+
+export const ChangeProfileIcon = {
+  request: (url: string) => ({
+    type: ActionTypes.CHANGE_PROFILE_ICON_REQUEST,
+    payload: { url },
+  }),
+  success: (url: string) => ({
+    type: ActionTypes.CHANGE_PROFILE_ICON_SUCCESS,
+    payload: { url },
+  }),
+  error: (error: Error) => ({
+    type: ActionTypes.CHANGE_PROFILE_ICON_ERROR,
+    payload: { error },
+  }),
+};
