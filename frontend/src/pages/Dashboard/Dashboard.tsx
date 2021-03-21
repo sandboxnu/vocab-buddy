@@ -20,6 +20,7 @@ import {
   GetData,
   GetDataRequestProps,
   SignOut,
+  ChangeProfileIcon,
 } from "./data/actions";
 import {
   getCurrentUser,
@@ -32,6 +33,7 @@ import ellipse from "../../assets/ellipse.svg";
 import ColoredSessionIcons from "../../assets/icons/session/color/ColoredSessionIcons";
 import GrayscaleSessionIcons from "../../assets/icons/session/grayscale/GrayscaleSessionIcons";
 import { dayStreak } from "../../constants/utils";
+import ProfileEditModal from "../../components/ProfileEditModal";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -39,6 +41,7 @@ interface DashboardParams {
   totalWordsLearned?: number;
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
+  changeIconRequest: (url: string) => void;
   error?: Error;
 }
 
@@ -52,6 +55,7 @@ const connector = connect(
   {
     signOut: SignOut.request,
     getUser: GetData.request,
+    changeIconRequest: ChangeProfileIcon.request,
   }
 );
 
@@ -136,8 +140,6 @@ const MenuTopDiv = styled.div`
 `;
 
 const ProfilePicture = styled.img`
-  margin-bottom: 24px;
-
   height: 183px;
   width: 183px;
 
@@ -367,6 +369,43 @@ const DayContainer = styled.div`
   width: 50px;
 `;
 
+const ProfileGroup = styled.button`
+  border: None;
+  border-radius: 50%;
+  margin-bottom: 1em;
+  padding: 0;
+  position: relative;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const EditContainer = styled.div`
+  align-items: center;
+  display: flex;
+  border-radius: 50%;
+  background-color: rgba(32, 33, 36, 0.6);
+  bottom: 0;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  :hover {
+    opacity: 1;
+  }
+`;
+
+const EditText = styled.div`
+  color: #fff;
+  font-weight: 600;
+  font-size: 20px;
+`;
+
 const getTitleOfButton = (user: User): string => {
   switch (user.sessionId) {
     case -1:
@@ -490,12 +529,14 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   totalWordsLearned,
   getUser,
   error,
+  changeIconRequest,
 }): ReactElement => {
   let history = useHistory();
   if (isSignedOut) {
     history.push("/login");
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [showModal, setShowModal] = useState(false);
 
   const [
     hasPerformedNetworkRequest,
@@ -539,11 +580,18 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
         <DashboardContainer>
           <MenuContainer>
             <MenuTopDiv>
-              <ProfilePicture
-                src={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-              />
+              <ProfileGroup>
+                <ProfilePicture src={currentUser.profileIcon} />
+                <EditContainer onClick={() => setShowModal(true)}>
+                  <EditText>edit</EditText>
+                </EditContainer>
+                <ProfileEditModal
+                  currentIcon={currentUser.profileIcon}
+                  showModal={showModal}
+                  onClose={() => setShowModal(false)}
+                  changeIconRequest={changeIconRequest}
+                />
+              </ProfileGroup>
               <TitleText>hi name!</TitleText>
               <MenuButtonContainer></MenuButtonContainer>
             </MenuTopDiv>

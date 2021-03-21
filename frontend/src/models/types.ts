@@ -94,6 +94,7 @@ export interface User {
   onAssessment: boolean;
   currentInterventionOrAssessment: string;
   daysActive: string[];
+  profileIcon: string;
 }
 
 /**
@@ -143,6 +144,9 @@ export enum ActionTypes {
   GET_DASHBOARD_DATA_REQUEST = "GET_DASHBOARD_DATA_REQUEST",
   GET_DASHBOARD_DATA_SUCCESS = "GET_DASHBOARD_DATA_SUCCESS",
   GET_DASHBOARD_DATA_ERROR = "GET_DASHBOARD_DATA_ERROR",
+  CHANGE_PROFILE_ICON_REQUEST = "CHANGE_PROFILE_ICON_REQUEST",
+  CHANGE_PROFILE_ICON_SUCCESS = "CHANGE_PROFILE_ICON_SUCCESS",
+  CHANGE_PROFILE_ICON_ERROR = "CHANGE_PROFILE_ICON_ERROR",
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense

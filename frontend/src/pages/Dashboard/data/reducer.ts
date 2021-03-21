@@ -52,6 +52,16 @@ const dashboardReducer = (
         ...state,
         error: action.payload.error,
       };
+    case ActionTypes.CHANGE_PROFILE_ICON_SUCCESS:
+      return {
+        ...state,
+        user: state.user
+          ? {
+              ...state.user,
+              profileIcon: action.payload.url,
+            }
+          : undefined,
+      };
     default:
       // If anything else happens, our user cache is probably bad, so remove it
       return state;

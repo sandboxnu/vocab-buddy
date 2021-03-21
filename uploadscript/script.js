@@ -31,10 +31,6 @@ const uploadFileToFirebaseStorage = async (fileLocation, uploadName) => {
     return firebaseFile.publicUrl();
 };
 
-const readTextFile = (fileLocation) => {
-    return fs.readFileSync(fileLocation, { encoding: 'utf8' });
-};
-
 const performUpload = async () => {
     for (let word of allWords) {
         let wordFolder = repositoryStartingFolder + "/" + word + "/";
@@ -56,12 +52,14 @@ const performUpload = async () => {
         let interventionSetRef = wordRef.collection("intervention-set");
 
         let activity1 = {
-            prompt: readTextFile(promptFolder + "activity1.txt"),
+            prompt: await uploadFileToFirebaseStorage(promptFolder + "activity1.mp3", wordRef.id + "/activity1.mp3"),
+            prompt2: await uploadFileToFirebaseStorage(promptFolder + "activity1_part2.mp3", wordRef.id + "/activity1_part2.mp3"),
             url: await uploadFileToFirebaseStorage(correctFolder + "correct_activity1.jpg", wordRef.id + "/correct_activity1.jpg")
         };
 
         let activity2 = {
-            prompt: readTextFile(promptFolder + "activity2.txt"),
+            prompt: await uploadFileToFirebaseStorage(promptFolder + "activity2.mp3", wordRef.id + "/activity2.mp3"),
+            prompt2: await uploadFileToFirebaseStorage(promptFolder + "activity2_part2.mp3", wordRef.id + "/activity2_part2.mp3"),
             correctUrl: await uploadFileToFirebaseStorage(correctFolder + "correct_activity2.jpg", wordRef.id + "/correct_activity2.jpg"),
             incorrectUrl: await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_activity2.jpg", wordRef.id + "/incorrect_activity2.jpg")
         };
@@ -79,19 +77,23 @@ const performUpload = async () => {
         let allActivity3Options = [];
         for (let activity3Option of activity3Strings) {
             let lastComponent = activity3Option.substring(activity3Option.lastIndexOf("/"));
+            let lastComponentWithoutSlash = lastComponent.replace("/", "")
+            console.log(lastComponent)
             allActivity3Options.push({
                 correctAnswer: activity3Option.includes(correctFolder),
                 url: await uploadFileToFirebaseStorage(activity3Option, wordRef.id + lastComponent),
-                prompt: readTextFile(promptFolder + lastComponent.replace("jpg", "txt"))
+                prompt: await uploadFileToFirebaseStorage(promptFolder + lastComponentWithoutSlash.replace("jpg", "mp3"), wordRef.id + lastComponent.replace("jpg", "mp3")),
+                prompt2: await uploadFileToFirebaseStorage(promptFolder + lastComponentWithoutSlash.replace(".jpg", "_part2.mp3"), wordRef.id + lastComponent.replace(".jpg", "_part2.mp3")),
             });
         }
 
         let activity4 = {
-            prompt: readTextFile(promptFolder + "activity4.txt"),
+            prompt: await uploadFileToFirebaseStorage(promptFolder + "activity4.mp3", wordRef.id + "/activity4.mp3"),
+            prompt2: await uploadFileToFirebaseStorage(promptFolder + "activity4_part2.mp3", wordRef.id + "/activity4_part2.mp3"),
             url: await uploadFileToFirebaseStorage(correctFolder + "correct_activity4.jpg", wordRef.id + "/correct_activity4.jpg")
         };
         // Upload everything to firebase
-        console.log(`Uploading ${word} to firebase`);
+        console.log(`Uploading ${word} to firebase at id ${wordRef.id}`);
         await wordRef.set(wordBaseInfo);
         await interventionSetRef.doc("activity1").set(activity1);
         await interventionSetRef.doc("activity2").set(activity2);
