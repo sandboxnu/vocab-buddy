@@ -29,7 +29,7 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const allProfileIcons = [
+export const allProfileIcons = [
   "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Fufocircle.svg?alt=media&token=267fc738-9a95-4573-adcf-e1e1c8e6bd64",
   "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Fairplanecircle.svg?alt=media&token=821f4298-66ba-4efb-92a3-f2fb6477b866",
   "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Fbicyclecircle.svg?alt=media&token=9fba5a81-15f7-497d-93bc-4f7b274bc699",
@@ -156,6 +156,19 @@ export default class FirebaseInteractor {
     } else {
       throw new Error("Invalid user");
     }
+  }
+
+  /**
+   * Update user's profile icon; creates the field for profile icon if not already exists
+   * @param {String} url: the profile icon url
+   */
+  async updateUserProfileIcon(url: string) {
+    await this.db.collection("users").doc(this.auth.currentUser?.uid).set(
+      {
+        profileIcon: url,
+      },
+      { merge: true }
+    );
   }
 
   async createCurrentUser() {

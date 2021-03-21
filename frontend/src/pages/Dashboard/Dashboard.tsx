@@ -20,6 +20,7 @@ import {
   GetData,
   GetDataRequestProps,
   SignOut,
+  ChangeProfileIcon,
 } from "./data/actions";
 import {
   getCurrentUser,
@@ -40,6 +41,7 @@ interface DashboardParams {
   totalWordsLearned?: number;
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
+  changeIconRequest: (url: string) => void;
   error?: Error;
 }
 
@@ -53,6 +55,7 @@ const connector = connect(
   {
     signOut: SignOut.request,
     getUser: GetData.request,
+    changeIconRequest: ChangeProfileIcon.request,
   }
 );
 
@@ -528,6 +531,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   totalWordsLearned,
   getUser,
   error,
+  changeIconRequest,
 }): ReactElement => {
   let history = useHistory();
   if (isSignedOut) {
@@ -580,12 +584,15 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             <MenuTopDiv>
               <ProfileGroup>
                 <ProfilePicture src={currentUser.profileIcon} />
-                <EditContainer
-                  onClick={() => setShowModal(!showModal)}
-                >
+                <EditContainer onClick={() => setShowModal(true)}>
                   <EditText>edit</EditText>
                 </EditContainer>
-                <ProfileEditModal />
+                <ProfileEditModal
+                  currentIcon={currentUser.profileIcon}
+                  showModal={showModal}
+                  onClose={() => setShowModal(false)}
+                  changeIconRequest={changeIconRequest}
+                />
               </ProfileGroup>
               <TitleText>hi name!</TitleText>
               <MenuButtonContainer></MenuButtonContainer>
@@ -614,7 +621,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             <SessionCardContainer>
               {sessionNumbers.map((label: number, index: number) => {
                 let complete =
-                  currentUser?.sessionId >= label || label == 1;
+                  currentUser?.sessionId >= label || label === 1;
                 return (
                   <SessionCard
                     sessionNumber={label}
