@@ -94,6 +94,7 @@ export interface User {
   onAssessment: boolean;
   currentInterventionOrAssessment: string;
   daysActive: string[];
+  profileIcon: string;
 }
 
 /**

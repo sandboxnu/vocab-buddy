@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import { shuffle } from "../constants/utils";
+import { randomNumberBetween, shuffle } from "../constants/utils";
 import {
   AccountType,
   Assessment,
@@ -29,7 +29,7 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const allImages = [
+const allProfileIcons = [
   "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Fufocircle.svg?alt=media&token=267fc738-9a95-4573-adcf-e1e1c8e6bd64",
   "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Fairplanecircle.svg?alt=media&token=821f4298-66ba-4efb-92a3-f2fb6477b866",
   "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Fbicyclecircle.svg?alt=media&token=9fba5a81-15f7-497d-93bc-4f7b274bc699",
@@ -114,12 +114,17 @@ export default class FirebaseInteractor {
     if (accountType === "STUDENT") {
       let initialAssessmentId = await this.createInitialAssessment();
       let currentDaysActive: string[] = [];
-      this.db.collection("users").doc(userAuth.user.uid).update({
-        daysActive: currentDaysActive,
-        currentInterventionOrAssessment: initialAssessmentId,
-        sessionId: -1,
-        onAssessment: true,
-      });
+      this.db
+        .collection("users")
+        .doc(userAuth.user.uid)
+        .update({
+          daysActive: currentDaysActive,
+          currentInterventionOrAssessment: initialAssessmentId,
+          sessionId: -1,
+          onAssessment: true,
+          profileIcon:
+            allProfileIcons[randomNumberBetween(0, allProfileIcons.length - 1)],
+        });
     }
   }
 
@@ -146,6 +151,7 @@ export default class FirebaseInteractor {
           userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
         daysActive:
           userData.daysActive === undefined ? [] : userData.daysActive,
+        profileIcon: userData.profileIcon ?? allProfileIcons[0],
       };
     } else {
       throw new Error("Invalid user");
