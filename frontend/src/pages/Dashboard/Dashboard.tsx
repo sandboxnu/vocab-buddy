@@ -76,15 +76,12 @@ const DashboardContainer = styled.div`
   justify-content: space-between;
   align-items: stretch;
   width: 100%;
-  padding-top: 98px;
+  padding-top: 70px;
+  min-height: 100vh;
 
   @media (max-width: 900px) {
     flex-direction: column;
     padding-right: 0px;
-  }
-
-  @media (min-width: 901px) {
-    height: 100vh;
   }
 `;
 
@@ -157,8 +154,6 @@ const SessionContainer = styled.div`
 
   flex: 3;
   padding-left: 3vw;
-  padding-top: 3vw;
-  padding-bottom: 3vw;
 
   @media (max-width: 900px) {
     min-width: 100%;
@@ -172,11 +167,12 @@ const SessionCardContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   min-width: 100%;
-  grid-gap: 32px;
+  grid-column-gap: 3vh;
+  grid-row-gap: 3vw;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr 1fr;
-    grid-gap: 24px;
+    gap: 24px;
   }
 `;
 
@@ -185,7 +181,7 @@ interface SessionCompletionProp {
 }
 
 const SessionBox = styled.div`
-  padding: 40px;
+  padding: 1.5vh 1.5vw;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -213,7 +209,7 @@ const SessionNumber = styled.p`
 
 const SessionImage = styled.img`
   max-width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: 2vh;
   @media (max-width: 900px) {
     margin-bottom: 22px;
   }
@@ -234,8 +230,7 @@ const WeekProgressContainer = styled.div`
   flex: 2;
 
   padding-left: 4vw;
-  padding-right: 4vw;
-  padding-top: 4vh;
+  padding-right: 1vw;
 
   @media (max-width: 900px) {
     min-width: 100%;
@@ -257,7 +252,7 @@ const ProgressBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3vh 2vw;
+  padding: 2vh 2vw;
 
   flex: 1 0 50%;
   order: 0;
@@ -277,7 +272,7 @@ const ProgressBox = styled.div`
 
 const ProgressStatNumber = styled.p`
   font-family: "Rubik";
-  font-size: 4vw;
+  font-size: 3vw;
   font-weight: 700;
   text-transform: lowercase;
   color: ${INK};
@@ -303,7 +298,7 @@ const ProgressStatDescription = styled.p`
   flex: none;
   order: 1;
   flex-grow: 0;
-  margin: 0px 0px;
+  margin: 0;
 
   @media (max-width: 900px) {
     font-size: 3vw;
@@ -327,7 +322,7 @@ const DayLabel = styled.p<DayLabelType>`
 const Star = styled.img`
   height: 51px;
   width: 52px;
-  margin-bottom: 20px;
+  margin-bottom: 2vh;
 
   @media (max-width: 900px) {
     height: 35px;
@@ -337,7 +332,7 @@ const Star = styled.img`
 const Dot = styled.img`
   height: 12px;
   width: 12px;
-  margin: 18px 20px 38px 20px;
+  margin: 4vh 2vw;
 
   @media (max-width: 900px) {
     height: 10px;
@@ -576,7 +571,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             <SessionCardContainer>
               {sessionNumbers.map((label: number, index: number) => {
                 let complete =
-                  currentUser?.sessionId >= label || label == 1;
+                  currentUser?.sessionId >= label || label === 1;
                 return (
                   <SessionCard
                     sessionNumber={label}
