@@ -380,14 +380,27 @@ const ProfileGroup = styled.button`
 `;
 
 const EditContainer = styled.div`
-  transition: opacity 0.2s ease-in-out;
+  align-items: center;
+  display: flex;
+  border-radius: 50%;
   background-color: rgba(32, 33, 36, 0.6);
   bottom: 0;
-  height: 33%;
+  height: 100%;
   left: 0;
+  justify-content: center;
   position: absolute;
   right: 0;
   opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  :hover {
+    opacity: 1;
+  }
+`;
+
+const EditText = styled.div`
+  color: #fff;
+  font-weight: 600;
 `;
 
 const getTitleOfButton = (user: User): string => {
@@ -568,7 +581,9 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                     "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
                   }
                 />
-                <EditContainer>jello</EditContainer>
+                <EditContainer>
+                  <EditText>edit</EditText>
+                </EditContainer>
               </ProfileGroup>
               <TitleText>hi name!</TitleText>
               <MenuButtonContainer></MenuButtonContainer>
