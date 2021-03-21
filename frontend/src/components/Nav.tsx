@@ -14,7 +14,7 @@ interface NavProps {
 }
 
 const NavBar = styled.div`
-  background: clear;
+  background: white;
   display: flex;
   height: 80px;
   justify-content: ${({ showsBar }: NavProps) =>
