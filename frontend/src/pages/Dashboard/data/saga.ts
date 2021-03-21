@@ -49,7 +49,9 @@ function* watchGetDashboardData(action: Action) {
 function* watchChangeProfileIcon(action: Action) {
   let { url } = action.payload;
   const changeIcon = async () => {
-    await firebaseInteractor.updateUserProfileIcon(url);
+    await firebaseInteractor.updateCurrentUser({
+      profileIcon: url,
+    });
   };
   try {
     yield call(changeIcon);

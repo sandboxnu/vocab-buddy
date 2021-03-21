@@ -158,19 +158,6 @@ export default class FirebaseInteractor {
     }
   }
 
-  /**
-   * Update user's profile icon; creates the field for profile icon if not already exists
-   * @param {String} url: the profile icon url
-   */
-  async updateUserProfileIcon(url: string) {
-    await this.db.collection("users").doc(this.auth.currentUser?.uid).set(
-      {
-        profileIcon: url,
-      },
-      { merge: true }
-    );
-  }
-
   async createCurrentUser() {
     try {
       this.currentUser = await this.getUser(undefined);
