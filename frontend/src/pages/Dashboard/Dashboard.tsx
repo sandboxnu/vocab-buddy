@@ -579,11 +579,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
           <MenuContainer>
             <MenuTopDiv>
               <ProfileGroup>
-                <ProfilePicture
-                  src={
-                    "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                  }
-                />
+                <ProfilePicture src={currentUser.profileIcon} />
                 <EditContainer
                   onClick={() => setShowModal(!showModal)}
                 >
