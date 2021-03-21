@@ -128,8 +128,6 @@ const MenuTopDiv = styled.div`
 `;
 
 const ProfilePicture = styled.img`
-  margin-bottom: 24px;
-
   height: 183px;
   width: 183px;
 
@@ -312,6 +310,28 @@ const DayContainer = styled.div`
   width: 50px;
 `;
 
+const ProfileGroup = styled.button`
+  border: None;
+  border-radius: 50%;
+  padding: 0;
+  position: relative;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const EditContainer = styled.div`
+  transition: opacity 0.2s ease-in-out;
+  background-color: rgba(32, 33, 36, 0.6);
+  bottom: 0;
+  height: 33%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  opacity: 0;
+`;
+
 const getTitleOfButton = (user: User): string => {
   switch (user.sessionId) {
     case -1:
@@ -462,11 +482,14 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
         <DashboardContainer>
           <MenuContainer>
             <MenuTopDiv>
-              <ProfilePicture
-                src={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-              />
+              <ProfileGroup>
+                <ProfilePicture
+                  src={
+                    "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
+                  }
+                />
+                <EditContainer>jello</EditContainer>
+              </ProfileGroup>
               <TitleText>hi name!</TitleText>
               <MenuButtonContainer></MenuButtonContainer>
             </MenuTopDiv>
