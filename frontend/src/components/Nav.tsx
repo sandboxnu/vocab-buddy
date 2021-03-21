@@ -1,18 +1,24 @@
 import { MenuOutlined } from "@ant-design/icons";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import React, {
+  FunctionComponent,
+  ReactElement,
+  useEffect,
+  useState,
+} from "react";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { INK, SEA_FOAM } from "../constants/colors";
 
 interface NavProps {
-  showsBar: boolean
+  showsBar: boolean;
 }
 
 const NavBar = styled.div`
-  background: clear;
+  background: white;
   display: flex;
   height: 80px;
-  justify-content: ${({showsBar} : NavProps) => showsBar ? 'space-between' : 'center'};
+  justify-content: ${({ showsBar }: NavProps) =>
+    showsBar ? "space-between" : "center"};
   position: fixed;
   width: 100%;
   z-index: 5;
@@ -42,7 +48,7 @@ const ProjectName = styled.div`
 
 interface LinkAttributes {
   isCurrent: boolean;
-};
+}
 
 const StyledLink = styled(Link)`
   color: #000;
@@ -51,7 +57,8 @@ const StyledLink = styled(Link)`
   font-weight: 700;
   text-decoration: none;
   text-transform: lowercase;
-  border-bottom: ${({ isCurrent } : LinkAttributes) => isCurrent ? '4px solid ' + SEA_FOAM : '0px' };
+  border-bottom: ${({ isCurrent }: LinkAttributes) =>
+    isCurrent ? "4px solid " + SEA_FOAM : "0px"};
 
   :hover {
     color: #000;
@@ -95,7 +102,9 @@ const OpenMenuContainer = styled.div`
   }
 `;
 
-const Nav : FunctionComponent<NavProps> = ( { showsBar }) : ReactElement => {
+const Nav: FunctionComponent<NavProps> = ({
+  showsBar,
+}): ReactElement => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
@@ -110,34 +119,35 @@ const Nav : FunctionComponent<NavProps> = ( { showsBar }) : ReactElement => {
 
   let location = useLocation();
 
-  const HeaderItems = () : ReactElement => {
+  const HeaderItems = (): ReactElement => {
     return (
-      <>
-        <StyledLink to="/assessments" isCurrent={location.pathname.includes("assessments")}>assessments</StyledLink>
-        <StyledLink to="/interventions" isCurrent={location.pathname.includes("interventions")}>
-          interventions
-        </StyledLink>
-        <StyledLink to="/dashboard" isCurrent={location.pathname.includes("dashboard")}>dashboard</StyledLink>
-      </>
+      <StyledLink
+        to="/dashboard"
+        isCurrent={location.pathname.includes("dashboard")}
+      >
+        dashboard
+      </StyledLink>
     );
   };
 
   return (
-    <NavBar showsBar={(showsBar && screenWidth > 600) || screenWidth > 900}>
-      
+    <NavBar
+      showsBar={(showsBar && screenWidth > 600) || screenWidth > 900}
+    >
       <ProjectName>vocab buddy</ProjectName>
-      {showsBar && (screenWidth <= 600 ? (
-        <>
-          <StyledMenuIcon onClick={() => setIsOpen(!isOpen)} />
-          {isOpen && (
-            <OpenMenu>
-              <OpenMenuContainer>{HeaderItems()}</OpenMenuContainer>
-            </OpenMenu>
-          )}
-        </>
-      ) : (
-        <NavContainer>{HeaderItems()}</NavContainer>
-      ))}
+      {showsBar &&
+        (screenWidth <= 600 ? (
+          <>
+            <StyledMenuIcon onClick={() => setIsOpen(!isOpen)} />
+            {isOpen && (
+              <OpenMenu>
+                <OpenMenuContainer>{HeaderItems()}</OpenMenuContainer>
+              </OpenMenu>
+            )}
+          </>
+        ) : (
+          <NavContainer>{HeaderItems()}</NavContainer>
+        ))}
     </NavBar>
   );
 };
