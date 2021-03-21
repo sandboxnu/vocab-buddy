@@ -51,7 +51,7 @@ function* watchGetInterventions(action: Action) {
 function* watchUpdateIntervention(action: Action) {
   try {
     let {
-      setId,
+      intervention,
       wordIdx,
       activityIdx,
       durationInSeconds,
@@ -63,7 +63,7 @@ function* watchUpdateIntervention(action: Action) {
     let interventions;
     const updateAndGetNewInterventions = async () => {
       await firebaseInteractor.updateIntervention(
-        setId,
+        intervention,
         wordIdx,
         activityIdx,
         durationInSeconds,
@@ -72,7 +72,9 @@ function* watchUpdateIntervention(action: Action) {
         answer3Part2Correct,
         answer3Part3Correct
       );
-      interventions = await firebaseInteractor.getIntervention(setId);
+      intervention.wordIdx = wordIdx;
+      intervention.activityIdx = activityIdx;
+      interventions = intervention;
     };
     yield call(updateAndGetNewInterventions);
     yield put(updateIntervention.success({ interventions }));

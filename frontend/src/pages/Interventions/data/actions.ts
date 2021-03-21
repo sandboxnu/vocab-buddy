@@ -39,7 +39,7 @@ export const getCurrentIntervention = {
 };
 
 interface UpdateInterventionAction {
-  setId: string;
+  intervention: Interventions;
   wordIdx: number;
   activityIdx: number;
   durationInSeconds: number;
@@ -55,7 +55,7 @@ interface UpdateInterventionSuccess {
 
 export const updateIntervention = {
   request: ({
-    setId,
+    intervention,
     wordIdx,
     activityIdx,
     durationInSeconds,
@@ -67,7 +67,7 @@ export const updateIntervention = {
     return {
       type: ActionTypes.UPDATE_INTERVENTION_REQUEST,
       payload: {
-        setId,
+        intervention,
         wordIdx,
         activityIdx,
         durationInSeconds,
