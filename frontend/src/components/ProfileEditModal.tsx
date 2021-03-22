@@ -30,7 +30,6 @@ const ProfileIcon = styled.img`
   }
 
   @media (max-width: 900px) {
-    height: 100%;
     width: 100%;
   }
 `;
