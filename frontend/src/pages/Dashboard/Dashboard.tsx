@@ -77,7 +77,6 @@ const SignOutButton = styled.button`
 const DashboardContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: stretch;
   width: 100%;
   padding-top: 70px;
@@ -98,7 +97,9 @@ const MenuContainer = styled.div`
   flex: 1;
   border-radius: 0px 12px 0px 0px;
 
-  padding: 3vh 3vw;
+  padding-top: 3vh;
+  padding-left: 1vh;
+  padding-right: 1vh;
 
   background: ${CLOUD};
 
@@ -127,6 +128,7 @@ const TitleText = styled.p`
   font-weight: 700;
   text-transform: lowercase;
   word-wrap: break-word;
+  margin-top: 1vh;
 
   @media (max-width: 900px) {
     font-size: 30px;
@@ -140,8 +142,8 @@ const MenuTopDiv = styled.div`
 `;
 
 const ProfilePicture = styled.img`
-  height: 183px;
-  width: 183px;
+  height: 9vmax;
+  width: 9vmax;
 
   @media (max-width: 900px) {
     height: 148px;
@@ -156,6 +158,7 @@ const SessionContainer = styled.div`
 
   flex: 3;
   padding-left: 3vw;
+  padding-top: 3vh;
 
   @media (max-width: 900px) {
     min-width: 100%;
@@ -169,8 +172,7 @@ const SessionCardContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   min-width: 100%;
-  grid-column-gap: 3vh;
-  grid-row-gap: 3vw;
+  gap: 3vmin;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr 1fr;
@@ -183,11 +185,11 @@ interface SessionCompletionProp {
 }
 
 const SessionBox = styled.div`
-  padding: 1.5vh 1.5vw;
+  padding: 2vh 0;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   @media (max-width: 900px) {
@@ -203,6 +205,7 @@ const SessionNumber = styled.p`
   font-size: 1.5vw;
   text-align: center;
   white-space: nowrap;
+  margin-bottom: 0;
 
   @media (max-width: 900px) {
     font-size: 3vw;
@@ -210,7 +213,7 @@ const SessionNumber = styled.p`
 `;
 
 const SessionImage = styled.img`
-  max-width: 100%;
+  max-width: 60%;
   margin-bottom: 2vh;
   @media (max-width: 900px) {
     margin-bottom: 22px;
@@ -233,6 +236,7 @@ const WeekProgressContainer = styled.div`
 
   padding-left: 4vw;
   padding-right: 1vw;
+  padding-top: 3vh;
 
   @media (max-width: 900px) {
     min-width: 100%;
@@ -243,8 +247,9 @@ const WeekProgressContainer = styled.div`
 `;
 
 const ProgressStatsContainer = styled.div`
-  display: flex;
-  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3vmin;
   flex-wrap: wrap;
   justify-content: space-between;
   min-width: 100%;
@@ -254,21 +259,14 @@ const ProgressBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2vh 2vw;
-
-  flex: 1 0 50%;
-  order: 0;
-  flex-grow: 1;
-
-  max-width: calc(50% - 16px);
-  margin-bottom: 2vh;
+  padding: 0.5vh 0.5vw;
 
   background: ${CLOUD};
   border-radius: 12px;
 
   @media (max-width: 900px) {
-    max-width: calc(50% - 12px);
     margin-bottom: 24px;
+    padding: 2vh 0.5vw;
   }
 `;
 
@@ -278,10 +276,8 @@ const ProgressStatNumber = styled.p`
   font-weight: 700;
   text-transform: lowercase;
   color: ${INK};
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  margin: 0px 0px;
+  flex: 1;
+  margin-bottom: 0;
 
   @media (max-width: 900px) {
     font-size: 6vw;
@@ -297,10 +293,7 @@ const ProgressStatDescription = styled.p`
   word-wrap: break-word;
   text-align: center;
 
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  margin: 0;
+  flex: 1;
 
   @media (max-width: 900px) {
     font-size: 3vw;
@@ -311,6 +304,8 @@ const DayLabel = styled.p<DayLabelType>`
   font-size: 1.25vw;
   font-weight: ${({ isToday }) => (isToday ? 700 : 400)};
   line-height: 0px;
+  margin-bottom: 0;
+  margin-top: 3vh;
 
   @media (max-width: 900px) {
     font-size: 3vw;
@@ -324,7 +319,19 @@ const DayLabel = styled.p<DayLabelType>`
 const Star = styled.img`
   height: 51px;
   width: 52px;
-  margin-bottom: 2vh;
+
+  @media (max-width: 900px) {
+    height: 35px;
+    width: 36px;
+  }
+`;
+
+const DotContainer = styled.div`
+  height: 51px;
+  width: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @media (max-width: 900px) {
     height: 35px;
@@ -334,12 +341,10 @@ const Star = styled.img`
 const Dot = styled.img`
   height: 12px;
   width: 12px;
-  margin: 4vh 2vw;
 
   @media (max-width: 900px) {
     height: 10px;
     width: 10px;
-    margin: 12px 15px 32px 15px;
   }
 `;
 
@@ -350,8 +355,6 @@ const WeekContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 2vh 2vw;
-  margin: 3vh 0px 4vh;
   background: ${CLOUD};
   border-radius: 12px;
   width: 100%;
@@ -366,7 +369,11 @@ const DayContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 50px;
+  flex: 1;
+  padding: 3vh 0;
+  @media (min-width: 901px) {
+    margin: 1vh 0;
+  }
 `;
 
 const ProfileGroup = styled.button`
@@ -484,7 +491,9 @@ const DayOfWeek: FunctionComponent<DayParams> = ({
       {isActive ? (
         <Star src={star}></Star>
       ) : (
-        <Dot src={ellipse}></Dot>
+        <DotContainer>
+          <Dot src={ellipse}></Dot>
+        </DotContainer>
       )}
       <DayLabel isToday={istoday}>{name}</DayLabel>
     </DayContainer>
