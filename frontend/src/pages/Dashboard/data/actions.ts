@@ -14,6 +14,7 @@ export const SignOut = {
 
 interface GetDashboardDataResponse {
   user?: User;
+  totalWordsLearned?: number;
   error?: Error;
 }
 
@@ -26,9 +27,9 @@ export const GetData = {
     type: ActionTypes.GET_DASHBOARD_DATA_REQUEST,
     payload: { id },
   }),
-  success: ({ user }: GetDashboardDataResponse) => ({
+  success: ({ user, totalWordsLearned }: GetDashboardDataResponse) => ({
     type: ActionTypes.GET_DASHBOARD_DATA_SUCCESS,
-    payload: { user },
+    payload: { user, totalWordsLearned },
   }),
   error: ({ error }: GetDashboardDataResponse) => ({
     type: ActionTypes.GET_DASHBOARD_DATA_ERROR,
@@ -56,6 +57,20 @@ export const GetDataForResearchers = {
   }),
   error: ({ error }: GetDataForResearchersResponse) => ({
     type: ActionTypes.GET_DATA_FOR_RESEARCHERS_ERROR,
+  }),
+};
+
+export const ChangeProfileIcon = {
+  request: (url: string) => ({
+    type: ActionTypes.CHANGE_PROFILE_ICON_REQUEST,
+    payload: { url },
+  }),
+  success: (url: string) => ({
+    type: ActionTypes.CHANGE_PROFILE_ICON_SUCCESS,
+    payload: { url },
+  }),
+  error: (error: Error) => ({
+    type: ActionTypes.CHANGE_PROFILE_ICON_ERROR,
     payload: { error },
   }),
 };

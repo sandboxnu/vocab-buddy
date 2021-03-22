@@ -8,21 +8,18 @@ import { CLOUD, SKY } from "../../constants/colors";
 
 const ResearcherDashboardContainer = styled.div`
   display: flex;
+  flex: 7;
   flex-direction: column;
   padding: 48px 40px 66px 40px;
 `;
 
 const AllStudentsContainer = styled.div`
-  flex: 7;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
   @media (max-width: 900px) {
     min-width: 100%;
-    padding-top: 48px;
-    padding-right: 24px;
-    padding-left: 24px;
+    grid-template-columns: 1fr 1fr;
   }
 `;
 
@@ -37,12 +34,7 @@ const StudentCardContainer = styled.div`
   border-radius: 12px;
   padding: 32px 10px;
   text-align: center;
-  flex: 0 1 calc(20% - 2em);
-  margin: 24px 0;
-  &:after {
-    content: "";
-    flex: auto;
-  }
+  margin: 24px;
 `;
 //TODO REMOVE
 const TitleText = styled.p`
@@ -102,10 +94,6 @@ const StudentCard: FunctionComponent<StudentCardParams> = ({
     <StudentCardContainer>
       <Avatar src={rocketSVG} />
       <StudentCardLabel>{student.name}</StudentCardLabel>
-      <StudentCardLabel>Age: {student.age}</StudentCardLabel>
-      <StudentCardLabel>
-        SessionId: {student.sessionId}
-      </StudentCardLabel>
     </StudentCardContainer>
   );
 };

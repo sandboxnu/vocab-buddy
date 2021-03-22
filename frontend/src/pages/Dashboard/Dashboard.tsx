@@ -8,7 +8,12 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
-import { CLOUD, INK } from "../../constants/colors";
+import {
+  CLOUD,
+  INK,
+  SKY,
+  INCOMPLETE_GRAY,
+} from "../../constants/colors";
 import PurpleButton from "../../components/PurpleButton";
 import { User } from "../../models/types";
 import {
@@ -17,26 +22,34 @@ import {
   GetDataForResearchersRequestProps,
   GetDataRequestProps,
   SignOut,
+  ChangeProfileIcon,
 } from "./data/actions";
 import {
   getCurrentUser,
   getDataForResearchers,
   getIsSignedOut,
+  getTotalWordsLearned,
   getDashboardError,
 } from "./data/reducer";
 import ResearcherDashboard from "../Dashboard/ResearcherDashboard";
 import star from "../../assets/star.svg";
 import ellipse from "../../assets/ellipse.svg";
+import ColoredSessionIcons from "../../assets/icons/session/color/ColoredSessionIcons";
+import GrayscaleSessionIcons from "../../assets/icons/session/grayscale/GrayscaleSessionIcons";
+import { dayStreak } from "../../constants/utils";
+import ProfileEditModal from "../../components/ProfileEditModal";
 
 interface DashboardParams {
   isSignedOut: boolean;
   currentUser?: User;
+  totalWordsLearned?: number;
   dataForResearchers?: User[];
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
   getDataForResearchers: (
     val: GetDataForResearchersRequestProps
   ) => void;
+  changeIconRequest: (url: string) => void;
   error?: Error;
 }
 
@@ -45,12 +58,14 @@ const connector = connect(
     isSignedOut: getIsSignedOut(state),
     currentUser: getCurrentUser(state),
     dataForResearchers: getDataForResearchers(state),
+    totalWordsLearned: getTotalWordsLearned(state),
     error: getDashboardError(state),
   }),
   {
     signOut: SignOut.request,
     getUser: GetData.request,
     getDataForResearchers: GetDataForResearchers.request,
+    changeIconRequest: ChangeProfileIcon.request,
   }
 );
 
@@ -134,8 +149,6 @@ const MenuTopDiv = styled.div`
 `;
 
 const ProfilePicture = styled.img`
-  margin-bottom: 24px;
-
   height: 183px;
   width: 183px;
 
@@ -161,6 +174,57 @@ const SessionContainer = styled.div`
     padding-top: 48px;
     padding-right: 24px;
     padding-left: 24px;
+  }
+`;
+
+const SessionCardContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  min-width: 100%;
+  grid-gap: 32px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 24px;
+  }
+`;
+
+interface SessionCompletionProp {
+  isComplete: boolean;
+}
+
+const SessionBox = styled.div`
+  padding: 40px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    padding: 32px;
+  }
+
+  background: ${({ isComplete }: SessionCompletionProp) =>
+    isComplete ? SKY : INCOMPLETE_GRAY} !important;
+`;
+
+const SessionNumber = styled.p`
+  font-weight: 700;
+  font-size: 1.5vw;
+  text-align: center;
+  white-space: nowrap;
+
+  @media (max-width: 900px) {
+    font-size: 3vw;
+  }
+`;
+
+const SessionImage = styled.img`
+  max-width: 100%;
+  margin-bottom: 24px;
+  @media (max-width: 900px) {
+    margin-bottom: 22px;
   }
 `;
 
@@ -318,6 +382,43 @@ const DayContainer = styled.div`
   width: 50px;
 `;
 
+const ProfileGroup = styled.button`
+  border: None;
+  border-radius: 50%;
+  margin-bottom: 1em;
+  padding: 0;
+  position: relative;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const EditContainer = styled.div`
+  align-items: center;
+  display: flex;
+  border-radius: 50%;
+  background-color: rgba(32, 33, 36, 0.6);
+  bottom: 0;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  :hover {
+    opacity: 1;
+  }
+`;
+
+const EditText = styled.div`
+  color: #fff;
+  font-weight: 600;
+  font-size: 20px;
+`;
+
 const getTitleOfButton = (user: User): string => {
   switch (user.sessionId) {
     case -1:
@@ -374,6 +475,7 @@ interface StatParams {
   number: number;
   description: string;
 }
+
 interface DayParams {
   name: string;
   day: number;
@@ -414,25 +516,49 @@ const Stat: FunctionComponent<StatParams> = ({
   );
 };
 
+interface SessionCardParams {
+  sessionNumber: number;
+  image: string;
+  isComplete: boolean;
+}
+
+const SessionCard: FunctionComponent<SessionCardParams> = ({
+  sessionNumber,
+  image,
+  isComplete,
+}) => {
+  return (
+    <SessionBox isComplete={isComplete}>
+      <SessionImage src={image} />
+      <SessionNumber>session {sessionNumber}</SessionNumber>
+    </SessionBox>
+  );
+};
+
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
   currentUser,
+  totalWordsLearned,
   getUser,
   dataForResearchers,
   getDataForResearchers,
   error,
+  changeIconRequest,
 }): ReactElement => {
   let history = useHistory();
   if (isSignedOut) {
     history.push("/login");
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [showModal, setShowModal] = useState(false);
+
   const [
     hasPerformedNetworkRequest,
     setHasPerformedNetworkRequest,
   ] = useState(false);
   const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa"];
+  const sessionNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
 
   useEffect(() => {
     const resizeScreen = () => {
@@ -445,11 +571,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   }, []);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser || totalWordsLearned === undefined) {
       getUser({});
       setHasPerformedNetworkRequest(true);
     }
-  }, [currentUser, getUser, currentUser?.daysActive]);
+  }, [currentUser, getUser, totalWordsLearned]);
 
   if (error && hasPerformedNetworkRequest) {
     history.push("/error");
@@ -470,7 +596,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     getDataForResearchers,
   ]);
 
-  if (!currentUser) {
+  if (!currentUser || totalWordsLearned === undefined) {
     return <h1>Loading</h1>;
   }
 
@@ -484,11 +610,18 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
         <DashboardContainer>
           <MenuContainer>
             <MenuTopDiv>
-              <ProfilePicture
-                src={
-                  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/dajin.png?alt=media&token=933c72b9-afaf-407b-b978-bfd2c3b4e155"
-                }
-              />
+              <ProfileGroup>
+                <ProfilePicture src={currentUser.profileIcon} />
+                <EditContainer onClick={() => setShowModal(true)}>
+                  <EditText>edit</EditText>
+                </EditContainer>
+                <ProfileEditModal
+                  currentIcon={currentUser.profileIcon}
+                  showModal={showModal}
+                  onClose={() => setShowModal(false)}
+                  changeIconRequest={changeIconRequest}
+                />
+              </ProfileGroup>
               <TitleText>hi name!</TitleText>
               <MenuButtonContainer></MenuButtonContainer>
             </MenuTopDiv>
@@ -513,14 +646,38 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                 />
 
                 <TitleText>list of sessions</TitleText>
+
+                <SessionCardContainer>
+                  {sessionNumbers.map(
+                    (label: number, index: number) => {
+                      let complete =
+                        currentUser?.sessionId >= label ||
+                        label === 1;
+                      return (
+                        <SessionCard
+                          sessionNumber={label}
+                          image={
+                            complete
+                              ? ColoredSessionIcons[index]
+                              : GrayscaleSessionIcons[index]
+                          }
+                          isComplete={complete}
+                          key={index}
+                        />
+                      );
+                    }
+                  )}
+                </SessionCardContainer>
               </SessionContainer>
 
               <WeekProgressContainer>
                 <TitleText>this week</TitleText>
+
                 <WeekContainer>
                   {dayLabels.map((label: string, index: number) => {
                     return (
                       <DayOfWeek
+                        key={label}
                         name={label}
                         day={index}
                         daysActiveThisWeek={daysActiveThisWeek}
@@ -531,14 +688,27 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
                 <TitleText>your progress</TitleText>
                 <ProgressStatsContainer>
-                  <Stat number={14} description={"day streak"} />
-                  <Stat number={25} description={"words learned"} />
                   <Stat
-                    number={4}
+                    number={dayStreak(
+                      currentUser.daysActive.map(
+                        (val) => new Date(val)
+                      )
+                    )}
+                    description={"day streak"}
+                  />
+                  <Stat
+                    number={totalWordsLearned}
+                    description={"words learned"}
+                  />
+                  <Stat
+                    number={currentUser.sessionId + 1}
                     description={"assessments completed"}
                   />
                   <Stat
-                    number={3}
+                    number={
+                      currentUser.sessionId +
+                      (currentUser.onAssessment ? 1 : 0)
+                    }
                     description={"interventions completed"}
                   />
                 </ProgressStatsContainer>
