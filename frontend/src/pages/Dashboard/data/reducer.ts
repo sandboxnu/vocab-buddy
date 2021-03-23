@@ -37,6 +37,11 @@ const dashboardReducer = (
       return {
         ...state,
         students: action.payload.students,
+        user: action.payload.isFinished ? undefined : state.user,
+        totalWordsLearned: action.payload.isFinished
+          ? undefined
+          : state.totalWordsLearned,
+        error: undefined,
       };
     case ActionTypes.FINISHED_INTERVENTION_SUCCESS:
       return {

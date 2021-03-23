@@ -149,9 +149,8 @@ const StudentCard: FunctionComponent<StudentCardParams> = ({
     <StudentCardContainer>
       <Avatar
         src={
-          student.profileIcon
-            ? student.profileIcon
-            : "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Frocketcircle.svg?alt=media&token=2378a891-001b-4a7f-9522-3dffee8d202d"
+          student.profileIcon ??
+          "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Frocketcircle.svg?alt=media&token=2378a891-001b-4a7f-9522-3dffee8d202d"
         }
       />
       <StudentCardLabel>{student.name}</StudentCardLabel>
@@ -177,6 +176,11 @@ const sortByAge = (studentA: User, studentB: User): number => {
 const sortBySession = (studentA: User, studentB: User): number => {
   if (
     studentA.sessionId === undefined ||
+    studentB.sessionId === undefined
+  ) {
+    return 0;
+  } else if (
+    studentA.sessionId === undefined ||
     studentA.sessionId < studentB.sessionId
   ) {
     return -1;
@@ -196,7 +200,7 @@ const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
   students,
 }) => {
   const [sortBy, setSortBy] = useState(() => sortByName);
-  const [sortLabel, setSortLabel] = useState("alphabetical");
+  let sortLabel = "alphabetical";
 
   const menuOnClick = ({ key }: any) => {
     if (key === "alphabetical") {
@@ -208,7 +212,7 @@ const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
     if (key === "session") {
       setSortBy(() => sortBySession);
     }
-    setSortLabel(key);
+    sortLabel = key;
   };
 
   const menu = (
@@ -231,8 +235,8 @@ const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
         </StudentFilter>
       </ResearcherTopBar>
       <AllStudentsContainer>
-        {students.sort(sortBy).map((student) => (
-          <StudentCard student={student} />
+        {students.sort(sortBy).map((student, index) => (
+          <StudentCard key={student.name + index} student={student} />
         ))}
       </AllStudentsContainer>
     </ResearcherDashboardContainer>
