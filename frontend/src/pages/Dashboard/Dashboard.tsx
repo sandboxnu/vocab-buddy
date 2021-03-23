@@ -371,6 +371,8 @@ const DayContainer = styled.div`
   align-items: center;
   flex: 1;
   padding: 3vh 0;
+  padding-left: 0.5vh;
+  padding-right: 0.5vh;
   @media (min-width: 901px) {
     margin: 1vh 0;
   }
