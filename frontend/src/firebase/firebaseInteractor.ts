@@ -139,20 +139,7 @@ export default class FirebaseInteractor {
     let user = await this.db.collection("users").doc(idToUse).get();
     let userData = user.data();
     if (idToUse != null && userData != null) {
-      return {
-        id: idToUse,
-        name: userData.name as string,
-        accountType: userData.accountType as AccountType,
-        age: userData.age as number,
-        sessionId: userData.sessionId === undefined ? -1 : userData.sessionId,
-        onAssessment:
-          userData.onAssessment === undefined ? true : userData.onAssessment,
-        currentInterventionOrAssessment:
-          userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
-        daysActive:
-          userData.daysActive === undefined ? [] : userData.daysActive,
-        profileIcon: userData.profileIcon ?? allProfileIcons[0],
-      };
+      return this.getUserFromData(userData);
     } else {
       throw new Error("Invalid user");
     }
@@ -510,6 +497,23 @@ export default class FirebaseInteractor {
 
   // Researcher dashboard functions
 
+  // given a user document, returns a user object
+  getUserFromData(userData: firebase.firestore.DocumentData): User {
+    return {
+      id: userData.id,
+      name: userData.name as string,
+      accountType: userData.accountType as AccountType,
+      age: userData.age as number,
+      sessionId: userData.sessionId === undefined ? -1 : userData.sessionId,
+      onAssessment:
+        userData.onAssessment === undefined ? true : userData.onAssessment,
+      currentInterventionOrAssessment:
+        userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
+      daysActive: userData.daysActive === undefined ? [] : userData.daysActive,
+      profileIcon: userData.profileIcon ?? allProfileIcons[0],
+    };
+  }
+
   async getAllStudents(): Promise<User[]> {
     let students = (
       await this.db
@@ -520,18 +524,7 @@ export default class FirebaseInteractor {
 
     return students.map((student) => {
       let studentData = student.data();
-      return {
-        id: studentData.id,
-        name: studentData.name,
-        accountType: studentData.accountType,
-        age: studentData.age,
-        sessionId: studentData.sessionId,
-        onAssessment: studentData.onAssessment,
-        currentInterventionOrAssessment:
-          studentData.currentInterventionOrAssessment,
-        daysActive: studentData.daysActive,
-        profileIcon: studentData.profileIcon,
-      };
+      return this.getUserFromData(studentData);
     });
   }
 }

@@ -174,20 +174,9 @@ const sortByAge = (studentA: User, studentB: User): number => {
 };
 
 const sortBySession = (studentA: User, studentB: User): number => {
-  if (
-    studentA.sessionId === undefined ||
-    studentB.sessionId === undefined
-  ) {
-    return 0;
-  } else if (
-    studentA.sessionId === undefined ||
-    studentA.sessionId < studentB.sessionId
-  ) {
+  if (studentA.sessionId < studentB.sessionId) {
     return -1;
-  } else if (
-    studentA.sessionId > studentB.sessionId ||
-    studentB.sessionId === undefined
-  ) {
+  } else if (studentA.sessionId > studentB.sessionId) {
     return 1;
   } else return 0;
 };
