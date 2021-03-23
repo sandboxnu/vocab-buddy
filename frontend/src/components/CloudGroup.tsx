@@ -26,8 +26,9 @@ const CloudImageRight = styled(CloudImage)`
   right: 0;
   width: 15%;
   @media (max-width: 900px) {
-    top: 3em;
+    top: 4em;
     width: 20%;
+    z-index: 50;
   }
   @media (min-width: 901px) {
     bottom: 30%;
