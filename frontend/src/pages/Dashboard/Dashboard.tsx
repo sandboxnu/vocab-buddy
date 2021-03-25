@@ -726,8 +726,9 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
         <>
           {menuOpen ? (
             <>
-              {" "}
-              {overviewButton} {reviewButton} {settingsButton}{" "}
+              {overviewButton}
+              {reviewButton}
+              {settingsButton}
             </>
           ) : (
             <> {buttons[selectedMenuButton - 1]}</>
@@ -739,8 +740,8 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
         </>
       ) : (
         <>
-          {" "}
-          {reviewButton} {settingsButton}{" "}
+          {reviewButton}
+          {settingsButton}
         </>
       )}
     </MenuButtonContainer>
