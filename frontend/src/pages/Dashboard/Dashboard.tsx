@@ -37,12 +37,11 @@ import ellipse from "../../assets/ellipse.svg";
 import overviewIcon from "../../assets/icons/dashboard-menu/overview.svg";
 import reviewWordsIcon from "../../assets/icons/dashboard-menu/review.svg";
 import settingsIcon from "../../assets/icons/dashboard-menu/settings.svg";
+import caret from "../../assets/caret.svg";
 import ColoredSessionIcons from "../../assets/icons/session/color/ColoredSessionIcons";
 import GrayscaleSessionIcons from "../../assets/icons/session/grayscale/GrayscaleSessionIcons";
 import { dayStreak } from "../../constants/utils";
 import ProfileEditModal from "../../components/ProfileEditModal";
-import { Menu } from "antd";
-import SubMenu from "antd/lib/menu/SubMenu";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -627,7 +626,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
 
       {isDropdown && (
         <MenuDropdownButton
-          src={star}
+          src={caret}
           onClick={() => setMenuOpen(!menuOpen)}
         />
       )}
