@@ -30,6 +30,9 @@ import {
 } from "./data/reducer";
 import star from "../../assets/star.svg";
 import ellipse from "../../assets/ellipse.svg";
+import overviewIcon from "../../assets/icons/dashboard-menu/overview.svg";
+import reviewWordsIcon from "../../assets/icons/dashboard-menu/review.svg";
+import settingsIcon from "../../assets/icons/dashboard-menu/settings.svg";
 import ColoredSessionIcons from "../../assets/icons/session/color/ColoredSessionIcons";
 import GrayscaleSessionIcons from "../../assets/icons/session/grayscale/GrayscaleSessionIcons";
 import { dayStreak } from "../../constants/utils";
@@ -112,14 +115,30 @@ const MenuContainer = styled.div`
 `;
 
 const MenuButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 1vh;
+  justify-items: stretch;
   margin-top: 16px;
+  text-align: left;
+`;
 
-  background: red;
-  width: 100%;
-  height: 100px;
+const MenuButtonIcon = styled.img`
+  height: 18px;
+  width: 18px;
+`;
+
+interface MenuButtonProps {
+  selected: boolean;
+}
+
+const MenuButtonText = styled.p`
+  font-weight: ${({ selected }: MenuButtonProps) =>
+    selected ? `700` : "400"};
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const TitleText = styled.p`
@@ -138,6 +157,7 @@ const TitleText = styled.p`
 const MenuTopDiv = styled.div`
   display: flex;
   align-items: center;
+  text-align: center;
   flex-direction: column;
 `;
 
@@ -603,8 +623,21 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                   changeIconRequest={changeIconRequest}
                 />
               </ProfileGroup>
-              <TitleText>hi name!</TitleText>
-              <MenuButtonContainer></MenuButtonContainer>
+              <TitleText>hi {currentUser.name}!</TitleText>
+              <MenuButtonContainer>
+                <MenuButtonIcon src={overviewIcon} />
+                <MenuButtonText selected={true}>
+                  overview
+                </MenuButtonText>
+                <MenuButtonIcon src={reviewWordsIcon} />
+                <MenuButtonText selected={false}>
+                  review words
+                </MenuButtonText>
+                <MenuButtonIcon src={settingsIcon} />
+                <MenuButtonText selected={false}>
+                  settings
+                </MenuButtonText>
+              </MenuButtonContainer>
             </MenuTopDiv>
             {screenWidth > 900 && (
               <SignOutButton onClick={signOut}>log out</SignOutButton>
