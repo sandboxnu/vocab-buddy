@@ -611,7 +611,28 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
   isDropdown,
 }) => {
   const [selectedMenuButton, setSelectedMenuButton] = useState(1);
-  const [menuOpen, setMenuOpen] = useState(!isDropdown);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const hiddenButtons = (
+    <>
+      <MenuButtonIcon gridArea={"icon2"} src={reviewWordsIcon} />
+      <MenuButtonText
+        gridArea={"button2"}
+        selected={selectedMenuButton === 2}
+        onClick={() => setSelectedMenuButton(2)}
+      >
+        review words
+      </MenuButtonText>
+      <MenuButtonIcon gridArea={"icon3"} src={settingsIcon} />
+      <MenuButtonText
+        gridArea={"button3"}
+        selected={selectedMenuButton === 3}
+        onClick={() => setSelectedMenuButton(3)}
+      >
+        settings
+      </MenuButtonText>
+    </>
+  );
 
   return (
     <MenuButtonContainer>
@@ -624,32 +645,16 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
         overview
       </MenuButtonText>
 
-      {isDropdown && (
-        <MenuDropdownButton
-          src={caret}
-          onClick={() => setMenuOpen(!menuOpen)}
-        />
-      )}
-
-      {menuOpen && (
+      {isDropdown ? (
         <>
-          <MenuButtonIcon gridArea={"icon2"} src={reviewWordsIcon} />
-          <MenuButtonText
-            gridArea={"button2"}
-            selected={selectedMenuButton === 2}
-            onClick={() => setSelectedMenuButton(2)}
-          >
-            review words
-          </MenuButtonText>
-          <MenuButtonIcon gridArea={"icon3"} src={settingsIcon} />
-          <MenuButtonText
-            gridArea={"button3"}
-            selected={selectedMenuButton === 3}
-            onClick={() => setSelectedMenuButton(3)}
-          >
-            settings
-          </MenuButtonText>
+          <MenuDropdownButton
+            src={caret}
+            onClick={() => setMenuOpen(!menuOpen)}
+          />
+          {menuOpen && hiddenButtons}
         </>
+      ) : (
+        hiddenButtons
       )}
     </MenuButtonContainer>
   );
