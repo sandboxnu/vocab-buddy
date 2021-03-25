@@ -37,6 +37,8 @@ import ColoredSessionIcons from "../../assets/icons/session/color/ColoredSession
 import GrayscaleSessionIcons from "../../assets/icons/session/grayscale/GrayscaleSessionIcons";
 import { dayStreak } from "../../constants/utils";
 import ProfileEditModal from "../../components/ProfileEditModal";
+import { Menu } from "antd";
+import SubMenu from "antd/lib/menu/SubMenu";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -117,24 +119,53 @@ const MenuContainer = styled.div`
 const MenuButtonContainer = styled.div`
   display: grid;
   grid-template-columns: 18px 1fr;
+  grid-template-rows: auto;
+
   gap: 1vh;
-  justify-items: stretch;
+
   margin-top: 16px;
   text-align: left;
+
+  grid-template-areas:
+    "icon1 button1"
+    "icon2 button2"
+    "icon3 button3";
+
+  @media (max-width: 900px) {
+    width: 90vw;
+    grid-template-columns: 18px 1fr 18px;
+    grid-template-rows: auto;
+
+    grid-template-areas:
+      "icon1 button1 dropdown"
+      "icon2 button2 ."
+      "icon3 button3 .";
+  }
 `;
 
 const MenuButtonIcon = styled.img`
   height: 18px;
   width: 18px;
+  grid-area: ${({ gridArea }: MenuGridProps) => gridArea};
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
-interface MenuButtonProps {
+interface MenuGridProps {
+  gridArea: string;
+}
+
+interface MenuButtonProps extends MenuGridProps {
   selected: boolean;
 }
 
 const MenuButtonText = styled.p`
   font-weight: ${({ selected }: MenuButtonProps) =>
     selected ? `700` : "400"};
+
+  grid-area: ${({ gridArea }: MenuButtonProps) => gridArea};
 
   :hover {
     cursor: pointer;
@@ -553,6 +584,68 @@ const SessionCard: FunctionComponent<SessionCardParams> = ({
   );
 };
 
+interface MenuButtonPanelProps {
+  isDropdown: boolean;
+}
+
+const MenuDropdownButton = styled.img`
+  grid-area: dropdown;
+  width: 18px;
+  height: 18px;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
+  isDropdown,
+}) => {
+  const [selectedMenuButton, setSelectedMenuButton] = useState(1);
+  const [menuOpen, setMenuOpen] = useState(!isDropdown);
+
+  return (
+    <MenuButtonContainer>
+      <MenuButtonIcon gridArea={"icon1"} src={overviewIcon} />
+      <MenuButtonText
+        gridArea={"button1"}
+        selected={selectedMenuButton === 1}
+        onClick={() => setSelectedMenuButton(1)}
+      >
+        overview
+      </MenuButtonText>
+
+      {isDropdown && (
+        <MenuDropdownButton
+          src={star}
+          onClick={() => setMenuOpen(!menuOpen)}
+        />
+      )}
+
+      {menuOpen && (
+        <>
+          <MenuButtonIcon gridArea={"icon2"} src={reviewWordsIcon} />
+          <MenuButtonText
+            gridArea={"button2"}
+            selected={selectedMenuButton === 2}
+            onClick={() => setSelectedMenuButton(2)}
+          >
+            review words
+          </MenuButtonText>
+          <MenuButtonIcon gridArea={"icon3"} src={settingsIcon} />
+          <MenuButtonText
+            gridArea={"button3"}
+            selected={selectedMenuButton === 3}
+            onClick={() => setSelectedMenuButton(3)}
+          >
+            settings
+          </MenuButtonText>
+        </>
+      )}
+    </MenuButtonContainer>
+  );
+};
+
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
@@ -624,20 +717,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                 />
               </ProfileGroup>
               <TitleText>hi {currentUser.name}!</TitleText>
-              <MenuButtonContainer>
-                <MenuButtonIcon src={overviewIcon} />
-                <MenuButtonText selected={true}>
-                  overview
-                </MenuButtonText>
-                <MenuButtonIcon src={reviewWordsIcon} />
-                <MenuButtonText selected={false}>
-                  review words
-                </MenuButtonText>
-                <MenuButtonIcon src={settingsIcon} />
-                <MenuButtonText selected={false}>
-                  settings
-                </MenuButtonText>
-              </MenuButtonContainer>
+              <MenuButtonPanel isDropdown={screenWidth < 900} />
             </MenuTopDiv>
             {screenWidth > 900 && (
               <SignOutButton onClick={signOut}>log out</SignOutButton>
