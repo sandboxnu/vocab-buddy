@@ -18,16 +18,20 @@ import PurpleButton from "../../components/PurpleButton";
 import { User } from "../../models/types";
 import {
   GetData,
+  GetDataForResearchers,
+  GetDataForResearchersRequestProps,
   GetDataRequestProps,
   SignOut,
   ChangeProfileIcon,
 } from "./data/actions";
 import {
   getCurrentUser,
+  getDataForResearchers,
   getIsSignedOut,
   getTotalWordsLearned,
   getDashboardError,
 } from "./data/reducer";
+import ResearcherDashboard from "../Dashboard/ResearcherDashboard";
 import star from "../../assets/star.svg";
 import ellipse from "../../assets/ellipse.svg";
 import overviewIcon from "../../assets/icons/dashboard-menu/overview.svg";
@@ -44,8 +48,12 @@ interface DashboardParams {
   isSignedOut: boolean;
   currentUser?: User;
   totalWordsLearned?: number;
+  dataForResearchers?: User[];
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
+  getDataForResearchers: (
+    val: GetDataForResearchersRequestProps
+  ) => void;
   changeIconRequest: (url: string) => void;
   error?: Error;
 }
@@ -54,12 +62,14 @@ const connector = connect(
   (state) => ({
     isSignedOut: getIsSignedOut(state),
     currentUser: getCurrentUser(state),
+    dataForResearchers: getDataForResearchers(state),
     totalWordsLearned: getTotalWordsLearned(state),
     error: getDashboardError(state),
   }),
   {
     signOut: SignOut.request,
     getUser: GetData.request,
+    getDataForResearchers: GetDataForResearchers.request,
     changeIconRequest: ChangeProfileIcon.request,
   }
 );
@@ -652,6 +662,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   currentUser,
   totalWordsLearned,
   getUser,
+  dataForResearchers,
+  getDataForResearchers,
   error,
   changeIconRequest,
 }): ReactElement => {
@@ -690,6 +702,21 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     history.push("/error");
   }
 
+  useEffect(() => {
+    if (
+      !dataForResearchers &&
+      currentUser &&
+      currentUser.accountType === "RESEARCHER"
+    ) {
+      getDataForResearchers({});
+    }
+  }, [
+    currentUser,
+    getUser,
+    dataForResearchers,
+    getDataForResearchers,
+  ]);
+
   if (!currentUser || totalWordsLearned === undefined) {
     return <h1>Loading</h1>;
   }
@@ -723,84 +750,96 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               <SignOutButton onClick={signOut}>log out</SignOutButton>
             )}
           </MenuContainer>
+          {currentUser.accountType === "STUDENT" ? (
+            <>
+              <SessionContainer>
+                <TitleText>next session</TitleText>
+                <NextSessionButton
+                  text={getTitleOfButton(currentUser)}
+                  onClick={() =>
+                    history.push(
+                      currentUser.onAssessment
+                        ? "/assessments"
+                        : "/interventions"
+                    )
+                  }
+                  disabled={currentUser.sessionId === 9}
+                />
 
-          <SessionContainer>
-            <TitleText>next session</TitleText>
-            <NextSessionButton
-              text={getTitleOfButton(currentUser)}
-              onClick={() =>
-                history.push(
-                  currentUser.onAssessment
-                    ? "/assessments"
-                    : "/interventions"
-                )
-              }
-              disabled={currentUser.sessionId === 9}
-            />
+                <TitleText>list of sessions</TitleText>
 
-            <TitleText>list of sessions</TitleText>
-
-            <SessionCardContainer>
-              {sessionNumbers.map((label: number, index: number) => {
-                let complete =
-                  currentUser?.sessionId >= label || label === 1;
-                return (
-                  <SessionCard
-                    sessionNumber={label}
-                    image={
-                      complete
-                        ? ColoredSessionIcons[index]
-                        : GrayscaleSessionIcons[index]
+                <SessionCardContainer>
+                  {sessionNumbers.map(
+                    (label: number, index: number) => {
+                      let complete =
+                        currentUser?.sessionId >= label ||
+                        label === 1;
+                      return (
+                        <SessionCard
+                          sessionNumber={label}
+                          image={
+                            complete
+                              ? ColoredSessionIcons[index]
+                              : GrayscaleSessionIcons[index]
+                          }
+                          isComplete={complete}
+                          key={index}
+                        />
+                      );
                     }
-                    isComplete={complete}
-                    key={index}
+                  )}
+                </SessionCardContainer>
+              </SessionContainer>
+
+              <WeekProgressContainer>
+                <TitleText>this week</TitleText>
+
+                <WeekContainer>
+                  {dayLabels.map((label: string, index: number) => {
+                    return (
+                      <DayOfWeek
+                        key={label}
+                        name={label}
+                        day={index}
+                        daysActiveThisWeek={daysActiveThisWeek}
+                      />
+                    );
+                  })}
+                </WeekContainer>
+
+                <TitleText>your progress</TitleText>
+                <ProgressStatsContainer>
+                  <Stat
+                    number={dayStreak(
+                      currentUser.daysActive.map(
+                        (val) => new Date(val)
+                      )
+                    )}
+                    description={"day streak"}
                   />
-                );
-              })}
-            </SessionCardContainer>
-          </SessionContainer>
-
-          <WeekProgressContainer>
-            <TitleText>this week</TitleText>
-
-            <WeekContainer>
-              {dayLabels.map((label: string, index: number) => {
-                return (
-                  <DayOfWeek
-                    key={label}
-                    name={label}
-                    day={index}
-                    daysActiveThisWeek={daysActiveThisWeek}
+                  <Stat
+                    number={totalWordsLearned}
+                    description={"words learned"}
                   />
-                );
-              })}
-            </WeekContainer>
-
-            <TitleText>your progress</TitleText>
-            <ProgressStatsContainer>
-              <Stat
-                number={dayStreak(
-                  currentUser.daysActive.map((val) => new Date(val))
-                )}
-                description={"day streak"}
-              />
-              <Stat
-                number={totalWordsLearned}
-                description={"words learned"}
-              />
-              <Stat
-                number={currentUser.sessionId + 1}
-                description={"assessments completed"}
-              />
-              <Stat
-                number={
-                  currentUser.sessionId +
-                  (currentUser.onAssessment ? 1 : 0)
-                }
-                description={"interventions completed"}
-              />
-            </ProgressStatsContainer>
-          </WeekProgressContainer>
+                  <Stat
+                    number={currentUser.sessionId + 1}
+                    description={"assessments completed"}
+                  />
+                  <Stat
+                    number={
+                      currentUser.sessionId +
+                      (currentUser.onAssessment ? 1 : 0)
+                    }
+                    description={"interventions completed"}
+                  />
+                </ProgressStatsContainer>
+              </WeekProgressContainer>
+            </>
+          ) : (
+            <ResearcherDashboard
+              students={dataForResearchers || []}
+            ></ResearcherDashboard>
+          )}
         </DashboardContainer>
       </>
     </Layout>
