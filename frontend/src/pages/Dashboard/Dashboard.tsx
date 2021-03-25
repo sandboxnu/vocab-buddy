@@ -607,25 +607,107 @@ const MenuDropdownButton = styled.img`
   }
 `;
 
+const getButtonGridArea = (
+  selectedMenuButton: number,
+  menuButtonNumber: number,
+  menuOpen: boolean,
+  isDropdown: boolean,
+  type: "icon" | "button"
+) => {
+  if (isDropdown && !menuOpen) {
+    if (selectedMenuButton == menuButtonNumber) {
+      // First row
+      return type + "1";
+    } else {
+      // put it out of place
+      return type + 3;
+    }
+  }
+  // Default
+  return type + menuButtonNumber;
+};
+
 const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
   isDropdown,
 }) => {
   const [selectedMenuButton, setSelectedMenuButton] = useState(1);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const hiddenButtons = (
+  const overviewButton = (
     <>
-      <MenuButtonIcon gridArea={"icon2"} src={reviewWordsIcon} />
+      <MenuButtonIcon
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          1,
+          menuOpen,
+          isDropdown,
+          "icon"
+        )}
+        src={overviewIcon}
+      />
       <MenuButtonText
-        gridArea={"button2"}
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          1,
+          menuOpen,
+          isDropdown,
+          "button"
+        )}
+        selected={selectedMenuButton === 1}
+        onClick={() => setSelectedMenuButton(1)}
+      >
+        overview
+      </MenuButtonText>
+    </>
+  );
+  const reviewButton = (
+    <>
+      <MenuButtonIcon
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          2,
+          menuOpen,
+          isDropdown,
+          "icon"
+        )}
+        src={reviewWordsIcon}
+      />
+      <MenuButtonText
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          2,
+          menuOpen,
+          isDropdown,
+          "button"
+        )}
         selected={selectedMenuButton === 2}
         onClick={() => setSelectedMenuButton(2)}
       >
         review words
       </MenuButtonText>
-      <MenuButtonIcon gridArea={"icon3"} src={settingsIcon} />
+    </>
+  );
+
+  const settingsButton = (
+    <>
+      <MenuButtonIcon
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          3,
+          menuOpen,
+          isDropdown,
+          "icon"
+        )}
+        src={settingsIcon}
+      />
       <MenuButtonText
-        gridArea={"button3"}
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          3,
+          menuOpen,
+          isDropdown,
+          "button"
+        )}
         selected={selectedMenuButton === 3}
         onClick={() => setSelectedMenuButton(3)}
       >
@@ -634,27 +716,32 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
     </>
   );
 
+  const buttons = [overviewButton, reviewButton, settingsButton];
+
   return (
     <MenuButtonContainer>
-      <MenuButtonIcon gridArea={"icon1"} src={overviewIcon} />
-      <MenuButtonText
-        gridArea={"button1"}
-        selected={selectedMenuButton === 1}
-        onClick={() => setSelectedMenuButton(1)}
-      >
-        overview
-      </MenuButtonText>
+      {!isDropdown && overviewButton}
 
       {isDropdown ? (
         <>
+          {menuOpen ? (
+            <>
+              {" "}
+              {overviewButton} {reviewButton} {settingsButton}{" "}
+            </>
+          ) : (
+            <> {buttons[selectedMenuButton - 1]}</>
+          )}
           <MenuDropdownButton
             src={caret}
             onClick={() => setMenuOpen(!menuOpen)}
           />
-          {menuOpen && hiddenButtons}
         </>
       ) : (
-        hiddenButtons
+        <>
+          {" "}
+          {reviewButton} {settingsButton}{" "}
+        </>
       )}
     </MenuButtonContainer>
   );
