@@ -33,6 +33,16 @@ const dashboardReducer = (
         totalWordsLearned: action.payload.totalWordsLearned,
         error: undefined,
       };
+    case ActionTypes.GET_DATA_FOR_RESEARCHERS_SUCCESS:
+      return {
+        ...state,
+        students: action.payload.students,
+        user: action.payload.isFinished ? undefined : state.user,
+        totalWordsLearned: action.payload.isFinished
+          ? undefined
+          : state.totalWordsLearned,
+        error: undefined,
+      };
     case ActionTypes.FINISHED_INTERVENTION_SUCCESS:
       return {
         ...state,
@@ -74,6 +84,10 @@ export const getIsSignedOut = (state: RootStateOrAny) => {
 
 export const getCurrentUser = (state: RootStateOrAny) => {
   return state.dashboard.user;
+};
+
+export const getDataForResearchers = (state: RootStateOrAny) => {
+  return state.dashboard.students;
 };
 
 export const getTotalWordsLearned = (state: RootStateOrAny) => {

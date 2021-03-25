@@ -139,20 +139,7 @@ export default class FirebaseInteractor {
     let user = await this.db.collection("users").doc(idToUse).get();
     let userData = user.data();
     if (idToUse != null && userData != null) {
-      return {
-        id: idToUse,
-        name: userData.name as string,
-        accountType: userData.accountType as AccountType,
-        age: userData.age as number,
-        sessionId: userData.sessionId === undefined ? -1 : userData.sessionId,
-        onAssessment:
-          userData.onAssessment === undefined ? true : userData.onAssessment,
-        currentInterventionOrAssessment:
-          userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
-        daysActive:
-          userData.daysActive === undefined ? [] : userData.daysActive,
-        profileIcon: userData.profileIcon ?? allProfileIcons[0],
-      };
+      return this.getUserFromData(userData);
     } else {
       throw new Error("Invalid user");
     }
@@ -506,5 +493,38 @@ export default class FirebaseInteractor {
   async signOut() {
     await this.auth.signOut();
     this.currentUser = null;
+  }
+
+  // Researcher dashboard functions
+
+  // given a user document, returns a user object
+  getUserFromData(userData: firebase.firestore.DocumentData): User {
+    return {
+      id: userData.id,
+      name: userData.name as string,
+      accountType: userData.accountType as AccountType,
+      age: userData.age as number,
+      sessionId: userData.sessionId === undefined ? -1 : userData.sessionId,
+      onAssessment:
+        userData.onAssessment === undefined ? true : userData.onAssessment,
+      currentInterventionOrAssessment:
+        userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
+      daysActive: userData.daysActive === undefined ? [] : userData.daysActive,
+      profileIcon: userData.profileIcon ?? allProfileIcons[0],
+    };
+  }
+
+  async getAllStudents(): Promise<User[]> {
+    let students = (
+      await this.db
+        .collection("users")
+        .where("accountType", "==", "STUDENT")
+        .get()
+    ).docs;
+
+    return students.map((student) => {
+      let studentData = student.data();
+      return this.getUserFromData(studentData);
+    });
   }
 }
