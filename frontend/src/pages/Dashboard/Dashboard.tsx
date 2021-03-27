@@ -607,7 +607,7 @@ interface MenuButtonPanelProps {
   signOutHandler: () => void;
 }
 
-interface MenuDropdownButtonProps {
+interface MenuDropdownCaretProps {
   rotationDegrees: number;
 }
 const MenuDropdownButton = styled.img`
@@ -617,7 +617,7 @@ const MenuDropdownButton = styled.img`
 
   transition: all 0.4s ease;
   transform: rotate(
-    ${({ rotationDegrees }: MenuDropdownButtonProps) =>
+    ${({ rotationDegrees }: MenuDropdownCaretProps) =>
       rotationDegrees}deg
   );
 
