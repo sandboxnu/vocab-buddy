@@ -6,6 +6,7 @@ import CloudGroup from "../../components/CloudGroup";
 import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
 import { INK } from "../../constants/colors";
+import { ERROR_IMAGE } from "../../constants/images";
 import { SignOut } from "../Dashboard/data/actions";
 import { getIsSignedOut } from "../Dashboard/data/reducer";
 
@@ -42,6 +43,10 @@ const WrappingDiv = styled.div`
   flex-direction: column;
 `;
 
+const TopImage = styled.img`
+  max-width: 80vw;
+`;
+
 interface ErrorScreenProps {
   logOut: () => void;
   signedOut: boolean;
@@ -68,6 +73,7 @@ function ErrorScreen({ logOut, signedOut }: ErrorScreenProps) {
       <>
         <CloudGroup />
         <WrappingDiv>
+          <TopImage src={ERROR_IMAGE} />
           <TitleText>oops, something went wrong</TitleText>
           <PurpleButton
             text="return to dashboard"
