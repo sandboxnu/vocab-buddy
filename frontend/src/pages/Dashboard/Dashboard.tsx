@@ -597,10 +597,19 @@ interface MenuButtonPanelProps {
   isDropdown: boolean;
 }
 
+interface MenuDropdownButtonProps {
+  rotationDegrees: number;
+}
 const MenuDropdownButton = styled.img`
   grid-area: dropdown;
   width: 18px;
   height: 18px;
+
+  transition: all 0.4s ease;
+  transform: rotate(
+    ${({ rotationDegrees }: MenuDropdownButtonProps) =>
+      rotationDegrees}deg
+  );
 
   :hover {
     cursor: pointer;
@@ -751,6 +760,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           <MenuDropdownButton
             src={caret}
             onClick={() => setMenuOpen(!menuOpen)}
+            rotationDegrees={menuOpen ? 180 : 0}
           />
         </>
       ) : (
