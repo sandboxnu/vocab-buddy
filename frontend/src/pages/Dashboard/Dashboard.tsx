@@ -212,21 +212,25 @@ const SessionBox = styled.div`
 
 const SessionNumber = styled.p`
   font-weight: 700;
-  font-size: 1.5vw;
+  font-size: 1.3vw;
   text-align: center;
   white-space: nowrap;
   margin-bottom: 0;
 
   @media (max-width: 900px) {
-    font-size: 3vw;
+    font-size: 3.1vw;
   }
 `;
 
 const SessionImage = styled.img`
-  max-width: 60%;
+  max-width: 6vw;
+  max-height 6vh;
+  
   margin-bottom: 2vh;
   @media (max-width: 900px) {
     margin-bottom: 22px;
+    max-width: 20vw;
+    max-height 20vh;
   }
 `;
 
