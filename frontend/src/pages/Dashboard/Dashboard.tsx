@@ -79,12 +79,19 @@ const SignOutButton = styled.button`
   color: ${INK};
   font-weight: bold;
 
+  grid-area: signout;
+
   :hover {
     cursor: pointer;
   }
 
   :active {
     opacity: 0.8;
+  }
+
+  @media (max-width: 900px) {
+    margin: 0;
+    padding: 0;
   }
 `;
 
@@ -134,6 +141,7 @@ const MenuButtonContainer = styled.div`
 
   margin-top: 16px;
   text-align: left;
+  justify-items: start;
 
   grid-template-areas:
     "icon1 button1"
@@ -148,7 +156,8 @@ const MenuButtonContainer = styled.div`
     grid-template-areas:
       "icon1 button1 dropdown"
       "icon2 button2 ."
-      "icon3 button3 .";
+      "icon3 button3 ."
+      ". signout .";
   }
 `;
 
@@ -595,6 +604,7 @@ const SessionCard: FunctionComponent<SessionCardParams> = ({
 
 interface MenuButtonPanelProps {
   isDropdown: boolean;
+  signOutHandler: () => void;
 }
 
 interface MenuDropdownButtonProps {
@@ -638,6 +648,7 @@ const getButtonGridArea = (
 
 const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
   isDropdown,
+  signOutHandler,
 }) => {
   const [selectedMenuButton, setSelectedMenuButton] = useState(1);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -753,6 +764,9 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
               {overviewButton}
               {reviewButton}
               {settingsButton}
+              <SignOutButton onClick={signOutHandler}>
+                log out
+              </SignOutButton>
             </>
           ) : (
             <> {buttons[selectedMenuButton - 1]}</>
@@ -861,7 +875,10 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                 />
               </ProfileGroup>
               <TitleText>hi {currentUser.name}!</TitleText>
-              <MenuButtonPanel isDropdown={screenWidth < 900} />
+              <MenuButtonPanel
+                isDropdown={screenWidth < 900}
+                signOutHandler={signOut}
+              />
             </MenuTopDiv>
             {screenWidth > 900 && (
               <SignOutButton onClick={signOut}>log out</SignOutButton>
