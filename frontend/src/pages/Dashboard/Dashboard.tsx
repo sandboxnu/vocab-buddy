@@ -654,7 +654,12 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           "button"
         )}
         selected={selectedMenuButton === 1}
-        onClick={() => setSelectedMenuButton(1)}
+        onClick={() => {
+          setSelectedMenuButton(1);
+          setMenuOpen(
+            !menuOpen && selectedMenuButton == 1 ? true : menuOpen
+          );
+        }}
       >
         overview
       </MenuButtonText>
@@ -681,7 +686,12 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           "button"
         )}
         selected={selectedMenuButton === 2}
-        onClick={() => setSelectedMenuButton(2)}
+        onClick={() => {
+          setSelectedMenuButton(2);
+          setMenuOpen(
+            !menuOpen && selectedMenuButton == 2 ? true : menuOpen
+          );
+        }}
       >
         review words
       </MenuButtonText>
@@ -709,7 +719,12 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           "button"
         )}
         selected={selectedMenuButton === 3}
-        onClick={() => setSelectedMenuButton(3)}
+        onClick={() => {
+          setSelectedMenuButton(3);
+          setMenuOpen(
+            !menuOpen && selectedMenuButton == 3 ? true : menuOpen
+          );
+        }}
       >
         settings
       </MenuButtonText>
