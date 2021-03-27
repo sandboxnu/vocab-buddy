@@ -34,6 +34,10 @@ import {
 import ResearcherDashboard from "../Dashboard/ResearcherDashboard";
 import star from "../../assets/star.svg";
 import ellipse from "../../assets/ellipse.svg";
+import overviewIcon from "../../assets/icons/dashboard-menu/overview.svg";
+import reviewWordsIcon from "../../assets/icons/dashboard-menu/review.svg";
+import settingsIcon from "../../assets/icons/dashboard-menu/settings.svg";
+import caret from "../../assets/caret.svg";
 import ColoredSessionIcons from "../../assets/icons/session/color/ColoredSessionIcons";
 import GrayscaleSessionIcons from "../../assets/icons/session/grayscale/GrayscaleSessionIcons";
 import { dayStreak } from "../../constants/utils";
@@ -75,12 +79,19 @@ const SignOutButton = styled.button`
   color: ${INK};
   font-weight: bold;
 
+  grid-area: signout;
+
   :hover {
     cursor: pointer;
   }
 
   :active {
     opacity: 0.8;
+  }
+
+  @media (max-width: 900px) {
+    margin: 0;
+    padding: 0;
   }
 `;
 
@@ -122,14 +133,61 @@ const MenuContainer = styled.div`
 `;
 
 const MenuButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  grid-template-rows: auto;
 
-  background: red;
-  width: 100%;
-  height: 100px;
+  gap: 1vh;
+
+  margin-top: 16px;
+  text-align: left;
+  justify-items: start;
+
+  grid-template-areas:
+    "icon1 button1"
+    "icon2 button2"
+    "icon3 button3";
+
+  @media (max-width: 900px) {
+    width: 90vw;
+    grid-template-columns: 18px 1fr 18px;
+    grid-template-rows: auto;
+
+    grid-template-areas:
+      "icon1 button1 dropdown"
+      "icon2 button2 ."
+      "icon3 button3 ."
+      ". signout .";
+  }
+`;
+
+const MenuButtonIcon = styled.img`
+  height: 18px;
+  width: 18px;
+  grid-area: ${({ gridArea }: MenuGridProps) => gridArea};
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+interface MenuGridProps {
+  gridArea: string;
+}
+
+interface MenuButtonProps extends MenuGridProps {
+  selected: boolean;
+}
+
+const MenuButtonText = styled.p`
+  font-weight: ${({ selected }: MenuButtonProps) =>
+    selected ? `700` : "400"};
+
+  grid-area: ${({ gridArea }: MenuButtonProps) => gridArea};
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const TitleText = styled.p`
@@ -148,6 +206,7 @@ const TitleText = styled.p`
 const MenuTopDiv = styled.div`
   display: flex;
   align-items: center;
+  text-align: center;
   flex-direction: column;
 `;
 
@@ -547,6 +606,191 @@ const SessionCard: FunctionComponent<SessionCardParams> = ({
   );
 };
 
+interface MenuButtonPanelProps {
+  isDropdown: boolean;
+  signOutHandler: () => void;
+}
+
+interface MenuDropdownCaretProps {
+  rotationDegrees: number;
+}
+const MenuDropdownButton = styled.img`
+  grid-area: dropdown;
+  width: 18px;
+  height: 18px;
+
+  transition: all 0.4s ease;
+  transform: rotate(
+    ${({ rotationDegrees }: MenuDropdownCaretProps) =>
+      rotationDegrees}deg
+  );
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const getButtonGridArea = (
+  selectedMenuButton: number,
+  menuButtonNumber: number,
+  menuOpen: boolean,
+  isDropdown: boolean,
+  type: "icon" | "button"
+) => {
+  if (isDropdown && !menuOpen) {
+    if (selectedMenuButton == menuButtonNumber) {
+      // First row
+      return type + "1";
+    } else {
+      // put it out of place
+      return type + 3;
+    }
+  }
+  // Default
+  return type + menuButtonNumber;
+};
+
+const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
+  isDropdown,
+  signOutHandler,
+}) => {
+  const [selectedMenuButton, setSelectedMenuButton] = useState(1);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const overviewButton = (
+    <>
+      <MenuButtonIcon
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          1,
+          menuOpen,
+          isDropdown,
+          "icon"
+        )}
+        src={overviewIcon}
+      />
+      <MenuButtonText
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          1,
+          menuOpen,
+          isDropdown,
+          "button"
+        )}
+        selected={selectedMenuButton === 1}
+        onClick={() => {
+          setSelectedMenuButton(1);
+          setMenuOpen(
+            !menuOpen && selectedMenuButton == 1 ? true : menuOpen
+          );
+        }}
+      >
+        overview
+      </MenuButtonText>
+    </>
+  );
+  const reviewButton = (
+    <>
+      <MenuButtonIcon
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          2,
+          menuOpen,
+          isDropdown,
+          "icon"
+        )}
+        src={reviewWordsIcon}
+      />
+      <MenuButtonText
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          2,
+          menuOpen,
+          isDropdown,
+          "button"
+        )}
+        selected={selectedMenuButton === 2}
+        onClick={() => {
+          setSelectedMenuButton(2);
+          setMenuOpen(
+            !menuOpen && selectedMenuButton == 2 ? true : menuOpen
+          );
+        }}
+      >
+        review words
+      </MenuButtonText>
+    </>
+  );
+
+  const settingsButton = (
+    <>
+      <MenuButtonIcon
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          3,
+          menuOpen,
+          isDropdown,
+          "icon"
+        )}
+        src={settingsIcon}
+      />
+      <MenuButtonText
+        gridArea={getButtonGridArea(
+          selectedMenuButton,
+          3,
+          menuOpen,
+          isDropdown,
+          "button"
+        )}
+        selected={selectedMenuButton === 3}
+        onClick={() => {
+          setSelectedMenuButton(3);
+          setMenuOpen(
+            !menuOpen && selectedMenuButton == 3 ? true : menuOpen
+          );
+        }}
+      >
+        settings
+      </MenuButtonText>
+    </>
+  );
+
+  const buttons = [overviewButton, reviewButton, settingsButton];
+
+  return (
+    <MenuButtonContainer>
+      {!isDropdown && overviewButton}
+
+      {isDropdown ? (
+        <>
+          {menuOpen ? (
+            <>
+              {overviewButton}
+              {reviewButton}
+              {settingsButton}
+              <SignOutButton onClick={signOutHandler}>
+                log out
+              </SignOutButton>
+            </>
+          ) : (
+            <> {buttons[selectedMenuButton - 1]}</>
+          )}
+          <MenuDropdownButton
+            src={caret}
+            onClick={() => setMenuOpen(!menuOpen)}
+            rotationDegrees={menuOpen ? 180 : 0}
+          />
+        </>
+      ) : (
+        <>
+          {reviewButton}
+          {settingsButton}
+        </>
+      )}
+    </MenuButtonContainer>
+  );
+};
+
 const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
@@ -634,8 +878,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                   changeIconRequest={changeIconRequest}
                 />
               </ProfileGroup>
-              <TitleText>hi name!</TitleText>
-              <MenuButtonContainer></MenuButtonContainer>
+              <TitleText>hi {currentUser.name}!</TitleText>
+              <MenuButtonPanel
+                isDropdown={screenWidth < 900}
+                signOutHandler={signOut}
+              />
             </MenuTopDiv>
             {screenWidth > 900 && (
               <SignOutButton onClick={signOut}>log out</SignOutButton>
