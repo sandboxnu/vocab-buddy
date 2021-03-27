@@ -6,6 +6,7 @@ import CloudGroup from "../../components/CloudGroup";
 import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
 import { INK } from "../../constants/colors";
+import { ERROR_IMAGE } from "../../constants/images";
 import { SignOut } from "../Dashboard/data/actions";
 import { getIsSignedOut } from "../Dashboard/data/reducer";
 
@@ -72,7 +73,7 @@ function ErrorScreen({ logOut, signedOut }: ErrorScreenProps) {
       <>
         <CloudGroup />
         <WrappingDiv>
-          <TopImage src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Ferrorscreen_illustration.svg?alt=media&token=601b55ee-6869-4d1b-b808-032d5902a8e6" />
+          <TopImage src={ERROR_IMAGE} />
           <TitleText>oops, something went wrong</TitleText>
           <PurpleButton
             text="return to dashboard"
