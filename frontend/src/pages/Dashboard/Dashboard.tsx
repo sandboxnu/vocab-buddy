@@ -390,35 +390,30 @@ const DayLabel = styled.p<DayLabelType>`
 `;
 
 const Star = styled.img`
-  height: 51px;
-  width: 52px;
+  height: 3.5vw;
+  width: 3.5vw;
 
   @media (max-width: 900px) {
-    height: 35px;
-    width: 36px;
+    height: 8vw;
+    width: 8vw;
   }
 `;
 
 const DotContainer = styled.div`
-  height: 51px;
-  width: 52px;
+  height: 3vw;
+  width: 3vw;
   display: flex;
   justify-content: center;
   align-items: center;
 
   @media (max-width: 900px) {
-    height: 35px;
-    width: 36px;
+    height: 6vw;
+    width: 6vw;
   }
 `;
 const Dot = styled.img`
-  height: 12px;
-  width: 12px;
-
-  @media (max-width: 900px) {
-    height: 10px;
-    width: 10px;
-  }
+  height: 20%;
+  width: 20%;
 `;
 
 const WeekContainer = styled.div`
