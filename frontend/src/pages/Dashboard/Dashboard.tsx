@@ -199,7 +199,7 @@ const SessionBox = styled.div`
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
   @media (max-width: 900px) {
@@ -212,7 +212,7 @@ const SessionBox = styled.div`
 
 const SessionNumber = styled.p`
   font-weight: 700;
-  font-size: 1.5vw;
+  font-size: 1.3vw;
   text-align: center;
   white-space: nowrap;
   margin-bottom: 0;
@@ -223,7 +223,9 @@ const SessionNumber = styled.p`
 `;
 
 const SessionImage = styled.img`
-  max-width: 60%;
+  max-width: 6vw;
+  max-height 6vh;
+  
   margin-bottom: 2vh;
   @media (max-width: 900px) {
     margin-bottom: 22px;
