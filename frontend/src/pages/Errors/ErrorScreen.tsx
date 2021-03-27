@@ -42,6 +42,10 @@ const WrappingDiv = styled.div`
   flex-direction: column;
 `;
 
+const TopImage = styled.img`
+  max-width: 80vw;
+`;
+
 interface ErrorScreenProps {
   logOut: () => void;
   signedOut: boolean;
@@ -68,6 +72,7 @@ function ErrorScreen({ logOut, signedOut }: ErrorScreenProps) {
       <>
         <CloudGroup />
         <WrappingDiv>
+          <TopImage src="https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Ferrorscreen_illustration.svg?alt=media&token=601b55ee-6869-4d1b-b808-032d5902a8e6" />
           <TitleText>oops, something went wrong</TitleText>
           <PurpleButton
             text="return to dashboard"
