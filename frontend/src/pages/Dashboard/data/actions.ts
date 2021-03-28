@@ -19,7 +19,7 @@ interface GetDashboardDataResponse {
 }
 
 export interface GetDataRequestProps {
-  id?: number;
+  id?: string;
 }
 
 export const GetData = {
@@ -29,6 +29,13 @@ export const GetData = {
   }),
   success: ({ user, totalWordsLearned }: GetDashboardDataResponse) => ({
     type: ActionTypes.GET_DASHBOARD_DATA_SUCCESS,
+    payload: { user, totalWordsLearned },
+  }),
+  requestStudentSuccess: ({
+    user,
+    totalWordsLearned,
+  }: GetDashboardDataResponse) => ({
+    type: ActionTypes.GET_REQUESTED_STUDENT_DASHBOARD_DATA_SUCCESS,
     payload: { user, totalWordsLearned },
   }),
   error: ({ error }: GetDashboardDataResponse) => ({
