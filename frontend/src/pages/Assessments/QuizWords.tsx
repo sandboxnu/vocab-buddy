@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import PlayButton from "../../components/PlayButton";
-import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
 import CloudGroup from "../../components/CloudGroup";
 import WordImages from "../../components/WordImages";
@@ -146,10 +145,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
             <PromptText>
               Touch the picture that shows {word.value}.
             </PromptText>
-            <PromptSpeech
-              prompt={`Touch the picture that shows ${word.value}.`}
-              button={<PlayButton scale={0.8} />}
-            />
+            need new prompt
           </Prompt>
           <ImageContainer>
             <WordImages

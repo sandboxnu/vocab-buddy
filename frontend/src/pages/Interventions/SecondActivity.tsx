@@ -7,7 +7,6 @@ import {
   SKY,
   SKY_RGBA,
 } from "../../constants/colors";
-import PromptSpeech from "../../components/PromptSpeech";
 import ReplayButton from "../../components/ReplayButton";
 import CloudGroup from "../../components/CloudGroup";
 import DelayedNextButton from "../../components/DelayedNextButton";
@@ -174,12 +173,7 @@ const SecondActivity = ({
         <MainContent>
           <DescriptionText>example vs. non-example</DescriptionText>
           <WordTitle>{title}</WordTitle>
-          <Prompt>
-            <PromptSpeech
-              prompt={prompt}
-              button={<ReplayButton scale={0.8} />}
-            />
-          </Prompt>
+          <Prompt>need new prompt (before and after)</Prompt>
           <Blocker afterSeconds={15} repeatable={false}>
             <StyledDivForClicks>
               {imageUrls.map((img, index) => (

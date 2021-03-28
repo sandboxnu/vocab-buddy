@@ -2,10 +2,8 @@ import React, { ReactElement } from "react";
 import styled from "styled-components";
 import Blocker from "../../components/Blocker";
 import Layout from "../../components/Layout";
-import AutoPrompt from "../../components/AutoPrompt";
 import CloudGroup from "../../components/CloudGroup";
 import DelayedNextButton from "../../components/DelayedNextButton";
-import ReplayButton from "../../components/ReplayButton";
 import { SKY, SKY_RGBA } from "../../constants/colors";
 import ExpandableImage from "../../components/ExpandableImage";
 
@@ -89,13 +87,7 @@ const FirstActivity = ({
         <MainContent>
           <DescriptionText>introduction + definition</DescriptionText>
           <WordTitle>{title}</WordTitle>
-          <Prompt>
-            <AutoPrompt
-              prompt={prompt}
-              button={<ReplayButton scale={0.8} />}
-              delay={10000}
-            />
-          </Prompt>
+          <Prompt>need new prompt</Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
             <Blocker afterSeconds={30} repeatable={false}>

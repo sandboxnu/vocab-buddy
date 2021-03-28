@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Layout from "../../components/Layout";
 import ReplayButton from "../../components/ReplayButton";
 import { SKY, SKY_RGBA } from "../../constants/colors";
-import AutoPrompt from "../../components/AutoPrompt";
 import CloudGroup from "../../components/CloudGroup";
 import YesNoSelection from "../../components/YesNoSelection";
 import DelayedNextButton from "../../components/DelayedNextButton";
@@ -113,13 +112,7 @@ const ThirdActivity = ({
             yes or no context question
           </DescriptionText>
           <WordTitle>{title}</WordTitle>
-          <Prompt>
-            <AutoPrompt
-              prompt={prompt}
-              button={<ReplayButton scale={0.8} />}
-              delay={10000}
-            />
-          </Prompt>
+          <Prompt>need new prompt (before and after)</Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
             <YesNoSelection

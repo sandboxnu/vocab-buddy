@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
-import AutoPrompt from "../../components/AutoPrompt";
 import ReplayButton from "../../components/ReplayButton";
 import DelayedNextButton from "../../components/DelayedNextButton";
 import Blocker from "../../components/Blocker";
@@ -90,13 +89,7 @@ const FourthActivity = ({
         <MainContent>
           <DescriptionText>review with new picture</DescriptionText>
           <WordTitle>{title}</WordTitle>
-          <Prompt>
-            <AutoPrompt
-              prompt={prompt}
-              button={<ReplayButton scale={0.8} />}
-              delay={30000}
-            />
-          </Prompt>
+          <Prompt>need new prompt</Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
             <Blocker afterSeconds={30} repeatable={false}>
