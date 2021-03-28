@@ -14,6 +14,7 @@ import {
   InterventionWord,
   Review,
   SessionId,
+  SessionStats,
   User,
   Word,
 } from "../models/types";
@@ -458,6 +459,49 @@ export default class FirebaseInteractor {
       activityIdx: intervention.activityIdx,
       wordIdx: intervention.wordIdx,
       sessionId: intervention.session,
+    };
+  }
+
+  // get stats for the given user's given session
+  async getStatsForSession(
+    userId: string,
+    sessionId: number
+  ): Promise<SessionStats> {
+    let interventionForSession = (
+      await this.db
+        .collection("interventions")
+        .where("userId", "==", userId)
+        .where("session", "==", sessionId)
+        .get()
+    ).docs[0];
+    let assessmentForSession = (
+      await this.db
+        .collection("assessments")
+        .where("userId", "==", userId)
+        .where("session", "==", sessionId)
+        .get()
+    ).docs[0];
+
+    if (interventionForSession == null) {
+      throw new Error(
+        `User ${userId} does not have both an intervention and assessment for session ${sessionId}`
+      );
+    }
+
+    if (assessmentForSession == null) {
+      throw new Error(
+        ` aaa User ${userId} does not have both an intervention and assessment for session ${sessionId}`
+      );
+    }
+
+    let intervetionDuration = interventionForSession.data().durationsInSeconds;
+    let assessmentDuration = assessmentForSession.data().durationsInSeconds;
+    console.log(interventionForSession.data());
+    return {
+      interventionDuration: intervetionDuration,
+      assessmentDuration: assessmentDuration,
+      incorrectWords: 1,
+      correctWords: 1,
     };
   }
 
