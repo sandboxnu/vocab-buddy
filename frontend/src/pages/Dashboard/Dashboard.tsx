@@ -80,6 +80,7 @@ const SignOutButton = styled.button`
   border-width: 0px;
   color: ${INK};
   font-weight: bold;
+  margin-bottom: 20px;
 
   grid-area: signout;
 
@@ -113,12 +114,16 @@ const DashboardContainer = styled.div`
 
 const MenuContainer = styled.div`
   display: flex;
+  position: sticky;
+  top: 70px;
+  align-self: flex-start;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  min-height: 100%;
   flex: 1;
   border-radius: 0px 12px 0px 0px;
+  z-index: 100;
+  min-height: calc(100vh - 70px);
 
   padding-top: 3vh;
   padding-left: 1vh;
@@ -127,6 +132,8 @@ const MenuContainer = styled.div`
   background: ${CLOUD};
 
   @media (max-width: 900px) {
+    position: relative;
+    top: 0;
     width: 100%;
     min-height: 347px;
     border-radius: 0px 0px 0px 0px;
@@ -291,7 +298,7 @@ const getButtonGridArea = (
   type: "icon" | "button"
 ) => {
   if (isDropdown && !menuOpen) {
-    if (selectedMenuButton == menuButtonNumber) {
+    if (selectedMenuButton === menuButtonNumber) {
       // First row
       return type + "1";
     } else {
@@ -334,7 +341,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
         onClick={() => {
           setSelectedMenuButton(1);
           setMenuOpen(
-            !menuOpen && selectedMenuButton == 1 ? true : menuOpen
+            !menuOpen && selectedMenuButton === 1 ? true : menuOpen
           );
         }}
       >
@@ -366,7 +373,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
         onClick={() => {
           setSelectedMenuButton(2);
           setMenuOpen(
-            !menuOpen && selectedMenuButton == 2 ? true : menuOpen
+            !menuOpen && selectedMenuButton === 2 ? true : menuOpen
           );
         }}
       >
@@ -399,7 +406,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
         onClick={() => {
           setSelectedMenuButton(3);
           setMenuOpen(
-            !menuOpen && selectedMenuButton == 3 ? true : menuOpen
+            !menuOpen && selectedMenuButton === 3 ? true : menuOpen
           );
         }}
       >

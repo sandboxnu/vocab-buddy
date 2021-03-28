@@ -97,13 +97,13 @@ const SessionNumber = styled.p`
 
 const SessionImage = styled.img`
   max-width: 6vw;
-  max-height 6vh;
-  
+  max-height: 6vh;
+
   margin-bottom: 2vh;
   @media (max-width: 900px) {
     margin-bottom: 22px;
     max-width: 20vw;
-    max-height 20vh;
+    max-height: 20vh;
   }
 `;
 
@@ -225,6 +225,7 @@ const DotContainer = styled.div`
     width: 6vw;
   }
 `;
+
 const Dot = styled.img`
   height: 20%;
   width: 20%;
