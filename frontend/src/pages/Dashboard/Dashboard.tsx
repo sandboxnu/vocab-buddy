@@ -119,6 +119,7 @@ const MenuContainer = styled.div`
   justify-content: space-between;
   flex: 1;
   border-radius: 0px 12px 0px 0px;
+  z-index: 100;
   min-height: calc(100vh - 70px);
 
   padding-top: 3vh;
@@ -288,13 +289,13 @@ const SessionNumber = styled.p`
 
 const SessionImage = styled.img`
   max-width: 6vw;
-  max-height 6vh;
-  
+  max-height: 6vh;
+
   margin-bottom: 2vh;
   @media (max-width: 900px) {
     margin-bottom: 22px;
     max-width: 20vw;
-    max-height 20vh;
+    max-height: 20vh;
   }
 `;
 
