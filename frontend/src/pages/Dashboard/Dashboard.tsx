@@ -578,7 +578,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
           </MenuContainer>
           {currentUser.accountType === "STUDENT" ? (
             <StudentDashboard
-              showNextSession={true}
+              isStudentView={true}
               student={currentUser}
               totalWordsLearned={totalWordsLearned}
             />
@@ -587,7 +587,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             requestedStudentTotalWordsLearned !== undefined ? (
             <StudentDashboard
               student={requestedStudent}
-              showNextSession={false}
+              isStudentView={false}
               totalWordsLearned={requestedStudentTotalWordsLearned}
             />
           ) : (

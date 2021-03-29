@@ -152,7 +152,6 @@ const StudentCard: FunctionComponent<StudentCardParams> = ({
   student,
 }) => {
   const history = useHistory();
-  console.log(student);
   return (
     <StudentCardContainer
       onClick={() => history.push(`/dashboard/student/${student.id}`)}

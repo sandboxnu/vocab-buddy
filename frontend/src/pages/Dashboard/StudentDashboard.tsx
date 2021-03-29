@@ -17,7 +17,7 @@ import { dayStreak } from "../../constants/utils";
 
 interface StudentDashboardParams {
   student: User;
-  showNextSession: boolean;
+  isStudentView: boolean;
   totalWordsLearned: number;
 }
 
@@ -408,7 +408,7 @@ const SessionCard: FunctionComponent<SessionCardParams> = ({
 
 const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
   student,
-  showNextSession,
+  isStudentView,
   totalWordsLearned,
 }) => {
   const history = useHistory();
@@ -421,7 +421,7 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
   return (
     <>
       <SessionContainer>
-        {showNextSession ? (
+        {isStudentView ? (
           <>
             <TitleText>next session</TitleText>
             <NextSessionButton
@@ -485,7 +485,7 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
         </WeekContainer>
 
         <TitleText>
-          {showNextSession
+          {isStudentView
             ? "your progress"
             : `${student.name}'s progress`}
         </TitleText>
