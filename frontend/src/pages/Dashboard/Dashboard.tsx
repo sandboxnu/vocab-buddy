@@ -15,7 +15,7 @@ import {
   INCOMPLETE_GRAY,
 } from "../../constants/colors";
 import PurpleButton from "../../components/PurpleButton";
-import { User } from "../../models/types";
+import { SessionStats, User } from "../../models/types";
 import {
   GetData,
   GetDataForResearchers,
@@ -23,6 +23,8 @@ import {
   GetDataRequestProps,
   SignOut,
   ChangeProfileIcon,
+  GetUserSessionDataRequestProps,
+  GetUserSessionData,
 } from "./data/actions";
 import {
   getCurrentUser,
@@ -30,6 +32,7 @@ import {
   getIsSignedOut,
   getTotalWordsLearned,
   getDashboardError,
+  getSessionStats,
 } from "./data/reducer";
 import ResearcherDashboard from "../Dashboard/ResearcherDashboard";
 import star from "../../assets/star.svg";
@@ -44,12 +47,16 @@ interface DashboardParams {
   currentUser?: User;
   totalWordsLearned?: number;
   dataForResearchers?: User[];
+  userSessionData?: SessionStats;
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
   getDataForResearchers: (
     val: GetDataForResearchersRequestProps
   ) => void;
   changeIconRequest: (url: string) => void;
+  getUserSessionData: (
+    val: GetUserSessionDataRequestProps
+  ) => SessionStats;
   error?: Error;
 }
 
@@ -59,12 +66,14 @@ const connector = connect(
     currentUser: getCurrentUser(state),
     dataForResearchers: getDataForResearchers(state),
     totalWordsLearned: getTotalWordsLearned(state),
+    userSessionData: getSessionStats(state),
     error: getDashboardError(state),
   }),
   {
     signOut: SignOut.request,
     getUser: GetData.request,
     getDataForResearchers: GetDataForResearchers.request,
+    getUserSessionData: GetUserSessionData.request,
     changeIconRequest: ChangeProfileIcon.request,
   }
 );
@@ -528,18 +537,34 @@ interface SessionCardParams {
   sessionNumber: number;
   image: string;
   isComplete: boolean;
+  studentId: string;
 }
 
 const SessionCard: FunctionComponent<SessionCardParams> = ({
   sessionNumber,
   image,
   isComplete,
+  studentId,
 }) => {
-  return (
+  const history = useHistory();
+  return isComplete ? (
     <SessionBox isComplete={isComplete}>
       <SessionImage src={image} />
       <SessionNumber>session {sessionNumber}</SessionNumber>
     </SessionBox>
+  ) : (
+    <button
+      onClick={() =>
+        history.push(
+          `/dashboard/${studentId}/session/${sessionNumber}`
+        )
+      }
+    >
+      <SessionBox isComplete={isComplete}>
+        <SessionImage src={image} />
+        <SessionNumber>session {sessionNumber}</SessionNumber>
+      </SessionBox>
+    </button>
   );
 };
 
@@ -547,6 +572,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
   currentUser,
+  userSessionData,
+  getUserSessionData,
   totalWordsLearned,
   getUser,
   dataForResearchers,
@@ -596,6 +623,21 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       currentUser.accountType === "RESEARCHER"
     ) {
       getDataForResearchers({});
+    }
+  }, [
+    currentUser,
+    getUser,
+    dataForResearchers,
+    getDataForResearchers,
+  ]);
+
+  useEffect(() => {
+    if (
+      !userSessionData &&
+      currentUser &&
+      currentUser.accountType === "RESEARCHER"
+    ) {
+      getUserSessionData({});
     }
   }, [
     currentUser,
@@ -671,6 +713,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                           }
                           isComplete={complete}
                           key={index}
+                          studentId={currentUser.id}
                         />
                       );
                     }

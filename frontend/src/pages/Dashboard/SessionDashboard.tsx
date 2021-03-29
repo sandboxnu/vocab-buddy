@@ -1,22 +1,30 @@
 import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { User } from "../../models/types";
-import { useHistory } from "react-router-dom";
+import { SessionStats, User } from "../../models/types";
+import { GetUserSessionDataRequestProps } from "./data/actions";
 
 interface SessionDashboardParams {
-  student: User;
-  session: number;
+  student?: User;
+  sessionId?: number;
+  studentStats: SessionStats;
+  getUserSessionData: (val: GetUserSessionDataRequestProps) => void;
 }
 
 const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
   student,
-  session,
+  sessionId,
+  studentStats,
+  getUserSessionData,
 }) => {
-  let history = useHistory();
-  //history.push("/assessments/reward");
-
-  return <></>;
+  return (
+    <>
+      <p>{studentStats.assessmentDuration} </p>
+      <p>{studentStats.interventionDuration} </p>
+      <p>{studentStats.incorrectWords} </p>
+      <p>{studentStats.correctWords} </p>
+    </>
+  );
 };
 
 export default SessionDashboard;

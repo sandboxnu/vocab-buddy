@@ -482,26 +482,33 @@ export default class FirebaseInteractor {
         .get()
     ).docs[0];
 
-    if (interventionForSession == null) {
+    if (
+      interventionForSession == null ||
+      assessmentForSession == null ||
+      sessionId == -1
+    ) {
       throw new Error(
         `User ${userId} does not have both an intervention and assessment for session ${sessionId}`
       );
     }
 
-    if (assessmentForSession == null) {
-      throw new Error(
-        ` aaa User ${userId} does not have both an intervention and assessment for session ${sessionId}`
-      );
-    }
-
     let intervetionDuration = interventionForSession.data().durationsInSeconds;
     let assessmentDuration = assessmentForSession.data().durationsInSeconds;
+
+    let assesmentResults = await assessmentForSession.ref
+      .collection("results")
+      .get();
+    let correct = assesmentResults.docs.filter((doc) => doc.data().correct)
+      .length;
+    let incorrect = assesmentResults.docs.filter((doc) => !doc.data().correct)
+      .length;
+
     console.log(interventionForSession.data());
     return {
       interventionDuration: intervetionDuration,
       assessmentDuration: assessmentDuration,
-      incorrectWords: 1,
-      correctWords: 1,
+      incorrectWords: incorrect,
+      correctWords: correct,
     };
   }
 
