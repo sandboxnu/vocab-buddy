@@ -4,6 +4,7 @@ import { User } from "../../models/types";
 import { Dropdown, Menu } from "antd";
 import caret from "../../assets/caret.svg";
 import { CLOUD, SKY } from "../../constants/colors";
+import { useHistory } from "react-router";
 
 const ResearcherDashboardContainer = styled.div`
   display: flex;
@@ -50,6 +51,11 @@ const StudentCardContainer = styled.div`
   border-radius: 12px;
   padding: 32px 10px;
   text-align: center;
+
+  :hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
 `;
 
 const TitleText = styled.p`
@@ -145,8 +151,11 @@ interface StudentCardParams {
 const StudentCard: FunctionComponent<StudentCardParams> = ({
   student,
 }) => {
+  const history = useHistory();
   return (
-    <StudentCardContainer>
+    <StudentCardContainer
+      onClick={() => history.push(`/dashboard/student/${student.id}`)}
+    >
       <Avatar
         src={
           student.profileIcon ??
