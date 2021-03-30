@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import { INK_RGBA } from "../constants/colors";
 
@@ -13,10 +13,19 @@ const TriangleButton = styled.svg`
   }
 `;
 
-const PlayButton = ({ scale=1 }) => {
+interface PlayButtonProps {
+  scale?: number;
+  onClickHandler: () => void;
+}
+
+const PlayButton: FunctionComponent<PlayButtonProps> = ({
+  scale,
+  onClickHandler,
+}: PlayButtonProps) => {
   return (
     <TriangleButton
       scale={scale}
+      onClick={onClickHandler}
       width="28"
       height="32"
       viewBox="0 0 28 32"

@@ -1,11 +1,11 @@
 import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
-import ReplayButton from "../../components/ReplayButton";
 import { SKY, SKY_RGBA } from "../../constants/colors";
 import CloudGroup from "../../components/CloudGroup";
 import YesNoSelection from "../../components/YesNoSelection";
 import DelayedNextButton from "../../components/DelayedNextButton";
+import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface ThirdActivityProps {
   title: string;
@@ -112,7 +112,17 @@ const ThirdActivity = ({
             yes or no context question
           </DescriptionText>
           <WordTitle>{title}</WordTitle>
-          <Prompt>need new prompt (before and after)</Prompt>
+          <Prompt>
+            <TriggeredPrompt
+              prompt1Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/service-bell_daniel_simion.mp3?alt=media&token=d4222a38-14bc-49a8-b285-7786cf89f246"
+              }
+              prompt2Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/poker-chips-daniel_simon.mp3?alt=media&token=affc0118-9b6a-493d-8b55-7e69d71b43b9"
+              }
+              triggerSecondPrompt={selected !== -1}
+            />
+          </Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
             <YesNoSelection

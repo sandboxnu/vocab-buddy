@@ -1,12 +1,12 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
-import ReplayButton from "../../components/ReplayButton";
 import DelayedNextButton from "../../components/DelayedNextButton";
 import Blocker from "../../components/Blocker";
 import CloudGroup from "../../components/CloudGroup";
 import ExpandableImage from "../../components/ExpandableImage";
 import { SKY, SKY_RGBA } from "../../constants/colors";
+import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface FourthActivityProps {
   title: string;
@@ -82,6 +82,16 @@ const FourthActivity = ({
   imageUrl,
   updateIntervention,
 }: FourthActivityProps): ReactElement => {
+  const [triggerSecondPrompt, setTriggerSecondPrompt] = useState(
+    false
+  );
+
+  useEffect(() => {
+    setTimeout(() => {
+      setTriggerSecondPrompt(true);
+    }, 5000);
+  });
+
   return (
     <Layout>
       <Container>
@@ -89,14 +99,24 @@ const FourthActivity = ({
         <MainContent>
           <DescriptionText>review with new picture</DescriptionText>
           <WordTitle>{title}</WordTitle>
-          <Prompt>need new prompt</Prompt>
+          <Prompt>
+            <TriggeredPrompt
+              prompt1Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/service-bell_daniel_simion.mp3?alt=media&token=d4222a38-14bc-49a8-b285-7786cf89f246"
+              }
+              prompt2Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/poker-chips-daniel_simon.mp3?alt=media&token=affc0118-9b6a-493d-8b55-7e69d71b43b9"
+              }
+              triggerSecondPrompt={triggerSecondPrompt}
+            />
+          </Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
             <Blocker afterSeconds={30} repeatable={false}>
               <DelayedNextButton
                 text={"next"}
                 top={20}
-                delay={1000}
+                delay={6000}
                 onClick={updateIntervention}
                 canBeShown
               />

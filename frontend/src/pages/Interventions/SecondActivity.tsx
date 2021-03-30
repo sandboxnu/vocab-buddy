@@ -7,12 +7,12 @@ import {
   SKY,
   SKY_RGBA,
 } from "../../constants/colors";
-import ReplayButton from "../../components/ReplayButton";
 import CloudGroup from "../../components/CloudGroup";
 import DelayedNextButton from "../../components/DelayedNextButton";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import Blocker from "../../components/Blocker";
 import { indexOf } from "../../constants/utils";
+import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface SecondActivityProps {
   title: string;
@@ -173,7 +173,17 @@ const SecondActivity = ({
         <MainContent>
           <DescriptionText>example vs. non-example</DescriptionText>
           <WordTitle>{title}</WordTitle>
-          <Prompt>need new prompt (before and after)</Prompt>
+          <Prompt>
+            <TriggeredPrompt
+              prompt1Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/service-bell_daniel_simion.mp3?alt=media&token=d4222a38-14bc-49a8-b285-7786cf89f246"
+              }
+              prompt2Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/poker-chips-daniel_simon.mp3?alt=media&token=affc0118-9b6a-493d-8b55-7e69d71b43b9"
+              }
+              triggerSecondPrompt={selectedIndex !== -1}
+            />
+          </Prompt>
           <Blocker afterSeconds={15} repeatable={false}>
             <StyledDivForClicks>
               {imageUrls.map((img, index) => (

@@ -1,10 +1,17 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import styled from "styled-components";
 
 interface ReplayProps {
   scale?: number;
-  prompt: string;
+  onClickHandler: () => void;
 }
+
+const ReplayStyledButton = styled.button`
+  background: none;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+`;
 
 const ReplayButtonContainer = styled.div`
   display: flex;
@@ -32,14 +39,10 @@ const ReplayButtonSVG = styled.svg`
 
 const ReplayButton = ({
   scale,
-  prompt,
+  onClickHandler,
 }: ReplayProps): ReactElement => {
-  let audio = new Audio(prompt);
-  useEffect(() => {
-    audio.play();
-  });
   return (
-    <button onClick={() => audio.play()}>
+    <ReplayStyledButton onClick={onClickHandler}>
       <ReplayButtonContainer>
         <ReplayText>replay</ReplayText>
         <ReplayButtonSVG
@@ -57,7 +60,7 @@ const ReplayButton = ({
           />
         </ReplayButtonSVG>
       </ReplayButtonContainer>
-    </button>
+    </ReplayStyledButton>
   );
 };
 

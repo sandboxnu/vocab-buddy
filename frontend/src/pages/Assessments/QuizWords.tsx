@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
-import PlayButton from "../../components/PlayButton";
 import PurpleButton from "../../components/PurpleButton";
 import CloudGroup from "../../components/CloudGroup";
 import WordImages from "../../components/WordImages";
 import { CLOUD } from "../../constants/colors";
 import { Assessment, AssessmentResult } from "../../models/types";
 import { shuffle } from "../../constants/utils";
+import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface QuizWordsProps {
   assessment: Assessment;
@@ -145,7 +145,13 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
             <PromptText>
               Touch the picture that shows {word.value}.
             </PromptText>
-            need new prompt
+            <TriggeredPrompt
+              isAssessment={true}
+              currentWord={currentIndex}
+              prompt1Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/service-bell_daniel_simion.mp3?alt=media&token=d4222a38-14bc-49a8-b285-7786cf89f246"
+              }
+            />
           </Prompt>
           <ImageContainer>
             <WordImages
