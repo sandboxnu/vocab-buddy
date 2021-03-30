@@ -153,6 +153,7 @@ export enum ActionTypes {
   CHANGE_PROFILE_ICON_REQUEST = "CHANGE_PROFILE_ICON_REQUEST",
   CHANGE_PROFILE_ICON_SUCCESS = "CHANGE_PROFILE_ICON_SUCCESS",
   CHANGE_PROFILE_ICON_ERROR = "CHANGE_PROFILE_ICON_ERROR",
+  GET_REQUESTED_STUDENT_DASHBOARD_DATA_SUCCESS = "GET_REQUESTED_STUDENT_DASHBOARD_DATA_SUCCESS",
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense
@@ -202,6 +203,8 @@ export interface DashboardState {
   totalWordsLearned?: number;
   error?: Error;
   sessionStats?: SessionStats;
+  currentStudent?: User;
+  currentStudentTotalWordsLearned?: number;
 }
 
 export interface AssessmentResult {

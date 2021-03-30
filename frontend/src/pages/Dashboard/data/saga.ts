@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../../../firebase/firebaseInteractor";
 import { Action, ActionTypes } from "../../../models/types";
 import {
@@ -17,7 +17,7 @@ export default function* dashboardSaga() {
 
 function* root() {
   yield takeLatest(ActionTypes.SIGN_OUT_REQUEST, watchSignOut);
-  yield takeLatest(
+  yield takeEvery(
     ActionTypes.GET_DASHBOARD_DATA_REQUEST,
     watchGetDashboardData
   );
@@ -54,7 +54,11 @@ function* watchGetDashboardData(action: Action) {
   };
   try {
     yield call(getValue);
-    yield put(GetData.success({ user, totalWordsLearned }));
+    if (id) {
+      yield put(GetData.requestStudentSuccess({ user, totalWordsLearned }));
+    } else {
+      yield put(GetData.success({ user, totalWordsLearned }));
+    }
   } catch (error) {
     yield put(GetData.error({ error }));
   }

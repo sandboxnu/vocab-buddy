@@ -140,7 +140,7 @@ export default class FirebaseInteractor {
     let user = await this.db.collection("users").doc(idToUse).get();
     let userData = user.data();
     if (idToUse != null && userData != null) {
-      return this.getUserFromData(userData);
+      return this.getUserFromData(idToUse, userData);
     } else {
       throw new Error("Invalid user");
     }
@@ -549,9 +549,9 @@ export default class FirebaseInteractor {
   // Researcher dashboard functions
 
   // given a user document, returns a user object
-  getUserFromData(userData: firebase.firestore.DocumentData): User {
+  getUserFromData(id: string, userData: firebase.firestore.DocumentData): User {
     return {
-      id: userData.id,
+      id: id,
       name: userData.name as string,
       accountType: userData.accountType as AccountType,
       age: userData.age as number,
@@ -575,7 +575,7 @@ export default class FirebaseInteractor {
 
     return students.map((student) => {
       let studentData = student.data();
-      return this.getUserFromData(studentData);
+      return this.getUserFromData(student.id, studentData);
     });
   }
 }

@@ -5,3 +5,6 @@ export const ASSESSMENTS_LANDING =
 // Reward balloon
 export const BALLOON =
   "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/balloon.svg?alt=media&token=003857c8-e0d6-48a1-bf0d-63124db1b935";
+
+export const ERROR_IMAGE =
+  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Ferrorscreen_illustration.svg?alt=media&token=601b55ee-6869-4d1b-b808-032d5902a8e6";
