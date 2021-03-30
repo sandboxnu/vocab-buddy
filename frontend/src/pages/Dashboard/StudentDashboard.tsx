@@ -403,7 +403,7 @@ const SessionCard: FunctionComponent<SessionCardParams> = ({
   isStudentView,
 }) => {
   const history = useHistory();
-  return !isStudentView || !isComplete ? (
+  return isStudentView || !isComplete ? (
     <SessionBox isComplete={isComplete}>
       <SessionImage src={image} />
       <SessionNumber>session {sessionNumber}</SessionNumber>
