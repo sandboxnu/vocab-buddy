@@ -391,18 +391,36 @@ interface SessionCardParams {
   sessionNumber: number;
   image: string;
   isComplete: boolean;
+  studentId: string;
+  isStudentView: boolean;
 }
 
 const SessionCard: FunctionComponent<SessionCardParams> = ({
   sessionNumber,
   image,
   isComplete,
+  studentId,
+  isStudentView,
 }) => {
-  return (
+  const history = useHistory();
+  return !isStudentView || !isComplete ? (
     <SessionBox isComplete={isComplete}>
       <SessionImage src={image} />
       <SessionNumber>session {sessionNumber}</SessionNumber>
     </SessionBox>
+  ) : (
+    <button
+      onClick={() =>
+        history.push(
+          `/dashboard/${studentId}/session/${sessionNumber}`
+        )
+      }
+    >
+      <SessionBox isComplete={isComplete}>
+        <SessionImage src={image} />
+        <SessionNumber>session {sessionNumber}</SessionNumber>
+      </SessionBox>
+    </button>
   );
 };
 
@@ -462,6 +480,8 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
                 }
                 isComplete={complete}
                 key={index}
+                studentId={student.id}
+                isStudentView={isStudentView}
               />
             );
           })}
