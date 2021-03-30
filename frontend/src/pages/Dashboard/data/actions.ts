@@ -68,7 +68,7 @@ export const GetDataForResearchers = {
 };
 
 export interface GetUserSessionDataRequestProps {
-  userId?: number;
+  userId?: string;
   sessionId?: number;
 }
 

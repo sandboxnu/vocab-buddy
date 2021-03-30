@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
-import { SessionStats, User } from "../../models/types";
+import { User } from "../../models/types";
 import { CLOUD, INK } from "../../constants/colors";
 import {
   GetData,
@@ -17,8 +17,6 @@ import {
   GetDataRequestProps,
   SignOut,
   ChangeProfileIcon,
-  GetUserSessionDataRequestProps,
-  GetUserSessionData,
 } from "./data/actions";
 import {
   getCurrentUser,
@@ -26,7 +24,6 @@ import {
   getIsSignedOut,
   getTotalWordsLearned,
   getDashboardError,
-  getSessionStats,
   getCurrentStudentData,
   getCurrentStudentTotalWordsLearned,
 } from "./data/reducer";
@@ -43,14 +40,12 @@ interface DashboardParams {
   currentUser?: User;
   totalWordsLearned?: number;
   dataForResearchers?: User[];
-  userSessionData?: SessionStats;
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
   getDataForResearchers: (
     val: GetDataForResearchersRequestProps
   ) => void;
   changeIconRequest: (url: string) => void;
-  getUserSessionData: (val: GetUserSessionDataRequestProps) => void;
   error?: Error;
   requestedStudent?: User;
   requestedStudentTotalWordsLearned?: number;
@@ -66,7 +61,6 @@ const connector = connect(
     currentUser: getCurrentUser(state),
     dataForResearchers: getDataForResearchers(state),
     totalWordsLearned: getTotalWordsLearned(state),
-    userSessionData: getSessionStats(state),
     error: getDashboardError(state),
     requestedStudent: getCurrentStudentData(state),
     requestedStudentTotalWordsLearned: getCurrentStudentTotalWordsLearned(
@@ -77,7 +71,6 @@ const connector = connect(
     signOut: SignOut.request,
     getUser: GetData.request,
     getDataForResearchers: GetDataForResearchers.request,
-    getUserSessionData: GetUserSessionData.request,
     changeIconRequest: ChangeProfileIcon.request,
   }
 );
@@ -462,8 +455,6 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   isSignedOut,
   signOut,
   currentUser,
-  userSessionData,
-  getUserSessionData,
   totalWordsLearned,
   getUser,
   dataForResearchers,

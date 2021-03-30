@@ -485,7 +485,7 @@ export default class FirebaseInteractor {
     if (
       interventionForSession == null ||
       assessmentForSession == null ||
-      sessionId == -1
+      sessionId === -1
     ) {
       throw new Error(
         `User ${userId} does not have both an intervention and assessment for session ${sessionId}`
@@ -493,7 +493,7 @@ export default class FirebaseInteractor {
     }
 
     let intervetionDuration = interventionForSession.data().durationsInSeconds;
-    let assessmentDuration = assessmentForSession.data().durationsInSeconds;
+    let assessmentDuration = assessmentForSession.data().durationInSeconds;
 
     let assesmentResults = await assessmentForSession.ref
       .collection("results")
@@ -503,7 +503,6 @@ export default class FirebaseInteractor {
     let incorrect = assesmentResults.docs.filter((doc) => !doc.data().correct)
       .length;
 
-    console.log(interventionForSession.data());
     return {
       interventionDuration: intervetionDuration,
       assessmentDuration: assessmentDuration,

@@ -1,30 +1,52 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
 import { SessionStats, User } from "../../models/types";
-import { GetUserSessionDataRequestProps } from "./data/actions";
+import {
+  GetUserSessionDataRequestProps,
+  GetUserSessionData,
+} from "./data/actions";
+import { getSessionStats } from "./data/reducer";
 
+const connector = connect(
+  (state) => ({
+    userSessionData: getSessionStats(state),
+  }),
+  {
+    getUserSessionData: GetUserSessionData.request,
+  }
+);
 interface SessionDashboardParams {
-  student?: User;
+  userId?: string;
   sessionId?: number;
-  studentStats: SessionStats;
-  getUserSessionData: (val: GetUserSessionDataRequestProps) => void;
+  userSessionData?: SessionStats;
+  getUserSessionData?: (val: GetUserSessionDataRequestProps) => void;
 }
 
 const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
-  student,
+  userId,
   sessionId,
-  studentStats,
+  userSessionData,
   getUserSessionData,
 }) => {
+  useEffect(() => {
+    if (
+      !userSessionData &&
+      userId &&
+      sessionId &&
+      getUserSessionData
+    ) {
+      getUserSessionData({ userId, sessionId });
+    }
+  }, [userSessionData, userId, sessionId, getUserSessionData]);
+
   return (
     <>
-      <p>{studentStats.assessmentDuration} </p>
-      <p>{studentStats.interventionDuration} </p>
-      <p>{studentStats.incorrectWords} </p>
-      <p>{studentStats.correctWords} </p>
+      <p>{userSessionData?.assessmentDuration} </p>
+      <p>{userSessionData?.interventionDuration} </p>
+      <p>{userSessionData?.incorrectWords} </p>
+      <p>{userSessionData?.correctWords} </p>
     </>
   );
 };
 
-export default SessionDashboard;
+export default connector(SessionDashboard);

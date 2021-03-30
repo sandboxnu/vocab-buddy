@@ -38,7 +38,12 @@ const App = (): ReactElement => {
         />
         <AuthenticatedRoute
           path="/dashboard/:userId/session/:sessionId"
-          component={SessionDashboard}
+          render={({ match }) => (
+            <SessionDashboard
+              userId={match.params.userId}
+              sessionId={+match.params.sessionId}
+            />
+          )}
         />
         <AuthenticatedRoute
           exact
