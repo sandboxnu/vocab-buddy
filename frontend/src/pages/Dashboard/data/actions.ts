@@ -64,6 +64,7 @@ export const GetDataForResearchers = {
   }),
   error: ({ error }: GetDataForResearchersResponse) => ({
     type: ActionTypes.GET_DATA_FOR_RESEARCHERS_ERROR,
+    payload: { error },
   }),
 };
 
@@ -88,6 +89,7 @@ export const GetUserSessionData = {
   }),
   error: ({ error }: GetUserSessionDataResponse) => ({
     type: ActionTypes.GET_USER_SESSION_DATA_ERROR,
+    payload: { error },
   }),
 };
 

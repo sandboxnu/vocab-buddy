@@ -483,8 +483,8 @@ export default class FirebaseInteractor {
     ).docs[0];
 
     if (
-      interventionForSession == null ||
-      assessmentForSession == null ||
+      assessmentForSession == undefined ||
+      assessmentForSession == undefined ||
       sessionId === -1
     ) {
       throw new Error(
@@ -492,7 +492,7 @@ export default class FirebaseInteractor {
       );
     }
 
-    let intervetionDuration = interventionForSession.data().durationsInSeconds;
+    let intervetionDuration = interventionForSession?.data().durationsInSeconds;
     let assessmentDuration = assessmentForSession.data().durationInSeconds;
 
     let assesmentResults = await assessmentForSession.ref
