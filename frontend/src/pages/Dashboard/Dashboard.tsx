@@ -637,7 +637,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               isStudentView={false}
               totalWordsLearned={requestedStudentTotalWordsLearned}
             />
-          ) : userSessionData &&
+          ) : userSessionData !== undefined &&
             sessionParams.userId &&
             sessionParams.sessionId ? (
             <SessionDashboard
