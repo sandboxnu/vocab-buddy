@@ -409,18 +409,17 @@ const SessionCard: FunctionComponent<SessionCardParams> = ({
       <SessionNumber>session {sessionNumber}</SessionNumber>
     </SessionBox>
   ) : (
-    <button
+    <SessionBox
+      isComplete={isComplete}
       onClick={() =>
         history.push(
           `/dashboard/${studentId}/session/${sessionNumber}`
         )
       }
     >
-      <SessionBox isComplete={isComplete}>
-        <SessionImage src={image} />
-        <SessionNumber>session {sessionNumber}</SessionNumber>
-      </SessionBox>
-    </button>
+      <SessionImage src={image} />
+      <SessionNumber>session {sessionNumber}</SessionNumber>
+    </SessionBox>
   );
 };
 

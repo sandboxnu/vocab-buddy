@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import { SessionStats } from "../../models/types";
 import { CLOUD, INK } from "../../constants/colors";
@@ -10,7 +10,7 @@ interface SessionDashboardParams {
 }
 
 interface StatParams {
-  number: number;
+  stat: number;
   description: string;
 }
 
@@ -57,20 +57,20 @@ const StatDescription = styled.p`
 `;
 
 const Stat: FunctionComponent<StatParams> = ({
-  number,
+  stat,
   description,
 }) => {
   return (
     <FormattedStat>
       <StatDescription>{description}</StatDescription>
-      <StatNumber>{formatNumber(number)}</StatNumber>
+      <StatNumber>{formatDuration(stat)}</StatNumber>
     </FormattedStat>
   );
 };
 
-const formatNumber = (number: number) => {
-  let minutes = Math.floor(number / 60);
-  let seconds = Math.floor(number - minutes * 60);
+const formatDuration = (stat: number) => {
+  let minutes = Math.floor(stat / 60);
+  let seconds = Math.floor(stat - minutes * 60);
   return minutes + "'" + seconds + '"';
 };
 
@@ -83,19 +83,19 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
     <StatContainer>
       <StatTitle>stats</StatTitle>
       <Stat
-        number={userSessionData.assessmentDuration}
+        stat={userSessionData.assessmentDuration}
         description={"assessments completion time"}
       />
       <Stat
-        number={userSessionData.interventionDuration}
+        stat={userSessionData.interventionDuration}
         description={"interventions completion time"}
       />
       <Stat
-        number={userSessionData.incorrectWords}
+        stat={userSessionData.correctWords}
         description={"words answered correctly"}
       />
       <Stat
-        number={userSessionData.correctWords}
+        stat={userSessionData.incorrectWords}
         description={"words answered incorrectly"}
       />
     </StatContainer>
