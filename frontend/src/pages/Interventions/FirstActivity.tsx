@@ -81,16 +81,6 @@ const FirstActivity = ({
   imageUrl,
   updateIntervention,
 }: FirstActivityProps): ReactElement => {
-  const [triggerSecondPrompt, setTriggerSecondPrompt] = useState(
-    false
-  );
-
-  useEffect(() => {
-    setTimeout(() => {
-      setTriggerSecondPrompt(true);
-    }, 5000);
-  });
-
   return (
     <Layout>
       <Container>
@@ -106,7 +96,7 @@ const FirstActivity = ({
               prompt2Url={
                 "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt2.mp3?alt=media&token=f14a750a-9470-49e7-9d90-ff9660c2402e"
               }
-              triggerSecondPrompt={triggerSecondPrompt}
+              promptDelay={5000}
             />
           </Prompt>
           <Image src={imageUrl} />
