@@ -53,10 +53,6 @@ const dashboardReducer = (
     case ActionTypes.GET_USER_SESSION_DATA_SUCCESS:
       return {
         ...state,
-        students: undefined,
-        user: undefined,
-        totalWordsLearned: undefined,
-        error: undefined,
         sessionStats: action.payload.sessionStats,
       };
     case ActionTypes.FINISHED_INTERVENTION_SUCCESS:

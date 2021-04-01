@@ -483,7 +483,7 @@ export default class FirebaseInteractor {
         .get()
     ).docs[0];
 
-    let intervetionDuration =
+    let interventionDuration =
       !interventionForSession ||
       !interventionForSession?.data().durationsInSeconds
         ? 0
@@ -506,7 +506,7 @@ export default class FirebaseInteractor {
     return {
       userId: userId,
       sessionId: sessionId,
-      interventionDuration: intervetionDuration,
+      interventionDuration: interventionDuration,
       assessmentDuration: assessmentDuration,
       incorrectWords: incorrect,
       correctWords: correct,

@@ -8,7 +8,7 @@ interface SessionDashboardParams {
 }
 
 interface StatParams {
-  stat: number;
+  stat: string;
   description: string;
 }
 
@@ -61,7 +61,7 @@ const Stat: FunctionComponent<StatParams> = ({
   return (
     <FormattedStat>
       <StatDescription>{description}</StatDescription>
-      <StatNumber>{formatDuration(stat)}</StatNumber>
+      <StatNumber>{stat}</StatNumber>
     </FormattedStat>
   );
 };
@@ -79,19 +79,19 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
     <StatContainer>
       <StatTitle>stats</StatTitle>
       <Stat
-        stat={userSessionData.assessmentDuration}
+        stat={formatDuration(userSessionData.assessmentDuration)}
         description={"assessments completion time"}
       />
       <Stat
-        stat={userSessionData.interventionDuration}
+        stat={formatDuration(userSessionData.interventionDuration)}
         description={"interventions completion time"}
       />
       <Stat
-        stat={userSessionData.correctWords}
+        stat={userSessionData.correctWords.toString()}
         description={"words answered correctly"}
       />
       <Stat
-        stat={userSessionData.incorrectWords}
+        stat={userSessionData.incorrectWords.toString()}
         description={"words answered incorrectly"}
       />
     </StatContainer>
