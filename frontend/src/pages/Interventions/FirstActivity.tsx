@@ -101,10 +101,10 @@ const FirstActivity = ({
           <Prompt>
             <TriggeredPrompt
               prompt1Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/service-bell_daniel_simion.mp3?alt=media&token=d4222a38-14bc-49a8-b285-7786cf89f246"
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt1.mp3?alt=media&token=1a088281-a886-41bc-8ac8-921f032d5cc0"
               }
               prompt2Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/poker-chips-daniel_simon.mp3?alt=media&token=affc0118-9b6a-493d-8b55-7e69d71b43b9"
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt2.mp3?alt=media&token=f14a750a-9470-49e7-9d90-ff9660c2402e"
               }
               triggerSecondPrompt={triggerSecondPrompt}
             />
