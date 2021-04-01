@@ -135,6 +135,15 @@ const DropdownMenu = styled(Menu)`
   border-radius: 12px;
   li {
     font-size: 18px;
+    :last-child {
+      border-bottom-right-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+
+    :first-child {
+      border-top-right-radius: 12px;
+      border-top-left-radius: 12px;
+    }
   }
 
   @media (max-width: 900px) {
@@ -231,7 +240,7 @@ const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
     <ResearcherDashboardContainer>
       <ResearcherTopBar>
         <TitleText>students</TitleText>
-        <StudentFilter overlay={menu}>
+        <StudentFilter trigger={["click"]} overlay={menu}>
           <DropdownLabel>
             <p>sort by: {sortByLabel}</p>
             <DropdownCaret src={caret}></DropdownCaret>
