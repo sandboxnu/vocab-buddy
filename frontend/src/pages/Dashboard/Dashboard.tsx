@@ -560,9 +560,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     }
   }, [
     sessionParams.userId,
-    ,
     sessionParams.sessionId,
-    ,
     getUserSessionData,
     userSessionData,
   ]);
