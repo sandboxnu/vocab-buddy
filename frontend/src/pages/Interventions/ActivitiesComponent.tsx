@@ -23,7 +23,8 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
       return (
         <FirstActivity
           title={title}
-          prompt={activities.a1.prompt}
+          prompt1Url={activities.a1.prompt}
+          prompt2Url={activities.a1.prompt2}
           imageUrl={activities.a1.url}
           updateIntervention={() => updateIntervention(false)}
         />
@@ -47,7 +48,8 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
       return (
         <SecondActivity
           title={title}
-          prompt={activities.a2.prompt}
+          prompt1Url={activities.a2.prompt}
+          prompt2Url={activities.a2.prompt2}
           imageUrls={imageUrls}
           updateIntervention={updateIntervention}
         />
@@ -57,7 +59,8 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
       return (
         <ThirdActivity
           title={title}
-          prompt={activities.a3.prompt}
+          prompt1Url={activities.a3.prompt}
+          prompt2Url={activities.a3.prompt2}
           imageUrl={activities.a3.url}
           answer={activities.a3.correctAnswer}
           updateIntervention={updateIntervention}
@@ -68,7 +71,8 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
       return (
         <ThirdActivity
           title={title}
-          prompt={activities.a3Part2.prompt}
+          prompt1Url={activities.a3Part2.prompt}
+          prompt2Url={activities.a3Part2.prompt2}
           imageUrl={activities.a3Part2.url}
           answer={activities.a3Part2.correctAnswer}
           updateIntervention={updateIntervention}
@@ -79,7 +83,8 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
       return (
         <ThirdActivity
           title={title}
-          prompt={activities.a3Part3.prompt}
+          prompt1Url={activities.a3Part3.prompt}
+          prompt2Url={activities.a3Part3.prompt2}
           imageUrl={activities.a3Part3.url}
           answer={activities.a3Part3.correctAnswer}
           updateIntervention={updateIntervention}
@@ -90,7 +95,8 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
       return (
         <FourthActivity
           title={title}
-          prompt={activities.a4.prompt}
+          prompt1Url={activities.a4.prompt}
+          prompt2Url={activities.a4.prompt2}
           imageUrl={activities.a4.url}
           updateIntervention={() => updateIntervention(false)}
         />

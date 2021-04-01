@@ -10,7 +10,8 @@ import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface FirstActivityProps {
   title: string;
-  prompt: string;
+  prompt1Url: string;
+  prompt2Url: string;
   imageUrl: string;
   updateIntervention: () => void;
 }
@@ -77,7 +78,8 @@ const ButtonContainer = styled.div`
 
 const FirstActivity = ({
   title,
-  prompt,
+  prompt1Url,
+  prompt2Url,
   imageUrl,
   updateIntervention,
 }: FirstActivityProps): ReactElement => {
@@ -100,12 +102,8 @@ const FirstActivity = ({
           <WordTitle>{title}</WordTitle>
           <Prompt>
             <TriggeredPrompt
-              prompt1Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/service-bell_daniel_simion.mp3?alt=media&token=d4222a38-14bc-49a8-b285-7786cf89f246"
-              }
-              prompt2Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/poker-chips-daniel_simon.mp3?alt=media&token=affc0118-9b6a-493d-8b55-7e69d71b43b9"
-              }
+              prompt1Url={prompt1Url}
+              prompt2Url={prompt2Url}
               triggerSecondPrompt={triggerSecondPrompt}
             />
           </Prompt>
