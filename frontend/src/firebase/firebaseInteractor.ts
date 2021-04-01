@@ -504,6 +504,8 @@ export default class FirebaseInteractor {
     }
 
     return {
+      userId: userId,
+      sessionId: sessionId,
       interventionDuration: intervetionDuration,
       assessmentDuration: assessmentDuration,
       incorrectWords: incorrect,

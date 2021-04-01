@@ -4,8 +4,6 @@ import { SessionStats } from "../../models/types";
 import { CLOUD, INK } from "../../constants/colors";
 
 interface SessionDashboardParams {
-  userId?: string;
-  sessionId?: number;
   userSessionData: SessionStats;
 }
 
@@ -75,8 +73,6 @@ const formatDuration = (stat: number) => {
 };
 
 const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
-  userId,
-  sessionId,
   userSessionData,
 }) => {
   return (

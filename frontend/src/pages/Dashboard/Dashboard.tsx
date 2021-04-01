@@ -549,7 +549,9 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     if (
       sessionParams.userId &&
       sessionParams.sessionId &&
-      !userSessionData
+      (!userSessionData ||
+        userSessionData.userId !== sessionParams.userId ||
+        userSessionData.sessionId !== +sessionParams.sessionId)
     ) {
       getUserSessionData({
         userId: sessionParams.userId,
@@ -640,11 +642,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
           ) : userSessionData !== undefined &&
             sessionParams.userId &&
             sessionParams.sessionId ? (
-            <SessionDashboard
-              userId={sessionParams.userId}
-              sessionId={+sessionParams.sessionId}
-              userSessionData={userSessionData}
-            />
+            <SessionDashboard userSessionData={userSessionData} />
           ) : (
             <ResearcherDashboard
               students={dataForResearchers || []}

@@ -10,7 +10,6 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Assessments from "./pages/Assessments/Assessments";
 import Quiz from "./pages/Assessments/Quiz";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import SessionDashboard from "./pages/Dashboard/SessionDashboard";
 import Interventions from "./pages/Interventions/Interventions";
 import Activities from "./pages/Interventions/Activities";
 import CreateUser from "./pages/Login/CreateUser";
