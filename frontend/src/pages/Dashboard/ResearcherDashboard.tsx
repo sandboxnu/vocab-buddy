@@ -240,7 +240,7 @@ const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
     <ResearcherDashboardContainer>
       <ResearcherTopBar>
         <TitleText>students</TitleText>
-        <StudentFilter overlay={menu}>
+        <StudentFilter trigger={["click"]} overlay={menu}>
           <DropdownLabel>
             <p>sort by: {sortByLabel}</p>
             <DropdownCaret src={caret}></DropdownCaret>
