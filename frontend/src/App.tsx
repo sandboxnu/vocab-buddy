@@ -36,6 +36,10 @@ const App = (): ReactElement => {
           component={Dashboard}
         />
         <AuthenticatedRoute
+          path="/dashboard/:userId/session/:sessionId"
+          component={Dashboard}
+        />
+        <AuthenticatedRoute
           exact
           path="/interventions"
           component={Interventions}

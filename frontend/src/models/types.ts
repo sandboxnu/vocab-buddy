@@ -147,6 +147,9 @@ export enum ActionTypes {
   GET_DATA_FOR_RESEARCHERS_REQUEST = "GET_DATA_FOR_RESEARCHERS_REQUEST",
   GET_DATA_FOR_RESEARCHERS_SUCCESS = "GET_DATA_FOR_RESEARCHERS_SUCCESS",
   GET_DATA_FOR_RESEARCHERS_ERROR = "GET_DATA_FOR_RESEARCHERS_ERROR",
+  GET_USER_SESSION_DATA_REQUEST = "GET_USER_SESSION_DATA_REQUEST",
+  GET_USER_SESSION_DATA_SUCCESS = "GET_USER_SESSION_DATA_SUCCESS",
+  GET_USER_SESSION_DATA_ERROR = "GET_USER_SESSION_DATA_ERROR",
   CHANGE_PROFILE_ICON_REQUEST = "CHANGE_PROFILE_ICON_REQUEST",
   CHANGE_PROFILE_ICON_SUCCESS = "CHANGE_PROFILE_ICON_SUCCESS",
   CHANGE_PROFILE_ICON_ERROR = "CHANGE_PROFILE_ICON_ERROR",
@@ -186,12 +189,22 @@ export interface ResetPasswordParams {
   email: string;
 }
 
+export interface SessionStats {
+  userId: string;
+  sessionId: number;
+  interventionDuration: number;
+  assessmentDuration: number;
+  incorrectWords: number;
+  correctWords: number;
+}
+
 export interface DashboardState {
   isSignedOut: boolean;
   user?: User;
   students?: User[];
   totalWordsLearned?: number;
   error?: Error;
+  sessionStats?: SessionStats;
   currentStudent?: User;
   currentStudentTotalWordsLearned?: number;
 }

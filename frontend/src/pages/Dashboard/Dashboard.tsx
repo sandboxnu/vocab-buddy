@@ -8,13 +8,15 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
+import { SessionStats, User } from "../../models/types";
 import { CLOUD, INK } from "../../constants/colors";
-import { User } from "../../models/types";
 import {
   GetData,
   GetDataForResearchers,
   GetDataForResearchersRequestProps,
   GetDataRequestProps,
+  GetUserSessionDataRequestProps,
+  GetUserSessionData,
   SignOut,
   ChangeProfileIcon,
 } from "./data/actions";
@@ -26,6 +28,7 @@ import {
   getDashboardError,
   getCurrentStudentData,
   getCurrentStudentTotalWordsLearned,
+  getSessionStats,
 } from "./data/reducer";
 import ResearcherDashboard from "../Dashboard/ResearcherDashboard";
 import StudentDashboard from "../Dashboard/StudentDashboard";
@@ -34,12 +37,15 @@ import reviewWordsIcon from "../../assets/icons/dashboard-menu/review.svg";
 import settingsIcon from "../../assets/icons/dashboard-menu/settings.svg";
 import caret from "../../assets/caret.svg";
 import ProfileEditModal from "../../components/ProfileEditModal";
+import SessionDashboard from "./SessionDashboard";
 
 interface DashboardParams {
   isSignedOut: boolean;
   currentUser?: User;
   totalWordsLearned?: number;
   dataForResearchers?: User[];
+  userSessionData?: SessionStats;
+  getUserSessionData: (val: GetUserSessionDataRequestProps) => void;
   signOut: () => void;
   getUser: (val: GetDataRequestProps) => void;
   getDataForResearchers: (
@@ -55,6 +61,11 @@ interface IndividualDashboardParams {
   id?: string;
 }
 
+interface SessionDashboardParams {
+  userId?: string;
+  sessionId?: string;
+}
+
 const connector = connect(
   (state) => ({
     isSignedOut: getIsSignedOut(state),
@@ -63,6 +74,7 @@ const connector = connect(
     totalWordsLearned: getTotalWordsLearned(state),
     error: getDashboardError(state),
     requestedStudent: getCurrentStudentData(state),
+    userSessionData: getSessionStats(state),
     requestedStudentTotalWordsLearned: getCurrentStudentTotalWordsLearned(
       state
     ),
@@ -72,6 +84,7 @@ const connector = connect(
     getUser: GetData.request,
     getDataForResearchers: GetDataForResearchers.request,
     changeIconRequest: ChangeProfileIcon.request,
+    getUserSessionData: GetUserSessionData.request,
   }
 );
 
@@ -457,6 +470,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   currentUser,
   totalWordsLearned,
   getUser,
+  userSessionData,
+  getUserSessionData,
   dataForResearchers,
   getDataForResearchers,
   error,
@@ -476,6 +491,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     setHasPerformedNetworkRequest,
   ] = useState(false);
   let params = useParams<IndividualDashboardParams>();
+  let sessionParams = useParams<SessionDashboardParams>();
 
   useEffect(() => {
     const resizeScreen = () => {
@@ -529,6 +545,34 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     requestedStudentTotalWordsLearned,
   ]);
 
+  useEffect(() => {
+    if (
+      sessionParams.userId &&
+      sessionParams.sessionId &&
+      (!userSessionData ||
+        userSessionData.userId !== sessionParams.userId ||
+        userSessionData.sessionId !== +sessionParams.sessionId)
+    ) {
+      getUserSessionData({
+        userId: sessionParams.userId,
+        sessionId: +sessionParams.sessionId,
+      });
+    }
+  }, [
+    sessionParams.userId,
+    sessionParams.sessionId,
+    getUserSessionData,
+    userSessionData,
+  ]);
+
+  // Shows a loading screen if the current user and session doesn't exist
+  if (
+    !userSessionData &&
+    (sessionParams.userId || sessionParams.sessionId)
+  ) {
+    return <h1>Loading</h1>;
+  }
+
   // Shows a loading screen if the current user doesn't exist
   if (!currentUser || totalWordsLearned === undefined) {
     return <h1>Loading</h1>;
@@ -544,7 +588,10 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     return <h1>Loading</h1>;
   }
 
-  if (params.id && currentUser.accountType === "STUDENT") {
+  if (
+    (params.id || sessionParams.userId || sessionParams.sessionId) &&
+    currentUser.accountType === "STUDENT"
+  ) {
     history.push("/error");
   }
 
@@ -590,6 +637,10 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               isStudentView={false}
               totalWordsLearned={requestedStudentTotalWordsLearned}
             />
+          ) : userSessionData !== undefined &&
+            sessionParams.userId &&
+            sessionParams.sessionId ? (
+            <SessionDashboard userSessionData={userSessionData} />
           ) : (
             <ResearcherDashboard
               students={dataForResearchers || []}

@@ -63,8 +63,9 @@ const SessionCardContainer = styled.div`
   }
 `;
 
-interface SessionCompletionProp {
+interface SessionCompletionProps {
   isComplete: boolean;
+  isStudentView: boolean;
 }
 
 const SessionBox = styled.div`
@@ -79,8 +80,21 @@ const SessionBox = styled.div`
     padding: 32px;
   }
 
-  background: ${({ isComplete }: SessionCompletionProp) =>
+  background: ${({ isComplete }: SessionCompletionProps) =>
     isComplete ? SKY : INCOMPLETE_GRAY} !important;
+
+  :hover {
+    cursor: ${({
+      isComplete,
+      isStudentView,
+    }: SessionCompletionProps) =>
+      isComplete && !isStudentView ? "pointer" : "auto"};
+    opacity: ${({
+      isComplete,
+      isStudentView,
+    }: SessionCompletionProps) =>
+      isComplete && !isStudentView ? 0.8 : 1};
+  }
 `;
 
 const SessionNumber = styled.p`
@@ -391,15 +405,30 @@ interface SessionCardParams {
   sessionNumber: number;
   image: string;
   isComplete: boolean;
+  studentId: string;
+  isStudentView: boolean;
 }
 
 const SessionCard: FunctionComponent<SessionCardParams> = ({
   sessionNumber,
   image,
   isComplete,
+  studentId,
+  isStudentView,
 }) => {
+  const history = useHistory();
   return (
-    <SessionBox isComplete={isComplete}>
+    <SessionBox
+      isComplete={isComplete}
+      isStudentView={isStudentView}
+      onClick={() => {
+        if (isComplete) {
+          history.push(
+            `/dashboard/${studentId}/session/${sessionNumber}`
+          );
+        }
+      }}
+    >
       <SessionImage src={image} />
       <SessionNumber>session {sessionNumber}</SessionNumber>
     </SessionBox>
@@ -462,6 +491,8 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
                 }
                 isComplete={complete}
                 key={index}
+                studentId={student.id}
+                isStudentView={isStudentView}
               />
             );
           })}

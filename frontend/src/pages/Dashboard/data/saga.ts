@@ -4,6 +4,7 @@ import { Action, ActionTypes } from "../../../models/types";
 import {
   GetData,
   GetDataForResearchers,
+  GetUserSessionData,
   ChangeProfileIcon,
   SignOut,
 } from "./actions";
@@ -27,6 +28,10 @@ function* root() {
   yield takeLatest(
     ActionTypes.CHANGE_PROFILE_ICON_REQUEST,
     watchChangeProfileIcon
+  );
+  yield takeLatest(
+    ActionTypes.GET_USER_SESSION_DATA_REQUEST,
+    watchGetUserSessionData
   );
 }
 
@@ -69,6 +74,23 @@ function* watchGetDataForResearchers() {
     yield put(GetDataForResearchers.success({ students }));
   } catch (error) {
     yield put(GetDataForResearchers.error({ error }));
+  }
+}
+
+function* watchGetUserSessionData(action: Action) {
+  let { userId, sessionId } = action.payload;
+  let sessionStats;
+  const getValue = async () => {
+    sessionStats = await firebaseInteractor.getStatsForSession(
+      userId,
+      sessionId
+    );
+  };
+  try {
+    yield call(getValue);
+    yield put(GetUserSessionData.success({ sessionStats }));
+  } catch (error) {
+    yield put(GetUserSessionData.error({ error }));
   }
 }
 

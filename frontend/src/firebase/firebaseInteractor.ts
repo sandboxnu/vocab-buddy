@@ -14,6 +14,7 @@ import {
   InterventionWord,
   Review,
   SessionId,
+  SessionStats,
   User,
   Word,
 } from "../models/types";
@@ -344,7 +345,7 @@ export default class FirebaseInteractor {
 
     await this.db.collection("assessments").doc(id).update({
       currentIndex: currentIdx,
-      durationInSeconds: increment,
+      durationsInSeconds: increment,
     });
     this.updateDaysActive();
   }
@@ -377,6 +378,7 @@ export default class FirebaseInteractor {
         incorrectWords[(i * 3 + 2) % incorrectWords.length].word,
       ];
       let newIntervention = await this.db.collection("interventions").add({
+        durationsInSeconds: 0,
         activityIdx: 0,
         wordIdx: 0,
         wordList,
@@ -458,6 +460,56 @@ export default class FirebaseInteractor {
       activityIdx: intervention.activityIdx,
       wordIdx: intervention.wordIdx,
       sessionId: intervention.session,
+    };
+  }
+
+  // get stats for the given user's given session
+  async getStatsForSession(
+    userId: string,
+    sessionId: number
+  ): Promise<SessionStats> {
+    let interventionForSession = (
+      await this.db
+        .collection("interventions")
+        .where("userId", "==", userId)
+        .where("session", "==", sessionId)
+        .get()
+    ).docs[0];
+    let assessmentForSession = (
+      await this.db
+        .collection("assessments")
+        .where("userId", "==", userId)
+        .where("session", "==", sessionId)
+        .get()
+    ).docs[0];
+
+    let interventionDuration =
+      !interventionForSession ||
+      !interventionForSession?.data().durationsInSeconds
+        ? 0
+        : interventionForSession?.data().durationsInSeconds;
+    let assessmentDuration = 0;
+    let correct = 0;
+    let incorrect = 0;
+
+    if (assessmentForSession !== undefined && sessionId !== -1) {
+      assessmentDuration = assessmentForSession.data().durationInSeconds;
+      let assesmentResults = await assessmentForSession.ref
+        .collection("results")
+        .get();
+      correct = assesmentResults.docs.filter((doc) => doc.data().correct)
+        .length;
+      incorrect = assesmentResults.docs.filter((doc) => !doc.data().correct)
+        .length;
+    }
+
+    return {
+      userId: userId,
+      sessionId: sessionId,
+      interventionDuration: interventionDuration,
+      assessmentDuration: assessmentDuration,
+      incorrectWords: incorrect,
+      correctWords: correct,
     };
   }
 

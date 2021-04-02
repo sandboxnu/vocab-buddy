@@ -50,6 +50,11 @@ const dashboardReducer = (
           : state.totalWordsLearned,
         error: undefined,
       };
+    case ActionTypes.GET_USER_SESSION_DATA_SUCCESS:
+      return {
+        ...state,
+        sessionStats: action.payload.sessionStats,
+      };
     case ActionTypes.FINISHED_INTERVENTION_SUCCESS:
       return {
         ...state,
@@ -111,6 +116,10 @@ export const getTotalWordsLearned = (state: RootStateOrAny) => {
 
 export const getDashboardError = (state: RootStateOrAny) => {
   return state.dashboard.error;
+};
+
+export const getSessionStats = (state: RootStateOrAny) => {
+  return state.dashboard.sessionStats;
 };
 
 export default dashboardReducer;
