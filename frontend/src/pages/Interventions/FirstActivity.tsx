@@ -1,13 +1,12 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 import Blocker from "../../components/Blocker";
 import Layout from "../../components/Layout";
-import AutoPrompt from "../../components/AutoPrompt";
 import CloudGroup from "../../components/CloudGroup";
 import DelayedNextButton from "../../components/DelayedNextButton";
-import ReplayButton from "../../components/ReplayButton";
 import { SKY, SKY_RGBA } from "../../constants/colors";
 import ExpandableImage from "../../components/ExpandableImage";
+import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface FirstActivityProps {
   title: string;
@@ -90,10 +89,14 @@ const FirstActivity = ({
           <DescriptionText>introduction + definition</DescriptionText>
           <WordTitle>{title}</WordTitle>
           <Prompt>
-            <AutoPrompt
-              prompt={prompt}
-              button={<ReplayButton scale={0.8} />}
-              delay={10000}
+            <TriggeredPrompt
+              prompt1Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt1.mp3?alt=media&token=1a088281-a886-41bc-8ac8-921f032d5cc0"
+              }
+              prompt2Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt2.mp3?alt=media&token=f14a750a-9470-49e7-9d90-ff9660c2402e"
+              }
+              promptDelay={5000}
             />
           </Prompt>
           <Image src={imageUrl} />
@@ -102,7 +105,7 @@ const FirstActivity = ({
               <DelayedNextButton
                 text={"next"}
                 top={20}
-                delay={2000}
+                delay={6000}
                 onClick={updateIntervention}
                 canBeShown
               />

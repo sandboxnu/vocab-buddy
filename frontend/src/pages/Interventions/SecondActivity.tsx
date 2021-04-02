@@ -7,13 +7,12 @@ import {
   SKY,
   SKY_RGBA,
 } from "../../constants/colors";
-import PromptSpeech from "../../components/PromptSpeech";
-import ReplayButton from "../../components/ReplayButton";
 import CloudGroup from "../../components/CloudGroup";
 import DelayedNextButton from "../../components/DelayedNextButton";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import Blocker from "../../components/Blocker";
 import { indexOf } from "../../constants/utils";
+import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface SecondActivityProps {
   title: string;
@@ -175,9 +174,14 @@ const SecondActivity = ({
           <DescriptionText>example vs. non-example</DescriptionText>
           <WordTitle>{title}</WordTitle>
           <Prompt>
-            <PromptSpeech
-              prompt={prompt}
-              button={<ReplayButton scale={0.8} />}
+            <TriggeredPrompt
+              prompt1Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt1.mp3?alt=media&token=1a088281-a886-41bc-8ac8-921f032d5cc0"
+              }
+              prompt2Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt2.mp3?alt=media&token=f14a750a-9470-49e7-9d90-ff9660c2402e"
+              }
+              triggerSecondPrompt={selectedIndex !== -1}
             />
           </Prompt>
           <Blocker afterSeconds={15} repeatable={false}>

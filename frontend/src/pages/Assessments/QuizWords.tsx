@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
-import PlayButton from "../../components/PlayButton";
-import PromptSpeech from "../../components/PromptSpeech";
 import PurpleButton from "../../components/PurpleButton";
 import CloudGroup from "../../components/CloudGroup";
 import WordImages from "../../components/WordImages";
 import { CLOUD } from "../../constants/colors";
 import { Assessment, AssessmentResult } from "../../models/types";
 import { shuffle } from "../../constants/utils";
+import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface QuizWordsProps {
   assessment: Assessment;
@@ -146,9 +145,12 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
             <PromptText>
               Touch the picture that shows {word.value}.
             </PromptText>
-            <PromptSpeech
-              prompt={`Touch the picture that shows ${word.value}.`}
-              button={<PlayButton scale={0.8} />}
+            <TriggeredPrompt
+              isAssessment={true}
+              currentWord={currentIndex}
+              prompt1Url={
+                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt1.mp3?alt=media&token=1a088281-a886-41bc-8ac8-921f032d5cc0"
+              }
             />
           </Prompt>
           <ImageContainer>
