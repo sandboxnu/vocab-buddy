@@ -1,10 +1,13 @@
 import React, { FunctionComponent } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { SessionStats } from "../../models/types";
 import { CLOUD, INK } from "../../constants/colors";
+import { userInfo } from "os";
 
 interface SessionDashboardParams {
   userSessionData: SessionStats;
+  studentName?: string;
 }
 
 interface StatParams {
@@ -12,8 +15,57 @@ interface StatParams {
   description: string;
 }
 
+const DashboardRedirect = styled.div`
+  color: ${INK};
+  font-weight: 700;
+`;
+
+const SessionContainer = styled.div`
+  flex: 7;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SessionHeader = styled.div`
+  padding: 32px 0 0 32px;
+`;
+
+const SessionBody = styled.div`
+  display: flex;
+  flex: wrap;
+  @media (max-width: 900px) {
+    display: block;
+  }
+`;
+
+const WordContainer = styled.div`
+  width: 60%;
+  padding: 32px;
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+`;
+
+const Word = styled.div`
+  background: red;
+  height: 70px;
+`;
+
+const SessionTitle = styled.p`
+  color: #000000;
+  font-family: "Rubik";
+  font-size: 56px;
+  font-weight: 700;
+  @media (max-width: 900px) {
+    font-size: 36px;
+  }
+`;
 const StatContainer = styled.ul`
-  padding: 24px;
+  width: 40%;
+  padding: 0 32px;
+  @media (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
 const StatTitle = styled.p`
@@ -74,27 +126,53 @@ const formatDuration = (stat: number) => {
 
 const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
   userSessionData,
+  studentName,
 }) => {
+  const history = useHistory();
   return (
-    <StatContainer>
-      <StatTitle>stats</StatTitle>
-      <Stat
-        stat={formatDuration(userSessionData.assessmentDuration)}
-        description={"assessments completion time"}
-      />
-      <Stat
-        stat={formatDuration(userSessionData.interventionDuration)}
-        description={"interventions completion time"}
-      />
-      <Stat
-        stat={userSessionData.correctWords.toString()}
-        description={"words answered correctly"}
-      />
-      <Stat
-        stat={userSessionData.incorrectWords.toString()}
-        description={"words answered incorrectly"}
-      />
-    </StatContainer>
+    <SessionContainer>
+      <SessionHeader>
+        <DashboardRedirect
+          onClick={() => {
+            history.push(
+              `/dashboard/student/${userSessionData.userId}/`
+            );
+          }}
+        >
+          {"< back to " + studentName + "'s data"}
+        </DashboardRedirect>
+        <SessionTitle>
+          session {userSessionData.sessionId}
+        </SessionTitle>
+      </SessionHeader>
+      <SessionBody>
+        <WordContainer>
+          <Word>miniscule</Word>
+          <Word>construct</Word>
+        </WordContainer>
+        <StatContainer>
+          <StatTitle>stats</StatTitle>
+          <Stat
+            stat={formatDuration(userSessionData.assessmentDuration)}
+            description={"assessments completion time"}
+          />
+          <Stat
+            stat={formatDuration(
+              userSessionData.interventionDuration
+            )}
+            description={"interventions completion time"}
+          />
+          <Stat
+            stat={userSessionData.correctWords.toString()}
+            description={"words answered correctly"}
+          />
+          <Stat
+            stat={userSessionData.incorrectWords.toString()}
+            description={"words answered incorrectly"}
+          />
+        </StatContainer>
+      </SessionBody>
+    </SessionContainer>
   );
 };
 

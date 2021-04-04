@@ -640,7 +640,10 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
           ) : userSessionData !== undefined &&
             sessionParams.userId &&
             sessionParams.sessionId ? (
-            <SessionDashboard userSessionData={userSessionData} />
+            <SessionDashboard
+              userSessionData={userSessionData}
+              studentName={requestedStudent?.name}
+            />
           ) : (
             <ResearcherDashboard
               students={dataForResearchers || []}
