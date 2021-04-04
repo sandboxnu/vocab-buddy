@@ -196,6 +196,16 @@ export interface SessionStats {
   assessmentDuration: number;
   incorrectWords: number;
   correctWords: number;
+  wordResults: WordResult[];
+}
+
+export interface WordResult {
+  word: string;
+  assessmentCorrect?: boolean;
+  activity2Correct?: boolean;
+  activity3Correct?: boolean;
+  activity3Part2Correct?: boolean;
+  activity3Part3Correct?: boolean;
 }
 
 export interface DashboardState {

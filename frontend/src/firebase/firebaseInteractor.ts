@@ -17,6 +17,7 @@ import {
   SessionStats,
   User,
   Word,
+  WordResult,
 } from "../models/types";
 
 // Your web app's Firebase configuration
@@ -491,6 +492,7 @@ export default class FirebaseInteractor {
     let assessmentDuration = 0;
     let correct = 0;
     let incorrect = 0;
+    let wordResults: WordResult[] = [];
 
     if (assessmentForSession !== undefined && sessionId !== -1) {
       assessmentDuration = assessmentForSession.data().durationInSeconds;
@@ -501,6 +503,29 @@ export default class FirebaseInteractor {
         .length;
       incorrect = assesmentResults.docs.filter((doc) => !doc.data().correct)
         .length;
+
+      if (interventionForSession) {
+        let interventionResults = (
+          await interventionForSession.ref.collection("responses").get()
+        ).docs;
+        let intervention = await this.getIntervention(
+          interventionForSession.id
+        );
+        intervention.wordList.forEach((wordInfo) => {
+          let currentWordAssessmentStats = assesmentResults.docs.filter(
+            (doc) => doc.id === wordInfo.word.id
+          )[0];
+          let currentWordInterventionStats = interventionResults.filter(
+            (doc) => doc.id === wordInfo.word.id
+          )[0];
+          let wordStats: WordResult = {
+            word: wordInfo.word.value,
+            assessmentCorrect: currentWordAssessmentStats?.data().correct,
+            ...currentWordInterventionStats?.data(),
+          };
+          wordResults.push(wordStats);
+        });
+      }
     }
 
     return {
@@ -510,6 +535,7 @@ export default class FirebaseInteractor {
       assessmentDuration: assessmentDuration,
       incorrectWords: incorrect,
       correctWords: correct,
+      wordResults: wordResults,
     };
   }
 
