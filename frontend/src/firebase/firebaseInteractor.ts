@@ -468,6 +468,13 @@ export default class FirebaseInteractor {
     userId: string,
     sessionId: number
   ): Promise<SessionStats> {
+    let user = await this.getUser(userId);
+    if (user == null) {
+      throw new Error(
+        `Requested user ${userId} session dashboard does not exist`
+      );
+    }
+
     let interventionForSession = (
       await this.db
         .collection("interventions")
@@ -505,6 +512,7 @@ export default class FirebaseInteractor {
 
     return {
       userId: userId,
+      userName: user.name,
       sessionId: sessionId,
       interventionDuration: interventionDuration,
       assessmentDuration: assessmentDuration,

@@ -3,11 +3,9 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { SessionStats } from "../../models/types";
 import { CLOUD, INK } from "../../constants/colors";
-import { userInfo } from "os";
 
 interface SessionDashboardParams {
   userSessionData: SessionStats;
-  studentName?: string;
 }
 
 interface StatParams {
@@ -17,7 +15,16 @@ interface StatParams {
 
 const DashboardRedirect = styled.div`
   color: ${INK};
+  font-family: "Rubik";
+  font-size: 18px;
   font-weight: 700;
+  text-transform: lowercase;
+
+  :hover {
+    cursor: pointer;
+    text-decoration: underline;
+    opacity: 0.8;
+  }
 `;
 
 const SessionContainer = styled.div`
@@ -126,7 +133,6 @@ const formatDuration = (stat: number) => {
 
 const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
   userSessionData,
-  studentName,
 }) => {
   const history = useHistory();
   return (
@@ -139,7 +145,7 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
             );
           }}
         >
-          {"< back to " + studentName + "'s data"}
+          {"< back to " + userSessionData.userName + "'s data"}
         </DashboardRedirect>
         <SessionTitle>
           session {userSessionData.sessionId}
