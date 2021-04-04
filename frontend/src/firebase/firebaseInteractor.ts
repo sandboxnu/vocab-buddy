@@ -320,6 +320,7 @@ export default class FirebaseInteractor {
         incorrectImages: word.incorrectImages,
         id: wordRef.id,
         createdAt: word.dateCreated.toDate(),
+        assessmentPrompt: word.assessmentPrompt,
       });
     }
     actualWords.sort(
@@ -419,6 +420,7 @@ export default class FirebaseInteractor {
       incorrectImages: word.incorrectImages,
       id: id,
       createdAt: word.dateCreated.toDate(),
+      assessmentPrompt: word.assessmentPrompt,
     };
   }
 

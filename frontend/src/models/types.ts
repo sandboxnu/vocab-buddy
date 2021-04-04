@@ -18,6 +18,7 @@ export interface Word {
   incorrectImages: string[];
   id: string;
   createdAt: Date;
+  assessmentPrompt: string;
 }
 
 /**
