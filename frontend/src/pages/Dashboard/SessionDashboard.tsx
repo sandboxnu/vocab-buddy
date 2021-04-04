@@ -41,15 +41,17 @@ const SessionBody = styled.div`
   display: flex;
   flex: wrap;
   @media (max-width: 900px) {
-    display: block;
+    flex-direction: column;
   }
 `;
 
 const WordContainer = styled.div`
   width: 60%;
+  order: 1;
   padding: 32px;
   @media (max-width: 900px) {
     width: 100%;
+    order: 2;
   }
 `;
 
@@ -69,9 +71,11 @@ const SessionTitle = styled.p`
 `;
 const StatContainer = styled.ul`
   width: 40%;
+  order: 2;
   padding: 0 32px;
   @media (max-width: 900px) {
     width: 100%;
+    order: 1;
   }
 `;
 
