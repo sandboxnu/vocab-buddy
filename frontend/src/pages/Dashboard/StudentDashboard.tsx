@@ -424,7 +424,7 @@ const SessionCard: FunctionComponent<SessionCardParams> = ({
       onClick={() => {
         if (isComplete) {
           history.push(
-            `/dashboard/${studentId}/session/${sessionNumber}`
+            `/dashboard/${studentId}/session/${sessionNumber - 1}`
           );
         }
       }}
