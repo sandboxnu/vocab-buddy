@@ -46,11 +46,11 @@ const SessionBody = styled.div`
 `;
 
 const WordContainer = styled.div`
-  width: 60%;
+  flex: 3;
   order: 1;
   padding: 32px;
   @media (max-width: 900px) {
-    width: 100%;
+    flex: 1;
     order: 2;
   }
 `;
@@ -70,11 +70,11 @@ const SessionTitle = styled.p`
   }
 `;
 const StatContainer = styled.ul`
-  width: 40%;
+  flex: 2;
   order: 2;
   padding: 0 32px;
   @media (max-width: 900px) {
-    width: 100%;
+    flex: 1;
     order: 1;
   }
 `;
