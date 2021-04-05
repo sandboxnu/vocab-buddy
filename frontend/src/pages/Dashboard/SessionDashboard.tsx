@@ -1,7 +1,13 @@
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import { SessionStats, WordResult } from "../../models/types";
-import { CLOUD, CORAL, INK, SEA_FOAM } from "../../constants/colors";
+import {
+  CLOUD,
+  CORAL,
+  GRAY,
+  INK,
+  SEA_FOAM,
+} from "../../constants/colors";
 import {
   CheckCircleFilled,
   CloseCircleFilled,
@@ -132,7 +138,7 @@ const StatsResultIcon = ({ result }: { result?: boolean }) => {
       {result === undefined ? (
         <>
           <StatsText>incomplete</StatsText>
-          <MinusCircleFilled style={{ color: "#666" }} />
+          <MinusCircleFilled style={{ color: GRAY }} />
         </>
       ) : result ? (
         <>
