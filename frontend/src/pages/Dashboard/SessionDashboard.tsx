@@ -6,6 +6,7 @@ import { CLOUD, INK } from "../../constants/colors";
 
 interface SessionDashboardParams {
   userSessionData: SessionStats;
+  userName: string;
 }
 
 interface StatParams {
@@ -137,6 +138,7 @@ const formatDuration = (stat: number) => {
 
 const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
   userSessionData,
+  userName,
 }) => {
   const history = useHistory();
   return (
@@ -149,7 +151,7 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
             );
           }}
         >
-          {"< back to " + userSessionData.userName + "'s data"}
+          {"< back to " + userName + "'s data"}
         </DashboardRedirect>
         <SessionTitle>
           session {userSessionData.sessionId}

@@ -191,7 +191,6 @@ export interface ResetPasswordParams {
 
 export interface SessionStats {
   userId: string;
-  userName: string;
   sessionId: number;
   interventionDuration: number;
   assessmentDuration: number;
