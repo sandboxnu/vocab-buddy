@@ -61,7 +61,6 @@ const StatDescription = styled.p`
 
 const WordResultsContainer = styled.div`
   flex: 1;
-  margin-top: 50px;
 `;
 
 const WordResultWrapper = styled.div`

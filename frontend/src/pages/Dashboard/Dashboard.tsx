@@ -567,8 +567,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
   // Shows a loading screen if the current user and session doesn't exist
   if (
-    !userSessionData &&
-    (sessionParams.userId || sessionParams.sessionId)
+    sessionParams.userId &&
+    sessionParams.sessionId &&
+    (!userSessionData ||
+      userSessionData.userId !== sessionParams.userId ||
+      userSessionData.sessionId !== +sessionParams.sessionId)
   ) {
     return <h1>Loading</h1>;
   }

@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import DelayedNextButton from "../../components/DelayedNextButton";
