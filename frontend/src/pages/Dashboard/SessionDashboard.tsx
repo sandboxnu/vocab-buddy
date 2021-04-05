@@ -1,10 +1,12 @@
 import React, { FunctionComponent } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { SessionStats } from "../../models/types";
 import { CLOUD, INK } from "../../constants/colors";
 
 interface SessionDashboardParams {
   userSessionData: SessionStats;
+  userName: string;
 }
 
 interface StatParams {
@@ -12,8 +14,70 @@ interface StatParams {
   description: string;
 }
 
+const DashboardRedirect = styled.div`
+  color: ${INK};
+  font-family: "Rubik";
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: lowercase;
+
+  :hover {
+    cursor: pointer;
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+`;
+
+const SessionContainer = styled.div`
+  flex: 7;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SessionHeader = styled.div`
+  padding: 32px 0 0 32px;
+`;
+
+const SessionBody = styled.div`
+  display: flex;
+  flex: wrap;
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
+`;
+
+const WordContainer = styled.div`
+  flex: 3;
+  order: 1;
+  padding: 32px;
+  @media (max-width: 900px) {
+    flex: 1;
+    order: 2;
+  }
+`;
+
+const Word = styled.div`
+  background: red;
+  height: 70px;
+`;
+
+const SessionTitle = styled.p`
+  color: #000000;
+  font-family: "Rubik";
+  font-size: 56px;
+  font-weight: 700;
+  @media (max-width: 900px) {
+    font-size: 36px;
+  }
+`;
 const StatContainer = styled.ul`
-  padding: 24px;
+  flex: 2;
+  order: 2;
+  padding: 0 32px;
+  @media (max-width: 900px) {
+    flex: 1;
+    order: 1;
+  }
 `;
 
 const StatTitle = styled.p`
@@ -74,27 +138,53 @@ const formatDuration = (stat: number) => {
 
 const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
   userSessionData,
+  userName,
 }) => {
+  const history = useHistory();
   return (
-    <StatContainer>
-      <StatTitle>stats</StatTitle>
-      <Stat
-        stat={formatDuration(userSessionData.assessmentDuration)}
-        description={"assessments completion time"}
-      />
-      <Stat
-        stat={formatDuration(userSessionData.interventionDuration)}
-        description={"interventions completion time"}
-      />
-      <Stat
-        stat={userSessionData.correctWords.toString()}
-        description={"words answered correctly"}
-      />
-      <Stat
-        stat={userSessionData.incorrectWords.toString()}
-        description={"words answered incorrectly"}
-      />
-    </StatContainer>
+    <SessionContainer>
+      <SessionHeader>
+        <DashboardRedirect
+          onClick={() => {
+            history.push(
+              `/dashboard/student/${userSessionData.userId}/`
+            );
+          }}
+        >
+          {"< back to " + userName + "'s data"}
+        </DashboardRedirect>
+        <SessionTitle>
+          session {userSessionData.sessionId}
+        </SessionTitle>
+      </SessionHeader>
+      <SessionBody>
+        <WordContainer>
+          <Word>miniscule</Word>
+          <Word>construct</Word>
+        </WordContainer>
+        <StatContainer>
+          <StatTitle>stats</StatTitle>
+          <Stat
+            stat={formatDuration(userSessionData.assessmentDuration)}
+            description={"assessments completion time"}
+          />
+          <Stat
+            stat={formatDuration(
+              userSessionData.interventionDuration
+            )}
+            description={"interventions completion time"}
+          />
+          <Stat
+            stat={userSessionData.correctWords.toString()}
+            description={"words answered correctly"}
+          />
+          <Stat
+            stat={userSessionData.incorrectWords.toString()}
+            description={"words answered incorrectly"}
+          />
+        </StatContainer>
+      </SessionBody>
+    </SessionContainer>
   );
 };
 

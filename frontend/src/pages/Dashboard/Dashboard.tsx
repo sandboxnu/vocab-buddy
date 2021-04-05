@@ -531,12 +531,14 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
   useEffect(() => {
     if (
-      params.id &&
-      (!requestedStudent ||
-        requestedStudent.id !== params.id ||
-        requestedStudentTotalWordsLearned === undefined)
+      (params.id &&
+        (!requestedStudent ||
+          requestedStudent.id !==
+            (params.id || sessionParams.userId) ||
+          requestedStudentTotalWordsLearned === undefined)) ||
+      (sessionParams.userId && !requestedStudent)
     ) {
-      getUser({ id: params.id });
+      getUser({ id: params.id ?? sessionParams.userId });
     }
   }, [
     params.id,
@@ -580,9 +582,9 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
   // Shows a loading screen if a requested student doesn't exist
   if (
-    params.id &&
+    (params.id || sessionParams.userId) &&
     (!requestedStudent ||
-      requestedStudent.id !== params.id ||
+      requestedStudent.id !== (params.id || sessionParams.userId) ||
       requestedStudentTotalWordsLearned === undefined)
   ) {
     return <h1>Loading</h1>;
@@ -638,9 +640,13 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               totalWordsLearned={requestedStudentTotalWordsLearned}
             />
           ) : userSessionData !== undefined &&
+            requestedStudent &&
             sessionParams.userId &&
             sessionParams.sessionId ? (
-            <SessionDashboard userSessionData={userSessionData} />
+            <SessionDashboard
+              userSessionData={userSessionData}
+              userName={requestedStudent.name}
+            />
           ) : (
             <ResearcherDashboard
               students={dataForResearchers || []}
