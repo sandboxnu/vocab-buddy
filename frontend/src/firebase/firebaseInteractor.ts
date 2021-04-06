@@ -318,7 +318,7 @@ export default class FirebaseInteractor {
       currentIndex,
       words: actualWords,
       firebaseId: assessment.id,
-      sessionId: assessment.session === undefined ? -1 : 0,
+      sessionId: assessment.session === undefined ? -1 : assessment.session,
     };
   }
 
@@ -360,7 +360,7 @@ export default class FirebaseInteractor {
       .get();
     if (documents.docs.length > 0) {
       await this.updateCurrentUser({
-        sessionId: sessionId < 9 ? ((sessionId + 1) as SessionId) : sessionId,
+        sessionId: sessionId < 8 ? ((sessionId + 1) as SessionId) : sessionId,
         onAssessment: false,
         currentInterventionOrAssessment: documents.docs.filter(
           (doc) => doc.data().session === sessionId + 1
