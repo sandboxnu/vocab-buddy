@@ -144,6 +144,7 @@ const StatsDiv = styled.div`
 const WordStatsContainer = styled.div`
   background-color: ${CLOUD};
   border-radius: 15px;
+  border: 2px solid ${CLOUD};
 `;
 
 const StatsIconContainer = styled.div`
