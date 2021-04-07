@@ -1,8 +1,19 @@
 import React, { FunctionComponent } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { SessionStats } from "../../models/types";
-import { CLOUD, INK } from "../../constants/colors";
+import { SessionStats, WordResult } from "../../models/types";
+import {
+  CLOUD,
+  CORAL,
+  GRAY,
+  INK,
+  SEA_FOAM,
+} from "../../constants/colors";
+import {
+  CheckCircleFilled,
+  CloseCircleFilled,
+  MinusCircleFilled,
+} from "@ant-design/icons";
 
 interface SessionDashboardParams {
   userSessionData: SessionStats;
@@ -49,16 +60,12 @@ const SessionBody = styled.div`
 const WordContainer = styled.div`
   flex: 3;
   order: 1;
-  padding: 32px;
+  padding: 0px 32px;
   @media (max-width: 900px) {
     flex: 1;
     order: 2;
+    padding: 32px;
   }
-`;
-
-const Word = styled.div`
-  background: red;
-  height: 70px;
 `;
 
 const SessionTitle = styled.p`
@@ -118,6 +125,56 @@ const StatDescription = styled.p`
   margin: 0px;
 `;
 
+const WordResultsContainer = styled.div`
+  flex: 1;
+`;
+
+const WordResultWrapper = styled.div`
+  margin-bottom: 15px;
+`;
+
+const StatsDiv = styled.div`
+  display: flex;
+  background-color: ${({ color }: { color: string }) => color};
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 3vh 1vw;
+`;
+
+const WordStatsContainer = styled.div`
+  background-color: ${CLOUD};
+  border-radius: 15px;
+  border: 2px solid ${CLOUD};
+`;
+
+const StatsIconContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+`;
+
+const StatsText = styled.p`
+  font-family: Open Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  margin-right: 15px;
+  margin-bottom: 0;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+`;
+
+const WordResultText = styled.p`
+  font-family: Open Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  margin-right: 15px;
+  margin-bottom: 0;
+`;
+
 const Stat: FunctionComponent<StatParams> = ({
   stat,
   description,
@@ -136,11 +193,73 @@ const formatDuration = (stat: number) => {
   return minutes + "'" + seconds + '"';
 };
 
+const StatsResultIcon = ({ result }: { result?: boolean }) => {
+  return (
+    <StatsIconContainer>
+      {result === undefined ? (
+        <>
+          <StatsText>incomplete</StatsText>
+          <MinusCircleFilled style={{ color: GRAY }} />
+        </>
+      ) : result ? (
+        <>
+          <StatsText>correct</StatsText>
+          <CheckCircleFilled style={{ color: SEA_FOAM }} />
+        </>
+      ) : (
+        <>
+          <StatsText>incorrect</StatsText>
+          <CloseCircleFilled style={{ color: CORAL }} />
+        </>
+      )}
+    </StatsIconContainer>
+  );
+};
+
+const WordResultDiv = ({ word }: { word: WordResult }) => {
+  return (
+    <WordResultWrapper>
+      <StatTitle>{word.word}</StatTitle>
+      <WordStatsContainer>
+        <StatsDiv color={"transparent"}>
+          <WordResultText>assessments</WordResultText>
+          <StatsResultIcon result={word.assessmentCorrect} />
+        </StatsDiv>
+        <StatsDiv color={"#fff"}>
+          <WordResultText>
+            interventions: example vs. non-example
+          </WordResultText>
+          <StatsResultIcon result={word.activity2Correct} />
+        </StatsDiv>
+        <StatsDiv color={"transparent"}>
+          <WordResultText>
+            interventions: yes or no context question 1
+          </WordResultText>
+          <StatsResultIcon result={word.activity3Correct} />
+        </StatsDiv>
+        <StatsDiv color={"#fff"}>
+          <WordResultText>
+            interventions: yes or no context question 2
+          </WordResultText>
+          <StatsResultIcon result={word.activity3Part2Correct} />
+        </StatsDiv>
+        <StatsDiv color={"transparent"}>
+          <WordResultText>
+            interventions: yes or no context question 3
+          </WordResultText>
+          <StatsResultIcon result={word.activity3Part3Correct} />
+        </StatsDiv>
+      </WordStatsContainer>
+    </WordResultWrapper>
+  );
+};
+
 const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
   userSessionData,
   userName,
 }) => {
   const history = useHistory();
+  const wordResults = userSessionData.wordResults;
   return (
     <SessionContainer>
       <SessionHeader>
@@ -154,13 +273,20 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
           {"< back to " + userName + "'s data"}
         </DashboardRedirect>
         <SessionTitle>
-          session {userSessionData.sessionId}
+          session {userSessionData.sessionId + 1}
         </SessionTitle>
       </SessionHeader>
       <SessionBody>
         <WordContainer>
-          <Word>miniscule</Word>
-          <Word>construct</Word>
+          <WordResultsContainer>
+            {wordResults.length === 0 ? (
+              <StatTitle> No Data </StatTitle>
+            ) : (
+              wordResults.map((wordResult) => {
+                return <WordResultDiv word={wordResult} />;
+              })
+            )}
+          </WordResultsContainer>
         </WordContainer>
         <StatContainer>
           <StatTitle>stats</StatTitle>
