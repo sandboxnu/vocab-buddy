@@ -89,7 +89,7 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
       playPrompt1();
       const interval = setInterval(
         playPrompt1,
-        prompt1Duration * 1000 + 5000
+        prompt1Duration * 1000 + 8000
       );
       return () => {
         stopAudio(prompt1);
@@ -99,26 +99,28 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
     }
 
     // Intervention activities
-    getDuration(prompt2, 0, 50, updatePrompt2);
-    if (canPlayPrompt1 && canPlayPrompt2) {
-      // Activities 1 and 4 do not set triggerSecondPrompt, but do set promptDelay
-      if (promptDelay !== undefined) {
-        playPrompt1();
-        setTimeout(() => {
-          playPrompt2();
-          triggerSecondPrompt = true;
-        }, prompt1Duration * 1000 + promptDelay);
-        return () => {
-          stopAudio(prompt1);
-          stopAudio(prompt2);
-        };
-      }
+    if (prompt2Url !== undefined) {
+      getDuration(prompt2, 0, 50, updatePrompt2);
+      if (canPlayPrompt1 && canPlayPrompt2) {
+        // Activities 1 and 4 do not set triggerSecondPrompt, but do set promptDelay
+        if (promptDelay !== undefined) {
+          playPrompt1();
+          setTimeout(() => {
+            playPrompt2();
+            triggerSecondPrompt = true;
+          }, prompt1Duration * 1000 + promptDelay);
+          return () => {
+            stopAudio(prompt1);
+            stopAudio(prompt2);
+          };
+        }
 
-      if (triggerSecondPrompt) {
-        stopAudio(prompt1);
-        playPrompt2();
-      } else {
-        playPrompt1();
+        if (triggerSecondPrompt) {
+          stopAudio(prompt1);
+          playPrompt2();
+        } else {
+          playPrompt1();
+        }
       }
     }
 
@@ -156,8 +158,10 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
 
   const onClickHandler = () => {
     if (triggerSecondPrompt) {
+      stopAudio(prompt2);
       playPrompt2();
     } else {
+      stopAudio(prompt1);
       playPrompt1();
     }
     return () => {
