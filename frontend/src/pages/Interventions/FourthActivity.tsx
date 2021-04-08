@@ -87,6 +87,7 @@ const FourthActivity = ({
   const [triggerSecondPrompt, setTriggerSecondPrompt] = useState(
     false
   );
+  const [showNextButton, setShowNextButton] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -106,6 +107,9 @@ const FourthActivity = ({
               prompt1Url={prompt1Url}
               prompt2Url={prompt2Url}
               triggerSecondPrompt={triggerSecondPrompt}
+              secondPromptFinishedHandler={() =>
+                setShowNextButton(true)
+              }
             />
           </Prompt>
           <Image src={imageUrl} />
@@ -116,7 +120,7 @@ const FourthActivity = ({
                 top={20}
                 delay={6000}
                 onClick={updateIntervention}
-                canBeShown
+                canBeShown={showNextButton}
               />
             </Blocker>
           </ButtonContainer>

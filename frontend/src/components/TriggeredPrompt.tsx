@@ -9,6 +9,7 @@ interface TriggeredPromptProps {
   triggerSecondPrompt?: boolean;
   isAssessment?: boolean;
   currentWord?: number;
+  secondPromptFinishedHandler?: () => void;
 }
 
 const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
@@ -17,9 +18,14 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
   triggerSecondPrompt,
   isAssessment,
   currentWord,
+  secondPromptFinishedHandler,
 }): ReactElement => {
   const prompt1 = new Audio(prompt1Url);
   const prompt2 = new Audio(prompt2Url);
+
+  prompt2.onended = () => {
+    secondPromptFinishedHandler?.();
+  };
 
   useEffect(() => {
     //loop prompt if this is an assessment

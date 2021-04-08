@@ -105,6 +105,8 @@ const ThirdActivity = ({
   updateIntervention,
 }: ThirdActivityProps): ReactElement => {
   let [selected, setSelected] = useState(-1);
+  let [showNextButton, setShowNextButton] = useState(false);
+
   return (
     <Layout>
       <Container>
@@ -119,6 +121,9 @@ const ThirdActivity = ({
               prompt1Url={prompt1Url}
               prompt2Url={prompt2Url}
               triggerSecondPrompt={selected !== -1}
+              secondPromptFinishedHandler={() =>
+                setShowNextButton(true)
+              }
             />
           </Prompt>
           <Image src={imageUrl} />
@@ -136,7 +141,7 @@ const ThirdActivity = ({
                 onClick={() => {
                   updateIntervention((selected === 1) === answer);
                 }}
-                canBeShown={selected !== -1}
+                canBeShown={selected !== -1 && showNextButton}
               />
             </NextContainer>
           </ButtonContainer>

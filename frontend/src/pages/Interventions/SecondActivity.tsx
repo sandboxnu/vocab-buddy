@@ -167,6 +167,7 @@ const SecondActivity = ({
   updateIntervention,
 }: SecondActivityProps): ReactElement => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [showNextButton, setShowNextButton] = useState(false);
 
   return (
     <Layout>
@@ -180,6 +181,9 @@ const SecondActivity = ({
               prompt1Url={prompt1Url}
               prompt2Url={prompt2Url}
               triggerSecondPrompt={selectedIndex !== -1}
+              secondPromptFinishedHandler={() =>
+                setShowNextButton(true)
+              }
             />
           </Prompt>
           <Blocker afterSeconds={15} repeatable={false}>
@@ -219,7 +223,7 @@ const SecondActivity = ({
                     indexOf(imageUrls, (val) => val.correct)
                 )
               }
-              canBeShown={selectedIndex !== -1}
+              canBeShown={selectedIndex !== -1 && showNextButton}
             />
           </ButtonContainer>
         </MainContent>
