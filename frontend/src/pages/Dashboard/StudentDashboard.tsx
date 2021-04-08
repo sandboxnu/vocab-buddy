@@ -306,7 +306,7 @@ const getTitleOfButton = (user: User): string => {
   switch (user.sessionId) {
     case -1:
       return "Begin pre-assessment";
-    case 9:
+    case 8:
       return "Congratulations on finishing the study";
     default:
       return (
@@ -462,7 +462,7 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
                     : "/interventions"
                 )
               }
-              disabled={student.sessionId === 9}
+              disabled={student.sessionId === 8}
             />
           </>
         ) : (
