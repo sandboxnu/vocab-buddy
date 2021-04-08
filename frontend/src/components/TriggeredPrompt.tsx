@@ -102,19 +102,6 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
     if (prompt2Url !== undefined) {
       getDuration(prompt2, 0, 50, updatePrompt2);
       if (canPlayPrompt1 && canPlayPrompt2) {
-        // Activities 1 and 4 do not set triggerSecondPrompt, but do set promptDelay
-        if (promptDelay !== undefined) {
-          playPrompt1();
-          setTimeout(() => {
-            playPrompt2();
-            triggerSecondPrompt = true;
-          }, prompt1Duration * 1000 + promptDelay);
-          return () => {
-            stopAudio(prompt1);
-            stopAudio(prompt2);
-          };
-        }
-
         if (triggerSecondPrompt) {
           stopAudio(prompt1);
           playPrompt2();
