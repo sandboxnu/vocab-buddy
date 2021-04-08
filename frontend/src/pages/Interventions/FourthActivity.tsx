@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import DelayedNextButton from "../../components/DelayedNextButton";
@@ -10,7 +10,8 @@ import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface FourthActivityProps {
   title: string;
-  prompt: string;
+  prompt1Url: string;
+  prompt2Url: string;
   imageUrl: string;
   updateIntervention: () => void;
 }
@@ -78,10 +79,22 @@ const ButtonContainer = styled.div`
 
 const FourthActivity = ({
   title,
-  prompt,
+  prompt1Url,
+  prompt2Url,
   imageUrl,
   updateIntervention,
 }: FourthActivityProps): ReactElement => {
+  const [triggerSecondPrompt, setTriggerSecondPrompt] = useState(
+    false
+  );
+  const [showNextButton, setShowNextButton] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setTriggerSecondPrompt(true);
+    }, 5000);
+  });
+
   return (
     <Layout>
       <Container>
@@ -91,13 +104,12 @@ const FourthActivity = ({
           <WordTitle>{title}</WordTitle>
           <Prompt>
             <TriggeredPrompt
-              prompt1Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt1.mp3?alt=media&token=1a088281-a886-41bc-8ac8-921f032d5cc0"
+              prompt1Url={prompt1Url}
+              prompt2Url={prompt2Url}
+              triggerSecondPrompt={triggerSecondPrompt}
+              secondPromptFinishedHandler={() =>
+                setShowNextButton(true)
               }
-              prompt2Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt2.mp3?alt=media&token=f14a750a-9470-49e7-9d90-ff9660c2402e"
-              }
-              promptDelay={5000}
             />
           </Prompt>
           <Image src={imageUrl} />
@@ -108,7 +120,7 @@ const FourthActivity = ({
                 top={20}
                 delay={6000}
                 onClick={updateIntervention}
-                canBeShown
+                canBeShown={showNextButton}
               />
             </Blocker>
           </ButtonContainer>

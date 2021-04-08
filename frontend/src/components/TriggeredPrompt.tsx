@@ -14,6 +14,7 @@ interface TriggeredPromptProps {
   isAssessment?: boolean;
   currentWord?: number;
   promptDelay?: number;
+  secondPromptFinishedHandler?: () => void;
 }
 
 const getDuration = (
@@ -53,6 +54,7 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
   isAssessment,
   currentWord,
   promptDelay,
+  secondPromptFinishedHandler,
 }): ReactElement => {
   let [canPlayPrompt1, setCanPlayPrompt1] = useState(false);
   let [canPlayPrompt2, setCanPlayPrompt2] = useState(false);
@@ -72,6 +74,10 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
   const prompt1 = new Audio(prompt1Url);
   const prompt2 = new Audio(prompt2Url);
 
+  prompt2.onended = () => {
+    secondPromptFinishedHandler?.();
+  };
+
   prompt1.preload = "metadata";
   prompt2.preload = "metadata";
 
@@ -83,7 +89,7 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
       playPrompt1();
       const interval = setInterval(
         playPrompt1,
-        prompt1Duration * 1000 + 5000
+        prompt1Duration * 1000 + 8000
       );
       return () => {
         stopAudio(prompt1);
@@ -93,26 +99,15 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
     }
 
     // Intervention activities
-    getDuration(prompt2, 0, 50, updatePrompt2);
-    if (canPlayPrompt1 && canPlayPrompt2) {
-      // Activities 1 and 4 do not set triggerSecondPrompt, but do set promptDelay
-      if (promptDelay !== undefined) {
-        playPrompt1();
-        setTimeout(() => {
-          playPrompt2();
-          triggerSecondPrompt = true;
-        }, prompt1Duration * 1000 + promptDelay);
-        return () => {
+    if (prompt2Url !== undefined) {
+      getDuration(prompt2, 0, 50, updatePrompt2);
+      if (canPlayPrompt1 && canPlayPrompt2) {
+        if (triggerSecondPrompt) {
           stopAudio(prompt1);
-          stopAudio(prompt2);
-        };
-      }
-
-      if (triggerSecondPrompt) {
-        stopAudio(prompt1);
-        playPrompt2();
-      } else {
-        playPrompt1();
+          playPrompt2();
+        } else {
+          playPrompt1();
+        }
       }
     }
 
@@ -150,11 +145,24 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
 
   const onClickHandler = () => {
     if (triggerSecondPrompt) {
+      stopAudio(prompt2);
       playPrompt2();
     } else {
+      stopAudio(prompt1);
       playPrompt1();
     }
+    return () => {
+      stopAudio(prompt1);
+      stopAudio(prompt2);
+    };
   };
+
+  useEffect(() => {
+    return () => {
+      stopAudio(prompt1);
+      stopAudio(prompt2);
+    };
+  });
 
   return isAssessment ? (
     <PlayButton scale={0.8} onClickHandler={onClickHandler} />

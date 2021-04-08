@@ -9,7 +9,8 @@ import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface ThirdActivityProps {
   title: string;
-  prompt: string;
+  prompt1Url: string;
+  prompt2Url: string;
   imageUrl: string;
   answer: boolean;
   updateIntervention: (correct: boolean) => void;
@@ -97,12 +98,15 @@ const NextContainer = styled.div`
 
 const ThirdActivity = ({
   title,
-  prompt,
+  prompt1Url,
+  prompt2Url,
   imageUrl,
   answer,
   updateIntervention,
 }: ThirdActivityProps): ReactElement => {
   let [selected, setSelected] = useState(-1);
+  let [showNextButton, setShowNextButton] = useState(false);
+
   return (
     <Layout>
       <Container>
@@ -114,13 +118,12 @@ const ThirdActivity = ({
           <WordTitle>{title}</WordTitle>
           <Prompt>
             <TriggeredPrompt
-              prompt1Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt1.mp3?alt=media&token=1a088281-a886-41bc-8ac8-921f032d5cc0"
-              }
-              prompt2Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt2.mp3?alt=media&token=f14a750a-9470-49e7-9d90-ff9660c2402e"
-              }
+              prompt1Url={prompt1Url}
+              prompt2Url={prompt2Url}
               triggerSecondPrompt={selected !== -1}
+              secondPromptFinishedHandler={() =>
+                setShowNextButton(true)
+              }
             />
           </Prompt>
           <Image src={imageUrl} />
@@ -138,7 +141,7 @@ const ThirdActivity = ({
                 onClick={() => {
                   updateIntervention((selected === 1) === answer);
                 }}
-                canBeShown={selected !== -1}
+                canBeShown={selected !== -1 && showNextButton}
               />
             </NextContainer>
           </ButtonContainer>

@@ -16,7 +16,8 @@ import TriggeredPrompt from "../../components/TriggeredPrompt";
 
 interface SecondActivityProps {
   title: string;
-  prompt: string;
+  prompt1Url: string;
+  prompt2Url: string;
   imageUrls: ImageProps[];
   updateIntervention: (correct: boolean) => void;
 }
@@ -160,11 +161,13 @@ const Image = ({
 
 const SecondActivity = ({
   title,
-  prompt,
+  prompt1Url,
+  prompt2Url,
   imageUrls,
   updateIntervention,
 }: SecondActivityProps): ReactElement => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [showNextButton, setShowNextButton] = useState(false);
 
   return (
     <Layout>
@@ -175,13 +178,12 @@ const SecondActivity = ({
           <WordTitle>{title}</WordTitle>
           <Prompt>
             <TriggeredPrompt
-              prompt1Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt1.mp3?alt=media&token=1a088281-a886-41bc-8ac8-921f032d5cc0"
-              }
-              prompt2Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt2.mp3?alt=media&token=f14a750a-9470-49e7-9d90-ff9660c2402e"
-              }
+              prompt1Url={prompt1Url}
+              prompt2Url={prompt2Url}
               triggerSecondPrompt={selectedIndex !== -1}
+              secondPromptFinishedHandler={() =>
+                setShowNextButton(true)
+              }
             />
           </Prompt>
           <Blocker afterSeconds={15} repeatable={false}>
@@ -221,7 +223,7 @@ const SecondActivity = ({
                     indexOf(imageUrls, (val) => val.correct)
                 )
               }
-              canBeShown={selectedIndex !== -1}
+              canBeShown={selectedIndex !== -1 && showNextButton}
             />
           </ButtonContainer>
         </MainContent>

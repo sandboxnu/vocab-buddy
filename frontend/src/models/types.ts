@@ -18,6 +18,7 @@ export interface Word {
   incorrectImages: string[];
   id: string;
   createdAt: Date;
+  assessmentPrompt: string;
 }
 
 /**
@@ -53,32 +54,36 @@ export interface ActivityList {
  */
 export interface Definition {
   prompt: string;
+  prompt2: string;
   url: string;
 }
 
 /**
- * Activity 2 consists of 2 images, and an oral prompt.
+ * Activity 2 consists of 2 images, and oral prompts.
  */
 export interface Example {
   prompt: string;
+  prompt2: string;
   correctUrl: string;
   incorrectUrl: string;
 }
 
 /**
- * Activity 3 consists of an image, a prompt, and a correct answer.
+ * Activity 3 consists of an image, prompts, and a correct answer.
  */
 export interface Context {
   prompt: string;
+  prompt2: string;
   url: string;
   correctAnswer: boolean;
 }
 
 /**
- * Activity 4 consists of an image and oral prompt.
+ * Activity 4 consists of an image and oral prompts.
  */
 export interface Review {
   prompt: string;
+  prompt2: string;
   url: string;
 }
 

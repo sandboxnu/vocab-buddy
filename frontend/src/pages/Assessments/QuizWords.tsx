@@ -148,9 +148,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
             <TriggeredPrompt
               isAssessment={true}
               currentWord={currentIndex}
-              prompt1Url={
-                "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/minuscule_prompt1.mp3?alt=media&token=1a088281-a886-41bc-8ac8-921f032d5cc0"
-              }
+              prompt1Url={word.assessmentPrompt}
             />
           </Prompt>
           <ImageContainer>
