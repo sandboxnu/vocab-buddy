@@ -14,8 +14,10 @@ import {
   InterventionWord,
   Review,
   SessionId,
+  SessionStats,
   User,
   Word,
+  WordResult,
 } from "../models/types";
 
 // Your web app's Firebase configuration
@@ -139,20 +141,7 @@ export default class FirebaseInteractor {
     let user = await this.db.collection("users").doc(idToUse).get();
     let userData = user.data();
     if (idToUse != null && userData != null) {
-      return {
-        id: idToUse,
-        name: userData.name as string,
-        accountType: userData.accountType as AccountType,
-        age: userData.age as number,
-        sessionId: userData.sessionId === undefined ? -1 : userData.sessionId,
-        onAssessment:
-          userData.onAssessment === undefined ? true : userData.onAssessment,
-        currentInterventionOrAssessment:
-          userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
-        daysActive:
-          userData.daysActive === undefined ? [] : userData.daysActive,
-        profileIcon: userData.profileIcon ?? allProfileIcons[0],
-      };
+      return this.getUserFromData(idToUse, userData);
     } else {
       throw new Error("Invalid user");
     }
@@ -358,7 +347,7 @@ export default class FirebaseInteractor {
 
     await this.db.collection("assessments").doc(id).update({
       currentIndex: currentIdx,
-      durationInSeconds: increment,
+      durationsInSeconds: increment,
     });
     this.updateDaysActive();
   }
@@ -391,6 +380,7 @@ export default class FirebaseInteractor {
         incorrectWords[(i * 3 + 2) % incorrectWords.length].word,
       ];
       let newIntervention = await this.db.collection("interventions").add({
+        durationsInSeconds: 0,
         activityIdx: 0,
         wordIdx: 0,
         wordList,
@@ -476,6 +466,83 @@ export default class FirebaseInteractor {
     };
   }
 
+  // get stats for the given user's given session
+  async getStatsForSession(
+    userId: string,
+    sessionId: number
+  ): Promise<SessionStats> {
+    let interventionForSession = (
+      await this.db
+        .collection("interventions")
+        .where("userId", "==", userId)
+        .where("session", "==", sessionId)
+        .get()
+    ).docs[0];
+    let assessmentForSession = (
+      await this.db
+        .collection("assessments")
+        .where("userId", "==", userId)
+        .where("session", "==", sessionId)
+        .get()
+    ).docs[0];
+
+    let interventionDuration =
+      !interventionForSession ||
+      !interventionForSession?.data().durationsInSeconds
+        ? 0
+        : interventionForSession?.data().durationsInSeconds;
+    let assessmentDuration = 0;
+    let correct = 0;
+    let incorrect = 0;
+    let wordResults: WordResult[] = [];
+    let assessmentResultObjects:
+      | firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
+      | undefined = undefined;
+
+    if (assessmentForSession !== undefined && sessionId !== -1) {
+      assessmentDuration = assessmentForSession.data().durationInSeconds;
+      let assessmentResults = await assessmentForSession.ref
+        .collection("results")
+        .get();
+      assessmentResultObjects = assessmentResults;
+      correct = assessmentResults.docs.filter((doc) => doc.data().correct)
+        .length;
+      incorrect = assessmentResults.docs.filter((doc) => !doc.data().correct)
+        .length;
+    }
+
+    if (interventionForSession) {
+      let interventionResults = (
+        await interventionForSession.ref.collection("responses").get()
+      ).docs;
+      let intervention = await this.getIntervention(interventionForSession.id);
+      intervention.wordList.forEach((wordInfo) => {
+        let currentWordAssessmentStats = assessmentResultObjects?.docs.filter(
+          (doc) => doc.id === wordInfo.word.id
+        )[0];
+        let currentWordInterventionStats = interventionResults.filter(
+          (doc) => doc.id === wordInfo.word.id
+        )[0];
+        let wordStats: WordResult = {
+          word: wordInfo.word.value,
+          assessmentCorrect: currentWordAssessmentStats?.data().correct,
+          ...currentWordInterventionStats?.data(),
+        };
+        wordResults.push(wordStats);
+      });
+    }
+
+    return {
+      userId: userId,
+      sessionId: sessionId,
+      interventionDuration: interventionDuration,
+      assessmentDuration: assessmentDuration,
+      incorrectWords: incorrect,
+      correctWords: correct,
+      wordResults: wordResults,
+    };
+  }
+
   async getTotalWordsLearned(userId: string | undefined): Promise<number> {
     let userIdToUse = userId ?? this.auth.currentUser?.uid;
     let allAssessments = await this.db
@@ -508,5 +575,38 @@ export default class FirebaseInteractor {
   async signOut() {
     await this.auth.signOut();
     this.currentUser = null;
+  }
+
+  // Researcher dashboard functions
+
+  // given a user document, returns a user object
+  getUserFromData(id: string, userData: firebase.firestore.DocumentData): User {
+    return {
+      id: id,
+      name: userData.name as string,
+      accountType: userData.accountType as AccountType,
+      age: userData.age as number,
+      sessionId: userData.sessionId === undefined ? -1 : userData.sessionId,
+      onAssessment:
+        userData.onAssessment === undefined ? true : userData.onAssessment,
+      currentInterventionOrAssessment:
+        userData.currentInterventionOrAssessment || "oiBN8aE5tqEFK2gXJUpl",
+      daysActive: userData.daysActive === undefined ? [] : userData.daysActive,
+      profileIcon: userData.profileIcon ?? allProfileIcons[0],
+    };
+  }
+
+  async getAllStudents(): Promise<User[]> {
+    let students = (
+      await this.db
+        .collection("users")
+        .where("accountType", "==", "STUDENT")
+        .get()
+    ).docs;
+
+    return students.map((student) => {
+      let studentData = student.data();
+      return this.getUserFromData(student.id, studentData);
+    });
   }
 }

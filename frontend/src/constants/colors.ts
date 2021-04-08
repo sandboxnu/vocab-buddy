@@ -7,6 +7,7 @@ export const CLOUD = "#E3EEFF";
 export const SEA_FOAM = "#68F2D2";
 export const LOGIN_BACKGROUND = "#E3EEFF";
 export const INCOMPLETE_GRAY = "#CCCCCC";
+export const GRAY = "#666666";
 
 // RGBA values
 export const CORAL_RGBA = (a: number) => `rgba(254, 93, 93, ${a})`;

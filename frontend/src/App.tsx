@@ -25,7 +25,20 @@ const App = (): ReactElement => {
         <Redirect exact from="/" to="/login" />
         <Route exact path="/login" component={Login} />
         <Route path="/sign_up" component={CreateUser} />
-        <AuthenticatedRoute path="/dashboard" component={Dashboard} />
+        <AuthenticatedRoute
+          exact
+          path="/dashboard"
+          component={Dashboard}
+        />
+        <AuthenticatedRoute
+          exact
+          path="/dashboard/student/:id"
+          component={Dashboard}
+        />
+        <AuthenticatedRoute
+          path="/dashboard/:userId/session/:sessionId"
+          component={Dashboard}
+        />
         <AuthenticatedRoute
           exact
           path="/interventions"
