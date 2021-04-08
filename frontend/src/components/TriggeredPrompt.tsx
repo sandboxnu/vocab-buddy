@@ -160,7 +160,18 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
     } else {
       playPrompt1();
     }
+    return () => {
+      stopAudio(prompt1);
+      stopAudio(prompt2);
+    };
   };
+
+  useEffect(() => {
+    return () => {
+      stopAudio(prompt1);
+      stopAudio(prompt2);
+    };
+  });
 
   return isAssessment ? (
     <PlayButton scale={0.8} onClickHandler={onClickHandler} />
