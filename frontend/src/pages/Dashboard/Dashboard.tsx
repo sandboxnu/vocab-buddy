@@ -38,6 +38,7 @@ import settingsIcon from "../../assets/icons/dashboard-menu/settings.svg";
 import caret from "../../assets/caret.svg";
 import ProfileEditModal from "../../components/ProfileEditModal";
 import SessionDashboard from "./SessionDashboard";
+import LoadingScreen from "../Loading/LoadingScreen";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -576,12 +577,12 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       userSessionData.userId !== sessionParams.userId ||
       userSessionData.sessionId !== +sessionParams.sessionId)
   ) {
-    return <h1>Loading</h1>;
+    return <LoadingScreen></LoadingScreen>;
   }
 
   // Shows a loading screen if the current user doesn't exist
   if (!currentUser || totalWordsLearned === undefined) {
-    return <h1>Loading</h1>;
+    return <LoadingScreen></LoadingScreen>;
   }
 
   // Shows a loading screen if a requested student doesn't exist
@@ -591,7 +592,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       requestedStudent.id !== (params.id || sessionParams.userId) ||
       requestedStudentTotalWordsLearned === undefined)
   ) {
-    return <h1>Loading</h1>;
+    return <LoadingScreen></LoadingScreen>;
   }
 
   if (
