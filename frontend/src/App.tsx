@@ -17,7 +17,6 @@ import Login from "./pages/Login/Login";
 import AssessmentRewardPage from "./pages/Reward/AssessmentsReward/AssessmentRewardPage";
 import Reward from "./pages/Reward/InterventionsReward/Reward";
 import ErrorScreen from "./pages/Errors/ErrorScreen";
-import LoadingScreen from "./pages/Loading/LoadingScreen";
 
 const App = (): ReactElement => {
   return (
@@ -26,7 +25,6 @@ const App = (): ReactElement => {
         <Redirect exact from="/" to="/login" />
         <Route exact path="/login" component={Login} />
         <Route path="/sign_up" component={CreateUser} />
-        <Route path="/loading" component={LoadingScreen} />
         <AuthenticatedRoute
           exact
           path="/dashboard"
