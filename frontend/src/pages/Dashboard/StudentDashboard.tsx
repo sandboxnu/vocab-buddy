@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -14,11 +14,15 @@ import ellipse from "../../assets/ellipse.svg";
 import ColoredSessionIcons from "../../assets/icons/session/color/ColoredSessionIcons";
 import GrayscaleSessionIcons from "../../assets/icons/session/grayscale/GrayscaleSessionIcons";
 import { dayStreak } from "../../constants/utils";
+import { DownloadOutlined } from "@ant-design/icons";
+import { Alert } from "antd";
 
 interface StudentDashboardParams {
   student: User;
   isStudentView: boolean;
   totalWordsLearned: number;
+  downloadData?: (userId: string, name: string) => void;
+  downloadDataLoading?: boolean;
 }
 
 const TitleText = styled.p`
@@ -316,6 +320,23 @@ const getTitleOfButton = (user: User): string => {
   }
 };
 
+const StyledAlert = styled(Alert)`
+  position: absolute;
+  top: 10px;
+  background-color: ${CLOUD};
+
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+
+  @media (min-width: 901px) {
+    width: 50%;
+    left: 25%;
+  }
+  margin: auto;
+  z-index: 1000;
+`;
+
 const filterByThisWeek = (dayString: string) => {
   let today = new Date(
     new Date().getFullYear(),
@@ -439,6 +460,8 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
   student,
   isStudentView,
   totalWordsLearned,
+  downloadData,
+  downloadDataLoading,
 }) => {
   const history = useHistory();
   const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa"];
@@ -446,6 +469,12 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
   const daysActiveThisWeek = student.daysActive.filter((day) =>
     filterByThisWeek(day)
   );
+
+  const downloadStudentData = useCallback(() => {
+    if (downloadData) {
+      downloadData(student.id, student.name);
+    }
+  }, [student, downloadData]);
 
   return (
     <>
@@ -472,7 +501,17 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
             >
               {"<"} back to student selections
             </BackToDashboard>
-            <StudentNameTitle>{student.name}'s Data</StudentNameTitle>
+            <StudentNameTitle>
+              {student.name}'s Data{" "}
+              <DownloadOutlined onClick={downloadStudentData} />
+            </StudentNameTitle>
+            {downloadDataLoading && (
+              <StyledAlert
+                type="info"
+                message={`Downloading ${student.name}'s data`}
+                banner
+              />
+            )}
           </>
         )}
 

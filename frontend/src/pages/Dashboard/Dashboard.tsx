@@ -19,10 +19,12 @@ import {
   GetUserSessionData,
   SignOut,
   ChangeProfileIcon,
+  DownloadData,
 } from "./data/actions";
 import {
   getCurrentUser,
   getDataForResearchers,
+  getDownloadDataLoading,
   getIsSignedOut,
   getTotalWordsLearned,
   getDashboardError,
@@ -55,6 +57,8 @@ interface DashboardParams {
   error?: Error;
   requestedStudent?: User;
   requestedStudentTotalWordsLearned?: number;
+  downloadData: (studentId: string, userId: string) => void;
+  downloadDataLoading: boolean;
 }
 
 interface IndividualDashboardParams {
@@ -78,6 +82,7 @@ const connector = connect(
     requestedStudentTotalWordsLearned: getCurrentStudentTotalWordsLearned(
       state
     ),
+    downloadDataLoading: getDownloadDataLoading(state),
   }),
   {
     signOut: SignOut.request,
@@ -85,6 +90,7 @@ const connector = connect(
     getDataForResearchers: GetDataForResearchers.request,
     changeIconRequest: ChangeProfileIcon.request,
     getUserSessionData: GetUserSessionData.request,
+    downloadData: DownloadData.request,
   }
 );
 
@@ -478,6 +484,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   changeIconRequest,
   requestedStudent,
   requestedStudentTotalWordsLearned,
+  downloadData,
+  downloadDataLoading,
 }): ReactElement => {
   let history = useHistory();
   if (isSignedOut) {
@@ -642,6 +650,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               student={requestedStudent}
               isStudentView={false}
               totalWordsLearned={requestedStudentTotalWordsLearned}
+              downloadData={downloadData}
+              downloadDataLoading={downloadDataLoading}
             />
           ) : userSessionData !== undefined &&
             requestedStudent &&

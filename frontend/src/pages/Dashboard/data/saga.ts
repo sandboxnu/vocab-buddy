@@ -2,6 +2,7 @@ import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../../../firebase/firebaseInteractor";
 import { Action, ActionTypes } from "../../../models/types";
 import {
+  DownloadData,
   GetData,
   GetDataForResearchers,
   GetUserSessionData,
@@ -33,6 +34,7 @@ function* root() {
     ActionTypes.GET_USER_SESSION_DATA_REQUEST,
     watchGetUserSessionData
   );
+  yield takeLatest(ActionTypes.DOWNLOAD_USER_DATA_REQUEST, watchDownloadData);
 }
 
 function* watchSignOut() {
@@ -106,5 +108,18 @@ function* watchChangeProfileIcon(action: Action) {
     yield put(ChangeProfileIcon.success(url));
   } catch (error) {
     yield put(ChangeProfileIcon.error(error));
+  }
+}
+
+function* watchDownloadData(action: Action) {
+  let { userId, name } = action.payload;
+  const getData = async () => {
+    await firebaseInteractor.createDataZip(userId, name);
+  };
+  try {
+    yield call(getData);
+    yield put(DownloadData.success());
+  } catch (error) {
+    yield put(DownloadData.error());
   }
 }
