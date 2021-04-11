@@ -422,7 +422,7 @@ const SessionCard: FunctionComponent<SessionCardParams> = ({
       isComplete={isComplete}
       isStudentView={isStudentView}
       onClick={() => {
-        if (isComplete) {
+        if (!isStudentView && isComplete) {
           history.push(
             `/dashboard/${studentId}/session/${sessionNumber - 1}`
           );
