@@ -475,14 +475,16 @@ export default class FirebaseInteractor {
       await this.db
         .collection("interventions")
         .where("userId", "==", userId)
+        .where("session", "==", sessionId)
         .get()
-    ).docs.filter((doc) => doc.data().session === sessionId)[0];
+    ).docs[0];
     let assessmentForSession = (
       await this.db
         .collection("assessments")
         .where("userId", "==", userId)
+        .where("session", "==", sessionId)
         .get()
-    ).docs.filter((doc) => doc.data().session === sessionId)[0];
+    ).docs[0];
 
     let interventionDuration =
       !interventionForSession ||
@@ -517,10 +519,10 @@ export default class FirebaseInteractor {
       for (let word of interventionWords as string[]) {
         let actualWord = await this.getWord(word);
         let currentWordAssessmentStats = assessmentResultObjects?.docs.filter(
-          (doc) => doc.id === word
+          (doc) => doc.id === actualWord.id
         )[0];
         let currentWordInterventionStats = interventionResults.filter(
-          (doc) => doc.id === word
+          (doc) => doc.id === actualWord.id
         )[0];
         let wordStats: WordResult = {
           word: actualWord.value,
