@@ -513,9 +513,8 @@ export default class FirebaseInteractor {
       let interventionResults = (
         await interventionForSession.ref.collection("responses").get()
       ).docs;
-      let interventionWords = interventionForSession.data()
-        .wordList as string[];
-      for (let word of interventionWords) {
+      let interventionWords = interventionForSession.data().wordList;
+      for (let word of interventionWords as string[]) {
         let actualWord = await this.getWord(word);
         let currentWordAssessmentStats = assessmentResultObjects?.docs.filter(
           (doc) => doc.id === word
