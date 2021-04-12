@@ -475,14 +475,16 @@ export default class FirebaseInteractor {
       await this.db
         .collection("interventions")
         .where("userId", "==", userId)
+        .where("session", "==", sessionId)
         .get()
-    ).docs.filter((doc) => doc.data().session === sessionId)[0];
+    ).docs[0];
     let assessmentForSession = (
       await this.db
         .collection("assessments")
         .where("userId", "==", userId)
+        .where("session", "==", sessionId)
         .get()
-    ).docs.filter((doc) => doc.data().session === sessionId)[0];
+    ).docs[0];
 
     let interventionDuration =
       !interventionForSession ||
@@ -513,23 +515,21 @@ export default class FirebaseInteractor {
       let interventionResults = (
         await interventionForSession.ref.collection("responses").get()
       ).docs;
-      let interventionWords = interventionForSession.data()
-        .wordList as string[];
-      for (let word of interventionWords) {
-        let actualWord = await this.getWord(word);
+      let intervention = await this.getIntervention(interventionForSession.id);
+      intervention.wordList.forEach((wordInfo) => {
         let currentWordAssessmentStats = assessmentResultObjects?.docs.filter(
-          (doc) => doc.id === word
+          (doc) => doc.id === wordInfo.word.id
         )[0];
         let currentWordInterventionStats = interventionResults.filter(
-          (doc) => doc.id === word
+          (doc) => doc.id === wordInfo.word.id
         )[0];
         let wordStats: WordResult = {
-          word: actualWord.value,
+          word: wordInfo.word.value,
           assessmentCorrect: currentWordAssessmentStats?.data().correct,
           ...currentWordInterventionStats?.data(),
         };
         wordResults.push(wordStats);
-      }
+      });
     }
 
     return {
