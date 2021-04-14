@@ -1,12 +1,13 @@
 import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../../../firebase/firebaseInteractor";
-import { Action, ActionTypes } from "../../../models/types";
+import { Action, ActionTypes, User } from "../../../models/types";
 import {
   GetData,
   GetDataForResearchers,
   GetUserSessionData,
   ChangeProfileIcon,
   SignOut,
+  UpdateUserSettings,
 } from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
@@ -32,6 +33,10 @@ function* root() {
   yield takeLatest(
     ActionTypes.GET_USER_SESSION_DATA_REQUEST,
     watchGetUserSessionData
+  );
+  yield takeLatest(
+    ActionTypes.UPDATE_USER_SETTINGS_REQUEST,
+    watchUpdateUserSettings
   );
 }
 
@@ -106,5 +111,19 @@ function* watchChangeProfileIcon(action: Action) {
     yield put(ChangeProfileIcon.success(url));
   } catch (error) {
     yield put(ChangeProfileIcon.error(error));
+  }
+}
+
+function* watchUpdateUserSettings(action: Action) {
+  let userSettings = action.payload;
+  let newUser;
+  const updateSettings = async () => {
+    newUser = await firebaseInteractor.updateUserSettings(userSettings);
+  };
+  try {
+    yield call(updateSettings);
+    yield put(UpdateUserSettings.success({ user: newUser }));
+  } catch (error) {
+    yield put(UpdateUserSettings.error(error));
   }
 }

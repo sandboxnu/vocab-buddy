@@ -1,0 +1,252 @@
+import React, { ReactElement } from "react";
+import { FunctionComponent, useState } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { INK, SEA_FOAM } from "../../constants/colors";
+import { User } from "../../models/types";
+import CloudGroup from "../../components/CloudGroup";
+import Layout from "../../components/Layout";
+import PurpleButton from "../../components/PurpleButton";
+import { TextInput } from "../../components/TextInput";
+import { getCurrentUser, getDashboardError } from "./data/reducer";
+import { UpdateUserSettings } from "./data/actions";
+import ErrorToast from "../../components/ErrorToast";
+
+const LoginHoldingDiv = styled.div`
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  padding-top: 5em;
+  flex: 5;
+  justify-content: center;
+  padding-left: 3vw;
+  padding-top: 3vh;
+
+  @media (max-width: 900px) {
+    flex: 2;
+    justify-content: flex-start;
+    padding-top: 48px;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+`;
+
+const ActuallyCreateUserDiv = styled.div`
+  display: flex;
+  flex: 2;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const HorizontalDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+interface RadioTextProps {
+  isActive: boolean;
+}
+const RadioText = styled.p`
+  border-bottom: ${({ isActive }: RadioTextProps) =>
+    !isActive ? "0px solid clear" : `4px solid ${SEA_FOAM}`};
+  flex: 1;
+  margin-right: 15px;
+
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 26px;
+
+  :hover {
+    cursor: default;
+  }
+`;
+
+const SectionHeader = styled.p`
+  font-family: "Rubik";
+  font-size: 26px;
+  font-weight: 700;
+  text-transform: lowercase;
+  word-wrap: break-word;
+  margin: 6vh 0vh 3vh;
+
+  @media (max-width: 900px) {
+    font-size: 30px;
+  }
+`;
+
+const EvenSpacedDiv = styled.div`
+  @media (max-width: 900px) {
+    flex: 0;
+  }
+
+  @media (min-width: 901px) {
+    flex: 1;
+  }
+`;
+
+const StyledPurpleButton = styled(PurpleButton)`
+  flex: 1;
+  width: 100%;
+  margin: 16px 0px;
+  padding: 10px;
+`;
+
+interface NameTextInputProps {
+  isStudent: boolean;
+}
+const NameTextInput = styled(TextInput)`
+  flex: 3;
+  margin-right: ${({ isStudent }: NameTextInputProps) =>
+    isStudent ? "15px" : "0px"};
+`;
+
+const AgeTextInput = styled(TextInput)`
+  flex: 1;
+  margin-left: 5;
+`;
+
+// An example of using a connector
+const connector = connect(
+  (state) => ({
+    signedIn: getCurrentUser(state),
+    error: getDashboardError(state),
+  }),
+  {
+    updateSettings: UpdateUserSettings.request,
+  }
+);
+
+interface SettingsProps {
+  user: User;
+  error?: Error;
+}
+
+const Settings: FunctionComponent<SettingsProps> = ({
+  user,
+  error,
+}): ReactElement => {
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  let [confirmPassword, setConfirmPassword] = useState("");
+  let [currentPassword, setCurrentPassword] = useState("");
+  let [name, setName] = useState(user.name);
+  let [age, setAge] = useState(user.age);
+  let [errorString, setErrorString] = useState("");
+  let [networkErrorShown, setNetworkErrorShown] = useState(false);
+  let updateUserSettings = () => {
+    if (confirmPassword !== password) {
+      setErrorString(
+        "you need to confirm the password with the same password"
+      );
+    }
+    console.log("update user settings");
+    // else if (
+    //   (user.accountType === "STUDENT" && !age) ||
+    //   !name ||
+    //   !password ||
+    //   !email
+    // ) {
+    //   setErrorString("please fill in all fields");
+    // } else {
+    //   setNetworkErrorShown(true);
+    //   createUser({
+    //     email,
+    //     password,
+    //     name,
+    //     accountType: accountType as AccountType,
+    //     age: accountType === "RESEARCHER" ? null : parseInt(age),
+    //   });
+    // }
+  };
+
+  return (
+    <>
+      <LoginHoldingDiv>
+        <HorizontalDiv>
+          <EvenSpacedDiv />
+          <ActuallyCreateUserDiv>
+            <SectionHeader>edit profile</SectionHeader>
+            <HorizontalDiv>
+              <NameTextInput
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                type="text"
+                text="name"
+                isStudent={user.accountType === "STUDENT"}
+              />
+              {user.accountType === "STUDENT" && (
+                <AgeTextInput
+                  onChange={(e) => {
+                    if (parseInt(e.target.value) != null) {
+                      setAge(parseInt(e.target.value));
+                    }
+                  }}
+                  value={age.toString()}
+                  type="number"
+                  text="age"
+                />
+              )}
+            </HorizontalDiv>
+            <SectionHeader>edit login</SectionHeader>
+            <TextInput
+              onChange={(event) => setEmail(event.target.value)}
+              value={email}
+              type="email"
+              text="email address"
+            />
+            <TextInput
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              type="password"
+              text="password"
+            />
+            <TextInput
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
+              type="password"
+              expectedValue={password}
+              text="confirm password"
+            />
+            <TextInput
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              value={currentPassword}
+              type="password"
+              text="current password*"
+            />
+            <StyledPurpleButton
+              text={"save"}
+              top={0}
+              onClick={() => updateUserSettings()}
+            />
+
+            {/* <HorizontalDiv>
+                  Have an account?
+                  <LoginButton onClick={() => history.push("/")}>
+                    login
+                  </LoginButton>
+                </HorizontalDiv> */}
+          </ActuallyCreateUserDiv>
+          <EvenSpacedDiv />
+        </HorizontalDiv>
+      </LoginHoldingDiv>
+      <ErrorToast
+        errorMessage={
+          errorString === ""
+            ? networkErrorShown
+              ? error?.message
+              : undefined
+            : errorString
+        }
+        onClose={() => {
+          setErrorString("");
+          setNetworkErrorShown(false);
+        }}
+      />
+    </>
+  );
+};
+
+export default connector(Settings);

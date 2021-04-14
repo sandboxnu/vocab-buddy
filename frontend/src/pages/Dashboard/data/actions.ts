@@ -1,4 +1,9 @@
-import { ActionTypes, SessionStats, User } from "../../../models/types";
+import {
+  ActionTypes,
+  SessionStats,
+  User,
+  UserSettings,
+} from "../../../models/types";
 
 export const SignOut = {
   request: () => ({
@@ -104,6 +109,32 @@ export const ChangeProfileIcon = {
   }),
   error: (error: Error) => ({
     type: ActionTypes.CHANGE_PROFILE_ICON_ERROR,
+    payload: { error },
+  }),
+};
+
+interface UpdateUserSettingsResponse {
+  user?: User;
+  error?: Error;
+}
+
+export const UpdateUserSettings = {
+  request: ({
+    newName,
+    newAge,
+    newEmail,
+    newPassword,
+    currentPassword,
+  }: UserSettings) => ({
+    type: ActionTypes.UPDATE_USER_SETTINGS_REQUEST,
+    payload: { newName, newAge, newEmail, newPassword, currentPassword },
+  }),
+  success: ({ user }: UpdateUserSettingsResponse) => ({
+    type: ActionTypes.UPDATE_USER_SETTINGS_SUCCESS,
+    payload: { user },
+  }),
+  error: ({ error }: UpdateUserSettingsResponse) => ({
+    type: ActionTypes.UPDATE_USER_SETTINGS_ERROR,
     payload: { error },
   }),
 };

@@ -84,6 +84,16 @@ const dashboardReducer = (
             }
           : undefined,
       };
+    case ActionTypes.UPDATE_USER_SETTINGS_SUCCESS:
+      return {
+        ...state,
+        user: action.payload.user,
+      };
+    case ActionTypes.UPDATE_USER_SETTINGS_ERROR:
+      return {
+        ...state,
+        error: action.payload.error,
+      };
     default:
       // If anything else happens, our user cache is probably bad, so remove it
       return state;

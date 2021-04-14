@@ -16,6 +16,7 @@ import {
   SessionId,
   SessionStats,
   User,
+  UserSettings,
   Word,
   WordResult,
 } from "../models/types";
@@ -570,6 +571,65 @@ export default class FirebaseInteractor {
 
   async resetPassword(email: string) {
     await this.auth.sendPasswordResetEmail(email);
+  }
+
+  async updateUserSettings({
+    newName,
+    newAge,
+    newEmail,
+    newPassword,
+    currentPassword,
+  }: UserSettings) {
+    // changing sensitive fields - need to reauthenticate user
+    if (newEmail !== undefined || newPassword !== undefined) {
+      if (currentPassword !== undefined) {
+        this.reauthenticateUser(currentPassword);
+        if (newEmail !== undefined) {
+          this.updateUserEmail(newEmail);
+        }
+        if (newPassword !== undefined) {
+          this.updateUserPassword(newPassword);
+        }
+      } else {
+        throw new Error("Please enter your current password");
+      }
+    }
+    if (newName !== undefined) {
+      this.updateCurrentUser({ name: newName });
+    }
+    if (newAge !== undefined) {
+      this.updateCurrentUser({ age: newAge });
+    }
+    return this.getUser(undefined);
+  }
+
+  async reauthenticateUser(password: string) {
+    const user = firebase.auth().currentUser;
+    if (user !== null && user.email !== null) {
+      const credential = firebase.auth.EmailAuthProvider.credential(
+        user.email,
+        password
+      );
+      user.reauthenticateWithCredential(credential).catch((error) => {
+        throw new Error(error.message);
+      });
+    } else {
+      this.signOut();
+    }
+  }
+
+  async updateUserEmail(newEmail: string) {
+    const user = firebase.auth().currentUser;
+    user?.updateEmail(newEmail).catch((error) => {
+      throw new Error(error.message);
+    });
+  }
+
+  async updateUserPassword(newPassword: string) {
+    const user = firebase.auth().currentUser;
+    user?.updatePassword(newPassword).catch((error) => {
+      throw new Error(error.message);
+    });
   }
 
   async signOut() {

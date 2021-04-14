@@ -38,6 +38,7 @@ import settingsIcon from "../../assets/icons/dashboard-menu/settings.svg";
 import caret from "../../assets/caret.svg";
 import ProfileEditModal from "../../components/ProfileEditModal";
 import SessionDashboard from "./SessionDashboard";
+import Settings from "./Settings";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -133,16 +134,19 @@ const MenuContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  flex: 1;
   border-radius: 0px 12px 0px 0px;
   z-index: 100;
   min-height: calc(100vh - 70px);
-
   padding-top: 3vh;
-  padding-left: 1vh;
-  padding-right: 1vh;
+  padding-left: 5vh;
+  padding-right: 5vh;
 
   background: ${CLOUD};
+
+  @media (max-width: 1000px) {
+    padding-left: 3vh;
+    padding-right: 3vh;
+  }
 
   @media (max-width: 900px) {
     position: relative;
@@ -282,6 +286,8 @@ const EditText = styled.div`
 interface MenuButtonPanelProps {
   isDropdown: boolean;
   signOutHandler: () => void;
+  selectedMenuButton: number;
+  setSelectedMenuButton: (num: number) => void;
 }
 
 interface MenuDropdownCaretProps {
@@ -326,8 +332,9 @@ const getButtonGridArea = (
 const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
   isDropdown,
   signOutHandler,
+  selectedMenuButton,
+  setSelectedMenuButton,
 }) => {
-  const [selectedMenuButton, setSelectedMenuButton] = useState(1);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const overviewButton = (
@@ -485,6 +492,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [showModal, setShowModal] = useState(false);
+  const [selectedMenuButton, setSelectedMenuButton] = useState(1);
 
   const [
     hasPerformedNetworkRequest,
@@ -601,6 +609,44 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     history.push("/error");
   }
 
+  const chooseDashboardView = (menuButtonNumber: number) => {
+    switch (menuButtonNumber) {
+      case 1:
+      case 2:
+        return currentUser.accountType === "STUDENT" ? (
+          <StudentDashboard
+            isStudentView={true}
+            student={currentUser}
+            totalWordsLearned={totalWordsLearned}
+          />
+        ) : params.id &&
+          requestedStudent &&
+          requestedStudentTotalWordsLearned !== undefined ? (
+          <StudentDashboard
+            student={requestedStudent}
+            isStudentView={false}
+            totalWordsLearned={requestedStudentTotalWordsLearned}
+          />
+        ) : userSessionData !== undefined &&
+          requestedStudent &&
+          sessionParams.userId &&
+          sessionParams.sessionId ? (
+          <SessionDashboard
+            userSessionData={userSessionData}
+            userName={requestedStudent.name}
+          />
+        ) : (
+          <ResearcherDashboard
+            students={dataForResearchers || []}
+          ></ResearcherDashboard>
+        );
+      case 3:
+        return <Settings user={currentUser} />;
+      default:
+        return <> </>;
+    }
+  };
+
   return (
     <Layout shouldAddPadding={false}>
       <>
@@ -623,39 +669,15 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               <MenuButtonPanel
                 isDropdown={screenWidth < 900}
                 signOutHandler={signOut}
+                selectedMenuButton={selectedMenuButton}
+                setSelectedMenuButton={setSelectedMenuButton}
               />
             </MenuTopDiv>
             {screenWidth > 900 && (
               <SignOutButton onClick={signOut}>log out</SignOutButton>
             )}
           </MenuContainer>
-          {currentUser.accountType === "STUDENT" ? (
-            <StudentDashboard
-              isStudentView={true}
-              student={currentUser}
-              totalWordsLearned={totalWordsLearned}
-            />
-          ) : params.id &&
-            requestedStudent &&
-            requestedStudentTotalWordsLearned !== undefined ? (
-            <StudentDashboard
-              student={requestedStudent}
-              isStudentView={false}
-              totalWordsLearned={requestedStudentTotalWordsLearned}
-            />
-          ) : userSessionData !== undefined &&
-            requestedStudent &&
-            sessionParams.userId &&
-            sessionParams.sessionId ? (
-            <SessionDashboard
-              userSessionData={userSessionData}
-              userName={requestedStudent.name}
-            />
-          ) : (
-            <ResearcherDashboard
-              students={dataForResearchers || []}
-            ></ResearcherDashboard>
-          )}
+          {chooseDashboardView(selectedMenuButton)}
         </DashboardContainer>
       </>
     </Layout>

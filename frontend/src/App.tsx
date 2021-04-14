@@ -17,6 +17,7 @@ import Login from "./pages/Login/Login";
 import AssessmentRewardPage from "./pages/Reward/AssessmentsReward/AssessmentRewardPage";
 import Reward from "./pages/Reward/InterventionsReward/Reward";
 import ErrorScreen from "./pages/Errors/ErrorScreen";
+import Settings from "./pages/Dashboard/Settings";
 
 const App = (): ReactElement => {
   return (
@@ -38,6 +39,11 @@ const App = (): ReactElement => {
         <AuthenticatedRoute
           path="/dashboard/:userId/session/:sessionId"
           component={Dashboard}
+        />
+        <AuthenticatedRoute
+          exact
+          path="/dashboard/settings"
+          component={Settings}
         />
         <AuthenticatedRoute
           exact
