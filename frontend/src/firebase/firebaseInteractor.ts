@@ -515,21 +515,22 @@ export default class FirebaseInteractor {
       let interventionResults = (
         await interventionForSession.ref.collection("responses").get()
       ).docs;
-      let intervention = await this.getIntervention(interventionForSession.id);
-      intervention.wordList.forEach((wordInfo) => {
+      let interventionWords = interventionForSession.data().wordList;
+      for (let word of interventionWords as string[]) {
+        let actualWord = await this.getWord(word);
         let currentWordAssessmentStats = assessmentResultObjects?.docs.filter(
-          (doc) => doc.id === wordInfo.word.id
+          (doc) => doc.id === actualWord.id
         )[0];
         let currentWordInterventionStats = interventionResults.filter(
-          (doc) => doc.id === wordInfo.word.id
+          (doc) => doc.id === actualWord.id
         )[0];
         let wordStats: WordResult = {
-          word: wordInfo.word.value,
+          word: actualWord.value,
           assessmentCorrect: currentWordAssessmentStats?.data().correct,
           ...currentWordInterventionStats?.data(),
         };
         wordResults.push(wordStats);
-      });
+      }
     }
 
     return {
