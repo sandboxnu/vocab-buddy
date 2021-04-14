@@ -577,12 +577,12 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       userSessionData.userId !== sessionParams.userId ||
       userSessionData.sessionId !== +sessionParams.sessionId)
   ) {
-    return <LoadingScreen></LoadingScreen>;
+    return <LoadingScreen />;
   }
 
   // Shows a loading screen if the current user doesn't exist
   if (!currentUser || totalWordsLearned === undefined) {
-    return <LoadingScreen></LoadingScreen>;
+    return <LoadingScreen />;
   }
 
   // Shows a loading screen if a requested student doesn't exist
@@ -592,7 +592,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       requestedStudent.id !== (params.id || sessionParams.userId) ||
       requestedStudentTotalWordsLearned === undefined)
   ) {
-    return <LoadingScreen></LoadingScreen>;
+    return <LoadingScreen />;
   }
 
   if (
