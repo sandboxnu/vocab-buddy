@@ -2,10 +2,7 @@ import React, { ReactElement } from "react";
 import { FunctionComponent, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { INK, SEA_FOAM } from "../../constants/colors";
 import { User, UserSettings } from "../../models/types";
-import CloudGroup from "../../components/CloudGroup";
-import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
 import { TextInput } from "../../components/TextInput";
 import { getCurrentUser, getDashboardError } from "./data/reducer";
@@ -17,10 +14,9 @@ const LoginHoldingDiv = styled.div`
   align-items: stretch;
   flex-direction: column;
   padding-top: 5em;
-  flex: 5;
+
   justify-content: center;
-  padding-left: 3vw;
-  padding-top: 3vh;
+  flex: 5.5;
 
   @media (max-width: 900px) {
     flex: 2;

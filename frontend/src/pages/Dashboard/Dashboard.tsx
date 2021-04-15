@@ -128,6 +128,7 @@ const DashboardContainer = styled.div`
 
 const MenuContainer = styled.div`
   display: flex;
+  flex: 1;
   position: sticky;
   top: 70px;
   align-self: flex-start;
@@ -138,15 +139,10 @@ const MenuContainer = styled.div`
   z-index: 100;
   min-height: calc(100vh - 70px);
   padding-top: 3vh;
-  padding-left: 5vh;
-  padding-right: 5vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
 
   background: ${CLOUD};
-
-  @media (max-width: 1000px) {
-    padding-left: 3vh;
-    padding-right: 3vh;
-  }
 
   @media (max-width: 900px) {
     position: relative;
