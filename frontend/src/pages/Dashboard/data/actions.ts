@@ -113,9 +113,12 @@ export const ChangeProfileIcon = {
   }),
 };
 
-interface UpdateUserSettingsResponse {
+interface UpdateUserSettingsSuccessResponse {
   user?: User;
-  error?: Error;
+}
+
+interface UpdateUserSettingsErrorResponse {
+  error: Error;
 }
 
 export const UpdateUserSettings = {
@@ -129,11 +132,11 @@ export const UpdateUserSettings = {
     type: ActionTypes.UPDATE_USER_SETTINGS_REQUEST,
     payload: { newName, newAge, newEmail, newPassword, currentPassword },
   }),
-  success: ({ user }: UpdateUserSettingsResponse) => ({
+  success: ({ user }: UpdateUserSettingsSuccessResponse) => ({
     type: ActionTypes.UPDATE_USER_SETTINGS_SUCCESS,
     payload: { user },
   }),
-  error: ({ error }: UpdateUserSettingsResponse) => ({
+  error: (error: UpdateUserSettingsErrorResponse) => ({
     type: ActionTypes.UPDATE_USER_SETTINGS_ERROR,
     payload: { error },
   }),

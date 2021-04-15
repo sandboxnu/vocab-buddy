@@ -518,7 +518,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     }
   }, [currentUser, getUser, totalWordsLearned]);
 
-  if (error && hasPerformedNetworkRequest) {
+  if (
+    error &&
+    hasPerformedNetworkRequest &&
+    selectedMenuButton !== 3
+  ) {
     history.push("/error");
   }
 

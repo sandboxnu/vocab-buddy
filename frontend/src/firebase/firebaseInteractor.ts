@@ -610,9 +610,7 @@ export default class FirebaseInteractor {
         user.email,
         password
       );
-      user.reauthenticateWithCredential(credential).catch((error) => {
-        throw new Error(error.message);
-      });
+      await user.reauthenticateWithCredential(credential);
     } else {
       await this.signOut();
     }
@@ -620,16 +618,12 @@ export default class FirebaseInteractor {
 
   async updateUserEmail(newEmail: string) {
     const user = firebase.auth().currentUser;
-    user?.updateEmail(newEmail).catch((error) => {
-      throw new Error(error.message);
-    });
+    user?.updateEmail(newEmail);
   }
 
   async updateUserPassword(newPassword: string) {
     const user = firebase.auth().currentUser;
-    user?.updatePassword(newPassword).catch((error) => {
-      throw new Error(error.message);
-    });
+    user?.updatePassword(newPassword);
   }
 
   async signOut() {
