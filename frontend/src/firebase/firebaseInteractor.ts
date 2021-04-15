@@ -583,22 +583,22 @@ export default class FirebaseInteractor {
     // changing sensitive fields - need to reauthenticate user
     if (newEmail !== undefined || newPassword !== undefined) {
       if (currentPassword !== undefined) {
-        this.reauthenticateUser(currentPassword);
+        await this.reauthenticateUser(currentPassword);
         if (newEmail !== undefined) {
-          this.updateUserEmail(newEmail);
+          await this.updateUserEmail(newEmail);
         }
         if (newPassword !== undefined) {
-          this.updateUserPassword(newPassword);
+          await this.updateUserPassword(newPassword);
         }
       } else {
         throw new Error("Please enter your current password");
       }
     }
     if (newName !== undefined) {
-      this.updateCurrentUser({ name: newName });
+      await this.updateCurrentUser({ name: newName });
     }
     if (newAge !== undefined) {
-      this.updateCurrentUser({ age: newAge });
+      await this.updateCurrentUser({ age: newAge });
     }
     return this.getUser(undefined);
   }
@@ -614,7 +614,7 @@ export default class FirebaseInteractor {
         throw new Error(error.message);
       });
     } else {
-      this.signOut();
+      await this.signOut();
     }
   }
 
