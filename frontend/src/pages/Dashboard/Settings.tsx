@@ -124,28 +124,39 @@ const Settings: FunctionComponent<SettingsProps> = ({
   let [age, setAge] = useState(user.age);
   let [errorString, setErrorString] = useState("");
   let [networkErrorShown, setNetworkErrorShown] = useState(false);
+
   let updateUserSettings = () => {
     if (confirmPassword !== password) {
       setErrorString(
         "you need to confirm the password with the same password"
       );
-    } else if (
-      (user.accountType === "STUDENT" && !age) ||
-      !name ||
-      !password ||
-      !email
-    ) {
-      setErrorString("please fill in all fields");
-    } else {
-      setNetworkErrorShown(true);
-      updateSettings({
-        newName: name,
-        newAge: age,
-        newEmail: email,
-        newPassword: password,
-        currentPassword: currentPassword,
-      });
+      return;
     }
+
+    if (email.length > 0 && currentPassword.length === 0) {
+      setErrorString(
+        "you need to enter your current password to change your email"
+      );
+      return;
+    }
+
+    if (password.length > 0 && currentPassword.length === 0) {
+      setErrorString(
+        "you need to enter your current password to change your password"
+      );
+      return;
+    }
+
+    setNetworkErrorShown(true);
+
+    updateSettings({
+      newName: name === user.name ? undefined : name,
+      newAge: age === user.age ? undefined : age,
+      newEmail: email === "" ? undefined : email,
+      newPassword: password === "" ? undefined : password,
+      currentPassword:
+        currentPassword === "" ? undefined : currentPassword,
+    });
   };
 
   return (
@@ -196,12 +207,14 @@ const Settings: FunctionComponent<SettingsProps> = ({
               value={email}
               type="email"
               text="email address"
+              autoComplete={"new-email"}
             />
             <TextInput
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               type="password"
               text="password"
+              autoComplete={"new-password"}
             />
             <TextInput
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -209,6 +222,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
               type="password"
               expectedValue={password}
               text="confirm password"
+              autoComplete={"new-password"}
             />
             <TextInput
               onChange={(e) => setCurrentPassword(e.target.value)}
