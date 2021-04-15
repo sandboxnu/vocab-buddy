@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Assessment, AssessmentResult } from "../../models/types";
+import LoadingScreen from "../Loading/LoadingScreen";
 import {
   getAssessment as getAssessmentAction,
   updateAssessment,
@@ -60,7 +61,7 @@ const Quiz = ({
   }, [assessment, getAssessment, params]);
 
   if (!assessment) {
-    return <h1>Loading...</h1>;
+    return <LoadingScreen />;
   } else {
     const updateAssessmentWords = (
       responses: AssessmentResult[],
