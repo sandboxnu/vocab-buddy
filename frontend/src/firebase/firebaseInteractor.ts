@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import JSZip from "jszip";
 import { randomNumberBetween, shuffle } from "../constants/utils";
 import {
   AccountType,
@@ -559,6 +560,43 @@ export default class FirebaseInteractor {
       totalWords += results.docs.filter((doc) => doc.data().correct).length;
     }
     return totalWords;
+  }
+
+  async createDataZip(userId: string, name: string) {
+    let sessionStats: SessionStats[] = [];
+    for (let idx = 0; idx < 8; idx++) {
+      sessionStats.push(await this.getStatsForSession(userId, idx));
+    }
+    const zip = new JSZip();
+    const folder = zip.folder(name);
+    sessionStats.forEach((stats, index) => {
+      folder?.file(`session${index + 1}.csv`, this.getSessionString(stats));
+    });
+    let fileBlob = await zip.generateAsync({ type: "blob" });
+    window.open(URL.createObjectURL(fileBlob));
+  }
+
+  getSessionString(session: SessionStats): string {
+    function stringify(value: boolean | undefined): string {
+      return value === undefined
+        ? "incomplete"
+        : value
+        ? "correct"
+        : "incorrect";
+    }
+    return (
+      "word,assessmentResult,activity2Result,activity3Result,activity3Part2Result,activity3Part3Result\n" +
+      session.wordResults
+        .map(
+          (stat) =>
+            `${stat.word},${stringify(stat.assessmentCorrect)},${stringify(
+              stat.activity2Correct
+            )},${stringify(stat.activity3Correct)},${stringify(
+              stat.activity3Part2Correct
+            )},${stringify(stat.activity3Part3Correct)}`
+        )
+        .join("\n")
+    );
   }
 
   async getCurrentExerciseId(wantsAssessment: boolean): Promise<string> {
