@@ -2,9 +2,9 @@ import { Alert } from "antd";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 
-const StyledAlert = styled(Alert)`
+const StyledAlert = styled(Alert)<ErrorToastProps>`
   position: absolute;
-  top: 10px;
+  top: ${({ topMargin }) => (topMargin ? topMargin : "10px")};
 
   @media (max-width: 900px) {
     width: 100%;
@@ -21,16 +21,19 @@ const StyledAlert = styled(Alert)`
 interface ErrorToastProps {
   errorMessage?: string;
   onClose: () => void;
+  topMargin?: string;
 }
 
 const ErrorToast: FunctionComponent<ErrorToastProps> = ({
   errorMessage,
   onClose,
+  topMargin,
 }) => {
   if (errorMessage) {
     return (
       <StyledAlert
         banner
+        topMargin={topMargin}
         message={errorMessage}
         type="error"
         closable

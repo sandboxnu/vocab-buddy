@@ -641,7 +641,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
           ></ResearcherDashboard>
         );
       case 3:
-        return <Settings user={currentUser} />;
+        return <Settings />;
       default:
         return <> </>;
     }

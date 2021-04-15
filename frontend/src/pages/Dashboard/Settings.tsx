@@ -3,7 +3,7 @@ import { FunctionComponent, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { INK, SEA_FOAM } from "../../constants/colors";
-import { User } from "../../models/types";
+import { User, UserSettings } from "../../models/types";
 import CloudGroup from "../../components/CloudGroup";
 import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
@@ -42,26 +42,6 @@ const HorizontalDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`;
-
-interface RadioTextProps {
-  isActive: boolean;
-}
-const RadioText = styled.p`
-  border-bottom: ${({ isActive }: RadioTextProps) =>
-    !isActive ? "0px solid clear" : `4px solid ${SEA_FOAM}`};
-  flex: 1;
-  margin-right: 15px;
-
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 26px;
-
-  :hover {
-    cursor: default;
-  }
 `;
 
 const SectionHeader = styled.p`
@@ -111,7 +91,7 @@ const AgeTextInput = styled(TextInput)`
 // An example of using a connector
 const connector = connect(
   (state) => ({
-    signedIn: getCurrentUser(state),
+    user: getCurrentUser(state),
     error: getDashboardError(state),
   }),
   {
@@ -122,11 +102,19 @@ const connector = connect(
 interface SettingsProps {
   user: User;
   error?: Error;
+  updateSettings: ({
+    newName,
+    newAge,
+    newEmail,
+    newPassword,
+    currentPassword,
+  }: UserSettings) => void;
 }
 
 const Settings: FunctionComponent<SettingsProps> = ({
   user,
   error,
+  updateSettings,
 }): ReactElement => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
@@ -141,30 +129,42 @@ const Settings: FunctionComponent<SettingsProps> = ({
       setErrorString(
         "you need to confirm the password with the same password"
       );
+    } else if (
+      (user.accountType === "STUDENT" && !age) ||
+      !name ||
+      !password ||
+      !email
+    ) {
+      setErrorString("please fill in all fields");
+    } else {
+      setNetworkErrorShown(true);
+      updateSettings({
+        newName: name,
+        newAge: age,
+        newEmail: email,
+        newPassword: password,
+        currentPassword: currentPassword,
+      });
     }
-    console.log("update user settings");
-    // else if (
-    //   (user.accountType === "STUDENT" && !age) ||
-    //   !name ||
-    //   !password ||
-    //   !email
-    // ) {
-    //   setErrorString("please fill in all fields");
-    // } else {
-    //   setNetworkErrorShown(true);
-    //   createUser({
-    //     email,
-    //     password,
-    //     name,
-    //     accountType: accountType as AccountType,
-    //     age: accountType === "RESEARCHER" ? null : parseInt(age),
-    //   });
-    // }
   };
 
   return (
     <>
       <LoginHoldingDiv>
+        <ErrorToast
+          topMargin="70px"
+          errorMessage={
+            errorString === ""
+              ? networkErrorShown
+                ? error?.message
+                : undefined
+              : errorString
+          }
+          onClose={() => {
+            setErrorString("");
+            setNetworkErrorShown(false);
+          }}
+        />
         <HorizontalDiv>
           <EvenSpacedDiv />
           <ActuallyCreateUserDiv>
@@ -221,30 +221,10 @@ const Settings: FunctionComponent<SettingsProps> = ({
               top={0}
               onClick={() => updateUserSettings()}
             />
-
-            {/* <HorizontalDiv>
-                  Have an account?
-                  <LoginButton onClick={() => history.push("/")}>
-                    login
-                  </LoginButton>
-                </HorizontalDiv> */}
           </ActuallyCreateUserDiv>
           <EvenSpacedDiv />
         </HorizontalDiv>
       </LoginHoldingDiv>
-      <ErrorToast
-        errorMessage={
-          errorString === ""
-            ? networkErrorShown
-              ? error?.message
-              : undefined
-            : errorString
-        }
-        onClose={() => {
-          setErrorString("");
-          setNetworkErrorShown(false);
-        }}
-      />
     </>
   );
 };
