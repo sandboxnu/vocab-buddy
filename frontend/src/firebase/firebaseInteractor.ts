@@ -500,7 +500,7 @@ export default class FirebaseInteractor {
       | firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
       | undefined = undefined;
 
-    if (assessmentForSession !== undefined && sessionId !== -1) {
+    if (assessmentForSession !== undefined) {
       assessmentDuration = assessmentForSession.data().durationInSeconds;
       let assessmentResults = await assessmentForSession.ref
         .collection("results")
@@ -534,6 +534,16 @@ export default class FirebaseInteractor {
       }
     }
 
+    if (sessionId === -1) {
+      for (let result of assessmentResultObjects?.docs ?? []) {
+        let word = await this.getWord(result.id);
+        wordResults.push({
+          word: word.value,
+          assessmentCorrect: result.data().correct,
+        });
+      }
+    }
+
     return {
       userId: userId,
       sessionId: sessionId,
@@ -564,13 +574,16 @@ export default class FirebaseInteractor {
 
   async createDataZip(userId: string, name: string) {
     let sessionStats: SessionStats[] = [];
-    for (let idx = 0; idx < 8; idx++) {
+    for (let idx = -1; idx < 8; idx++) {
       sessionStats.push(await this.getStatsForSession(userId, idx));
     }
     const zip = new JSZip();
     const folder = zip.folder(name);
     sessionStats.forEach((stats, index) => {
-      folder?.file(`session${index + 1}.csv`, this.getSessionString(stats));
+      folder?.file(
+        index === 0 ? "pre-assessment.csv" : `session${index}.csv`,
+        this.getSessionString(stats)
+      );
     });
     let fileBlob = await zip.generateAsync({ type: "blob" });
     window.open(URL.createObjectURL(fileBlob));
