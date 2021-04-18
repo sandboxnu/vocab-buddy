@@ -535,7 +535,6 @@ export default class FirebaseInteractor {
     }
 
     if (sessionId === -1) {
-      console.log(assessmentResultObjects!.docs);
       for (let result of assessmentResultObjects?.docs ?? []) {
         let word = await this.getWord(result.id);
         wordResults.push({
