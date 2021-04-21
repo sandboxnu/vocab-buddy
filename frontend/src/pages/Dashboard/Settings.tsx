@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { FunctionComponent, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
@@ -7,7 +7,7 @@ import PurpleButton from "../../components/PurpleButton";
 import { TextInput } from "../../components/TextInput";
 import { getCurrentUser, getDashboardError } from "./data/reducer";
 import { UpdateUserSettings } from "./data/actions";
-import ErrorToast from "../../components/ErrorToast";
+import Toast from "../../components/Toast";
 
 const LoginHoldingDiv = styled.div`
   display: flex;
@@ -155,12 +155,14 @@ const Settings: FunctionComponent<SettingsProps> = ({
     });
   };
 
+  useEffect(() => {}, [user]);
+
   return (
     <>
       <LoginHoldingDiv>
-        <ErrorToast
+        <Toast
           topMargin="70px"
-          errorMessage={
+          message={
             errorString === ""
               ? networkErrorShown
                 ? error?.message

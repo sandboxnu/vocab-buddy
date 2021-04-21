@@ -7,7 +7,7 @@ import React, {
 import { connect } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import ErrorToast from "../../components/ErrorToast";
+import Toast from "../../components/Toast";
 import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
 import { TextInput } from "../../components/TextInput";
@@ -251,8 +251,8 @@ const Login: FunctionComponent<LoginProps> = ({
           </LoginHoldingDiv>
         </LoginSwitchingDiv>
       </Layout>
-      <ErrorToast
-        errorMessage={showError ? error?.message : undefined}
+      <Toast
+        message={showError ? error?.message : undefined}
         onClose={() => setShowError(false)}
       />
     </>

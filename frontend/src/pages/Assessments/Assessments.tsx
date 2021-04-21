@@ -5,7 +5,7 @@ import React, {
 } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import ErrorToast from "../../components/ErrorToast";
+import Toast from "../../components/Toast";
 import LandingPage from "../../components/LandingPage";
 import { ASSESSMENTS_LANDING } from "../../constants/images";
 import { getCurrentAssessment } from "./data/actions";
@@ -48,8 +48,8 @@ const Assessments: FunctionComponent<AssessmentsProps> = ({
           setHasClickedButton(true);
         }}
       />
-      <ErrorToast
-        errorMessage={
+      <Toast
+        message={
           error && hasClickedButton ? error.message : undefined
         }
         onClose={() => setHasClickedButton(false)}
