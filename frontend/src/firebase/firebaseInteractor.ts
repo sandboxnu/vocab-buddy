@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import JSZip from "jszip";
 import { randomNumberBetween, shuffle } from "../constants/utils";
 import {
   AccountType,
@@ -500,7 +501,7 @@ export default class FirebaseInteractor {
       | firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
       | undefined = undefined;
 
-    if (assessmentForSession !== undefined && sessionId !== -1) {
+    if (assessmentForSession !== undefined) {
       assessmentDuration = assessmentForSession.data().durationInSeconds;
       let assessmentResults = await assessmentForSession.ref
         .collection("results")
@@ -516,21 +517,32 @@ export default class FirebaseInteractor {
       let interventionResults = (
         await interventionForSession.ref.collection("responses").get()
       ).docs;
-      let intervention = await this.getIntervention(interventionForSession.id);
-      intervention.wordList.forEach((wordInfo) => {
+      let interventionWords = interventionForSession.data().wordList;
+      for (let word of interventionWords as string[]) {
+        let actualWord = await this.getWord(word);
         let currentWordAssessmentStats = assessmentResultObjects?.docs.filter(
-          (doc) => doc.id === wordInfo.word.id
+          (doc) => doc.id === actualWord.id
         )[0];
         let currentWordInterventionStats = interventionResults.filter(
-          (doc) => doc.id === wordInfo.word.id
+          (doc) => doc.id === actualWord.id
         )[0];
         let wordStats: WordResult = {
-          word: wordInfo.word.value,
+          word: actualWord.value,
           assessmentCorrect: currentWordAssessmentStats?.data().correct,
           ...currentWordInterventionStats?.data(),
         };
         wordResults.push(wordStats);
-      });
+      }
+    }
+
+    if (sessionId === -1) {
+      for (let result of assessmentResultObjects?.docs ?? []) {
+        let word = await this.getWord(result.id);
+        wordResults.push({
+          word: word.value,
+          assessmentCorrect: result.data().correct,
+        });
+      }
     }
 
     return {
@@ -559,6 +571,46 @@ export default class FirebaseInteractor {
       totalWords += results.docs.filter((doc) => doc.data().correct).length;
     }
     return totalWords;
+  }
+
+  async createDataZip(userId: string, name: string) {
+    let sessionStats: SessionStats[] = [];
+    for (let idx = -1; idx < 8; idx++) {
+      sessionStats.push(await this.getStatsForSession(userId, idx));
+    }
+    const zip = new JSZip();
+    const folder = zip.folder(name);
+    sessionStats.forEach((stats, index) => {
+      folder?.file(
+        index === 0 ? "pre-assessment.csv" : `session${index}.csv`,
+        this.getSessionString(stats)
+      );
+    });
+    let fileBlob = await zip.generateAsync({ type: "blob" });
+    window.open(URL.createObjectURL(fileBlob));
+  }
+
+  getSessionString(session: SessionStats): string {
+    function stringify(value: boolean | undefined): string {
+      return value === undefined
+        ? "incomplete"
+        : value
+        ? "correct"
+        : "incorrect";
+    }
+    return (
+      "word,assessmentResult,activity2Result,activity3Result,activity3Part2Result,activity3Part3Result\n" +
+      session.wordResults
+        .map(
+          (stat) =>
+            `${stat.word},${stringify(stat.assessmentCorrect)},${stringify(
+              stat.activity2Correct
+            )},${stringify(stat.activity3Correct)},${stringify(
+              stat.activity3Part2Correct
+            )},${stringify(stat.activity3Part3Correct)}`
+        )
+        .join("\n")
+    );
   }
 
   async getCurrentExerciseId(wantsAssessment: boolean): Promise<string> {

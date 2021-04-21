@@ -173,6 +173,9 @@ export enum ActionTypes {
   UPDATE_USER_SETTINGS_REQUEST = "UPDATE_USER_SETTINGS_REQUEST",
   UPDATE_USER_SETTINGS_SUCCESS = "UPDATE_USER_SETTINGS_SUCCESS",
   UPDATE_USER_SETTINGS_ERROR = "UPDATE_USER_SETTINGS_ERROR",
+  DOWNLOAD_USER_DATA_REQUEST = "DOWNLOAD_USER_DATA_REQUEST",
+  DOWNLOAD_USER_DATA_SUCCESS = "DOWNLOAD_USER_DATA_SUCCESS",
+  DOWNLOAD_USER_DATA_ERROR = "DOWNLOAD_USER_DATA_ERROR",
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense
@@ -236,6 +239,7 @@ export interface DashboardState {
   sessionStats?: SessionStats;
   currentStudent?: User;
   currentStudentTotalWordsLearned?: number;
+  downloadDataLoading: boolean;
 }
 
 export interface AssessmentResult {

@@ -141,3 +141,16 @@ export const UpdateUserSettings = {
     payload: { error },
   }),
 };
+
+export const DownloadData = {
+  request: (userId: string, name: string) => ({
+    type: ActionTypes.DOWNLOAD_USER_DATA_REQUEST,
+    payload: { userId, name },
+  }),
+  success: () => ({
+    type: ActionTypes.DOWNLOAD_USER_DATA_SUCCESS,
+  }),
+  error: () => ({
+    type: ActionTypes.DOWNLOAD_USER_DATA_ERROR,
+  }),
+};

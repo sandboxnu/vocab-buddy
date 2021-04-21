@@ -3,6 +3,7 @@ import { Action, ActionTypes, DashboardState } from "../../../models/types";
 
 const initialState: DashboardState = {
   isSignedOut: false,
+  downloadDataLoading: false,
 };
 
 const dashboardReducer = (
@@ -10,6 +11,17 @@ const dashboardReducer = (
   action: Action
 ): DashboardState => {
   switch (action.type) {
+    case ActionTypes.DOWNLOAD_USER_DATA_REQUEST:
+      return {
+        ...state,
+        downloadDataLoading: true,
+      };
+    case ActionTypes.DOWNLOAD_USER_DATA_ERROR:
+    case ActionTypes.DOWNLOAD_USER_DATA_SUCCESS:
+      return {
+        ...state,
+        downloadDataLoading: false,
+      };
     case ActionTypes.SIGN_OUT_SUCCESS:
       return {
         ...state,
@@ -130,6 +142,10 @@ export const getDashboardError = (state: RootStateOrAny) => {
 
 export const getSessionStats = (state: RootStateOrAny) => {
   return state.dashboard.sessionStats;
+};
+
+export const getDownloadDataLoading = (state: RootStateOrAny) => {
+  return state.dashboard.downloadDataLoading;
 };
 
 export default dashboardReducer;

@@ -4,6 +4,7 @@ import FirstActivity from "../Interventions/FirstActivity";
 import SecondActivity from "../Interventions/SecondActivity";
 import ThirdActivity from "../Interventions/ThirdActivity";
 import FourthActivity from "../Interventions/FourthActivity";
+import LoadingScreen from "../Loading/LoadingScreen";
 
 interface ActivityComponentProp {
   idx: number;
@@ -102,7 +103,7 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
         />
       );
     default:
-      return <>Error Loading Interventions</>;
+      return <LoadingScreen />;
   }
 };
 

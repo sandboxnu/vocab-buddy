@@ -19,10 +19,12 @@ import {
   GetUserSessionData,
   SignOut,
   ChangeProfileIcon,
+  DownloadData,
 } from "./data/actions";
 import {
   getCurrentUser,
   getDataForResearchers,
+  getDownloadDataLoading,
   getIsSignedOut,
   getTotalWordsLearned,
   getDashboardError,
@@ -39,6 +41,7 @@ import caret from "../../assets/caret.svg";
 import ProfileEditModal from "../../components/ProfileEditModal";
 import SessionDashboard from "./SessionDashboard";
 import Settings from "./Settings";
+import LoadingScreen from "../Loading/LoadingScreen";
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -56,6 +59,8 @@ interface DashboardParams {
   error?: Error;
   requestedStudent?: User;
   requestedStudentTotalWordsLearned?: number;
+  downloadData: (studentId: string, userId: string) => void;
+  downloadDataLoading: boolean;
 }
 
 interface IndividualDashboardParams {
@@ -79,6 +84,7 @@ const connector = connect(
     requestedStudentTotalWordsLearned: getCurrentStudentTotalWordsLearned(
       state
     ),
+    downloadDataLoading: getDownloadDataLoading(state),
   }),
   {
     signOut: SignOut.request,
@@ -86,6 +92,7 @@ const connector = connect(
     getDataForResearchers: GetDataForResearchers.request,
     changeIconRequest: ChangeProfileIcon.request,
     getUserSessionData: GetUserSessionData.request,
+    downloadData: DownloadData.request,
   }
 );
 
@@ -481,6 +488,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   changeIconRequest,
   requestedStudent,
   requestedStudentTotalWordsLearned,
+  downloadData,
+  downloadDataLoading,
 }): ReactElement => {
   let history = useHistory();
   if (isSignedOut) {
@@ -584,12 +593,12 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       userSessionData.userId !== sessionParams.userId ||
       userSessionData.sessionId !== +sessionParams.sessionId)
   ) {
-    return <h1>Loading</h1>;
+    return <LoadingScreen />;
   }
 
   // Shows a loading screen if the current user doesn't exist
   if (!currentUser || totalWordsLearned === undefined) {
-    return <h1>Loading</h1>;
+    return <LoadingScreen />;
   }
 
   // Shows a loading screen if a requested student doesn't exist
@@ -599,7 +608,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       requestedStudent.id !== (params.id || sessionParams.userId) ||
       requestedStudentTotalWordsLearned === undefined)
   ) {
-    return <h1>Loading</h1>;
+    return <LoadingScreen />;
   }
 
   if (

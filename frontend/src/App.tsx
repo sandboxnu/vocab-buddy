@@ -42,11 +42,6 @@ const App = (): ReactElement => {
         />
         <AuthenticatedRoute
           exact
-          path="/dashboard/settings"
-          component={Settings}
-        />
-        <AuthenticatedRoute
-          exact
           path="/interventions"
           component={Interventions}
         />

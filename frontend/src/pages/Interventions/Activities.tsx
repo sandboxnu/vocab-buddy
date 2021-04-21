@@ -5,7 +5,6 @@ import React, {
   useState,
 } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import Layout from "../../components/Layout";
 import { connect } from "react-redux";
 import {
   getCurrentInterventions,
@@ -22,6 +21,7 @@ import {
   getNextActivityIdx,
   getNextWordIdx,
 } from "../../constants/utils";
+import LoadingScreen from "../Loading/LoadingScreen";
 
 interface ActivityProps {
   interventions: Interventions;
@@ -110,7 +110,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
   }
 
   if (!interventions) {
-    return <Layout>Loading</Layout>;
+    return <LoadingScreen></LoadingScreen>;
   } else {
     return (
       <ActivitiesComponent
