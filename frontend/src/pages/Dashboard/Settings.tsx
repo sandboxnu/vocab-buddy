@@ -123,6 +123,8 @@ const Settings: FunctionComponent<SettingsProps> = ({
   let [showSuccessToast, setShowSuccessToast] = useState(false);
 
   let updateUserSettings = () => {
+    setErrorString("");
+    setShowSuccessToast(false);
     if (confirmPassword !== password) {
       setErrorString(
         "you need to confirm the password with the same password"
@@ -159,24 +161,14 @@ const Settings: FunctionComponent<SettingsProps> = ({
   useEffect(() => {
     if (networkErrorShown) {
       setShowSuccessToast(true);
+      console.log(user);
     }
   }, [user]);
 
   return (
     <>
       <LoginHoldingDiv>
-        {showSuccessToast ? (
-          <Toast
-            topMargin="70px"
-            message={"Successfully updated user settings"}
-            alertType="success"
-            onClose={() => {
-              setErrorString("");
-              setNetworkErrorShown(false);
-              setShowSuccessToast(false);
-            }}
-          />
-        ) : (
+        {errorString !== "" || error?.message ? (
           <Toast
             topMargin="70px"
             message={
@@ -191,6 +183,19 @@ const Settings: FunctionComponent<SettingsProps> = ({
               setNetworkErrorShown(false);
             }}
           />
+        ) : (
+          showSuccessToast && (
+            <Toast
+              topMargin="70px"
+              message={"Successfully updated user settings"}
+              alertType="success"
+              onClose={() => {
+                setErrorString("");
+                setNetworkErrorShown(false);
+                setShowSuccessToast(false);
+              }}
+            />
+          )
         )}
         <HorizontalDiv>
           <EvenSpacedDiv />

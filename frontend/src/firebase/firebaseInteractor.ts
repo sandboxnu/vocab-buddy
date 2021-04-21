@@ -670,12 +670,12 @@ export default class FirebaseInteractor {
 
   async updateUserEmail(newEmail: string) {
     const user = firebase.auth().currentUser;
-    user?.updateEmail(newEmail);
+    await user?.updateEmail(newEmail);
   }
 
   async updateUserPassword(newPassword: string) {
     const user = firebase.auth().currentUser;
-    user?.updatePassword(newPassword);
+    await user?.updatePassword(newPassword);
   }
 
   async signOut() {
