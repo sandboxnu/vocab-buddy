@@ -33,6 +33,9 @@ const uploadFileToFirebaseStorage = async (fileLocation, uploadName) => {
 
 const performUpload = async () => {
     for (let word of allWords) {
+        if (word === ".DS_Store") {
+            continue;
+        }
         let wordFolder = repositoryStartingFolder + "/" + word + "/";
         let correctFolder = wordFolder + "correct/";
         let promptFolder = wordFolder + "prompts/";
@@ -47,7 +50,8 @@ const performUpload = async () => {
                 await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment1.jpg", wordRef.id + "/incorrect_assessment1.jpg"),
                 await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment2.jpg", wordRef.id + "/incorrect_assessment2.jpg"),
                 await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment3.jpg", wordRef.id + "/incorrect_assessment3.jpg"),
-            ]
+            ],
+            assessmentPrompt: await uploadFileToFirebaseStorage(promptFolder + "assessmentPrompt.mp3", wordRef.id + "/assessmentPrompt.mp3")
         };
         let interventionSetRef = wordRef.collection("intervention-set");
 
