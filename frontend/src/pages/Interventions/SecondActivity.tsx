@@ -170,7 +170,7 @@ const SecondActivity = ({
   const [showNextButton, setShowNextButton] = useState(false);
 
   return (
-    <Layout>
+    <Layout hideBar={true}>
       <Container>
         <CloudGroup />
         <MainContent>

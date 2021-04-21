@@ -202,7 +202,7 @@ const Login: FunctionComponent<LoginProps> = ({
 
   return (
     <>
-      <Layout hideBar={true}>
+      <Layout hideBar={true} shouldAddPadding={false}>
         <LoginSwitchingDiv>
           <LoginInfoDiv>
             <EvenSpacedDiv />
