@@ -161,7 +161,6 @@ const Settings: FunctionComponent<SettingsProps> = ({
   useEffect(() => {
     if (networkErrorShown) {
       setShowSuccessToast(true);
-      console.log(user);
     }
   }, [user]);
 
