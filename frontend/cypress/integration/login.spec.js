@@ -7,7 +7,6 @@ describe("User can create a student account", () => {
   let testEmail = "test@example.com";
   it("can sign up", function () {
     cy.visit("/sign_up").then(() => {
-      console.log("here");
       cy.exec("node ./cypress/utils.js", {
         env: { userEmail: testEmail, serviceAccount: serviceAccountJson },
       }).then((result) => {
