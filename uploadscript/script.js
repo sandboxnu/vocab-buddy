@@ -51,7 +51,7 @@ const performUpload = async () => {
                 await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment2.jpg", wordRef.id + "/incorrect_assessment2.jpg"),
                 await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment3.jpg", wordRef.id + "/incorrect_assessment3.jpg"),
             ],
-            assessmentPrompt: await uploadFileToFirebaseStorage(promptFolder + "assessmentPrompt.mp3", wordRef.id + "/assessmentPrompt.mp3")
+            assessmentPrompt: await uploadFileToFirebaseStorage(promptFolder + "assessment.mp3", wordRef.id + "/assessment.mp3")
         };
         let interventionSetRef = wordRef.collection("intervention-set");
 
