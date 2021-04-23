@@ -96,7 +96,7 @@ const FourthActivity = ({
   });
 
   return (
-    <Layout>
+    <Layout hideBar={true}>
       <Container>
         <CloudGroup />
         <MainContent>

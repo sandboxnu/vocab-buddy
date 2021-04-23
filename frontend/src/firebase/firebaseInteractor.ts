@@ -355,7 +355,7 @@ export default class FirebaseInteractor {
 
   async createInterventionFromAssessment(
     sessionId: SessionId,
-    responses: AssessmentResult[]
+    id: string
   ): Promise<void> {
     let documents = await this.db
       .collection("interventions")
@@ -365,13 +365,23 @@ export default class FirebaseInteractor {
       await this.updateCurrentUser({
         sessionId: sessionId < 8 ? ((sessionId + 1) as SessionId) : sessionId,
         onAssessment: false,
-        currentInterventionOrAssessment: documents.docs.filter(
-          (doc) => doc.data().session === sessionId + 1
-        )[0]?.id,
+        currentInterventionOrAssessment:
+          documents.docs.filter(
+            (doc) => doc.data().session === sessionId + 1
+          )[0]?.id || "",
       });
       return;
     }
-    let incorrectWords = responses.filter((response) => !response.correct);
+    let responses = await this.db
+      .collection("assessments")
+      .doc(id)
+      .collection("results")
+      .where("correct", "==", false)
+      .get();
+    let incorrectWords = responses.docs.map((response) => ({
+      word: response.id,
+      correct: false,
+    }));
     shuffle(incorrectWords);
     for (let i = 0; i < 8; i++) {
       // Add 3 words per intervention (wrapping around for now)

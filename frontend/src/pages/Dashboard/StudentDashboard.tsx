@@ -519,7 +519,8 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
 
         <SessionCardContainer>
           {sessionNumbers.map((label: number, index: number) => {
-            let complete = student?.sessionId >= label || label === 1;
+            let complete =
+              student?.sessionId >= label - 1 || label === 1;
             return (
               <SessionCard
                 sessionNumber={label}

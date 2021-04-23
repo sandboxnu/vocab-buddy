@@ -34,7 +34,7 @@ const Interventions: FunctionComponent<InterventionProps> = ({
 }): ReactElement => {
   const history = useHistory();
   const [hasClickedButton, setHasClickedButton] = useState(false);
-  if (interventionId) {
+  if (interventionId && hasClickedButton) {
     history.push(`/interventions/${interventionId}`);
   }
   return (

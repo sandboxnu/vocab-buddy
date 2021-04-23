@@ -12,8 +12,10 @@ interface ContentProps {
 
 const Content = styled.main`
   height: 100vh;
-  margin: ${({shouldAddPadding} : ContentProps) => shouldAddPadding ? '0 auto' : 0};
-  padding: ${({shouldAddPadding} : ContentProps) => shouldAddPadding ? '6em 2em 5em 3.5em' : 0};
+  margin: ${({ shouldAddPadding }: ContentProps) =>
+    shouldAddPadding ? "0 auto" : 0};
+  padding: ${({ shouldAddPadding }: ContentProps) =>
+    shouldAddPadding ? "6em 2em 5em 3.5em" : 0};
   width: 100%;
 `;
 
@@ -24,18 +26,24 @@ interface LayoutProps {
 }
 
 // Main layout of the project that includes both header and navbar
-const Layout = ({ hideBar = false, shouldAddPadding = true, children } : LayoutProps) : ReactElement => {
+const Layout = ({
+  hideBar = false,
+  shouldAddPadding = true,
+  children,
+}: LayoutProps): ReactElement => {
   return (
     <Wrapper>
-      <Nav showsBar={!hideBar}/>
-      <Content shouldAddPadding={!hideBar && shouldAddPadding}>{children}</Content>
+      <Nav showsBar={!hideBar} />
+      <Content shouldAddPadding={shouldAddPadding}>
+        {children}
+      </Content>
     </Wrapper>
   );
 };
 
 Layout.defaultProps = {
   hideBar: false,
-  shouldAddPadding: true
-}
+  shouldAddPadding: true,
+};
 
 export default Layout;
