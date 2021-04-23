@@ -22,7 +22,7 @@ interface ToastProps {
   message?: string;
   onClose: () => void;
   topMargin?: string;
-  alertType?: "success" | "info" | "warning" | "error" | undefined;
+  alertType?: "success" | "info" | "warning" | "error";
 }
 
 const Toast: FunctionComponent<ToastProps> = ({

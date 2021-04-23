@@ -201,8 +201,12 @@ const Login: FunctionComponent<LoginProps> = ({
   }, [signedIn, history, redirect]);
 
   return (
-    <>
-      <Layout hideBar={true}>
+    <Layout hideBar={true}>
+      <>
+        <Toast
+          message={showError ? error?.message : undefined}
+          onClose={() => setShowError(false)}
+        />
         <LoginSwitchingDiv>
           <LoginInfoDiv>
             <EvenSpacedDiv />
@@ -250,12 +254,8 @@ const Login: FunctionComponent<LoginProps> = ({
             </HorizontalDiv>
           </LoginHoldingDiv>
         </LoginSwitchingDiv>
-      </Layout>
-      <Toast
-        message={showError ? error?.message : undefined}
-        onClose={() => setShowError(false)}
-      />
-    </>
+      </>
+    </Layout>
   );
 };
 

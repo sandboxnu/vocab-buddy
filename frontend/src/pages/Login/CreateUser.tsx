@@ -197,6 +197,19 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
       <>
         <CloudGroup />
         <LoginHoldingDiv>
+          <Toast
+            message={
+              errorString === ""
+                ? networkErrorShown
+                  ? error?.message
+                  : undefined
+                : errorString
+            }
+            onClose={() => {
+              setErrorString("");
+              setNetworkErrorShown(false);
+            }}
+          />
           <HorizontalDiv>
             <EvenSpacedDiv />
             <ActuallyCreateUserDiv>
@@ -275,19 +288,6 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
             <EvenSpacedDiv />
           </HorizontalDiv>
         </LoginHoldingDiv>
-        <Toast
-          message={
-            errorString === ""
-              ? networkErrorShown
-                ? error?.message
-                : undefined
-              : errorString
-          }
-          onClose={() => {
-            setErrorString("");
-            setNetworkErrorShown(false);
-          }}
-        />
       </>
     </Layout>
   );

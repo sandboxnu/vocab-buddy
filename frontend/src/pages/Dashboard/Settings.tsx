@@ -165,101 +165,99 @@ const Settings: FunctionComponent<SettingsProps> = ({
   }, [user]);
 
   return (
-    <>
-      <LoginHoldingDiv>
-        {errorString !== "" || error?.message ? (
+    <LoginHoldingDiv>
+      {errorString !== "" || error?.message ? (
+        <Toast
+          topMargin="70px"
+          message={
+            errorString === ""
+              ? networkErrorShown
+                ? error?.message
+                : undefined
+              : errorString
+          }
+          onClose={() => {
+            setErrorString("");
+            setNetworkErrorShown(false);
+          }}
+        />
+      ) : (
+        showSuccessToast && (
           <Toast
             topMargin="70px"
-            message={
-              errorString === ""
-                ? networkErrorShown
-                  ? error?.message
-                  : undefined
-                : errorString
-            }
+            message={"Successfully updated user settings"}
+            alertType="success"
             onClose={() => {
               setErrorString("");
               setNetworkErrorShown(false);
+              setShowSuccessToast(false);
             }}
           />
-        ) : (
-          showSuccessToast && (
-            <Toast
-              topMargin="70px"
-              message={"Successfully updated user settings"}
-              alertType="success"
-              onClose={() => {
-                setErrorString("");
-                setNetworkErrorShown(false);
-                setShowSuccessToast(false);
-              }}
+        )
+      )}
+      <HorizontalDiv>
+        <EvenSpacedDiv />
+        <ActuallyCreateUserDiv>
+          <SectionHeader>edit profile</SectionHeader>
+          <HorizontalDiv>
+            <NameTextInput
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              type="text"
+              text="name"
+              isStudent={user.accountType === "STUDENT"}
             />
-          )
-        )}
-        <HorizontalDiv>
-          <EvenSpacedDiv />
-          <ActuallyCreateUserDiv>
-            <SectionHeader>edit profile</SectionHeader>
-            <HorizontalDiv>
-              <NameTextInput
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                type="text"
-                text="name"
-                isStudent={user.accountType === "STUDENT"}
+            {user.accountType === "STUDENT" && (
+              <AgeTextInput
+                onChange={(e) => {
+                  if (parseInt(e.target.value) != null) {
+                    setAge(parseInt(e.target.value));
+                  }
+                }}
+                value={age.toString()}
+                type="number"
+                text="age"
               />
-              {user.accountType === "STUDENT" && (
-                <AgeTextInput
-                  onChange={(e) => {
-                    if (parseInt(e.target.value) != null) {
-                      setAge(parseInt(e.target.value));
-                    }
-                  }}
-                  value={age.toString()}
-                  type="number"
-                  text="age"
-                />
-              )}
-            </HorizontalDiv>
-            <SectionHeader>edit login</SectionHeader>
-            <TextInput
-              onChange={(event) => setEmail(event.target.value)}
-              value={email}
-              type="email"
-              text="email address"
-              autoComplete={"new-email"}
-            />
-            <TextInput
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              type="password"
-              text="password"
-              autoComplete={"new-password"}
-            />
-            <TextInput
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              value={confirmPassword}
-              type="password"
-              expectedValue={password}
-              text="confirm password"
-              autoComplete={"new-password"}
-            />
-            <TextInput
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              value={currentPassword}
-              type="password"
-              text="current password*"
-            />
-            <StyledPurpleButton
-              text={"save"}
-              top={0}
-              onClick={() => updateUserSettings()}
-            />
-          </ActuallyCreateUserDiv>
-          <EvenSpacedDiv />
-        </HorizontalDiv>
-      </LoginHoldingDiv>
-    </>
+            )}
+          </HorizontalDiv>
+          <SectionHeader>edit login</SectionHeader>
+          <TextInput
+            onChange={(event) => setEmail(event.target.value)}
+            value={email}
+            type="email"
+            text="email address"
+            autoComplete={"new-email"}
+          />
+          <TextInput
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            type="password"
+            text="password"
+            autoComplete={"new-password"}
+          />
+          <TextInput
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={confirmPassword}
+            type="password"
+            expectedValue={password}
+            text="confirm password"
+            autoComplete={"new-password"}
+          />
+          <TextInput
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            value={currentPassword}
+            type="password"
+            text="current password*"
+          />
+          <StyledPurpleButton
+            text={"save"}
+            top={0}
+            onClick={() => updateUserSettings()}
+          />
+        </ActuallyCreateUserDiv>
+        <EvenSpacedDiv />
+      </HorizontalDiv>
+    </LoginHoldingDiv>
   );
 };
 

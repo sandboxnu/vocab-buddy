@@ -159,7 +159,10 @@ export default class FirebaseInteractor {
   }
 
   async updateCurrentUser(user: Partial<User>) {
-    this.db.collection("users").doc(this.auth.currentUser?.uid).update(user);
+    await this.db
+      .collection("users")
+      .doc(this.auth.currentUser?.uid)
+      .update(user);
   }
 
   async createInitialAssessment() {
@@ -656,7 +659,7 @@ export default class FirebaseInteractor {
   }
 
   async reauthenticateUser(password: string) {
-    const user = firebase.auth().currentUser;
+    const user = this.auth.currentUser;
     if (user !== null && user.email !== null) {
       const credential = firebase.auth.EmailAuthProvider.credential(
         user.email,
@@ -669,12 +672,12 @@ export default class FirebaseInteractor {
   }
 
   async updateUserEmail(newEmail: string) {
-    const user = firebase.auth().currentUser;
+    const user = this.auth.currentUser;
     await user?.updateEmail(newEmail);
   }
 
   async updateUserPassword(newPassword: string) {
-    const user = firebase.auth().currentUser;
+    const user = this.auth.currentUser;
     await user?.updatePassword(newPassword);
   }
 
