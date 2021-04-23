@@ -174,8 +174,7 @@ const MenuButtonContainer = styled.div`
 
   grid-template-areas:
     "icon1 button1"
-    "icon2 button2"
-    "icon3 button3";
+    "icon2 button2";
 
   @media (max-width: 900px) {
     width: 90vw;
@@ -185,7 +184,6 @@ const MenuButtonContainer = styled.div`
     grid-template-areas:
       "icon1 button1 dropdown"
       "icon2 button2 ."
-      "icon3 button3 ."
       ". signout .";
   }
 `;
@@ -372,7 +370,8 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
       </MenuButtonText>
     </>
   );
-  const reviewButton = (
+
+  const settingsButton = (
     <>
       <MenuButtonIcon
         gridArea={getButtonGridArea(
@@ -382,7 +381,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           isDropdown,
           "icon"
         )}
-        src={reviewWordsIcon}
+        src={settingsIcon}
       />
       <MenuButtonText
         gridArea={getButtonGridArea(
@@ -400,45 +399,12 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           );
         }}
       >
-        review words
-      </MenuButtonText>
-    </>
-  );
-
-  const settingsButton = (
-    <>
-      <MenuButtonIcon
-        gridArea={getButtonGridArea(
-          selectedMenuButton,
-          3,
-          menuOpen,
-          isDropdown,
-          "icon"
-        )}
-        src={settingsIcon}
-      />
-      <MenuButtonText
-        gridArea={getButtonGridArea(
-          selectedMenuButton,
-          3,
-          menuOpen,
-          isDropdown,
-          "button"
-        )}
-        selected={selectedMenuButton === 3}
-        onClick={() => {
-          setSelectedMenuButton(3);
-          setMenuOpen(
-            !menuOpen && selectedMenuButton === 3 ? true : menuOpen
-          );
-        }}
-      >
         settings
       </MenuButtonText>
     </>
   );
 
-  const buttons = [overviewButton, reviewButton, settingsButton];
+  const buttons = [overviewButton, settingsButton];
 
   return (
     <MenuButtonContainer>
@@ -449,7 +415,6 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           {menuOpen ? (
             <>
               {overviewButton}
-              {reviewButton}
               {settingsButton}
               <SignOutButton onClick={signOutHandler}>
                 log out
@@ -465,10 +430,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           />
         </>
       ) : (
-        <>
-          {reviewButton}
-          {settingsButton}
-        </>
+        <>{settingsButton}</>
       )}
     </MenuButtonContainer>
   );
@@ -621,7 +583,6 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   const chooseDashboardView = (menuButtonNumber: number) => {
     switch (menuButtonNumber) {
       case 1:
-      case 2:
         return currentUser.accountType === "STUDENT" ? (
           <StudentDashboard
             isStudentView={true}
@@ -649,7 +610,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             students={dataForResearchers || []}
           ></ResearcherDashboard>
         );
-      case 3:
+      case 2:
         return <Settings />;
       default:
         return <> </>;
