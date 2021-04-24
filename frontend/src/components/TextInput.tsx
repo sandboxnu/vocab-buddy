@@ -1,22 +1,36 @@
-import React, { ChangeEvent, KeyboardEvent, ReactElement } from "react";
+import React, {
+  ChangeEvent,
+  KeyboardEvent,
+  ReactElement,
+} from "react";
 import styled from "styled-components";
 import { SEA_FOAM } from "../constants/colors";
 
 interface TextInputProps {
   value: string;
-  onChange: ((event: ChangeEvent<HTMLInputElement>) => void);
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   text: string;
   type: string;
-  expectedValue : string | null;
+  expectedValue: string | null;
   className: string;
-  onKeyDown: ((event: KeyboardEvent<HTMLInputElement>) => void);
+  onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
+  autoComplete?: string;
 }
 
 interface LoginInputProps {
   isExpectedValue: boolean;
 }
 
-const TextInput = ({ className = "", value, onChange, text, type, expectedValue = null, onKeyDown = ()=>{} } : TextInputProps) : ReactElement => {
+const TextInput = ({
+  className = "",
+  value,
+  onChange,
+  text,
+  type,
+  expectedValue = null,
+  onKeyDown = () => {},
+  autoComplete = "on",
+}: TextInputProps): ReactElement => {
   return (
     <InputDiv className={className}>
       <InputTitle>{text}</InputTitle>
@@ -25,9 +39,12 @@ const TextInput = ({ className = "", value, onChange, text, type, expectedValue 
         value={value}
         placeholder={text}
         onChange={onChange}
-        isExpectedValue={expectedValue == null || expectedValue === value}
+        isExpectedValue={
+          expectedValue == null || expectedValue === value
+        }
         min="0"
         onKeyDown={onKeyDown}
+        autoComplete={autoComplete}
       />
     </InputDiv>
   );
@@ -36,7 +53,8 @@ const TextInput = ({ className = "", value, onChange, text, type, expectedValue 
 TextInput.defaultProps = {
   expectedValue: null,
   className: "",
-  onKeyDown: ()=>{}
+  autoComplete: "on",
+  onKeyDown: () => {},
 };
 
 const InputDiv = styled.div`
@@ -57,10 +75,12 @@ const LoginInput = styled.input`
   background-color: clear;
   border-radius: 12px;
   padding: 10px;
-  border: ${({isExpectedValue} : LoginInputProps) => isExpectedValue ? '1px solid #d4d6e2' : '1px solid red'};
+  border: ${({ isExpectedValue }: LoginInputProps) =>
+    isExpectedValue ? "1px solid #d4d6e2" : "1px solid red"};
 
   :focus {
-    border: ${({isExpectedValue} : LoginInputProps) => isExpectedValue ? `1px solid ${SEA_FOAM}` : '1px solid red'};
+    border: ${({ isExpectedValue }: LoginInputProps) =>
+      isExpectedValue ? `1px solid ${SEA_FOAM}` : "1px solid red"};
     outline: none !important;
   }
 `;

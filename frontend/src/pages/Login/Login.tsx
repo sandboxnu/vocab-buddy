@@ -7,7 +7,7 @@ import React, {
 import { connect } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import ErrorToast from "../../components/ErrorToast";
+import Toast from "../../components/Toast";
 import Layout from "../../components/Layout";
 import PurpleButton from "../../components/PurpleButton";
 import { TextInput } from "../../components/TextInput";
@@ -201,8 +201,12 @@ const Login: FunctionComponent<LoginProps> = ({
   }, [signedIn, history, redirect]);
 
   return (
-    <>
-      <Layout hideBar={true} shouldAddPadding={false}>
+    <Layout hideBar={true} shouldAddPadding={false}>
+      <>
+        <Toast
+          message={showError ? error?.message : undefined}
+          onClose={() => setShowError(false)}
+        />
         <LoginSwitchingDiv>
           <LoginInfoDiv>
             <EvenSpacedDiv />
@@ -250,12 +254,8 @@ const Login: FunctionComponent<LoginProps> = ({
             </HorizontalDiv>
           </LoginHoldingDiv>
         </LoginSwitchingDiv>
-      </Layout>
-      <ErrorToast
-        errorMessage={showError ? error?.message : undefined}
-        onClose={() => setShowError(false)}
-      />
-    </>
+      </>
+    </Layout>
   );
 };
 

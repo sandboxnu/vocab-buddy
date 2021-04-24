@@ -17,6 +17,7 @@ import {
   SessionId,
   SessionStats,
   User,
+  UserSettings,
   Word,
   WordResult,
 } from "../models/types";
@@ -158,7 +159,10 @@ export default class FirebaseInteractor {
   }
 
   async updateCurrentUser(user: Partial<User>) {
-    this.db.collection("users").doc(this.auth.currentUser?.uid).update(user);
+    await this.db
+      .collection("users")
+      .doc(this.auth.currentUser?.uid)
+      .update(user);
   }
 
   async createInitialAssessment() {
@@ -632,6 +636,59 @@ export default class FirebaseInteractor {
 
   async resetPassword(email: string) {
     await this.auth.sendPasswordResetEmail(email);
+  }
+
+  async updateUserSettings({
+    newName,
+    newAge,
+    newEmail,
+    newPassword,
+    currentPassword,
+  }: UserSettings) {
+    // changing sensitive fields - need to reauthenticate user
+    if (newEmail !== undefined || newPassword !== undefined) {
+      if (currentPassword !== undefined) {
+        await this.reauthenticateUser(currentPassword);
+        if (newEmail !== undefined) {
+          await this.updateUserEmail(newEmail);
+        }
+        if (newPassword !== undefined) {
+          await this.updateUserPassword(newPassword);
+        }
+      } else {
+        throw new Error("Please enter your current password");
+      }
+    }
+    if (newName !== undefined) {
+      await this.updateCurrentUser({ name: newName });
+    }
+    if (newAge !== undefined) {
+      await this.updateCurrentUser({ age: newAge });
+    }
+    return this.getUser(undefined);
+  }
+
+  async reauthenticateUser(password: string) {
+    const user = this.auth.currentUser;
+    if (user !== null && user.email !== null) {
+      const credential = firebase.auth.EmailAuthProvider.credential(
+        user.email,
+        password
+      );
+      await user.reauthenticateWithCredential(credential);
+    } else {
+      await this.signOut();
+    }
+  }
+
+  async updateUserEmail(newEmail: string) {
+    const user = this.auth.currentUser;
+    await user?.updateEmail(newEmail);
+  }
+
+  async updateUserPassword(newPassword: string) {
+    const user = this.auth.currentUser;
+    await user?.updatePassword(newPassword);
   }
 
   async signOut() {

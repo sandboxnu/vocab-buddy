@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCurrentIntervention } from "./data/actions";
 import { getError, getInterventionId } from "./data/reducer";
-import ErrorToast from "../../components/ErrorToast";
+import Toast from "../../components/Toast";
 
 const connector = connect(
   (state) => ({
@@ -48,8 +48,8 @@ const Interventions: FunctionComponent<InterventionProps> = ({
         title="interventions"
         subtitle="start an intervention"
       />
-      <ErrorToast
-        errorMessage={
+      <Toast
+        message={
           error && hasClickedButton ? error.message : undefined
         }
         onClose={() => setHasClickedButton(false)}

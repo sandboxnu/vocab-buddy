@@ -15,7 +15,7 @@ import { INK, SEA_FOAM } from "../../constants/colors";
 import { authenticationRequest } from "./data/actions";
 import { AccountType, CreateUserParams } from "../../models/types";
 import { getCreateUserError, getSignedIn } from "./data/reducer";
-import ErrorToast from "../../components/ErrorToast";
+import Toast from "../../components/Toast";
 
 const LoginHoldingDiv = styled.div`
   display: flex;
@@ -197,6 +197,19 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
       <>
         <CloudGroup />
         <LoginHoldingDiv>
+          <Toast
+            message={
+              errorString === ""
+                ? networkErrorShown
+                  ? error?.message
+                  : undefined
+                : errorString
+            }
+            onClose={() => {
+              setErrorString("");
+              setNetworkErrorShown(false);
+            }}
+          />
           <HorizontalDiv>
             <EvenSpacedDiv />
             <ActuallyCreateUserDiv>
@@ -275,19 +288,6 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
             <EvenSpacedDiv />
           </HorizontalDiv>
         </LoginHoldingDiv>
-        <ErrorToast
-          errorMessage={
-            errorString === ""
-              ? networkErrorShown
-                ? error?.message
-                : undefined
-              : errorString
-          }
-          onClose={() => {
-            setErrorString("");
-            setNetworkErrorShown(false);
-          }}
-        />
       </>
     </Layout>
   );

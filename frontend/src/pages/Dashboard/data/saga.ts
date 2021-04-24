@@ -8,6 +8,7 @@ import {
   GetUserSessionData,
   ChangeProfileIcon,
   SignOut,
+  UpdateUserSettings,
 } from "./actions";
 
 let firebaseInteractor = new FirebaseInteractor();
@@ -33,6 +34,10 @@ function* root() {
   yield takeLatest(
     ActionTypes.GET_USER_SESSION_DATA_REQUEST,
     watchGetUserSessionData
+  );
+  yield takeLatest(
+    ActionTypes.UPDATE_USER_SETTINGS_REQUEST,
+    watchUpdateUserSettings
   );
   yield takeLatest(ActionTypes.DOWNLOAD_USER_DATA_REQUEST, watchDownloadData);
 }
@@ -108,6 +113,20 @@ function* watchChangeProfileIcon(action: Action) {
     yield put(ChangeProfileIcon.success(url));
   } catch (error) {
     yield put(ChangeProfileIcon.error(error));
+  }
+}
+
+function* watchUpdateUserSettings(action: Action) {
+  let userSettings = action.payload;
+  let newUser;
+  const updateSettings = async () => {
+    newUser = await firebaseInteractor.updateUserSettings(userSettings);
+  };
+  try {
+    yield call(updateSettings);
+    yield put(UpdateUserSettings.success({ user: newUser }));
+  } catch (error) {
+    yield put(UpdateUserSettings.error(error));
   }
 }
 

@@ -35,11 +35,11 @@ import {
 import ResearcherDashboard from "../Dashboard/ResearcherDashboard";
 import StudentDashboard from "../Dashboard/StudentDashboard";
 import overviewIcon from "../../assets/icons/dashboard-menu/overview.svg";
-import reviewWordsIcon from "../../assets/icons/dashboard-menu/review.svg";
 import settingsIcon from "../../assets/icons/dashboard-menu/settings.svg";
 import caret from "../../assets/caret.svg";
 import ProfileEditModal from "../../components/ProfileEditModal";
 import SessionDashboard from "./SessionDashboard";
+import Settings from "./Settings";
 import LoadingScreen from "../Loading/LoadingScreen";
 
 interface DashboardParams {
@@ -134,20 +134,19 @@ const DashboardContainer = styled.div`
 
 const MenuContainer = styled.div`
   display: flex;
+  flex: 1;
   position: sticky;
   top: 70px;
   align-self: flex-start;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  flex: 1;
   border-radius: 0px 12px 0px 0px;
   z-index: 100;
   min-height: calc(100vh - 70px);
-
   padding-top: 3vh;
-  padding-left: 1vh;
-  padding-right: 1vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
 
   background: ${CLOUD};
 
@@ -174,8 +173,7 @@ const MenuButtonContainer = styled.div`
 
   grid-template-areas:
     "icon1 button1"
-    "icon2 button2"
-    "icon3 button3";
+    "icon2 button2";
 
   @media (max-width: 900px) {
     width: 90vw;
@@ -185,7 +183,6 @@ const MenuButtonContainer = styled.div`
     grid-template-areas:
       "icon1 button1 dropdown"
       "icon2 button2 ."
-      "icon3 button3 ."
       ". signout .";
   }
 `;
@@ -289,6 +286,8 @@ const EditText = styled.div`
 interface MenuButtonPanelProps {
   isDropdown: boolean;
   signOutHandler: () => void;
+  selectedMenuButton: number;
+  setSelectedMenuButton: (num: number) => void;
 }
 
 interface MenuDropdownCaretProps {
@@ -333,8 +332,9 @@ const getButtonGridArea = (
 const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
   isDropdown,
   signOutHandler,
+  selectedMenuButton,
+  setSelectedMenuButton,
 }) => {
-  const [selectedMenuButton, setSelectedMenuButton] = useState(1);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const overviewButton = (
@@ -369,7 +369,8 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
       </MenuButtonText>
     </>
   );
-  const reviewButton = (
+
+  const settingsButton = (
     <>
       <MenuButtonIcon
         gridArea={getButtonGridArea(
@@ -379,7 +380,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           isDropdown,
           "icon"
         )}
-        src={reviewWordsIcon}
+        src={settingsIcon}
       />
       <MenuButtonText
         gridArea={getButtonGridArea(
@@ -397,45 +398,12 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           );
         }}
       >
-        review words
-      </MenuButtonText>
-    </>
-  );
-
-  const settingsButton = (
-    <>
-      <MenuButtonIcon
-        gridArea={getButtonGridArea(
-          selectedMenuButton,
-          3,
-          menuOpen,
-          isDropdown,
-          "icon"
-        )}
-        src={settingsIcon}
-      />
-      <MenuButtonText
-        gridArea={getButtonGridArea(
-          selectedMenuButton,
-          3,
-          menuOpen,
-          isDropdown,
-          "button"
-        )}
-        selected={selectedMenuButton === 3}
-        onClick={() => {
-          setSelectedMenuButton(3);
-          setMenuOpen(
-            !menuOpen && selectedMenuButton === 3 ? true : menuOpen
-          );
-        }}
-      >
         settings
       </MenuButtonText>
     </>
   );
 
-  const buttons = [overviewButton, reviewButton, settingsButton];
+  const buttons = [overviewButton, settingsButton];
 
   return (
     <MenuButtonContainer>
@@ -446,7 +414,6 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           {menuOpen ? (
             <>
               {overviewButton}
-              {reviewButton}
               {settingsButton}
               <SignOutButton onClick={signOutHandler}>
                 log out
@@ -462,10 +429,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           />
         </>
       ) : (
-        <>
-          {reviewButton}
-          {settingsButton}
-        </>
+        <>{settingsButton}</>
       )}
     </MenuButtonContainer>
   );
@@ -494,6 +458,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [showModal, setShowModal] = useState(false);
+  const [selectedMenuButton, setSelectedMenuButton] = useState(1);
 
   const [
     hasPerformedNetworkRequest,
@@ -519,7 +484,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     }
   }, [currentUser, getUser, totalWordsLearned]);
 
-  if (error && hasPerformedNetworkRequest) {
+  if (
+    error &&
+    hasPerformedNetworkRequest &&
+    selectedMenuButton !== 3
+  ) {
     history.push("/error");
   }
 
@@ -610,6 +579,43 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     history.push("/error");
   }
 
+  const chooseDashboardView = (menuButtonNumber: number) => {
+    switch (menuButtonNumber) {
+      case 1:
+        return currentUser.accountType === "STUDENT" ? (
+          <StudentDashboard
+            isStudentView={true}
+            student={currentUser}
+            totalWordsLearned={totalWordsLearned}
+          />
+        ) : params.id &&
+          requestedStudent &&
+          requestedStudentTotalWordsLearned !== undefined ? (
+          <StudentDashboard
+            student={requestedStudent}
+            isStudentView={false}
+            totalWordsLearned={requestedStudentTotalWordsLearned}
+          />
+        ) : userSessionData !== undefined &&
+          requestedStudent &&
+          sessionParams.userId &&
+          sessionParams.sessionId ? (
+          <SessionDashboard
+            userSessionData={userSessionData}
+            userName={requestedStudent.name}
+          />
+        ) : (
+          <ResearcherDashboard
+            students={dataForResearchers || []}
+          ></ResearcherDashboard>
+        );
+      case 2:
+        return <Settings />;
+      default:
+        return <> </>;
+    }
+  };
+
   return (
     <Layout shouldAddPadding={false}>
       <>
@@ -632,41 +638,15 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
               <MenuButtonPanel
                 isDropdown={screenWidth < 900}
                 signOutHandler={signOut}
+                selectedMenuButton={selectedMenuButton}
+                setSelectedMenuButton={setSelectedMenuButton}
               />
             </MenuTopDiv>
             {screenWidth > 900 && (
               <SignOutButton onClick={signOut}>log out</SignOutButton>
             )}
           </MenuContainer>
-          {currentUser.accountType === "STUDENT" ? (
-            <StudentDashboard
-              isStudentView={true}
-              student={currentUser}
-              totalWordsLearned={totalWordsLearned}
-            />
-          ) : params.id &&
-            requestedStudent &&
-            requestedStudentTotalWordsLearned !== undefined ? (
-            <StudentDashboard
-              student={requestedStudent}
-              isStudentView={false}
-              totalWordsLearned={requestedStudentTotalWordsLearned}
-              downloadData={downloadData}
-              downloadDataLoading={downloadDataLoading}
-            />
-          ) : userSessionData !== undefined &&
-            requestedStudent &&
-            sessionParams.userId &&
-            sessionParams.sessionId ? (
-            <SessionDashboard
-              userSessionData={userSessionData}
-              userName={requestedStudent.name}
-            />
-          ) : (
-            <ResearcherDashboard
-              students={dataForResearchers || []}
-            ></ResearcherDashboard>
-          )}
+          {chooseDashboardView(selectedMenuButton)}
         </DashboardContainer>
       </>
     </Layout>
