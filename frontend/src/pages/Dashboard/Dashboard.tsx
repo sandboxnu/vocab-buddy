@@ -35,7 +35,6 @@ import {
 import ResearcherDashboard from "../Dashboard/ResearcherDashboard";
 import StudentDashboard from "../Dashboard/StudentDashboard";
 import overviewIcon from "../../assets/icons/dashboard-menu/overview.svg";
-import reviewWordsIcon from "../../assets/icons/dashboard-menu/review.svg";
 import settingsIcon from "../../assets/icons/dashboard-menu/settings.svg";
 import caret from "../../assets/caret.svg";
 import ProfileEditModal from "../../components/ProfileEditModal";
