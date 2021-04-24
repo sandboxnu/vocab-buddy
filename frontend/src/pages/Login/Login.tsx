@@ -201,7 +201,7 @@ const Login: FunctionComponent<LoginProps> = ({
   }, [signedIn, history, redirect]);
 
   return (
-    <Layout hideBar={true}>
+    <Layout hideBar={true} shouldAddPadding={false}>
       <>
         <Toast
           message={showError ? error?.message : undefined}

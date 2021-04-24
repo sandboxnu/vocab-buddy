@@ -96,7 +96,7 @@ const FirstActivity = ({
   });
 
   return (
-    <Layout>
+    <Layout hideBar={true}>
       <Container>
         <CloudGroup />
         <MainContent>

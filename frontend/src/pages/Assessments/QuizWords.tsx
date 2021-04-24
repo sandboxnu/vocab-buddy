@@ -136,7 +136,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
   };
 
   return (
-    <Layout>
+    <Layout hideBar={true}>
       <Container>
         <CloudGroup />
         <MainContent>

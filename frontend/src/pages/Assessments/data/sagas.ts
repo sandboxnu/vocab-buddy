@@ -60,10 +60,7 @@ function* watchUpdateAssessment(action: Action) {
     );
     if (isFinished) {
       yield call(() =>
-        firebaseInteractor.createInterventionFromAssessment(
-          sessionId,
-          responses
-        )
+        firebaseInteractor.createInterventionFromAssessment(sessionId, id)
       );
     }
     yield put(updateAssessment.success({ isFinished }));

@@ -34,7 +34,7 @@ const Assessments: FunctionComponent<AssessmentsProps> = ({
 }): ReactElement => {
   const history = useHistory();
   const [hasClickedButton, setHasClickedButton] = useState(false);
-  if (assessmentId) {
+  if (assessmentId && hasClickedButton) {
     history.push(`/assessments/${assessmentId}`);
   }
   return (
