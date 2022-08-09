@@ -6,6 +6,7 @@
     "antd": "^4.22.4",
     "firebase": "^9.9.2",
     "jszip": "^3.10.1",
+    "npm-force-resolutions": "^0.0.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-range": "^1.8.14",
@@ -28,7 +29,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "preinstall": "npx npm-force-resolutions",
     "postinstall": "npm audit fix"
   },
   "eslintConfig": {
