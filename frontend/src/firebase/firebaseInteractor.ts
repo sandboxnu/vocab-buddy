@@ -1,4 +1,4 @@
-import * as firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
@@ -222,9 +222,8 @@ export default class FirebaseInteractor {
       });
     }
 
-    const increment = firebase.firestore.FieldValue.increment(
-      durationInSeconds
-    );
+    const increment =
+      firebase.firestore.FieldValue.increment(durationInSeconds);
 
     let object: any = {
       wordIdx,
@@ -346,9 +345,8 @@ export default class FirebaseInteractor {
       })
     );
 
-    const increment = firebase.firestore.FieldValue.increment(
-      durationInSeconds
-    );
+    const increment =
+      firebase.firestore.FieldValue.increment(durationInSeconds);
 
     await this.db.collection("assessments").doc(id).update({
       currentIndex: currentIdx,
@@ -520,10 +518,12 @@ export default class FirebaseInteractor {
         .collection("results")
         .get();
       assessmentResultObjects = assessmentResults;
-      correct = assessmentResults.docs.filter((doc) => doc.data().correct)
-        .length;
-      incorrect = assessmentResults.docs.filter((doc) => !doc.data().correct)
-        .length;
+      correct = assessmentResults.docs.filter(
+        (doc) => doc.data().correct
+      ).length;
+      incorrect = assessmentResults.docs.filter(
+        (doc) => !doc.data().correct
+      ).length;
     }
 
     if (interventionForSession) {
