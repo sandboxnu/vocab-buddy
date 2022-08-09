@@ -1,8 +1,15 @@
 import { RootStateOrAny } from "react-redux";
-import { Action, ActionTypes, Assessment } from "../../../models/types";
+import {
+  Action,
+  ActionTypes,
+  Assessment,
+} from "../../../models/types";
 import { UpdateAssessmentSuccess } from "./actions";
 
-const initialState: RootStateOrAny = { assessment: null, finished: false };
+const initialState: RootStateOrAny = {
+  assessment: null,
+  finished: false,
+};
 
 interface AssessmentState {
   assessment?: Assessment;

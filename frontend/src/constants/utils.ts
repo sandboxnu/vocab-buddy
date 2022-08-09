@@ -27,7 +27,10 @@ export function shuffle<T>(array: T[]) {
   });
 }
 
-export function indexOf<T>(array: T[], test: (input: T) => boolean): number {
+export function indexOf<T>(
+  array: T[],
+  test: (input: T) => boolean
+): number {
   for (let idx = 0; idx < array.length; idx++) {
     if (test(array[idx])) {
       return idx;
@@ -36,7 +39,10 @@ export function indexOf<T>(array: T[], test: (input: T) => boolean): number {
   return -1;
 }
 
-export function randomNumberBetween(bottom: number, top: number): number {
+export function randomNumberBetween(
+  bottom: number,
+  top: number
+): number {
   return Math.floor(Math.random() * (top - bottom)) + bottom;
 }
 
@@ -46,7 +52,11 @@ function goToPreviousDay(date: Date) {
 }
 
 function getDayFromDate(date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
 }
 
 function datesEqual(date1: Date, date2: Date): boolean {
@@ -59,7 +69,9 @@ export function dayStreak(dates: Date[]): number {
   let allDays = dates.map(getDayFromDate);
 
   // If they do not have today, there may still be a streak starting yesterday
-  if (indexOf(allDays, (date) => datesEqual(date, dateToCompare)) === -1) {
+  if (
+    indexOf(allDays, (date) => datesEqual(date, dateToCompare)) === -1
+  ) {
     goToPreviousDay(dateToCompare);
   }
   // Sort the days in descending order

@@ -32,7 +32,10 @@ export const GetData = {
     type: ActionTypes.GET_DASHBOARD_DATA_REQUEST,
     payload: { id },
   }),
-  success: ({ user, totalWordsLearned }: GetDashboardDataResponse) => ({
+  success: ({
+    user,
+    totalWordsLearned,
+  }: GetDashboardDataResponse) => ({
     type: ActionTypes.GET_DASHBOARD_DATA_SUCCESS,
     payload: { user, totalWordsLearned },
   }),
@@ -84,7 +87,10 @@ interface GetUserSessionDataResponse {
 }
 
 export const GetUserSessionData = {
-  request: ({ userId, sessionId }: GetUserSessionDataRequestProps) => ({
+  request: ({
+    userId,
+    sessionId,
+  }: GetUserSessionDataRequestProps) => ({
     type: ActionTypes.GET_USER_SESSION_DATA_REQUEST,
     payload: { userId, sessionId },
   }),
@@ -130,7 +136,13 @@ export const UpdateUserSettings = {
     currentPassword,
   }: UserSettings) => ({
     type: ActionTypes.UPDATE_USER_SETTINGS_REQUEST,
-    payload: { newName, newAge, newEmail, newPassword, currentPassword },
+    payload: {
+      newName,
+      newAge,
+      newEmail,
+      newPassword,
+      currentPassword,
+    },
   }),
   success: ({ user }: UpdateUserSettingsSuccessResponse) => ({
     type: ActionTypes.UPDATE_USER_SETTINGS_SUCCESS,

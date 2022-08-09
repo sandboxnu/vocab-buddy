@@ -1,4 +1,4 @@
-import React, {FunctionComponent, ReactElement} from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import styled from "styled-components";
 
 const FooterContainer = styled.footer`
@@ -15,13 +15,15 @@ const FooterContent = styled.div`
   margin-left: 2em;
 `;
 
-const Footer : FunctionComponent = () : ReactElement => {
+const Footer: FunctionComponent = (): ReactElement => {
   return (
     <FooterContainer>
       <FooterContent>
         Made by students @&nbsp;
-        <a href="https://www.sandboxnu.com">Sandbox</a>. Source on&nbsp;
-        <a href="https://github.com/sandboxnu/vocab-buddy/">GitHub</a>.
+        <a href="https://www.sandboxnu.com">Sandbox</a>. Source
+        on&nbsp;
+        <a href="https://github.com/sandboxnu/vocab-buddy/">GitHub</a>
+        .
       </FooterContent>
     </FooterContainer>
   );

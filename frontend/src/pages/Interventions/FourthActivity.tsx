@@ -84,9 +84,8 @@ const FourthActivity = ({
   imageUrl,
   updateIntervention,
 }: FourthActivityProps): ReactElement => {
-  const [triggerSecondPrompt, setTriggerSecondPrompt] = useState(
-    false
-  );
+  const [triggerSecondPrompt, setTriggerSecondPrompt] =
+    useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
 
   useEffect(() => {

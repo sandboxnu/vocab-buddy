@@ -10,11 +10,7 @@
     "strictNullChecks": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true, // should we make this false?
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -24,7 +20,5 @@
     "resolveJsonModule": true,
     "noEmit": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

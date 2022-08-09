@@ -4,7 +4,10 @@ const initialState: State = {
   signedIn: false,
 };
 
-const reducer = (state: State = initialState, action: Action): State => {
+const reducer = (
+  state: State = initialState,
+  action: Action
+): State => {
   switch (action.type) {
     case ActionTypes.AUTHENTICATION_SUCCESS:
       return {
@@ -43,7 +46,9 @@ export const getLoginError = (state: State): Error | undefined => {
   return state.signInError;
 };
 
-export const getCreateUserError = (state: State): Error | undefined => {
+export const getCreateUserError = (
+  state: State
+): Error | undefined => {
   return state.createUserError;
 };
 

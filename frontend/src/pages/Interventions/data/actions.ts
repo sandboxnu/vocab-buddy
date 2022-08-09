@@ -1,4 +1,8 @@
-import { Action, ActionTypes, Interventions } from "../../../models/types";
+import {
+  Action,
+  ActionTypes,
+  Interventions,
+} from "../../../models/types";
 
 interface GetInterventionsAction {
   error?: string;
@@ -78,7 +82,9 @@ export const updateIntervention = {
       },
     };
   },
-  success: ({ interventions }: UpdateInterventionSuccess): Action => ({
+  success: ({
+    interventions,
+  }: UpdateInterventionSuccess): Action => ({
     type: ActionTypes.UPDATE_INTERVENTION_SUCCESS,
     payload: { interventions },
   }),

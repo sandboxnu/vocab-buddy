@@ -83,9 +83,8 @@ const FirstActivity = ({
   imageUrl,
   updateIntervention,
 }: FirstActivityProps): ReactElement => {
-  const [triggerSecondPrompt, setTriggerSecondPrompt] = useState(
-    false
-  );
+  const [triggerSecondPrompt, setTriggerSecondPrompt] =
+    useState(false);
 
   const [showNextButton, setShowNextButton] = useState(false);
 

@@ -87,7 +87,9 @@ function* watchFinishedIntervention(action: Action) {
   try {
     let { setId } = action.payload;
     const createNewAssessment = async () => {
-      await firebaseInteractor.createAssessmentFromIntervention(setId);
+      await firebaseInteractor.createAssessmentFromIntervention(
+        setId
+      );
     };
     yield call(createNewAssessment);
     yield put(finishedIntervention.success());
@@ -100,7 +102,9 @@ function* watchGetCurrentIntervention(action: Action) {
   try {
     let interventionId = "";
     const getCurrent = async () => {
-      interventionId = await firebaseInteractor.getCurrentExerciseId(false);
+      interventionId = await firebaseInteractor.getCurrentExerciseId(
+        false
+      );
     };
     yield call(getCurrent);
     yield put(getCurrentIntervention.success({ id: interventionId }));

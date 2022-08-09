@@ -22,16 +22,17 @@ function* root() {
 }
 
 function* watchCreateUser(action: Action) {
-  let {
-    email,
-    password,
-    name,
-    accountType,
-    age,
-  }: CreateUserParams = action.payload;
+  let { email, password, name, accountType, age }: CreateUserParams =
+    action.payload;
   try {
     yield call(() =>
-      firebaseInteractor.createAccount(email, password, name, accountType, age)
+      firebaseInteractor.createAccount(
+        email,
+        password,
+        name,
+        accountType,
+        age
+      )
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
@@ -43,7 +44,10 @@ function* watchSignIn(action: Action) {
   let { email, password }: LoginParams = action.payload;
   try {
     yield call(() =>
-      firebaseInteractor.signInWithUsernameAndPassword(email, password)
+      firebaseInteractor.signInWithUsernameAndPassword(
+        email,
+        password
+      )
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {

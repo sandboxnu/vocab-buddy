@@ -11,7 +11,10 @@ import "./index.css";
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
+const store = createStore(
+  reducer,
+  applyMiddleware(sagaMiddleware, logger)
+);
 
 sagaMiddleware.run(saga);
 

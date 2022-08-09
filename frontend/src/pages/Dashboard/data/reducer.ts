@@ -1,5 +1,9 @@
 import { RootStateOrAny } from "react-redux";
-import { Action, ActionTypes, DashboardState } from "../../../models/types";
+import {
+  Action,
+  ActionTypes,
+  DashboardState,
+} from "../../../models/types";
 
 const initialState: DashboardState = {
   isSignedOut: false,
@@ -49,7 +53,8 @@ const dashboardReducer = (
       return {
         ...state,
         currentStudent: action.payload.user,
-        currentStudentTotalWordsLearned: action.payload.totalWordsLearned,
+        currentStudentTotalWordsLearned:
+          action.payload.totalWordsLearned,
         error: undefined,
       };
     case ActionTypes.GET_DATA_FOR_RESEARCHERS_SUCCESS:
@@ -128,7 +133,9 @@ export const getCurrentStudentData = (state: RootStateOrAny) => {
   return state.dashboard.currentStudent;
 };
 
-export const getCurrentStudentTotalWordsLearned = (state: RootStateOrAny) => {
+export const getCurrentStudentTotalWordsLearned = (
+  state: RootStateOrAny
+) => {
   return state.dashboard.currentStudentTotalWordsLearned;
 };
 

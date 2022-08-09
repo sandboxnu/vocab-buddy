@@ -15,7 +15,10 @@ export default function* assessmentSaga() {
 }
 
 function* root() {
-  yield takeLatest(ActionTypes.GET_ASSESSMENT_REQUEST, watchGetAssessment);
+  yield takeLatest(
+    ActionTypes.GET_ASSESSMENT_REQUEST,
+    watchGetAssessment
+  );
   yield takeLatest(
     ActionTypes.UPDATE_ASSESSMENT_REQUEST,
     watchUpdateAssessment
@@ -60,7 +63,10 @@ function* watchUpdateAssessment(action: Action) {
     );
     if (isFinished) {
       yield call(() =>
-        firebaseInteractor.createInterventionFromAssessment(sessionId, id)
+        firebaseInteractor.createInterventionFromAssessment(
+          sessionId,
+          id
+        )
       );
     }
     yield put(updateAssessment.success({ isFinished }));
@@ -73,7 +79,9 @@ function* watchGetCurrentAssessment(action: Action) {
   try {
     let assessmentId = "";
     const getCurrent = async () => {
-      assessmentId = await firebaseInteractor.getCurrentExerciseId(true);
+      assessmentId = await firebaseInteractor.getCurrentExerciseId(
+        true
+      );
     };
     yield call(getCurrent);
     yield put(getCurrentAssessment.success({ id: assessmentId }));

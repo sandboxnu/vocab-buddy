@@ -55,27 +55,33 @@ const Prompt = styled.p`
 `;
 
 interface LandingPageProps {
-    image: string;
-    title: string;
-    subtitle: string;
-    onBegin: () => void;
+  image: string;
+  title: string;
+  subtitle: string;
+  onBegin: () => void;
 }
 
-const LandingPage : FunctionComponent<LandingPageProps> = ({ image, title, subtitle, onBegin }) : ReactElement => {
+const LandingPage: FunctionComponent<LandingPageProps> = ({
+  image,
+  title,
+  subtitle,
+  onBegin,
+}): ReactElement => {
   return (
-      <Layout shouldAddPadding={false}>
+    <Layout shouldAddPadding={false}>
       <LandingPageContainer>
         <ImageContainer>
-          <LandingPageImage
-            src={image}
-            alt="image-landing"
-          />
+          <LandingPageImage src={image} alt="image-landing" />
         </ImageContainer>
         <LandingPageText>
           <LandingPageTextHolder>
             {title}
             <Prompt>{subtitle}</Prompt>
-            <PurpleButton text={"begin"} top={100} onClick={onBegin} />
+            <PurpleButton
+              text={"begin"}
+              top={100}
+              onClick={onBegin}
+            />
           </LandingPageTextHolder>
         </LandingPageText>
       </LandingPageContainer>

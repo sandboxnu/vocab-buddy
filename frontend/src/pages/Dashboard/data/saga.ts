@@ -1,4 +1,10 @@
-import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import {
+  all,
+  call,
+  put,
+  takeEvery,
+  takeLatest,
+} from "redux-saga/effects";
 import FirebaseInteractor from "../../../firebase/firebaseInteractor";
 import { Action, ActionTypes } from "../../../models/types";
 import {
@@ -39,7 +45,10 @@ function* root() {
     ActionTypes.UPDATE_USER_SETTINGS_REQUEST,
     watchUpdateUserSettings
   );
-  yield takeLatest(ActionTypes.DOWNLOAD_USER_DATA_REQUEST, watchDownloadData);
+  yield takeLatest(
+    ActionTypes.DOWNLOAD_USER_DATA_REQUEST,
+    watchDownloadData
+  );
 }
 
 function* watchSignOut() {
@@ -57,12 +66,16 @@ function* watchGetDashboardData(action: Action) {
   let totalWordsLearned;
   const getValue = async () => {
     user = await firebaseInteractor.getUser(id);
-    totalWordsLearned = await firebaseInteractor.getTotalWordsLearned(id);
+    totalWordsLearned = await firebaseInteractor.getTotalWordsLearned(
+      id
+    );
   };
   try {
     yield call(getValue);
     if (id) {
-      yield put(GetData.requestStudentSuccess({ user, totalWordsLearned }));
+      yield put(
+        GetData.requestStudentSuccess({ user, totalWordsLearned })
+      );
     } else {
       yield put(GetData.success({ user, totalWordsLearned }));
     }
@@ -120,7 +133,9 @@ function* watchUpdateUserSettings(action: Action) {
   let userSettings = action.payload;
   let newUser;
   const updateSettings = async () => {
-    newUser = await firebaseInteractor.updateUserSettings(userSettings);
+    newUser = await firebaseInteractor.updateUserSettings(
+      userSettings
+    );
   };
   try {
     yield call(updateSettings);
