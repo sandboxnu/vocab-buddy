@@ -4,7 +4,7 @@ import React, {
   useState,
 } from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Toast from "../../components/Toast";
 import LandingPage from "../../components/LandingPage";
 import { ASSESSMENTS_LANDING } from "../../constants/images";
@@ -32,10 +32,10 @@ const Assessments: FunctionComponent<AssessmentsProps> = ({
   getAssessmentRequest,
   error,
 }): ReactElement => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [hasClickedButton, setHasClickedButton] = useState(false);
   if (assessmentId && hasClickedButton) {
-    history.push(`/assessments/${assessmentId}`);
+    navigate(`/assessments/${assessmentId}`);
   }
   return (
     <>

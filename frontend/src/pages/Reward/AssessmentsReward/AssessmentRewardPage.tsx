@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Layout from "../../../components/Layout";
 import CloudGroup from "../../../components/CloudGroup";
 import PurpleButton from "../../../components/PurpleButton";
@@ -53,7 +53,7 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `;
 const AssessmentRewardPage = (): ReactElement => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {});
 
@@ -73,7 +73,7 @@ const AssessmentRewardPage = (): ReactElement => {
             top={20}
             text={"back to dashboard"}
             onClick={() => {
-              history.push("/dashboard");
+              navigate("/dashboard");
             }}
           />
         </ButtonContainer>

@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   getCurrentInterventions,
@@ -103,10 +103,10 @@ const Activities: FunctionComponent<ActivityProps> = ({
       wordList.length
     );
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   if (error) {
-    history.push("/error");
+    navigate("/error");
   }
 
   if (!interventions) {
@@ -126,7 +126,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
             currentWordIdx === wordList.length - 1 &&
             nextActivityIdx === 0
           ) {
-            history.push(`/interventions/reward`);
+            navigate(`/interventions/reward`);
             finishedIntervention({ setId });
           } else {
             updateIntervention({

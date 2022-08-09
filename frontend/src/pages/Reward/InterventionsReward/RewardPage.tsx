@@ -1,6 +1,6 @@
 import React, { ReactElement, useState, useEffect } from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CloudGroup from "../../../components/CloudGroup";
 import Balloon from "../../../components/Balloon";
 import Layout from "../../../components/Layout";
@@ -31,14 +31,14 @@ const RewardPage = ({
   maxBalloon,
   delay,
 }: RewardPageProps): ReactElement => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [score, setScore] = useState(0);
 
   useEffect(() => {
     if (score === maxBalloon) {
       let timer = setTimeout(() => {
-        history.push("/dashboard");
+        navigate("/dashboard");
       }, delay);
 
       return () => {

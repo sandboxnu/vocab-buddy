@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { SessionStats, WordResult } from "../../models/types";
 import {
@@ -258,16 +258,14 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
   userSessionData,
   userName,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const wordResults = userSessionData.wordResults;
   return (
     <SessionContainer>
       <SessionHeader>
         <DashboardRedirect
           onClick={() => {
-            history.push(
-              `/dashboard/student/${userSessionData.userId}/`
-            );
+            navigate(`/dashboard/student/${userSessionData.userId}/`);
           }}
         >
           {"< back to " + userName + "'s data"}

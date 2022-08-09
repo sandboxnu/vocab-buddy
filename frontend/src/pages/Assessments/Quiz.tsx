@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Assessment, AssessmentResult } from "../../models/types";
 import LoadingScreen from "../Loading/LoadingScreen";
 import {
@@ -46,14 +46,14 @@ const Quiz = ({
   isFinished,
   error,
 }: QuizProps) => {
-  let history = useHistory();
+  let history = useNavigate();
   let params = useParams<QuizParams>();
   if (isFinished) {
-    history.push("/assessments/reward");
+    navigate("/assessments/reward");
   }
 
   if (error) {
-    history.push("/error");
+    navigate("/error");
   }
 
   useEffect(() => {

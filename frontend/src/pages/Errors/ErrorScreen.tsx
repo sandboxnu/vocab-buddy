@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import CloudGroup from "../../components/CloudGroup";
 import Layout from "../../components/Layout";
@@ -62,10 +62,10 @@ const connector = connect(
 );
 
 function ErrorScreen({ logOut, signedOut }: ErrorScreenProps) {
-  let history = useHistory();
+  let history = useNavigate();
 
   if (signedOut) {
-    history.push("/login");
+    navigate("/login");
   }
 
   return (
@@ -77,7 +77,7 @@ function ErrorScreen({ logOut, signedOut }: ErrorScreenProps) {
           <TitleText>oops, something went wrong</TitleText>
           <PurpleButton
             text="return to dashboard"
-            onClick={() => history.push("/dashboard")}
+            onClick={() => navigate("/dashboard")}
           />
           <SignOutButton onClick={logOut}>log out</SignOutButton>
         </WrappingDiv>

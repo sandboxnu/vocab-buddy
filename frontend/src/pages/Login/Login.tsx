@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 import { connect } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Toast from "../../components/Toast";
 import Layout from "../../components/Layout";
@@ -166,7 +166,7 @@ const Login: FunctionComponent<LoginProps> = ({
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [showError, setShowError] = useState(false);
-  let history = useHistory();
+  let history = useNavigate();
   let location = useLocation();
   let redirect: string | null = null;
   if (location.state != null) {
@@ -195,7 +195,7 @@ const Login: FunctionComponent<LoginProps> = ({
       if (redirect != null) {
         history.replace(redirect);
       } else {
-        history.push("/dashboard");
+        navigate("/dashboard");
       }
     }
   }, [signedIn, history, redirect]);
@@ -244,7 +244,7 @@ const Login: FunctionComponent<LoginProps> = ({
                 <HorizontalDiv>
                   Don't have an account?
                   <CreateUserButton
-                    onClick={() => history.push("/sign_up")}
+                    onClick={() => navigate("/sign_up")}
                   >
                     sign up
                   </CreateUserButton>

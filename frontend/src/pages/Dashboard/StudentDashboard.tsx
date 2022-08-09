@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   CLOUD,
@@ -437,14 +437,14 @@ const SessionCard: FunctionComponent<SessionCardParams> = ({
   studentId,
   isStudentView,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <SessionBox
       isComplete={isComplete}
       isStudentView={isStudentView}
       onClick={() => {
         if (!isStudentView && isComplete) {
-          history.push(
+          navigate(
             `/dashboard/${studentId}/session/${sessionNumber - 1}`
           );
         }
@@ -463,7 +463,7 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
   downloadData,
   downloadDataLoading,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa"];
   const sessionNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
   const daysActiveThisWeek = student.daysActive.filter((day) =>
@@ -485,7 +485,7 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
             <NextSessionButton
               text={getTitleOfButton(student)}
               onClick={() =>
-                history.push(
+                navigate(
                   student.onAssessment
                     ? "/assessments"
                     : "/interventions"
@@ -496,9 +496,7 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
           </>
         ) : (
           <>
-            <BackToDashboard
-              onClick={() => history.push("/dashboard")}
-            >
+            <BackToDashboard onClick={() => navigate("/dashboard")}>
               {"<"} back to student selections
             </BackToDashboard>
             <StudentNameTitle>

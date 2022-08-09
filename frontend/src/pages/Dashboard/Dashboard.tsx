@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 import { connect } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import { SessionStats, User } from "../../models/types";
@@ -80,9 +80,8 @@ const connector = connect(
     error: getDashboardError(state),
     requestedStudent: getCurrentStudentData(state),
     userSessionData: getSessionStats(state),
-    requestedStudentTotalWordsLearned: getCurrentStudentTotalWordsLearned(
-      state
-    ),
+    requestedStudentTotalWordsLearned:
+      getCurrentStudentTotalWordsLearned(state),
     downloadDataLoading: getDownloadDataLoading(state),
   }),
   {
@@ -452,18 +451,16 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   downloadData,
   downloadDataLoading,
 }): ReactElement => {
-  let history = useHistory();
+  let history = useNavigate();
   if (isSignedOut) {
-    history.push("/login");
+    navigate("/login");
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [showModal, setShowModal] = useState(false);
   const [selectedMenuButton, setSelectedMenuButton] = useState(1);
 
-  const [
-    hasPerformedNetworkRequest,
-    setHasPerformedNetworkRequest,
-  ] = useState(false);
+  const [hasPerformedNetworkRequest, setHasPerformedNetworkRequest] =
+    useState(false);
   let params = useParams<IndividualDashboardParams>();
   let sessionParams = useParams<SessionDashboardParams>();
 
@@ -489,7 +486,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     hasPerformedNetworkRequest &&
     selectedMenuButton !== 3
   ) {
-    history.push("/error");
+    navigate("/error");
   }
 
   useEffect(() => {
@@ -576,7 +573,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     (params.id || sessionParams.userId || sessionParams.sessionId) &&
     currentUser.accountType === "STUDENT"
   ) {
-    history.push("/error");
+    navigate("/error");
   }
 
   const chooseDashboardView = (menuButtonNumber: number) => {

@@ -4,7 +4,7 @@ import { User } from "../../models/types";
 import { Dropdown, Menu } from "antd";
 import caret from "../../assets/caret.svg";
 import { CLOUD, SKY } from "../../constants/colors";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 
 const ResearcherDashboardContainer = styled.div`
   display: flex;
@@ -160,10 +160,10 @@ interface StudentCardParams {
 const StudentCard: FunctionComponent<StudentCardParams> = ({
   student,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <StudentCardContainer
-      onClick={() => history.push(`/dashboard/student/${student.id}`)}
+      onClick={() => navigate(`/dashboard/student/${student.id}`)}
     >
       <Avatar
         src={
@@ -217,9 +217,9 @@ interface ResearcherDashboardParams {
   students: User[];
 }
 
-const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
-  students,
-}) => {
+const ResearcherDashboard: FunctionComponent<
+  ResearcherDashboardParams
+> = ({ students }) => {
   const [sortByLabel, setSortByLabel] = useState(
     () => "alphabetical"
   );

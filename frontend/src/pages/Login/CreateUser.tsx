@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CloudGroup from "../../components/CloudGroup";
 import Layout from "../../components/Layout";
@@ -183,11 +183,11 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
     }
   };
 
-  let history = useHistory();
+  let history = useNavigate();
 
   useEffect(() => {
     if (signedIn) {
-      history.push("/dashboard");
+      navigate("/dashboard");
     }
   }, [signedIn, history]);
   // For right now, go to dashboard when signed in
@@ -280,7 +280,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
 
               <HorizontalDiv>
                 Have an account?
-                <LoginButton onClick={() => history.push("/")}>
+                <LoginButton onClick={() => navigate("/")}>
                   login
                 </LoginButton>
               </HorizontalDiv>

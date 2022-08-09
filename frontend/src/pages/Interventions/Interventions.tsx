@@ -5,7 +5,7 @@ import React, {
 } from "react";
 import LandingPage from "../../components/LandingPage";
 import { ASSESSMENTS_LANDING } from "../../constants/images";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCurrentIntervention } from "./data/actions";
 import { getError, getInterventionId } from "./data/reducer";
@@ -32,10 +32,10 @@ const Interventions: FunctionComponent<InterventionProps> = ({
   getInterventionRequest,
   error,
 }): ReactElement => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [hasClickedButton, setHasClickedButton] = useState(false);
   if (interventionId && hasClickedButton) {
-    history.push(`/interventions/${interventionId}`);
+    navigate(`/interventions/${interventionId}`);
   }
   return (
     <>
