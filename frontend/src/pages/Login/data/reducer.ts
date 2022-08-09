@@ -1,4 +1,3 @@
-import { RootStateOrAny } from "react-redux";
 import { Action, ActionTypes, State } from "../../../models/types";
 
 const initialState: State = {
@@ -36,16 +35,16 @@ const reducer = (state: State = initialState, action: Action): State => {
   }
 };
 
-export const getSignedIn = (state: RootStateOrAny): boolean => {
-  return state.login.signedIn;
+export const getSignedIn = (state: State): boolean => {
+  return state.signedIn;
 };
 
-export const getLoginError = (state: RootStateOrAny): Error => {
-  return state.login.signInError;
+export const getLoginError = (state: State): Error | undefined => {
+  return state.signInError;
 };
 
-export const getCreateUserError = (state: RootStateOrAny): Error => {
-  return state.login.createUserError;
+export const getCreateUserError = (state: State): Error | undefined => {
+  return state.createUserError;
 };
 
 export default reducer;

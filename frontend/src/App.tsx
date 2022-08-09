@@ -2,9 +2,9 @@ import React, { ReactElement } from "react";
 import { connect } from "react-redux";
 import {
   BrowserRouter as Router,
-  Redirect,
+  Navigate,
   Route,
-  Switch,
+  Routes,
 } from "react-router-dom";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Assessments from "./pages/Assessments/Assessments";
@@ -21,59 +21,53 @@ import ErrorScreen from "./pages/Errors/ErrorScreen";
 const App = (): ReactElement => {
   return (
     <Router>
-      <Switch>
-        <Redirect exact from="/" to="/login" />
-        <Route exact path="/login" component={Login} />
-        <Route path="/sign_up" component={CreateUser} />
+      <Routes>
+        <Navigate to="/login" />
+        <Route path="/login" element={<Login />} />
+        <Route path="/sign_up" element={<CreateUser />} />
         <AuthenticatedRoute
-          exact
           path="/dashboard"
-          component={Dashboard}
+          element={<Dashboard />}
         />
         <AuthenticatedRoute
-          exact
           path="/dashboard/student/:id"
-          component={Dashboard}
+          element={<Dashboard />}
         />
         <AuthenticatedRoute
           path="/dashboard/:userId/session/:sessionId"
-          component={Dashboard}
+          element={<Dashboard />}
         />
         <AuthenticatedRoute
-          exact
           path="/interventions"
-          component={Interventions}
+          element={<Interventions />}
         />
         <AuthenticatedRoute
           path="/interventions/reward"
-          component={Reward}
+          element={<Reward />}
         />
         <AuthenticatedRoute
-          exact
           path="/interventions/:id"
-          component={Activities}
+          element={<Activities />}
         />
         <AuthenticatedRoute
           path="/assessments/reward"
-          component={AssessmentRewardPage}
+          element={<AssessmentRewardPage />}
         />
         <AuthenticatedRoute
-          exact
           path="/interventions/:id"
-          component={Activities}
+          element={<Activities />}
         />
         <AuthenticatedRoute
-          exact
           path="/assessments/:id"
-          component={Quiz}
+          element={<Quiz />}
         />
         <AuthenticatedRoute
           path="/assessments"
-          component={Assessments}
+          element={<Assessments />}
         />
-        <Route path="/error" component={ErrorScreen} />
-        <Redirect to="/error" />
-      </Switch>
+        <Route path="/error" element={<ErrorScreen />} />
+        <Navigate to="/error" />
+      </Routes>
     </Router>
   );
 };

@@ -1,32 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { getSignedIn } from '../pages/Login/data/reducer';
+import React from "react";
+import { useStore } from "react-redux";
+import { connect } from "react-redux";
+import { Navigate, Route, RouteProps } from "react-router-dom";
+import { State } from "../models/types";
 
-interface AuthorizedRouteProps extends RouteProps {
-    signedIn: boolean,
-}
+const AuthorizedRoute = (props: RouteProps) => {
+  const { signedIn } = useStore().getState() as State;
+  if (signedIn) {
+    return <Route {...props} />;
+  }
+  return <Navigate to="/login" />;
+};
 
-class AuthorizedRoute extends Route<AuthorizedRouteProps> {
-    render() {
-        let { location, signedIn } = this.props;
-        if (signedIn) {
-            return (<Route {... this.props} />)
-        }
-        return (
-            <Redirect from={location?.pathname || ""} to={{
-                pathname: '/login',
-                state: {
-                    redirect: location?.pathname || ""
-                }
-            }}/>
-        )
-    }
-}
-
-const connector = connect((state) => ({
-    ...state,
-    signedIn: getSignedIn(state)
-  }), {});
-
-export default connector(AuthorizedRoute)
+export default AuthorizedRoute;
