@@ -186,7 +186,7 @@ const SecondActivity = ({
               }
             />
           </Prompt>
-          <Blocker afterSeconds={15} repeatable={false}>
+          <Blocker afterSeconds={45} repeatable={false}>
             <StyledDivForClicks>
               {imageUrls.map((img, index) => (
                 <ImageContainer>
