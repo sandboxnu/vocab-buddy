@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import Toast from '../../components/Toast';
 import Layout from '../../components/Layout';
 import PurpleButton from '../../components/PurpleButton';
-import { TextInput } from '../../components/TextInput';
+import TextInput from '../../components/TextInput';
 import { INK, LOGIN_BACKGROUND } from '../../constants/colors';
 import { authenticationRequest } from './data/actions';
 import { getLoginError, getSignedIn } from './data/reducer';
@@ -130,30 +130,29 @@ const StyledPurpleButton = styled(PurpleButton)`
   padding: 10px;
 `;
 
-const loginIllustration =
-  'https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/login_illustration.png?alt=media&token=1a270ca5-e24b-4327-83af-89972e0e112e';
+const loginIllustration = 'https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/login_illustration.png?alt=media&token=1a270ca5-e24b-4327-83af-89972e0e112e';
 
 interface State {
   redirect: string;
 }
 
 const Login: FunctionComponent<{}> = (): ReactElement => {
-  const signIn = authenticationRequest.signIn;
-  const resetPassword = authenticationRequest.resetPassword;
+  const { signIn } = authenticationRequest;
+  const { resetPassword } = authenticationRequest;
   const signedIn = useSelector(getSignedIn);
   const error = useSelector(getLoginError);
-  let [email, setEmail] = useState('');
-  let [password, setPassword] = useState('');
-  let [showError, setShowError] = useState(false);
-  let navigate = useNavigate();
-  let location = useLocation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showError, setShowError] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   let redirect: string | null = null;
   if (location.state != null) {
     redirect = (location.state as State).redirect;
   }
 
-  let doResetPassword = () => {
-    let email = prompt('What is your email?');
+  const doResetPassword = () => {
+    const email = prompt('What is your email?');
 
     if (email == null || email === '') {
       return;
@@ -180,7 +179,7 @@ const Login: FunctionComponent<{}> = (): ReactElement => {
   }, [signedIn, history, redirect]);
 
   return (
-    <Layout hideBar={true} shouldAddPadding={false}>
+    <Layout hideBar shouldAddPadding={false}>
       <>
         <Toast
           message={showError ? error?.message : undefined}
@@ -212,7 +211,7 @@ const Login: FunctionComponent<{}> = (): ReactElement => {
                 />
 
                 <StyledPurpleButton
-                  text={'login'}
+                  text="login"
                   top={0}
                   onClick={() => doSignIn()}
                 />

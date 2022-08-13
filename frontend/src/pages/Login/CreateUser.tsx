@@ -4,13 +4,13 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import CloudGroup from '../../components/CloudGroup';
 import Layout from '../../components/Layout';
 import PurpleButton from '../../components/PurpleButton';
-import { TextInput } from '../../components/TextInput';
+import TextInput from '../../components/TextInput';
 import { INK, SEA_FOAM } from '../../constants/colors';
 import { authenticationRequest } from './data/actions';
 import { AccountType, CreateUserParams } from '../../models/types';
@@ -52,8 +52,7 @@ interface RadioTextProps {
   isActive: boolean;
 }
 const RadioText = styled.p`
-  border-bottom: ${({ isActive }: RadioTextProps) =>
-    !isActive ? '0px solid clear' : `4px solid ${SEA_FOAM}`};
+  border-bottom: ${({ isActive }: RadioTextProps) => (!isActive ? '0px solid clear' : `4px solid ${SEA_FOAM}`)};
   flex: 1;
   margin-right: 15px;
 
@@ -114,8 +113,7 @@ interface NameTextInputProps {
 }
 const NameTextInput = styled(TextInput)`
   flex: 3;
-  margin-right: ${({ isStudent }: NameTextInputProps) =>
-    isStudent ? '15px' : '0px'};
+  margin-right: ${({ isStudent }: NameTextInputProps) => (isStudent ? '15px' : '0px')};
 `;
 
 const AgeTextInput = styled(TextInput)`
@@ -131,7 +129,7 @@ const connector = connect(
   }),
   {
     createUser: authenticationRequest.createUser,
-  }
+  },
 );
 
 interface CreateUserProps {
@@ -146,29 +144,27 @@ interface CreateUserProps {
   error?: Error;
 }
 
-const CreateUser: FunctionComponent<CreateUserProps> = ({
-  signedIn,
-  createUser,
-  error,
-}): ReactElement => {
-  let [email, setEmail] = useState('');
-  let [password, setPassword] = useState('');
-  let [confirmPassword, setConfirmPassword] = useState('');
-  let [name, setName] = useState('');
-  let [accountType, setAccountType] = useState('STUDENT');
-  let [age, setAge] = useState('');
-  let [errorString, setErrorString] = useState('');
-  let [networkErrorShown, setNetworkErrorShown] = useState(false);
-  let createUserWithCheck = () => {
+const CreateUser: FunctionComponent<{}> = (): ReactElement => {
+  const signedIn = useSelector(getSignedIn);
+  const error = useSelector(getCreateUserError);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
+  const [accountType, setAccountType] = useState('STUDENT');
+  const [age, setAge] = useState('');
+  const [errorString, setErrorString] = useState('');
+  const [networkErrorShown, setNetworkErrorShown] = useState(false);
+  const createUserWithCheck = () => {
     if (confirmPassword !== password) {
       setErrorString(
-        'you need to confirm the password with the same password'
+        'you need to confirm the password with the same password',
       );
     } else if (
-      (accountType === 'STUDENT' && !age) ||
-      !name ||
-      !password ||
-      !email
+      (accountType === 'STUDENT' && !age)
+      || !name
+      || !password
+      || !email
     ) {
       setErrorString('please fill in all fields');
     } else {
@@ -178,12 +174,12 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
         password,
         name,
         accountType: accountType as AccountType,
-        age: accountType === 'RESEARCHER' ? null : parseInt(age),
+        age: accountType === 'RESEARCHER' ? null : parseInt(age, 10),
       });
     }
   };
 
-  let history = useNavigate();
+  const history = useNavigate();
 
   useEffect(() => {
     if (signedIn) {
@@ -193,7 +189,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
   // For right now, go to dashboard when signed in
 
   return (
-    <Layout hideBar={true}>
+    <Layout hideBar>
       <>
         <CloudGroup />
         <LoginHoldingDiv>
@@ -242,7 +238,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
                 {accountType === 'STUDENT' && (
                   <AgeTextInput
                     onChange={(e) => {
-                      if (parseInt(e.target.value) != null) {
+                      if (parseInt(e.target.value, 10) != null) {
                         setAge(e.target.value);
                       }
                     }}
@@ -273,7 +269,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
               />
 
               <StyledPurpleButton
-                text={'sign up'}
+                text="sign up"
                 top={0}
                 onClick={() => createUserWithCheck()}
               />
@@ -293,4 +289,4 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
   );
 };
 
-export default connector(CreateUser);
+export default CreateUser;

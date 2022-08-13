@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const StyledAlert = styled(Alert)<ToastProps>`
   position: sticky;
-  top: ${({ topMargin }) => (topMargin ? topMargin : '10px')};
+  top: ${({ topMargin }) => topMargin || '10px'};
 
   @media (max-width: 900px) {
     width: 100%;
@@ -42,9 +42,8 @@ const Toast: FunctionComponent<ToastProps> = ({
         onClose={onClose}
       />
     );
-  } else {
-    return <></>;
   }
+  return <></>;
 };
 
 export default Toast;

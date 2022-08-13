@@ -35,13 +35,13 @@ const CloudImageRight = styled(CloudImage)`
   }
 `;
 
-const CloudGroup = (): ReactElement => {
+function CloudGroup(): ReactElement {
   return (
     <Container>
       <CloudImageLeft direction="left" />
       <CloudImageRight direction="right" />
     </Container>
   );
-};
+}
 
 export default CloudGroup;

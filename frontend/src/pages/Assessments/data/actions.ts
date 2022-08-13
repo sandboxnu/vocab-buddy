@@ -69,7 +69,7 @@ export const updateAssessment = {
 };
 
 export interface GetCurrentAssessmentProps {
-  id: String;
+  id: string;
 }
 
 export const getCurrentAssessment = {

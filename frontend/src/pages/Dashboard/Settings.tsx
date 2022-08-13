@@ -1,5 +1,9 @@
-import React, { ReactElement, useEffect } from 'react';
-import { FunctionComponent, useState } from 'react';
+import React, {
+  ReactElement,
+  useEffect,
+  FunctionComponent,
+  useState,
+} from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { User, UserSettings } from '../../models/types';
@@ -75,8 +79,7 @@ interface NameTextInputProps {
 }
 const NameTextInput = styled(TextInput)`
   flex: 3;
-  margin-right: ${({ isStudent }: NameTextInputProps) =>
-    isStudent ? '15px' : '0px'};
+  margin-right: ${({ isStudent }: NameTextInputProps) => (isStudent ? '15px' : '0px')};
 `;
 
 const AgeTextInput = styled(TextInput)`
@@ -92,7 +95,7 @@ const connector = connect(
   }),
   {
     updateSettings: UpdateUserSettings.request,
-  }
+  },
 );
 
 interface SettingsProps {
@@ -112,36 +115,36 @@ const Settings: FunctionComponent<SettingsProps> = ({
   error,
   updateSettings,
 }): ReactElement => {
-  let [email, setEmail] = useState('');
-  let [password, setPassword] = useState('');
-  let [confirmPassword, setConfirmPassword] = useState('');
-  let [currentPassword, setCurrentPassword] = useState('');
-  let [name, setName] = useState(user.name);
-  let [age, setAge] = useState(user.age);
-  let [errorString, setErrorString] = useState('');
-  let [networkErrorShown, setNetworkErrorShown] = useState(false);
-  let [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [name, setName] = useState(user.name);
+  const [age, setAge] = useState(user.age);
+  const [errorString, setErrorString] = useState('');
+  const [networkErrorShown, setNetworkErrorShown] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
-  let updateUserSettings = () => {
+  const updateUserSettings = () => {
     setErrorString('');
     setShowSuccessToast(false);
     if (confirmPassword !== password) {
       setErrorString(
-        'you need to confirm the password with the same password'
+        'you need to confirm the password with the same password',
       );
       return;
     }
 
     if (email.length > 0 && currentPassword.length === 0) {
       setErrorString(
-        'you need to enter your current password to change your email'
+        'you need to enter your current password to change your email',
       );
       return;
     }
 
     if (password.length > 0 && currentPassword.length === 0) {
       setErrorString(
-        'you need to enter your current password to change your password'
+        'you need to enter your current password to change your password',
       );
       return;
     }
@@ -185,7 +188,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
         showSuccessToast && (
           <Toast
             topMargin="70px"
-            message={'Successfully updated user settings'}
+            message="Successfully updated user settings"
             alertType="success"
             onClose={() => {
               setErrorString('');
@@ -210,8 +213,8 @@ const Settings: FunctionComponent<SettingsProps> = ({
             {user.accountType === 'STUDENT' && (
               <AgeTextInput
                 onChange={(e) => {
-                  if (parseInt(e.target.value) != null) {
-                    setAge(parseInt(e.target.value));
+                  if (parseInt(e.target.value, 10) != null) {
+                    setAge(parseInt(e.target.value, 10));
                   }
                 }}
                 value={age.toString()}
@@ -226,14 +229,14 @@ const Settings: FunctionComponent<SettingsProps> = ({
             value={email}
             type="email"
             text="email address"
-            autoComplete={'new-email'}
+            autoComplete="new-email"
           />
           <TextInput
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             type="password"
             text="password"
-            autoComplete={'new-password'}
+            autoComplete="new-password"
           />
           <TextInput
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -241,7 +244,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
             type="password"
             expectedValue={password}
             text="confirm password"
-            autoComplete={'new-password'}
+            autoComplete="new-password"
           />
           <TextInput
             onChange={(e) => setCurrentPassword(e.target.value)}
@@ -250,7 +253,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
             text="current password*"
           />
           <StyledPurpleButton
-            text={'save'}
+            text="save"
             top={0}
             onClick={() => updateUserSettings()}
           />
@@ -261,4 +264,4 @@ const Settings: FunctionComponent<SettingsProps> = ({
   );
 };
 
-export default connector(Settings);
+export default Settings;

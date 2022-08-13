@@ -1,6 +1,8 @@
 import React, { FunctionComponent, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { DownloadOutlined } from '@ant-design/icons';
+import { Alert } from 'antd';
 import {
   CLOUD,
   INK,
@@ -14,8 +16,6 @@ import ellipse from '../../assets/ellipse.svg';
 import ColoredSessionIcons from '../../assets/icons/session/color/ColoredSessionIcons';
 import GrayscaleSessionIcons from '../../assets/icons/session/grayscale/GrayscaleSessionIcons';
 import { dayStreak } from '../../constants/utils';
-import { DownloadOutlined } from '@ant-design/icons';
-import { Alert } from 'antd';
 
 interface StudentDashboardParams {
   student: User;
@@ -84,20 +84,17 @@ const SessionBox = styled.div`
     padding: 32px;
   }
 
-  background: ${({ isComplete }: SessionCompletionProps) =>
-    isComplete ? SKY : INCOMPLETE_GRAY} !important;
+  background: ${({ isComplete }: SessionCompletionProps) => (isComplete ? SKY : INCOMPLETE_GRAY)} !important;
 
   :hover {
     cursor: ${({
-      isComplete,
-      isStudentView,
-    }: SessionCompletionProps) =>
-      isComplete && !isStudentView ? 'pointer' : 'auto'};
+    isComplete,
+    isStudentView,
+  }: SessionCompletionProps) => (isComplete && !isStudentView ? 'pointer' : 'auto')};
     opacity: ${({
-      isComplete,
-      isStudentView,
-    }: SessionCompletionProps) =>
-      isComplete && !isStudentView ? 0.8 : 1};
+    isComplete,
+    isStudentView,
+  }: SessionCompletionProps) => (isComplete && !isStudentView ? 0.8 : 1)};
   }
 `;
 
@@ -314,8 +311,8 @@ const getTitleOfButton = (user: User): string => {
       return 'Congratulations on finishing the study';
     default:
       return (
-        (user.onAssessment ? 'Continue session ' : 'Begin session ') +
-        (user.sessionId + 1)
+        (user.onAssessment ? 'Continue session ' : 'Begin session ')
+        + (user.sessionId + 1)
       );
   }
 };
@@ -338,40 +335,33 @@ const StyledAlert = styled(Alert)`
 `;
 
 const filterByThisWeek = (dayString: string) => {
-  let today = new Date(
+  const today = new Date(
     new Date().getFullYear(),
     new Date().getMonth(),
-    new Date().getDate()
+    new Date().getDate(),
   );
-  let todayDayOfWeek = today.getDay();
-  let day = new Date(dayString);
-  let daysApart =
-    (today.getTime() - day.getTime()) / (1000 * 60 * 60 * 24);
-  let dayOfWeek = day.getDay();
+  const todayDayOfWeek = today.getDay();
+  const day = new Date(dayString);
+  const daysApart = (today.getTime() - day.getTime()) / (1000 * 60 * 60 * 24);
+  const dayOfWeek = day.getDay();
   return !(
-    today !== day &&
-    (dayOfWeek > todayDayOfWeek || daysApart >= 7)
+    today !== day
+    && (dayOfWeek > todayDayOfWeek || daysApart >= 7)
   );
 };
 
 const isDayActive = (
   dayNumber: number,
-  daysActive: string[]
-): boolean => {
-  for (let index in daysActive) {
-    let dayString = daysActive[index];
-    let day = new Date(dayString);
-    let dayOfWeek = day.getDay();
-    if (dayOfWeek === dayNumber) {
-      return true;
-    }
-  }
-  return false;
-};
+  daysActive: string[],
+): boolean => daysActive.some((dayString) => {
+  const day = new Date(dayString);
+  const dayOfWeek = day.getDay();
+  return dayOfWeek === dayNumber;
+});
 
 const isToday = (dayNumber: number): boolean => {
-  let today = new Date();
-  let dayOfWeek = today.getDay();
+  const today = new Date();
+  const dayOfWeek = today.getDay();
   return dayNumber === dayOfWeek;
 };
 
@@ -394,15 +384,15 @@ const DayOfWeek: FunctionComponent<DayParams> = ({
   day,
   daysActiveThisWeek,
 }) => {
-  let istoday = isToday(day);
-  let isActive = isDayActive(day, daysActiveThisWeek);
+  const istoday = isToday(day);
+  const isActive = isDayActive(day, daysActiveThisWeek);
   return (
     <DayContainer>
       {isActive ? (
-        <Star src={star}></Star>
+        <Star src={star} />
       ) : (
         <DotContainer>
-          <Dot src={ellipse}></Dot>
+          <Dot src={ellipse} />
         </DotContainer>
       )}
       <DayLabel isToday={istoday}>{name}</DayLabel>
@@ -413,14 +403,12 @@ const DayOfWeek: FunctionComponent<DayParams> = ({
 const Stat: FunctionComponent<StatParams> = ({
   number,
   description,
-}) => {
-  return (
-    <ProgressBox>
-      <ProgressStatNumber>{number}</ProgressStatNumber>
-      <ProgressStatDescription>{description}</ProgressStatDescription>
-    </ProgressBox>
-  );
-};
+}) => (
+  <ProgressBox>
+    <ProgressStatNumber>{number}</ProgressStatNumber>
+    <ProgressStatDescription>{description}</ProgressStatDescription>
+  </ProgressBox>
+);
 
 interface SessionCardParams {
   sessionNumber: number;
@@ -445,13 +433,16 @@ const SessionCard: FunctionComponent<SessionCardParams> = ({
       onClick={() => {
         if (!isStudentView && isComplete) {
           navigate(
-            `/dashboard/${studentId}/session/${sessionNumber - 1}`
+            `/dashboard/${studentId}/session/${sessionNumber - 1}`,
           );
         }
       }}
     >
       <SessionImage src={image} />
-      <SessionNumber>session {sessionNumber}</SessionNumber>
+      <SessionNumber>
+        session
+        {sessionNumber}
+      </SessionNumber>
     </SessionBox>
   );
 };
@@ -466,9 +457,7 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
   const navigate = useNavigate();
   const dayLabels = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
   const sessionNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
-  const daysActiveThisWeek = student.daysActive.filter((day) =>
-    filterByThisWeek(day)
-  );
+  const daysActiveThisWeek = student.daysActive.filter((day) => filterByThisWeek(day));
 
   const downloadStudentData = useCallback(() => {
     if (downloadData) {
@@ -484,23 +473,25 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
             <TitleText>next session</TitleText>
             <NextSessionButton
               text={getTitleOfButton(student)}
-              onClick={() =>
-                navigate(
-                  student.onAssessment
-                    ? '/assessments'
-                    : '/interventions'
-                )
-              }
+              onClick={() => navigate(
+                student.onAssessment
+                  ? '/assessments'
+                  : '/interventions',
+              )}
               disabled={student.sessionId === 8}
             />
           </>
         ) : (
           <>
             <BackToDashboard onClick={() => navigate('/dashboard')}>
-              {'<'} back to student selections
+              {'<'}
+              {' '}
+              back to student selections
             </BackToDashboard>
             <StudentNameTitle>
-              {student.name}'s Data{' '}
+              {student.name}
+              's Data
+              {' '}
               <DownloadOutlined onClick={downloadStudentData} />
             </StudentNameTitle>
             {downloadDataLoading && (
@@ -517,8 +508,7 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
 
         <SessionCardContainer>
           {sessionNumbers.map((label: number, index: number) => {
-            let complete =
-              student?.sessionId >= label - 1 || label === 1;
+            const complete = student?.sessionId >= label - 1 || label === 1;
             return (
               <SessionCard
                 sessionNumber={label}
@@ -541,16 +531,14 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
         <TitleText>this week</TitleText>
 
         <WeekContainer>
-          {dayLabels.map((label: string, index: number) => {
-            return (
-              <DayOfWeek
-                key={label}
-                name={label}
-                day={index}
-                daysActiveThisWeek={daysActiveThisWeek}
-              />
-            );
-          })}
+          {dayLabels.map((label: string, index: number) => (
+            <DayOfWeek
+              key={label}
+              name={label}
+              day={index}
+              daysActiveThisWeek={daysActiveThisWeek}
+            />
+          ))}
         </WeekContainer>
 
         <TitleText>
@@ -561,23 +549,23 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
         <ProgressStatsContainer>
           <Stat
             number={dayStreak(
-              student.daysActive.map((val) => new Date(val))
+              student.daysActive.map((val) => new Date(val)),
             )}
-            description={'day streak'}
+            description="day streak"
           />
           <Stat
             number={totalWordsLearned}
-            description={'words learned'}
+            description="words learned"
           />
           <Stat
             number={student.sessionId + 1}
-            description={'assessments completed'}
+            description="assessments completed"
           />
           <Stat
             number={
               student.sessionId + (student.onAssessment ? 1 : 0)
             }
-            description={'interventions completed'}
+            description="interventions completed"
           />
         </ProgressStatsContainer>
       </WeekProgressContainer>

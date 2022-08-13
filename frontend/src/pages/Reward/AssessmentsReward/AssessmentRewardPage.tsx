@@ -52,7 +52,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
-const AssessmentRewardPage = (): ReactElement => {
+function AssessmentRewardPage(): ReactElement {
   const navigate = useNavigate();
 
   useEffect(() => {});
@@ -71,7 +71,7 @@ const AssessmentRewardPage = (): ReactElement => {
           <PurpleButton
             padding={5}
             top={20}
-            text={'back to dashboard'}
+            text="back to dashboard"
             onClick={() => {
               navigate('/dashboard');
             }}
@@ -81,6 +81,6 @@ const AssessmentRewardPage = (): ReactElement => {
       </Container>
     </Layout>
   );
-};
+}
 
 export default AssessmentRewardPage;

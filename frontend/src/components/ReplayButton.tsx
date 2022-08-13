@@ -28,8 +28,7 @@ const ReplayText = styled.p`
 `;
 
 const ReplayButtonSVG = styled.svg`
-  ${({ scale }) =>
-    `
+  ${({ scale }) => `
     transform: scale(${scale});
   `}
   path: hover {
@@ -37,10 +36,10 @@ const ReplayButtonSVG = styled.svg`
   }
 `;
 
-const ReplayButton = ({
+function ReplayButton({
   scale,
   onClickHandler,
-}: ReplayProps): ReactElement => {
+}: ReplayProps): ReactElement {
   return (
     <ReplayStyledButton onClick={onClickHandler}>
       <ReplayButtonContainer>
@@ -62,6 +61,6 @@ const ReplayButton = ({
       </ReplayButtonContainer>
     </ReplayStyledButton>
   );
-};
+}
 
 export default ReplayButton;

@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Location } from 'react-router-dom';
 import styled from 'styled-components';
 import { INK, SEA_FOAM } from '../constants/colors';
 
@@ -17,8 +17,7 @@ const NavBar = styled.div`
   background: white;
   display: flex;
   height: 80px;
-  justify-content: ${({ showsBar }: NavProps) =>
-    showsBar ? 'space-between' : 'center'};
+  justify-content: ${({ showsBar }: NavProps) => (showsBar ? 'space-between' : 'center')};
   position: fixed;
   width: 100%;
   z-index: 5;
@@ -57,8 +56,7 @@ const StyledLink = styled(Link)`
   font-weight: 700;
   text-decoration: none;
   text-transform: lowercase;
-  border-bottom: ${({ isCurrent }: LinkAttributes) =>
-    isCurrent ? '4px solid ' + SEA_FOAM : '0px'};
+  border-bottom: ${({ isCurrent }: LinkAttributes) => (isCurrent ? `4px solid ${SEA_FOAM}` : '0px')};
 
   :hover {
     color: #000;
@@ -102,6 +100,21 @@ const OpenMenuContainer = styled.div`
   }
 `;
 
+function HeaderItems({
+  location,
+}: {
+  location: Location;
+}): ReactElement {
+  return (
+    <StyledLink
+      to="/dashboard"
+      isCurrent={location.pathname.includes('dashboard')}
+    >
+      dashboard
+    </StyledLink>
+  );
+}
+
 const Nav: FunctionComponent<NavProps> = ({
   showsBar,
 }): ReactElement => {
@@ -117,36 +130,29 @@ const Nav: FunctionComponent<NavProps> = ({
     };
   }, []);
 
-  let location = useLocation();
-
-  const HeaderItems = (): ReactElement => {
-    return (
-      <StyledLink
-        to="/dashboard"
-        isCurrent={location.pathname.includes('dashboard')}
-      >
-        dashboard
-      </StyledLink>
-    );
-  };
+  const location = useLocation();
 
   return (
     <NavBar
       showsBar={(showsBar && screenWidth > 600) || screenWidth > 900}
     >
       <ProjectName>vocab buddy</ProjectName>
-      {showsBar &&
-        (screenWidth <= 600 ? (
+      {showsBar
+        && (screenWidth <= 600 ? (
           <>
             <StyledMenuIcon onClick={() => setIsOpen(!isOpen)} />
             {isOpen && (
               <OpenMenu>
-                <OpenMenuContainer>{HeaderItems()}</OpenMenuContainer>
+                <OpenMenuContainer>
+                  <HeaderItems location={location} />
+                </OpenMenuContainer>
               </OpenMenu>
             )}
           </>
         ) : (
-          <NavContainer>{HeaderItems()}</NavContainer>
+          <NavContainer>
+            <HeaderItems location={location} />
+          </NavContainer>
         ))}
     </NavBar>
   );

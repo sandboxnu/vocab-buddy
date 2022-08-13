@@ -5,23 +5,20 @@ interface CloudImageProps {
   direction: 'left' | 'right';
   className: string;
 }
-let imageUrl =
-  'https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/cloud-right.png?alt=media&token=57c60ff8-d637-4ec8-80a7-5a9f1bd1ba56';
+const imageUrl = 'https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/cloud-right.png?alt=media&token=57c60ff8-d637-4ec8-80a7-5a9f1bd1ba56';
 
 const ImageView = styled.img`
   -webkit-transform: scaleX(
-    ${({ direction }: CloudImageProps) =>
-      direction === 'right' ? 1 : -1}
+    ${({ direction }: CloudImageProps) => (direction === 'right' ? 1 : -1)}
   );
   transform: scaleX(
-    ${({ direction }: CloudImageProps) =>
-      direction === 'right' ? 1 : -1}
+    ${({ direction }: CloudImageProps) => (direction === 'right' ? 1 : -1)}
   );
 `;
-const CloudImage = ({
+function CloudImage({
   direction,
-  className,
-}: CloudImageProps): ReactElement => {
+  className = '',
+}: CloudImageProps): ReactElement {
   return (
     <ImageView
       className={className}
@@ -29,10 +26,6 @@ const CloudImage = ({
       src={imageUrl}
     />
   );
-};
-
-CloudImage.defaultProps = {
-  className: '',
-};
+}
 
 export default CloudImage;

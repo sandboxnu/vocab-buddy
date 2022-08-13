@@ -1,9 +1,9 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 import { ActivityList } from '../../models/types';
-import FirstActivity from '../Interventions/FirstActivity';
-import SecondActivity from '../Interventions/SecondActivity';
-import ThirdActivity from '../Interventions/ThirdActivity';
-import FourthActivity from '../Interventions/FourthActivity';
+import FirstActivity from './FirstActivity';
+import SecondActivity from './SecondActivity';
+import ThirdActivity from './ThirdActivity';
+import FourthActivity from './FourthActivity';
 import LoadingScreen from '../Loading/LoadingScreen';
 
 interface ActivityComponentProp {
@@ -41,10 +41,9 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
         correct: false,
       };
 
-      const imageUrls =
-        Math.floor(Math.random() * 2) === 0
-          ? [correctChoice, incorrectChoice]
-          : [incorrectChoice, correctChoice];
+      const imageUrls = Math.floor(Math.random() * 2) === 0
+        ? [correctChoice, incorrectChoice]
+        : [incorrectChoice, correctChoice];
 
       return (
         <SecondActivity

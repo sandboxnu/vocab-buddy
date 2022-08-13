@@ -11,7 +11,7 @@ const initialState: DashboardState = {
 
 const dashboardReducer = (
   state: DashboardState = initialState,
-  action: Action
+  action: Action,
 ): DashboardState => {
   switch (action.type) {
     case ActionTypes.DOWNLOAD_USER_DATA_REQUEST:
@@ -95,9 +95,9 @@ const dashboardReducer = (
         ...state,
         user: state.user
           ? {
-              ...state.user,
-              profileIcon: action.payload.url,
-            }
+            ...state.user,
+            profileIcon: action.payload.url,
+          }
           : undefined,
       };
     case ActionTypes.UPDATE_USER_SETTINGS_SUCCESS:
@@ -116,42 +116,24 @@ const dashboardReducer = (
   }
 };
 
-export const getIsSignedOut = (state: DashboardState) => {
-  return state.isSignedOut;
-};
+export const getIsSignedOut = (state: DashboardState) => state.isSignedOut;
 
-export const getCurrentUser = (state: DashboardState) => {
-  return state.user;
-};
+export const getCurrentUser = (state: DashboardState) => state.user;
 
-export const getDataForResearchers = (state: DashboardState) => {
-  return state.students;
-};
+export const getDataForResearchers = (state: DashboardState) => state.students;
 
-export const getCurrentStudentData = (state: DashboardState) => {
-  return state.currentStudent;
-};
+export const getCurrentStudentData = (state: DashboardState) => state.currentStudent;
 
 export const getCurrentStudentTotalWordsLearned = (
-  state: DashboardState
-) => {
-  return state.currentStudentTotalWordsLearned;
-};
+  state: DashboardState,
+) => state.currentStudentTotalWordsLearned;
 
-export const getTotalWordsLearned = (state: DashboardState) => {
-  return state.totalWordsLearned;
-};
+export const getTotalWordsLearned = (state: DashboardState) => state.totalWordsLearned;
 
-export const getDashboardError = (state: DashboardState) => {
-  return state.error;
-};
+export const getDashboardError = (state: DashboardState) => state.error;
 
-export const getSessionStats = (state: DashboardState) => {
-  return state.sessionStats;
-};
+export const getSessionStats = (state: DashboardState) => state.sessionStats;
 
-export const getDownloadDataLoading = (state: DashboardState) => {
-  return state.downloadDataLoading;
-};
+export const getDownloadDataLoading = (state: DashboardState) => state.downloadDataLoading;
 
 export default dashboardReducer;

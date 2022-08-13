@@ -1,9 +1,9 @@
-const fs = require('fs');
-const firebase = require('firebase-admin');
+import fs from 'fs';
+import firebase from 'firebase-admin';
 // To get credentials for a service account,
 // follow instructions here and then put url to path credentials below:
 // https://cloud.google.com/docs/authentication/getting-started
-const serviceAccount = require('./firebase-admin.json');
+import serviceAccount from './firebase-admin.json';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -31,8 +31,6 @@ const uploadFileToFirebaseStorage = async (fileLocation, uploadName) => {
   await firebaseFile.makePublic();
   return firebaseFile.publicUrl();
 };
-
-/* eslint-disable no-await-in-loop */
 
 const performUpload = async () => {
   allWords.forEach(async (word) => {
@@ -170,8 +168,6 @@ const performUpload = async () => {
     console.log(`Successfully uploaded ${word} to firebase`);
   });
 };
-
-/* eslint-enable no-await-in-loop */
 
 performUpload()
   .then(() => console.log('done :)'))

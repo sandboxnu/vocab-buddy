@@ -35,7 +35,7 @@ const LoadingContainer = styled.div`
 function LoadingScreen() {
   return (
     <LoadingContainer>
-      <LoadingIcon src={loading}></LoadingIcon>
+      <LoadingIcon src={loading} />
       <LoadingTitle>loading</LoadingTitle>
     </LoadingContainer>
   );

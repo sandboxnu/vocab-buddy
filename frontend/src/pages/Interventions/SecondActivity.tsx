@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from 'react';
-import Layout from '../../components/Layout';
 import styled from 'styled-components';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import Layout from '../../components/Layout';
 import {
   CORAL,
   SEA_FOAM,
@@ -9,7 +10,6 @@ import {
 } from '../../constants/colors';
 import CloudGroup from '../../components/CloudGroup';
 import DelayedNextButton from '../../components/DelayedNextButton';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import Blocker from '../../components/Blocker';
 import { indexOf } from '../../constants/utils';
 import TriggeredPrompt from '../../components/TriggeredPrompt';
@@ -144,12 +144,12 @@ const StyledCheckOutlined = styled(CheckOutlined)`
 `;
 
 const StyledDivForClicks = styled.div``;
-const Image = ({
+function Image({
   url,
   correct,
   selected,
   onClick,
-}: ImageProps): ReactElement => {
+}: ImageProps): ReactElement {
   return (
     <ColoredImage
       src={url}
@@ -157,20 +157,20 @@ const Image = ({
       color={selected ? (correct ? SEA_FOAM : CORAL) : 'transparent'}
     />
   );
-};
+}
 
-const SecondActivity = ({
+function SecondActivity({
   title,
   prompt1Url,
   prompt2Url,
   imageUrls,
   updateIntervention,
-}: SecondActivityProps): ReactElement => {
+}: SecondActivityProps): ReactElement {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [showNextButton, setShowNextButton] = useState(false);
 
   return (
-    <Layout hideBar={true}>
+    <Layout hideBar>
       <Container>
         <CloudGroup />
         <MainContent>
@@ -181,9 +181,7 @@ const SecondActivity = ({
               prompt1Url={prompt1Url}
               prompt2Url={prompt2Url}
               triggerSecondPrompt={selectedIndex !== -1}
-              secondPromptFinishedHandler={() =>
-                setShowNextButton(true)
-              }
+              secondPromptFinishedHandler={() => setShowNextButton(true)}
             />
           </Prompt>
           <Blocker afterSeconds={15} repeatable={false}>
@@ -195,7 +193,9 @@ const SecondActivity = ({
                     correct={img.correct}
                     selected={index === selectedIndex}
                     onClick={() => {
-                      selectedIndex === -1 && setSelectedIndex(index);
+                      if (selectedIndex === -1) {
+                        setSelectedIndex(index);
+                      }
                     }}
                   />
                   {!img.correct && index === selectedIndex && (
@@ -217,12 +217,10 @@ const SecondActivity = ({
               text="next"
               top={20}
               delay={1000}
-              onClick={() =>
-                updateIntervention(
-                  selectedIndex ===
-                    indexOf(imageUrls, (val) => val.correct)
-                )
-              }
+              onClick={() => updateIntervention(
+                selectedIndex
+                    === indexOf(imageUrls, (val) => val.correct),
+              )}
               canBeShown={selectedIndex !== -1 && showNextButton}
             />
           </ButtonContainer>
@@ -230,6 +228,6 @@ const SecondActivity = ({
       </Container>
     </Layout>
   );
-};
+}
 
 export default SecondActivity;

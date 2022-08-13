@@ -22,9 +22,8 @@ const Image = styled.img`
     opacity: 0.8;
   }
 
-  ${({ highlight }: ImageProp) =>
-    highlight &&
-    `
+  ${({ highlight }: ImageProp) => highlight
+    && `
     border: 10px solid ${SEA_FOAM};
   `};
 `;
@@ -39,16 +38,14 @@ const WordImages: FunctionComponent<ImagesProp> = ({
   };
   return (
     <>
-      {images.map((img: string, idx: number) => {
-        return (
-          <Image
-            src={img}
-            key={idx}
-            highlight={selected === idx}
-            onClick={() => selectIndex(idx)}
-          />
-        );
-      })}
+      {images.map((img: string, idx: number) => (
+        <Image
+          src={img}
+          key={idx}
+          highlight={selected === idx}
+          onClick={() => selectIndex(idx)}
+        />
+      ))}
     </>
   );
 };

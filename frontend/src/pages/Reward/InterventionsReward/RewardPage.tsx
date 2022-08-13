@@ -1,10 +1,10 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import seedrandom from 'seedrandom';
 import CloudGroup from '../../../components/CloudGroup';
 import Balloon from '../../../components/Balloon';
 import Layout from '../../../components/Layout';
-import seedrandom from 'seedrandom';
 
 interface RewardPageProps {
   randSeed: number;
@@ -26,18 +26,18 @@ const TitleContainer = styled.p`
 
 const ComponentContainer = styled.div``;
 
-const RewardPage = ({
+function RewardPage({
   randSeed,
   maxBalloon,
   delay,
-}: RewardPageProps): ReactElement => {
+}: RewardPageProps): ReactElement {
   const navigate = useNavigate();
 
   const [score, setScore] = useState(0);
 
   useEffect(() => {
     if (score === maxBalloon) {
-      let timer = setTimeout(() => {
+      const timer = setTimeout(() => {
         navigate('/dashboard');
       }, delay);
 
@@ -48,22 +48,22 @@ const RewardPage = ({
   }, [score, delay, maxBalloon, history]);
 
   const randomNum = (seedNum: number, min: number, max: number) => {
-    let seed = seedrandom(`${seedNum * randSeed}`);
+    const seed = seedrandom(`${seedNum * randSeed}`);
     return seed() * (max - min) + min;
   };
 
   const BallonGroups = () => {
-    let balloons = [];
-    for (let i = 0; i < 5; i++) {
-      let t = randomNum(i, 20, 80);
-      let l = randomNum(i + 1, 10, 60);
+    const balloons = [];
+    for (let i = 0; i < 5; i += 1) {
+      const t = randomNum(i, 20, 80);
+      const l = randomNum(i + 1, 10, 60);
       balloons.push(
         <Balloon
           key={i}
           top={t}
           left={l}
           onPop={() => setScore(score + 1)}
-        />
+        />,
       );
     }
     return balloons;
@@ -87,6 +87,6 @@ const RewardPage = ({
       </Container>
     </Layout>
   );
-};
+}
 
 export default RewardPage;

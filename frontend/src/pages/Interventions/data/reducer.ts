@@ -14,9 +14,9 @@ const initialState: InterventionState = { interventions: undefined };
 
 const interventionReducer = (
   state: InterventionState = initialState,
-  action: Action
+  action: Action,
 ): InterventionState => {
-  const payload = action.payload;
+  const { payload } = action;
 
   switch (action.type) {
     case ActionTypes.GET_INTERVENTIONS_SUCCESS:
@@ -48,16 +48,10 @@ const interventionReducer = (
   }
 };
 
-export const getCurrentInterventions = (state: InterventionState) => {
-  return state.interventions;
-};
+export const getCurrentInterventions = (state: InterventionState) => state.interventions;
 
-export const getInterventionId = (state: InterventionState) => {
-  return state.interventionId;
-};
+export const getInterventionId = (state: InterventionState) => state.interventionId;
 
-export const getError = (state: InterventionState) => {
-  return state.error;
-};
+export const getError = (state: InterventionState) => state.error;
 
 export default interventionReducer;

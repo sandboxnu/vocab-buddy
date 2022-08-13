@@ -13,8 +13,7 @@ interface ClickedProps {
 const Image = styled.img`
   border-radius: 20px;
   transform: scale(
-    ${({ isExpanded: isShrunk }: ClickedProps) =>
-      isShrunk ? 1.1 : 1}
+    ${({ isExpanded: isShrunk }: ClickedProps) => (isShrunk ? 1.1 : 1)}
   );
   transition: transform 0.5s;
 
@@ -23,11 +22,11 @@ const Image = styled.img`
   }
 `;
 
-const ExpandableImage = ({
+function ExpandableImage({
   className = '',
   src,
-}: ExpandableImageProps): ReactElement => {
-  let [isExpanded, setIsExpanded] = useState(false);
+}: ExpandableImageProps): ReactElement {
+  const [isExpanded, setIsExpanded] = useState(false);
   return (
     <Image
       src={src}
@@ -36,10 +35,6 @@ const ExpandableImage = ({
       isExpanded={isExpanded}
     />
   );
-};
-
-ExpandableImage.defaultProps = {
-  className: '',
-};
+}
 
 export default ExpandableImage;

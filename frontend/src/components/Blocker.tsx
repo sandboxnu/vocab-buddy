@@ -86,8 +86,8 @@ const Blocker: FunctionComponent<BlockerProps> = ({
   const [hasShown, setHasShown] = useState(false);
   const [progress, setProgress] = useState(2);
 
-  let onClick = children.props.onClick;
-  let newOnClick = () => {
+  const { onClick } = children.props;
+  const newOnClick = () => {
     if (onClick) {
       onClick();
     }
@@ -98,13 +98,13 @@ const Blocker: FunctionComponent<BlockerProps> = ({
     }
   };
   useEffect(() => {
-    let interval = window.setInterval(() => {
+    const interval = window.setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
     return () => clearInterval(interval);
   }, []);
   const timeSince = currentTime.getTime() - lastTap.getTime();
-  let shouldShowBlocker = timeSince >= afterSeconds * 1000;
+  const shouldShowBlocker = timeSince >= afterSeconds * 1000;
 
   const finishedShowing = () => {
     if (repeatable) {
@@ -149,7 +149,7 @@ const Blocker: FunctionComponent<BlockerProps> = ({
                 </SliderDiv>
               )}
               renderThumb={({ props }) => (
-                <SliderThumbDiv {...props}></SliderThumbDiv>
+                <SliderThumbDiv {...props} />
               )}
             />
           </SliderContainer>

@@ -32,8 +32,8 @@ import {
   getCurrentStudentTotalWordsLearned,
   getSessionStats,
 } from './data/reducer';
-import ResearcherDashboard from '../Dashboard/ResearcherDashboard';
-import StudentDashboard from '../Dashboard/StudentDashboard';
+import ResearcherDashboard from './ResearcherDashboard';
+import StudentDashboard from './StudentDashboard';
 import overviewIcon from '../../assets/icons/dashboard-menu/overview.svg';
 import settingsIcon from '../../assets/icons/dashboard-menu/settings.svg';
 import caret from '../../assets/caret.svg';
@@ -91,7 +91,7 @@ const connector = connect(
     changeIconRequest: ChangeProfileIcon.request,
     getUserSessionData: GetUserSessionData.request,
     downloadData: DownloadData.request,
-  }
+  },
 );
 
 const SignOutButton = styled.button`
@@ -205,8 +205,7 @@ interface MenuButtonProps extends MenuGridProps {
 }
 
 const MenuButtonText = styled.p`
-  font-weight: ${({ selected }: MenuButtonProps) =>
-    selected ? `700` : '400'};
+  font-weight: ${({ selected }: MenuButtonProps) => (selected ? '700' : '400')};
 
   grid-area: ${({ gridArea }: MenuButtonProps) => gridArea};
 
@@ -299,8 +298,7 @@ const MenuDropdownButton = styled.img`
 
   transition: all 0.4s ease;
   transform: rotate(
-    ${({ rotationDegrees }: MenuDropdownCaretProps) =>
-      rotationDegrees}deg
+    ${({ rotationDegrees }: MenuDropdownCaretProps) => rotationDegrees}deg
   );
 
   :hover {
@@ -313,16 +311,15 @@ const getButtonGridArea = (
   menuButtonNumber: number,
   menuOpen: boolean,
   isDropdown: boolean,
-  type: 'icon' | 'button'
+  type: 'icon' | 'button',
 ) => {
   if (isDropdown && !menuOpen) {
     if (selectedMenuButton === menuButtonNumber) {
       // First row
-      return type + '1';
-    } else {
-      // put it out of place
-      return type + 3;
+      return `${type}1`;
     }
+    // put it out of place
+    return type + 3;
   }
   // Default
   return type + menuButtonNumber;
@@ -344,7 +341,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           1,
           menuOpen,
           isDropdown,
-          'icon'
+          'icon',
         )}
         src={overviewIcon}
       />
@@ -354,13 +351,13 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           1,
           menuOpen,
           isDropdown,
-          'button'
+          'button',
         )}
         selected={selectedMenuButton === 1}
         onClick={() => {
           setSelectedMenuButton(1);
           setMenuOpen(
-            !menuOpen && selectedMenuButton === 1 ? true : menuOpen
+            !menuOpen && selectedMenuButton === 1 ? true : menuOpen,
           );
         }}
       >
@@ -377,7 +374,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           2,
           menuOpen,
           isDropdown,
-          'icon'
+          'icon',
         )}
         src={settingsIcon}
       />
@@ -387,13 +384,13 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           2,
           menuOpen,
           isDropdown,
-          'button'
+          'button',
         )}
         selected={selectedMenuButton === 2}
         onClick={() => {
           setSelectedMenuButton(2);
           setMenuOpen(
-            !menuOpen && selectedMenuButton === 2 ? true : menuOpen
+            !menuOpen && selectedMenuButton === 2 ? true : menuOpen,
           );
         }}
       >
@@ -419,7 +416,10 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
               </SignOutButton>
             </>
           ) : (
-            <> {buttons[selectedMenuButton - 1]}</>
+            <>
+              {' '}
+              {buttons[selectedMenuButton - 1]}
+            </>
           )}
           <MenuDropdownButton
             src={caret}
@@ -451,7 +451,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   downloadData,
   downloadDataLoading,
 }): ReactElement => {
-  let history = useNavigate();
+  const history = useNavigate();
   if (isSignedOut) {
     navigate('/login');
   }
@@ -459,10 +459,9 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   const [showModal, setShowModal] = useState(false);
   const [selectedMenuButton, setSelectedMenuButton] = useState(1);
 
-  const [hasPerformedNetworkRequest, setHasPerformedNetworkRequest] =
-    useState(false);
-  let params = useParams<IndividualDashboardParams>();
-  let sessionParams = useParams<SessionDashboardParams>();
+  const [hasPerformedNetworkRequest, setHasPerformedNetworkRequest] = useState(false);
+  const params = useParams<IndividualDashboardParams>();
+  const sessionParams = useParams<SessionDashboardParams>();
 
   useEffect(() => {
     const resizeScreen = () => {
@@ -482,18 +481,18 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   }, [currentUser, getUser, totalWordsLearned]);
 
   if (
-    error &&
-    hasPerformedNetworkRequest &&
-    selectedMenuButton !== 3
+    error
+    && hasPerformedNetworkRequest
+    && selectedMenuButton !== 3
   ) {
     navigate('/error');
   }
 
   useEffect(() => {
     if (
-      !dataForResearchers &&
-      currentUser &&
-      currentUser.accountType === 'RESEARCHER'
+      !dataForResearchers
+      && currentUser
+      && currentUser.accountType === 'RESEARCHER'
     ) {
       getDataForResearchers({});
     }
@@ -506,12 +505,12 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
   useEffect(() => {
     if (
-      (params.id &&
-        (!requestedStudent ||
-          requestedStudent.id !==
-            (params.id || sessionParams.userId) ||
-          requestedStudentTotalWordsLearned === undefined)) ||
-      (sessionParams.userId && !requestedStudent)
+      (params.id
+        && (!requestedStudent
+          || requestedStudent.id
+            !== (params.id || sessionParams.userId)
+          || requestedStudentTotalWordsLearned === undefined))
+      || (sessionParams.userId && !requestedStudent)
     ) {
       getUser({ id: params.id ?? sessionParams.userId });
     }
@@ -525,11 +524,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
   useEffect(() => {
     if (
-      sessionParams.userId &&
-      sessionParams.sessionId &&
-      (!userSessionData ||
-        userSessionData.userId !== sessionParams.userId ||
-        userSessionData.sessionId !== +sessionParams.sessionId)
+      sessionParams.userId
+      && sessionParams.sessionId
+      && (!userSessionData
+        || userSessionData.userId !== sessionParams.userId
+        || userSessionData.sessionId !== +sessionParams.sessionId)
     ) {
       getUserSessionData({
         userId: sessionParams.userId,
@@ -545,11 +544,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
   // Shows a loading screen if the current user and session doesn't exist
   if (
-    sessionParams.userId &&
-    sessionParams.sessionId &&
-    (!userSessionData ||
-      userSessionData.userId !== sessionParams.userId ||
-      userSessionData.sessionId !== +sessionParams.sessionId)
+    sessionParams.userId
+    && sessionParams.sessionId
+    && (!userSessionData
+      || userSessionData.userId !== sessionParams.userId
+      || userSessionData.sessionId !== +sessionParams.sessionId)
   ) {
     return <LoadingScreen />;
   }
@@ -561,17 +560,17 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
   // Shows a loading screen if a requested student doesn't exist
   if (
-    (params.id || sessionParams.userId) &&
-    (!requestedStudent ||
-      requestedStudent.id !== (params.id || sessionParams.userId) ||
-      requestedStudentTotalWordsLearned === undefined)
+    (params.id || sessionParams.userId)
+    && (!requestedStudent
+      || requestedStudent.id !== (params.id || sessionParams.userId)
+      || requestedStudentTotalWordsLearned === undefined)
   ) {
     return <LoadingScreen />;
   }
 
   if (
-    (params.id || sessionParams.userId || sessionParams.sessionId) &&
-    currentUser.accountType === 'STUDENT'
+    (params.id || sessionParams.userId || sessionParams.sessionId)
+    && currentUser.accountType === 'STUDENT'
   ) {
     navigate('/error');
   }
@@ -581,31 +580,29 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       case 1:
         return currentUser.accountType === 'STUDENT' ? (
           <StudentDashboard
-            isStudentView={true}
+            isStudentView
             student={currentUser}
             totalWordsLearned={totalWordsLearned}
           />
-        ) : params.id &&
-          requestedStudent &&
-          requestedStudentTotalWordsLearned !== undefined ? (
-          <StudentDashboard
-            student={requestedStudent}
-            isStudentView={false}
-            totalWordsLearned={requestedStudentTotalWordsLearned}
-          />
-        ) : userSessionData !== undefined &&
-          requestedStudent &&
-          sessionParams.userId &&
-          sessionParams.sessionId ? (
-          <SessionDashboard
-            userSessionData={userSessionData}
-            userName={requestedStudent.name}
-          />
-        ) : (
-          <ResearcherDashboard
-            students={dataForResearchers || []}
-          ></ResearcherDashboard>
-        );
+        ) : params.id
+          && requestedStudent
+          && requestedStudentTotalWordsLearned !== undefined ? (
+            <StudentDashboard
+              student={requestedStudent}
+              isStudentView={false}
+              totalWordsLearned={requestedStudentTotalWordsLearned}
+            />
+          ) : userSessionData !== undefined
+          && requestedStudent
+          && sessionParams.userId
+          && sessionParams.sessionId ? (
+            <SessionDashboard
+              userSessionData={userSessionData}
+              userName={requestedStudent.name}
+            />
+            ) : (
+              <ResearcherDashboard students={dataForResearchers || []} />
+            );
       case 2:
         return <Settings />;
       default:
@@ -631,7 +628,11 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
                   changeIconRequest={changeIconRequest}
                 />
               </ProfileGroup>
-              <TitleText>hi {currentUser.name}!</TitleText>
+              <TitleText>
+                hi
+                {currentUser.name}
+                !
+              </TitleText>
               <MenuButtonPanel
                 isDropdown={screenWidth < 900}
                 signOutHandler={signOut}

@@ -58,11 +58,11 @@ const connector = connect(
   }),
   {
     logOut: SignOut.request,
-  }
+  },
 );
 
 function ErrorScreen({ logOut, signedOut }: ErrorScreenProps) {
-  let history = useNavigate();
+  const history = useNavigate();
 
   if (signedOut) {
     navigate('/login');

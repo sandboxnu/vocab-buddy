@@ -77,15 +77,14 @@ const ButtonContainer = styled.div`
   justify-content: end;
 `;
 
-const FourthActivity = ({
+function FourthActivity({
   title,
   prompt1Url,
   prompt2Url,
   imageUrl,
   updateIntervention,
-}: FourthActivityProps): ReactElement => {
-  const [triggerSecondPrompt, setTriggerSecondPrompt] =
-    useState(false);
+}: FourthActivityProps): ReactElement {
+  const [triggerSecondPrompt, setTriggerSecondPrompt] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
 
   useEffect(() => {
@@ -95,7 +94,7 @@ const FourthActivity = ({
   });
 
   return (
-    <Layout hideBar={true}>
+    <Layout hideBar>
       <Container>
         <CloudGroup />
         <MainContent>
@@ -106,16 +105,14 @@ const FourthActivity = ({
               prompt1Url={prompt1Url}
               prompt2Url={prompt2Url}
               triggerSecondPrompt={triggerSecondPrompt}
-              secondPromptFinishedHandler={() =>
-                setShowNextButton(true)
-              }
+              secondPromptFinishedHandler={() => setShowNextButton(true)}
             />
           </Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
             <Blocker afterSeconds={30} repeatable={false}>
               <DelayedNextButton
-                text={'next'}
+                text="next"
                 top={20}
                 delay={6000}
                 onClick={updateIntervention}
@@ -127,6 +124,6 @@ const FourthActivity = ({
       </Container>
     </Layout>
   );
-};
+}
 
 export default FourthActivity;

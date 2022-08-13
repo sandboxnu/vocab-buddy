@@ -1,6 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import {
+  CheckCircleFilled,
+  CloseCircleFilled,
+  MinusCircleFilled,
+} from '@ant-design/icons';
 import { SessionStats, WordResult } from '../../models/types';
 import {
   CLOUD,
@@ -9,11 +14,6 @@ import {
   INK,
   SEA_FOAM,
 } from '../../constants/colors';
-import {
-  CheckCircleFilled,
-  CloseCircleFilled,
-  MinusCircleFilled,
-} from '@ant-design/icons';
 
 interface SessionDashboardParams {
   userSessionData: SessionStats;
@@ -178,22 +178,20 @@ const WordResultText = styled.p`
 const Stat: FunctionComponent<StatParams> = ({
   stat,
   description,
-}) => {
-  return (
-    <FormattedStat>
-      <StatDescription>{description}</StatDescription>
-      <StatNumber>{stat}</StatNumber>
-    </FormattedStat>
-  );
-};
+}) => (
+  <FormattedStat>
+    <StatDescription>{description}</StatDescription>
+    <StatNumber>{stat}</StatNumber>
+  </FormattedStat>
+);
 
 const formatDuration = (stat: number) => {
-  let minutes = Math.floor(stat / 60);
-  let seconds = Math.floor(stat - minutes * 60);
-  return minutes + "'" + seconds + '"';
+  const minutes = Math.floor(stat / 60);
+  const seconds = Math.floor(stat - minutes * 60);
+  return `${minutes}'${seconds}"`;
 };
 
-const StatsResultIcon = ({ result }: { result?: boolean }) => {
+function StatsResultIcon({ result }: { result?: boolean }) {
   return (
     <StatsIconContainer>
       {result === undefined ? (
@@ -214,36 +212,36 @@ const StatsResultIcon = ({ result }: { result?: boolean }) => {
       )}
     </StatsIconContainer>
   );
-};
+}
 
-const WordResultDiv = ({ word }: { word: WordResult }) => {
+function WordResultDiv({ word }: { word: WordResult }) {
   return (
     <WordResultWrapper>
       <StatTitle>{word.word}</StatTitle>
       <WordStatsContainer>
-        <StatsDiv color={'transparent'}>
+        <StatsDiv color="transparent">
           <WordResultText>assessments</WordResultText>
           <StatsResultIcon result={word.assessmentCorrect} />
         </StatsDiv>
-        <StatsDiv color={'#fff'}>
+        <StatsDiv color="#fff">
           <WordResultText>
             interventions: example vs. non-example
           </WordResultText>
           <StatsResultIcon result={word.activity2Correct} />
         </StatsDiv>
-        <StatsDiv color={'transparent'}>
+        <StatsDiv color="transparent">
           <WordResultText>
             interventions: yes or no context question 1
           </WordResultText>
           <StatsResultIcon result={word.activity3Correct} />
         </StatsDiv>
-        <StatsDiv color={'#fff'}>
+        <StatsDiv color="#fff">
           <WordResultText>
             interventions: yes or no context question 2
           </WordResultText>
           <StatsResultIcon result={word.activity3Part2Correct} />
         </StatsDiv>
-        <StatsDiv color={'transparent'}>
+        <StatsDiv color="transparent">
           <WordResultText>
             interventions: yes or no context question 3
           </WordResultText>
@@ -252,14 +250,14 @@ const WordResultDiv = ({ word }: { word: WordResult }) => {
       </WordStatsContainer>
     </WordResultWrapper>
   );
-};
+}
 
 const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
   userSessionData,
   userName,
 }) => {
   const navigate = useNavigate();
-  const wordResults = userSessionData.wordResults;
+  const { wordResults } = userSessionData;
   return (
     <SessionContainer>
       <SessionHeader>
@@ -268,10 +266,12 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
             navigate(`/dashboard/student/${userSessionData.userId}/`);
           }}
         >
-          {'< back to ' + userName + "'s data"}
+          {`< back to ${userName}'s data`}
         </DashboardRedirect>
         <SessionTitle>
-          session {userSessionData.sessionId + 1}
+          session
+          {' '}
+          {userSessionData.sessionId + 1}
         </SessionTitle>
       </SessionHeader>
       <SessionBody>
@@ -280,9 +280,9 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
             {wordResults.length === 0 ? (
               <StatTitle> No Data </StatTitle>
             ) : (
-              wordResults.map((wordResult) => {
-                return <WordResultDiv word={wordResult} />;
-              })
+              wordResults.map((wordResult) => (
+                <WordResultDiv word={wordResult} />
+              ))
             )}
           </WordResultsContainer>
         </WordContainer>
@@ -290,21 +290,21 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
           <StatTitle>stats</StatTitle>
           <Stat
             stat={formatDuration(userSessionData.assessmentDuration)}
-            description={'assessments completion time'}
+            description="assessments completion time"
           />
           <Stat
             stat={formatDuration(
-              userSessionData.interventionDuration
+              userSessionData.interventionDuration,
             )}
-            description={'interventions completion time'}
+            description="interventions completion time"
           />
           <Stat
             stat={userSessionData.correctWords.toString()}
-            description={'words answered correctly'}
+            description="words answered correctly"
           />
           <Stat
             stat={userSessionData.incorrectWords.toString()}
-            description={'words answered incorrectly'}
+            description="words answered incorrectly"
           />
         </StatContainer>
       </SessionBody>

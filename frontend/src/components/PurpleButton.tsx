@@ -9,7 +9,7 @@ interface PurpleButtonProps {
   onClick?: (event: MouseEvent<HTMLInputElement>) => void;
   check?: ReactElement;
   icon?: ReactElement;
-  className: string;
+  className?: string;
   padding?: number;
   disabled?: boolean;
 }
@@ -43,7 +43,7 @@ const ButtonContainer = styled(Button)`
   }
 `;
 
-const PurpleButton = ({
+function PurpleButton({
   className = '',
   text,
   top,
@@ -52,7 +52,7 @@ const PurpleButton = ({
   check,
   padding,
   disabled,
-}: PurpleButtonProps): ReactElement => {
+}: PurpleButtonProps): ReactElement {
   return (
     <ButtonContainer
       className={className}
@@ -66,10 +66,6 @@ const PurpleButton = ({
       {icon}
     </ButtonContainer>
   );
-};
-
-PurpleButton.defaultProps = {
-  className: '',
-};
+}
 
 export default PurpleButton;

@@ -21,7 +21,7 @@ interface LoginInputProps {
   isExpectedValue: boolean;
 }
 
-const TextInput = ({
+function TextInput({
   className = '',
   value,
   onChange,
@@ -30,7 +30,7 @@ const TextInput = ({
   expectedValue = null,
   onKeyDown = () => {},
   autoComplete = 'on',
-}: TextInputProps): ReactElement => {
+}: TextInputProps): ReactElement {
   return (
     <InputDiv className={className}>
       <InputTitle>{text}</InputTitle>
@@ -48,14 +48,7 @@ const TextInput = ({
       />
     </InputDiv>
   );
-};
-
-TextInput.defaultProps = {
-  expectedValue: null,
-  className: '',
-  autoComplete: 'on',
-  onKeyDown: () => {},
-};
+}
 
 const InputDiv = styled.div`
   justify-content: center;
@@ -75,14 +68,12 @@ const LoginInput = styled.input`
   background-color: clear;
   border-radius: 12px;
   padding: 10px;
-  border: ${({ isExpectedValue }: LoginInputProps) =>
-    isExpectedValue ? '1px solid #d4d6e2' : '1px solid red'};
+  border: ${({ isExpectedValue }: LoginInputProps) => (isExpectedValue ? '1px solid #d4d6e2' : '1px solid red')};
 
   :focus {
-    border: ${({ isExpectedValue }: LoginInputProps) =>
-      isExpectedValue ? `1px solid ${SEA_FOAM}` : '1px solid red'};
+    border: ${({ isExpectedValue }: LoginInputProps) => (isExpectedValue ? `1px solid ${SEA_FOAM}` : '1px solid red')};
     outline: none !important;
   }
 `;
 
-export { TextInput };
+export default TextInput;

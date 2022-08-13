@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
-import { User } from '../../models/types';
 import { Dropdown, Menu } from 'antd';
+import { useNavigate } from 'react-router';
+import { User } from '../../models/types';
 import caret from '../../assets/caret.svg';
 import { CLOUD, SKY } from '../../constants/colors';
-import { useNavigate } from 'react-router';
 
 const ResearcherDashboardContainer = styled.div`
   display: flex;
@@ -167,8 +167,8 @@ const StudentCard: FunctionComponent<StudentCardParams> = ({
     >
       <Avatar
         src={
-          student.profileIcon ??
-          'https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Frocketcircle.svg?alt=media&token=2378a891-001b-4a7f-9522-3dffee8d202d'
+          student.profileIcon
+          ?? 'https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Frocketcircle.svg?alt=media&token=2378a891-001b-4a7f-9522-3dffee8d202d'
         }
       />
       <StudentCardLabel>{student.name}</StudentCardLabel>
@@ -179,15 +179,15 @@ const StudentCard: FunctionComponent<StudentCardParams> = ({
 const sortBy = (
   key: string,
   studentA: User,
-  studentB: User
+  studentB: User,
 ): number => {
   if (key === 'age') {
     return sortByAge(studentA, studentB);
-  } else if (key === 'session') {
-    return sortBySession(studentA, studentB);
-  } else {
-    return sortByName(studentA, studentB);
   }
+  if (key === 'session') {
+    return sortBySession(studentA, studentB);
+  }
+  return sortByName(studentA, studentB);
 };
 
 const sortByName = (studentA: User, studentB: User): number => {
@@ -195,22 +195,23 @@ const sortByName = (studentA: User, studentB: User): number => {
   const bName = studentB.name.toLowerCase();
   if (aName > bName) {
     return 1;
-  } else if (bName > aName) {
+  }
+  if (bName > aName) {
     return -1;
   }
   return 0;
 };
 
-const sortByAge = (studentA: User, studentB: User): number => {
-  return studentA.age - studentB.age;
-};
+const sortByAge = (studentA: User, studentB: User): number => studentA.age - studentB.age;
 
 const sortBySession = (studentA: User, studentB: User): number => {
   if (studentA.sessionId < studentB.sessionId) {
     return -1;
-  } else if (studentA.sessionId > studentB.sessionId) {
+  }
+  if (studentA.sessionId > studentB.sessionId) {
     return 1;
-  } else return 0;
+  }
+  return 0;
 };
 
 interface ResearcherDashboardParams {
@@ -221,7 +222,7 @@ const ResearcherDashboard: FunctionComponent<
   ResearcherDashboardParams
 > = ({ students }) => {
   const [sortByLabel, setSortByLabel] = useState(
-    () => 'alphabetical'
+    () => 'alphabetical',
   );
 
   const menuOnClick = ({ key }: any) => {
@@ -242,8 +243,11 @@ const ResearcherDashboard: FunctionComponent<
         <TitleText>students</TitleText>
         <StudentFilter trigger={['click']} overlay={menu}>
           <DropdownLabel>
-            <p>sort by: {sortByLabel}</p>
-            <DropdownCaret src={caret}></DropdownCaret>
+            <p>
+              sort by:
+              {sortByLabel}
+            </p>
+            <DropdownCaret src={caret} />
           </DropdownLabel>
         </StudentFilter>
       </ResearcherTopBar>

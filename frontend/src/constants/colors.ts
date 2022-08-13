@@ -14,5 +14,4 @@ export const CORAL_RGBA = (a: number) => `rgba(254, 93, 93, ${a})`;
 export const INK_RGBA = (a: number) => `rgba(97, 94, 247, ${a})`;
 export const SKY_RGBA = (a: number) => `rgba(162, 197, 251, ${a})`;
 export const CLOUD_RGBA = (a: number) => `rgba(227, 238, 255, ${a})`;
-export const SEA_FOAM_RGBA = (a: number) =>
-  `rgba(104, 242, 210, ${a})`;
+export const SEA_FOAM_RGBA = (a: number) => `rgba(104, 242, 210, ${a})`;

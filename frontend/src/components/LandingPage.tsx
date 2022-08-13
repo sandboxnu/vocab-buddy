@@ -66,27 +66,21 @@ const LandingPage: FunctionComponent<LandingPageProps> = ({
   title,
   subtitle,
   onBegin,
-}): ReactElement => {
-  return (
-    <Layout shouldAddPadding={false}>
-      <LandingPageContainer>
-        <ImageContainer>
-          <LandingPageImage src={image} alt="image-landing" />
-        </ImageContainer>
-        <LandingPageText>
-          <LandingPageTextHolder>
-            {title}
-            <Prompt>{subtitle}</Prompt>
-            <PurpleButton
-              text={'begin'}
-              top={100}
-              onClick={onBegin}
-            />
-          </LandingPageTextHolder>
-        </LandingPageText>
-      </LandingPageContainer>
-    </Layout>
-  );
-};
+}): ReactElement => (
+  <Layout shouldAddPadding={false}>
+    <LandingPageContainer>
+      <ImageContainer>
+        <LandingPageImage src={image} alt="image-landing" />
+      </ImageContainer>
+      <LandingPageText>
+        <LandingPageTextHolder>
+          {title}
+          <Prompt>{subtitle}</Prompt>
+          <PurpleButton text="begin" top={100} onClick={onBegin} />
+        </LandingPageTextHolder>
+      </LandingPageText>
+    </LandingPageContainer>
+  </Layout>
+);
 
 export default LandingPage;

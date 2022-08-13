@@ -1,4 +1,6 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import {
+  all, call, put, takeLatest,
+} from 'redux-saga/effects';
 import FirebaseInteractor from '../../../firebase/firebaseInteractor';
 import { Action, ActionTypes } from '../../../models/types';
 import {
@@ -8,7 +10,7 @@ import {
   getCurrentIntervention,
 } from './actions';
 
-let firebaseInteractor = new FirebaseInteractor();
+const firebaseInteractor = new FirebaseInteractor();
 
 export default function* interventionSaga() {
   yield all([root()]);
@@ -17,19 +19,19 @@ export default function* interventionSaga() {
 function* root() {
   yield takeLatest(
     ActionTypes.GET_INTERVENTIONS_REQUEST,
-    watchGetInterventions
+    watchGetInterventions,
   );
   yield takeLatest(
     ActionTypes.UPDATE_INTERVENTION_REQUEST,
-    watchUpdateIntervention
+    watchUpdateIntervention,
   );
   yield takeLatest(
     ActionTypes.FINISHED_INTERVENTION_REQUEST,
-    watchFinishedIntervention
+    watchFinishedIntervention,
   );
   yield takeLatest(
     ActionTypes.GET_CURRENT_INTERVENTIONS_REQUEST,
-    watchGetCurrentIntervention
+    watchGetCurrentIntervention,
   );
 }
 
@@ -38,20 +40,20 @@ function* watchGetInterventions(action: Action) {
     let interventions;
     const updateWithSuccess = async () => {
       interventions = await firebaseInteractor.getIntervention(
-        action.payload.id
+        action.payload.id,
       );
     };
     yield call(updateWithSuccess);
     yield put(getInterventions.success({ interventions }));
   } catch (error) {
-    const err = error as string | undefined
+    const err = error as string | undefined;
     yield put(getInterventions.error({ error: err }));
   }
 }
 
 function* watchUpdateIntervention(action: Action) {
   try {
-    let {
+    const {
       intervention,
       wordIdx,
       activityIdx,
@@ -71,7 +73,7 @@ function* watchUpdateIntervention(action: Action) {
         answer2Correct,
         answer3Correct,
         answer3Part2Correct,
-        answer3Part3Correct
+        answer3Part3Correct,
       );
       intervention.wordIdx = wordIdx;
       intervention.activityIdx = activityIdx;
@@ -80,23 +82,23 @@ function* watchUpdateIntervention(action: Action) {
     yield call(updateAndGetNewInterventions);
     yield put(updateIntervention.success({ interventions }));
   } catch (error) {
-    const err = error as Error
+    const err = error as Error;
     yield put(updateIntervention.error(err));
   }
 }
 
 function* watchFinishedIntervention(action: Action) {
   try {
-    let { setId } = action.payload;
+    const { setId } = action.payload;
     const createNewAssessment = async () => {
       await firebaseInteractor.createAssessmentFromIntervention(
-        setId
+        setId,
       );
     };
     yield call(createNewAssessment);
     yield put(finishedIntervention.success());
   } catch (error) {
-    const err = error as string | undefined
+    const err = error as string | undefined;
     yield put(finishedIntervention.error({ error: err }));
   }
 }
@@ -106,13 +108,13 @@ function* watchGetCurrentIntervention(action: Action) {
     let interventionId = '';
     const getCurrent = async () => {
       interventionId = await firebaseInteractor.getCurrentExerciseId(
-        false
+        false,
       );
     };
     yield call(getCurrent);
     yield put(getCurrentIntervention.success({ id: interventionId }));
   } catch (error) {
-    const err = error as Error
+    const err = error as Error;
     yield put(getCurrentIntervention.error(err));
   }
 }

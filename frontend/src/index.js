@@ -1,7 +1,7 @@
 import React from 'react';
 import createSagaMiddleware from 'redux-saga';
 import { render } from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
+import { configureStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { logger } from 'redux-logger';
 import { reducer, saga } from './pages/index';
@@ -10,7 +10,7 @@ import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(
+const store = configureStore(
   reducer,
   applyMiddleware(sagaMiddleware, logger),
 );

@@ -96,19 +96,19 @@ const NextContainer = styled.div`
   }
 `;
 
-const ThirdActivity = ({
+function ThirdActivity({
   title,
   prompt1Url,
   prompt2Url,
   imageUrl,
   answer,
   updateIntervention,
-}: ThirdActivityProps): ReactElement => {
-  let [selected, setSelected] = useState(-1);
-  let [showNextButton, setShowNextButton] = useState(false);
+}: ThirdActivityProps): ReactElement {
+  const [selected, setSelected] = useState(-1);
+  const [showNextButton, setShowNextButton] = useState(false);
 
   return (
-    <Layout hideBar={true}>
+    <Layout hideBar>
       <Container>
         <CloudGroup />
         <MainContent>
@@ -121,9 +121,7 @@ const ThirdActivity = ({
               prompt1Url={prompt1Url}
               prompt2Url={prompt2Url}
               triggerSecondPrompt={selected !== -1}
-              secondPromptFinishedHandler={() =>
-                setShowNextButton(true)
-              }
+              secondPromptFinishedHandler={() => setShowNextButton(true)}
             />
           </Prompt>
           <Image src={imageUrl} />
@@ -149,6 +147,6 @@ const ThirdActivity = ({
       </Container>
     </Layout>
   );
-};
+}
 
 export default ThirdActivity;

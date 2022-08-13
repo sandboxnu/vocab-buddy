@@ -1,4 +1,6 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import {
+  all, call, put, takeLatest,
+} from 'redux-saga/effects';
 import FirebaseInteractor from '../../../firebase/firebaseInteractor';
 import {
   Action,
@@ -7,9 +9,9 @@ import {
   LoginParams,
   ResetPasswordParams,
 } from '../../../models/types';
-import { authenticationRequest } from './actions';
+import authenticationRequest from './actions';
 
-let firebaseInteractor = new FirebaseInteractor();
+const firebaseInteractor = new FirebaseInteractor();
 
 export default function* rootSaga() {
   yield all([root(), waitForSignInAtStart()]);
@@ -22,18 +24,21 @@ function* root() {
 }
 
 function* watchCreateUser(action: Action) {
-  let { email, password, name, accountType, age }: CreateUserParams =
-    action.payload;
+  const {
+    email,
+    password,
+    name,
+    accountType,
+    age,
+  }: CreateUserParams = action.payload;
   try {
-    yield call(() =>
-      firebaseInteractor.createAccount(
-        email,
-        password,
-        name,
-        accountType,
-        age
-      )
-    );
+    yield call(() => firebaseInteractor.createAccount(
+      email,
+      password,
+      name,
+      accountType,
+      age,
+    ));
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
     yield put(authenticationRequest.createUserError(error as Error));
@@ -41,14 +46,12 @@ function* watchCreateUser(action: Action) {
 }
 
 function* watchSignIn(action: Action) {
-  let { email, password }: LoginParams = action.payload;
+  const { email, password }: LoginParams = action.payload;
   try {
-    yield call(() =>
-      firebaseInteractor.signInWithUsernameAndPassword(
-        email,
-        password
-      )
-    );
+    yield call(() => firebaseInteractor.signInWithUsernameAndPassword(
+      email,
+      password,
+    ));
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
     yield put(authenticationRequest.error(error as Error));
@@ -56,7 +59,7 @@ function* watchSignIn(action: Action) {
 }
 
 function* watchResetPassword(action: Action) {
-  let { email }: ResetPasswordParams = action.payload;
+  const { email }: ResetPasswordParams = action.payload;
   try {
     yield call(() => firebaseInteractor.resetPassword(email));
     yield put(authenticationRequest.resetPasswordSuccess());

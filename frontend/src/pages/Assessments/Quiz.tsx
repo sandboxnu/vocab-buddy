@@ -32,22 +32,22 @@ const connector = connect(
   {
     getAssessment: getAssessmentAction.request,
     updateAssessment: updateAssessment.request,
-  }
+  },
 );
 
 interface QuizParams {
   id: string;
 }
 
-const Quiz = ({
+function Quiz({
   getAssessment,
   assessment,
   updateAssessment,
   isFinished,
   error,
-}: QuizProps) => {
-  let history = useNavigate();
-  let params = useParams<QuizParams>();
+}: QuizProps) {
+  const history = useNavigate();
+  const params = useParams<QuizParams>();
   if (isFinished) {
     navigate('/assessments/reward');
   }
@@ -62,29 +62,28 @@ const Quiz = ({
 
   if (!assessment) {
     return <LoadingScreen />;
-  } else {
-    const updateAssessmentWords = (
-      responses: AssessmentResult[],
-      isFinished: boolean,
-      currentIdx: number,
-      durationInSeconds: number
-    ) => {
-      updateAssessment({
-        responses,
-        id: params.id,
-        sessionId: assessment.sessionId,
-        isFinished,
-        currentIdx,
-        durationInSeconds,
-      });
-    };
-    return (
-      <QuizWords
-        assessment={assessment}
-        updateWords={updateAssessmentWords}
-      />
-    );
   }
-};
+  const updateAssessmentWords = (
+    responses: AssessmentResult[],
+    isFinished: boolean,
+    currentIdx: number,
+    durationInSeconds: number,
+  ) => {
+    updateAssessment({
+      responses,
+      id: params.id,
+      sessionId: assessment.sessionId,
+      isFinished,
+      currentIdx,
+      durationInSeconds,
+    });
+  };
+  return (
+    <QuizWords
+      assessment={assessment}
+      updateWords={updateAssessmentWords}
+    />
+  );
+}
 
 export default connector(Quiz);

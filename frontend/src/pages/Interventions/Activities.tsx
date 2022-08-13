@@ -6,17 +6,14 @@ import React, {
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  getCurrentInterventions,
-  getError,
-} from '../Interventions/data/reducer';
+import { getCurrentInterventions, getError } from './data/reducer';
 import { Interventions } from '../../models/types';
 import {
   finishedIntervention,
   getInterventions,
   updateIntervention,
 } from './data/actions';
-import ActivitiesComponent from '../Interventions/ActivitiesComponent';
+import ActivitiesComponent from './ActivitiesComponent';
 import {
   getNextActivityIdx,
   getNextWordIdx,
@@ -62,7 +59,7 @@ const connector = connect(
     getInterventions: getInterventions.request,
     updateIntervention: updateIntervention.request,
     finishedIntervention: finishedIntervention.request,
-  }
+  },
 );
 
 const Activities: FunctionComponent<ActivityProps> = ({
@@ -72,35 +69,32 @@ const Activities: FunctionComponent<ActivityProps> = ({
   finishedIntervention,
   error,
 }): ReactElement => {
-  let params = useParams<ActivityParams>();
+  const params = useParams<ActivityParams>();
   useEffect(() => {
     if (!interventions) getInterventions(params.id);
   }, [interventions, getInterventions, params.id]);
 
-  let [activityStartTime, setActivityStartTime] = useState(
-    new Date()
+  const [activityStartTime, setActivityStartTime] = useState(
+    new Date(),
   );
 
   const setId = interventions && interventions.setId;
   const currentWordIdx = interventions && interventions.wordIdx;
-  const currentActivityIdx =
-    interventions && interventions.activityIdx;
+  const currentActivityIdx = interventions && interventions.activityIdx;
   const wordList = interventions && interventions.wordList;
   const activities = wordList && wordList[currentWordIdx].activities;
   const title = wordList && wordList[currentWordIdx].word.value;
-  const nextWordIdx =
-    wordList &&
-    getNextWordIdx(
+  const nextWordIdx = wordList
+    && getNextWordIdx(
       currentActivityIdx,
       currentWordIdx,
-      wordList.length
+      wordList.length,
     );
-  const nextActivityIdx =
-    wordList &&
-    getNextActivityIdx(
+  const nextActivityIdx = wordList
+    && getNextActivityIdx(
       currentActivityIdx,
       currentWordIdx,
-      wordList.length
+      wordList.length,
     );
 
   const navigate = useNavigate();
@@ -110,44 +104,42 @@ const Activities: FunctionComponent<ActivityProps> = ({
   }
 
   if (!interventions) {
-    return <LoadingScreen></LoadingScreen>;
-  } else {
-    return (
-      <ActivitiesComponent
-        idx={currentActivityIdx}
-        title={title}
-        activities={activities}
-        updateIntervention={(correct) => {
-          let curDate = new Date();
-          let durationInSeconds =
-            (curDate.getTime() - activityStartTime.getTime()) / 1000;
-          setActivityStartTime(curDate);
-          if (
-            currentWordIdx === wordList.length - 1 &&
-            nextActivityIdx === 0
-          ) {
-            navigate(`/interventions/reward`);
-            finishedIntervention({ setId });
-          } else {
-            updateIntervention({
-              intervention: interventions,
-              wordIdx: nextWordIdx,
-              activityIdx: nextActivityIdx,
-              durationInSeconds,
-              answer2Correct:
-                currentActivityIdx === 1 ? correct : undefined,
-              answer3Correct:
-                currentActivityIdx === 2 ? correct : undefined,
-              answer3Part2Correct:
-                currentActivityIdx === 3 ? correct : undefined,
-              answer3Part3Correct:
-                currentActivityIdx === 4 ? correct : undefined,
-            });
-          }
-        }}
-      />
-    );
+    return <LoadingScreen />;
   }
+  return (
+    <ActivitiesComponent
+      idx={currentActivityIdx}
+      title={title}
+      activities={activities}
+      updateIntervention={(correct) => {
+        const curDate = new Date();
+        const durationInSeconds = (curDate.getTime() - activityStartTime.getTime()) / 1000;
+        setActivityStartTime(curDate);
+        if (
+          currentWordIdx === wordList.length - 1
+          && nextActivityIdx === 0
+        ) {
+          navigate('/interventions/reward');
+          finishedIntervention({ setId });
+        } else {
+          updateIntervention({
+            intervention: interventions,
+            wordIdx: nextWordIdx,
+            activityIdx: nextActivityIdx,
+            durationInSeconds,
+            answer2Correct:
+              currentActivityIdx === 1 ? correct : undefined,
+            answer3Correct:
+              currentActivityIdx === 2 ? correct : undefined,
+            answer3Part2Correct:
+              currentActivityIdx === 3 ? correct : undefined,
+            answer3Part3Correct:
+              currentActivityIdx === 4 ? correct : undefined,
+          });
+        }
+      }}
+    />
+  );
 };
 
 export default connector(Activities);

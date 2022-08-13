@@ -6,7 +6,7 @@ import {
   ResetPasswordParams,
 } from '../../../models/types';
 
-export const authenticationRequest = {
+const authenticationRequest = {
   createUser: ({
     email,
     password,
@@ -15,7 +15,13 @@ export const authenticationRequest = {
     age,
   }: CreateUserParams): Action => ({
     type: ActionTypes.CREATE_USER,
-    payload: { email, password, name, accountType, age },
+    payload: {
+      email,
+      password,
+      name,
+      accountType,
+      age,
+    },
   }),
   signIn: ({ email, password }: LoginParams): Action => ({
     type: ActionTypes.SIGN_IN,
@@ -40,3 +46,5 @@ export const authenticationRequest = {
     payload: { error },
   }),
 };
+
+export default authenticationRequest;

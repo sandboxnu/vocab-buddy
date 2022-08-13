@@ -17,7 +17,7 @@ import AssessmentRewardPage from './pages/Reward/AssessmentsReward/AssessmentRew
 import Reward from './pages/Reward/InterventionsReward/Reward';
 import ErrorScreen from './pages/Errors/ErrorScreen';
 
-const App = (): ReactElement => {
+function App(): ReactElement {
   return (
     <Router>
       <Routes>
@@ -69,6 +69,6 @@ const App = (): ReactElement => {
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;

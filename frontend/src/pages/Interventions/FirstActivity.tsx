@@ -76,15 +76,14 @@ const ButtonContainer = styled.div`
   justify-content: end;
 `;
 
-const FirstActivity = ({
+function FirstActivity({
   title,
   prompt1Url,
   prompt2Url,
   imageUrl,
   updateIntervention,
-}: FirstActivityProps): ReactElement => {
-  const [triggerSecondPrompt, setTriggerSecondPrompt] =
-    useState(false);
+}: FirstActivityProps): ReactElement {
+  const [triggerSecondPrompt, setTriggerSecondPrompt] = useState(false);
 
   const [showNextButton, setShowNextButton] = useState(false);
 
@@ -95,7 +94,7 @@ const FirstActivity = ({
   });
 
   return (
-    <Layout hideBar={true}>
+    <Layout hideBar>
       <Container>
         <CloudGroup />
         <MainContent>
@@ -106,16 +105,14 @@ const FirstActivity = ({
               prompt1Url={prompt1Url}
               prompt2Url={prompt2Url}
               triggerSecondPrompt={triggerSecondPrompt}
-              secondPromptFinishedHandler={() =>
-                setShowNextButton(true)
-              }
+              secondPromptFinishedHandler={() => setShowNextButton(true)}
             />
           </Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
             <Blocker afterSeconds={30} repeatable={false}>
               <DelayedNextButton
-                text={'next'}
+                text="next"
                 top={20}
                 delay={6000}
                 onClick={updateIntervention}
@@ -127,6 +124,6 @@ const FirstActivity = ({
       </Container>
     </Layout>
   );
-};
+}
 
 export default FirstActivity;

@@ -21,12 +21,12 @@ const getDuration = (
   audio: HTMLMediaElement,
   reattemptNumber: number,
   durationQueryLimit: number,
-  canPlayHandler: (canPlay: boolean, duration: number) => void
+  canPlayHandler: (canPlay: boolean, duration: number) => void,
 ) => {
   if (
-    !isNaN(audio.duration) &&
-    audio.duration !== undefined &&
-    audio.duration > 0
+    !Number.isNaN(audio.duration)
+    && audio.duration !== undefined
+    && audio.duration > 0
   ) {
     canPlayHandler(true, audio.duration);
     return audio.duration;
@@ -37,14 +37,15 @@ const getDuration = (
     return 5000; // default wait time
   }
 
-  setTimeout(() => {
-    return getDuration(
+  setTimeout(
+    () => getDuration(
       audio,
       reattemptNumber + 1,
       durationQueryLimit,
-      canPlayHandler
-    );
-  }, 30);
+      canPlayHandler,
+    ),
+    30,
+  );
 };
 
 const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
@@ -56,10 +57,10 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
   promptDelay,
   secondPromptFinishedHandler,
 }): ReactElement => {
-  let [canPlayPrompt1, setCanPlayPrompt1] = useState(false);
-  let [canPlayPrompt2, setCanPlayPrompt2] = useState(false);
-  let [prompt1Duration, setPrompt1Duration] = useState(0);
-  let [prompt2Duration, setPrompt2Duration] = useState(0);
+  const [canPlayPrompt1, setCanPlayPrompt1] = useState(false);
+  const [canPlayPrompt2, setCanPlayPrompt2] = useState(false);
+  const [prompt1Duration, setPrompt1Duration] = useState(0);
+  const [prompt2Duration, setPrompt2Duration] = useState(0);
 
   const updatePrompt1 = (canPlay: boolean, duration: number) => {
     setPrompt1Duration(duration);
@@ -82,14 +83,14 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
   prompt2.preload = 'metadata';
 
   useEffect(() => {
-    //loop prompt if this is an assessment
+    // loop prompt if this is an assessment
     getDuration(prompt1, 0, 50, updatePrompt1);
 
     if (isAssessment && canPlayPrompt1) {
       playPrompt1();
       const interval = setInterval(
         playPrompt1,
-        prompt1Duration * 1000 + 8000
+        prompt1Duration * 1000 + 8000,
       );
       return () => {
         stopAudio(prompt1);
@@ -140,7 +141,7 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
 
   const stopAudio = (audio: HTMLAudioElement) => {
     audio.pause();
-    audio.currentTime = 0;
+    audio.load();
   };
 
   const onClickHandler = () => {
@@ -157,11 +158,9 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
     };
   };
 
-  useEffect(() => {
-    return () => {
-      stopAudio(prompt1);
-      stopAudio(prompt2);
-    };
+  useEffect(() => () => {
+    stopAudio(prompt1);
+    stopAudio(prompt2);
   });
 
   return isAssessment ? (

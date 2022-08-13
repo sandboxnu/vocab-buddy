@@ -40,15 +40,15 @@ const YesNoButton = styled(PurpleButton)`
       return `
     border: 5px solid ${SEA_FOAM} !important;
   `;
-    } else if (highlight === 0) {
+    }
+    if (highlight === 0) {
       return `
     border: 5px solid ${CORAL} !important; 
   `;
-    } else {
-      return `
+    }
+    return `
     border: 0px solid ${CORAL} !important; 
   `;
-    }
   }};
 `;
 
@@ -58,53 +58,55 @@ const YesNoSelection: FunctionComponent<YesNoSelectionProps> = ({
   correctAnswer,
   selected,
   setSelected,
-}): ReactElement => {
-  return (
-    <Blocker afterSeconds={15} repeatable={false}>
-      <YesNoContainer>
-        <YesNoButton
-          highlight={selected === 1 ? (correctAnswer ? 1 : 0) : -1}
-          onClick={() => {
-            selected === -1 && setSelected(1);
-          }}
-          text="yes"
-          top={20}
-          check={
-            selected === 1 ? (
-              correctAnswer ? (
-                <CheckCircleFilled style={{ color: SEA_FOAM }} />
-              ) : (
-                <CloseCircleFilled style={{ color: CORAL }} />
-              )
-            ) : (
-              <EmptyDiv />
-            )
+}): ReactElement => (
+  <Blocker afterSeconds={15} repeatable={false}>
+    <YesNoContainer>
+      <YesNoButton
+        highlight={selected === 1 ? (correctAnswer ? 1 : 0) : -1}
+        onClick={() => {
+          if (selected === -1) {
+            setSelected(1);
           }
-          icon={<LikeFilled />}
-        />
-        <YesNoButton
-          highlight={selected === 0 ? (correctAnswer ? 0 : 1) : -1}
-          onClick={() => {
-            selected === -1 && setSelected(0);
-          }}
-          text="no"
-          top={20}
-          check={
-            selected === 0 ? (
-              correctAnswer ? (
-                <CloseCircleFilled style={{ color: CORAL }} />
-              ) : (
-                <CheckCircleFilled style={{ color: SEA_FOAM }} />
-              )
+        }}
+        text="yes"
+        top={20}
+        check={
+          selected === 1 ? (
+            correctAnswer ? (
+              <CheckCircleFilled style={{ color: SEA_FOAM }} />
             ) : (
-              <EmptyDiv />
+              <CloseCircleFilled style={{ color: CORAL }} />
             )
+          ) : (
+            <EmptyDiv />
+          )
+        }
+        icon={<LikeFilled />}
+      />
+      <YesNoButton
+        highlight={selected === 0 ? (correctAnswer ? 0 : 1) : -1}
+        onClick={() => {
+          if (selected === -1) {
+            setSelected(0);
           }
-          icon={<DislikeFilled />}
-        />
-      </YesNoContainer>
-    </Blocker>
-  );
-};
+        }}
+        text="no"
+        top={20}
+        check={
+          selected === 0 ? (
+            correctAnswer ? (
+              <CloseCircleFilled style={{ color: CORAL }} />
+            ) : (
+              <CheckCircleFilled style={{ color: SEA_FOAM }} />
+            )
+          ) : (
+            <EmptyDiv />
+          )
+        }
+        icon={<DislikeFilled />}
+      />
+    </YesNoContainer>
+  </Blocker>
+);
 
 export default YesNoSelection;

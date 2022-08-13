@@ -1,4 +1,6 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import {
+  all, call, put, takeLatest,
+} from 'redux-saga/effects';
 import FirebaseInteractor from '../../../firebase/firebaseInteractor';
 import { Action, ActionTypes } from '../../../models/types';
 import {
@@ -8,7 +10,7 @@ import {
   UpdateAssessmentAction,
 } from './actions';
 
-let firebaseInteractor = new FirebaseInteractor();
+const firebaseInteractor = new FirebaseInteractor();
 
 export default function* assessmentSaga() {
   yield all([root()]);
@@ -17,20 +19,20 @@ export default function* assessmentSaga() {
 function* root() {
   yield takeLatest(
     ActionTypes.GET_ASSESSMENT_REQUEST,
-    watchGetAssessment
+    watchGetAssessment,
   );
   yield takeLatest(
     ActionTypes.UPDATE_ASSESSMENT_REQUEST,
-    watchUpdateAssessment
+    watchUpdateAssessment,
   );
   yield takeLatest(
     ActionTypes.GET_CURRENT_ASSESSMENT_REQUEST,
-    watchGetCurrentAssessment
+    watchGetCurrentAssessment,
   );
 }
 
 function* watchGetAssessment(action: Action) {
-  let { id } = action.payload;
+  const { id } = action.payload;
   try {
     let assessment;
     const updateWithSuccess = async () => {
@@ -39,13 +41,13 @@ function* watchGetAssessment(action: Action) {
     yield call(updateWithSuccess);
     yield put(getAssessment.success({ assessment }));
   } catch (error) {
-    const errorStr = error as string | undefined
+    const errorStr = error as string | undefined;
     yield put(getAssessment.error({ error: errorStr }));
   }
 }
 
 function* watchUpdateAssessment(action: Action) {
-  let {
+  const {
     responses,
     id,
     sessionId,
@@ -54,25 +56,21 @@ function* watchUpdateAssessment(action: Action) {
     durationInSeconds,
   }: UpdateAssessmentAction = action.payload;
   try {
-    yield call(() =>
-      firebaseInteractor.updateAssessment(
-        id,
-        responses,
-        currentIdx,
-        durationInSeconds
-      )
-    );
+    yield call(() => firebaseInteractor.updateAssessment(
+      id,
+      responses,
+      currentIdx,
+      durationInSeconds,
+    ));
     if (isFinished) {
-      yield call(() =>
-        firebaseInteractor.createInterventionFromAssessment(
-          sessionId,
-          id
-        )
-      );
+      yield call(() => firebaseInteractor.createInterventionFromAssessment(
+        sessionId,
+        id,
+      ));
     }
     yield put(updateAssessment.success({ isFinished }));
   } catch (error) {
-    const e = error as Error
+    const e = error as Error;
     yield put(updateAssessment.error(e));
   }
 }
@@ -82,13 +80,13 @@ function* watchGetCurrentAssessment(action: Action) {
     let assessmentId = '';
     const getCurrent = async () => {
       assessmentId = await firebaseInteractor.getCurrentExerciseId(
-        true
+        true,
       );
     };
     yield call(getCurrent);
     yield put(getCurrentAssessment.success({ id: assessmentId }));
   } catch (error) {
-    const e = error as Error
+    const e = error as Error;
     yield put(getCurrentAssessment.error(e));
   }
 }

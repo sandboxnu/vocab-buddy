@@ -38,7 +38,7 @@ const Balloon: FunctionComponent<BallonProps> = ({
   top,
   onPop,
 }): ReactElement => {
-  let [shown, setShown] = useState(true);
+  const [shown, setShown] = useState(true);
 
   return shown ? (
     <Container top={top} left={left}>

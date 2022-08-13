@@ -79,39 +79,38 @@ const shuffleImages = (images: any[]) => {
   return images;
 };
 
-const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
-  let [currentIndex, setCurrentIndex] = useState(
-    assessment.currentIndex
+function QuizWords({ assessment, updateWords }: QuizWordsProps) {
+  const [currentIndex, setCurrentIndex] = useState(
+    assessment.currentIndex,
   );
-  let [wordResponses, setWordResponses] = useState<
+  const [wordResponses, setWordResponses] = useState<
     AssessmentResult[]
   >([]);
-  let [selectedIndex, setSelectedIndex] = useState(-1);
-  let [wordStartTime, setWordStartTime] = useState(new Date());
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [wordStartTime, setWordStartTime] = useState(new Date());
 
-  let word = assessment.words[currentIndex];
-  let images = [word.correctImage].concat(word.incorrectImages);
-  let [shuffled, setShuffled] = useState<string[]>([]);
+  const word = assessment.words[currentIndex];
+  const images = [word.correctImage].concat(word.incorrectImages);
+  const [shuffled, setShuffled] = useState<string[]>([]);
   if (shuffled.length === 0) {
     setShuffled(shuffleImages(images));
   }
 
   const nextWord = () => {
-    let curDate = new Date();
-    let durationInSeconds =
-      (curDate.getTime() - wordStartTime.getTime()) / 1000;
+    const curDate = new Date();
+    const durationInSeconds = (curDate.getTime() - wordStartTime.getTime()) / 1000;
     setWordStartTime(curDate);
 
     if (
-      wordResponses.filter((response) => !response.correct).length >=
-      24
+      wordResponses.filter((response) => !response.correct).length
+      >= 24
     ) {
       // There are at least 24 incorrect
       updateWords(
         wordResponses,
         true,
         currentIndex,
-        durationInSeconds
+        durationInSeconds,
       );
     } else if (currentIndex < assessment.words.length - 1) {
       // We still have words
@@ -119,7 +118,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
         wordResponses,
         false,
         currentIndex + 1,
-        durationInSeconds
+        durationInSeconds,
       );
       setShuffled([]);
       setSelectedIndex(-1);
@@ -130,23 +129,26 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
         wordResponses,
         true,
         currentIndex,
-        durationInSeconds
+        durationInSeconds,
       );
     }
   };
 
   return (
-    <Layout hideBar={true}>
+    <Layout hideBar>
       <Container>
         <CloudGroup />
         <MainContent>
           <WordTitle>{word.value}</WordTitle>
           <Prompt>
             <PromptText>
-              Touch the picture that shows {word.value}.
+              Touch the picture that shows
+              {' '}
+              {word.value}
+              .
             </PromptText>
             <TriggeredPrompt
-              isAssessment={true}
+              isAssessment
               currentWord={currentIndex}
               prompt1Url={word.assessmentPrompt}
             />
@@ -163,18 +165,18 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
                       word: word.id,
                       correct: shuffled[idx] === word.correctImage,
                     },
-                  ])
+                  ]),
                 );
               }}
             />
           </ImageContainer>
           <ButtonContainer>
-            <PurpleButton text={'next'} onClick={nextWord} />
+            <PurpleButton text="next" onClick={nextWord} />
           </ButtonContainer>
         </MainContent>
       </Container>
     </Layout>
   );
-};
+}
 
 export default QuizWords;

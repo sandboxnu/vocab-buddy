@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
  * Represents an assessment
  */
@@ -204,7 +206,7 @@ export interface CreateUserParams {
   password: string;
   name: string;
   accountType: AccountType;
-  age: Number | null;
+  age: number | null;
 }
 
 export interface ResetPasswordParams {

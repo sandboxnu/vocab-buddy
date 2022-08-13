@@ -3,7 +3,7 @@ import React, {
   ReactElement,
   useState,
 } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Toast from '../../components/Toast';
 import LandingPage from '../../components/LandingPage';

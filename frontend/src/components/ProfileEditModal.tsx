@@ -22,8 +22,7 @@ const IconsContainer = styled.div`
 
 const ProfileIcon = styled.img`
   border-radius: 50%;
-  ${({ highlight }: ProfileIconProps) =>
-    highlight && `border: 3px solid ${SEA_FOAM};`}
+  ${({ highlight }: ProfileIconProps) => highlight && `border: 3px solid ${SEA_FOAM};`}
 
   :hover {
     cursor: pointer;
@@ -58,15 +57,13 @@ const ProfileEditModal: FunctionComponent<ProfileEditModalProps> = ({
       onOk={() => onOkHandler(selected)}
     >
       <IconsContainer>
-        {allProfileIcons.map((url) => {
-          return (
-            <ProfileIcon
-              src={url}
-              onClick={() => setSelected(url)}
-              highlight={url === selected}
-            />
-          );
-        })}
+        {allProfileIcons.map((url) => (
+          <ProfileIcon
+            src={url}
+            onClick={() => setSelected(url)}
+            highlight={url === selected}
+          />
+        ))}
       </IconsContainer>
     </Modal>
   );

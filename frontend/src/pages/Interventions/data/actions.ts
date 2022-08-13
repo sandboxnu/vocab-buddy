@@ -25,7 +25,7 @@ export const getInterventions = {
 };
 
 export interface GetCurrentInterventionProps {
-  id: String;
+  id: string;
 }
 
 export const getCurrentIntervention = {
@@ -67,21 +67,19 @@ export const updateIntervention = {
     answer3Correct,
     answer3Part2Correct,
     answer3Part3Correct,
-  }: UpdateInterventionAction): Action => {
-    return {
-      type: ActionTypes.UPDATE_INTERVENTION_REQUEST,
-      payload: {
-        intervention,
-        wordIdx,
-        activityIdx,
-        durationInSeconds,
-        answer2Correct,
-        answer3Correct,
-        answer3Part2Correct,
-        answer3Part3Correct,
-      },
-    };
-  },
+  }: UpdateInterventionAction): Action => ({
+    type: ActionTypes.UPDATE_INTERVENTION_REQUEST,
+    payload: {
+      intervention,
+      wordIdx,
+      activityIdx,
+      durationInSeconds,
+      answer2Correct,
+      answer3Correct,
+      answer3Part2Correct,
+      answer3Part3Correct,
+    },
+  }),
   success: ({
     interventions,
   }: UpdateInterventionSuccess): Action => ({

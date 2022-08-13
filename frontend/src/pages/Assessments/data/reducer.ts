@@ -19,9 +19,9 @@ const initialState: AssessmentState = {
 
 const assessmentReducer = (
   state: AssessmentState = initialState,
-  action: Action
+  action: Action,
 ): AssessmentState => {
-  const payload = action.payload;
+  const { payload } = action;
   switch (action.type) {
     case ActionTypes.GET_ASSESSMENT_SUCCESS:
       return {
@@ -36,12 +36,13 @@ const assessmentReducer = (
         },
         finished: false,
       };
-    case ActionTypes.UPDATE_ASSESSMENT_SUCCESS:
-      let { isFinished }: UpdateAssessmentSuccess = payload;
+    case ActionTypes.UPDATE_ASSESSMENT_SUCCESS: {
+      const { isFinished }: UpdateAssessmentSuccess = payload;
       return {
         finished: isFinished,
         assessment: isFinished ? undefined : state.assessment,
       };
+    }
     case ActionTypes.GET_CURRENT_ASSESSMENT_SUCCESS:
       return {
         ...state,
@@ -62,20 +63,12 @@ const assessmentReducer = (
   }
 };
 
-export const getAssessment = (state: AssessmentState) => {
-  return state.assessment;
-};
+export const getAssessment = (state: AssessmentState) => state.assessment;
 
-export const getIsFinished = (state: AssessmentState) => {
-  return state.finished;
-};
+export const getIsFinished = (state: AssessmentState) => state.finished;
 
-export const getError = (state: AssessmentState) => {
-  return state.error;
-};
+export const getError = (state: AssessmentState) => state.error;
 
-export const getAssessmentId = (state: AssessmentState) => {
-  return state.assessmentId;
-};
+export const getAssessmentId = (state: AssessmentState) => state.assessmentId;
 
 export default assessmentReducer;

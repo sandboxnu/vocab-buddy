@@ -41,9 +41,11 @@ const ButtonContainer = styled(Button)`
   }
 `;
 
-type DelayedNextButton = NextButtonProps & { canBeShown: boolean };
+type DelayedNextButtonProps = NextButtonProps & {
+  canBeShown: boolean;
+};
 
-const DelayedNextButton = ({
+function DelayedNextButton({
   className = '',
   text,
   top,
@@ -51,11 +53,11 @@ const DelayedNextButton = ({
   icon,
   delay,
   canBeShown,
-}: DelayedNextButton): ReactElement => {
-  let [shown, setShown] = useState(false);
+}: DelayedNextButtonProps): ReactElement {
+  const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    let timer1 = setTimeout(() => {
+    const timer1 = setTimeout(() => {
       setShown(true);
     }, delay);
 
@@ -78,10 +80,6 @@ const DelayedNextButton = ({
   ) : (
     <></>
   );
-};
-
-DelayedNextButton.defaultProps = {
-  className: '',
-};
+}
 
 export default DelayedNextButton;
