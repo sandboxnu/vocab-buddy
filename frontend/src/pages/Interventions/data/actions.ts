@@ -2,7 +2,7 @@ import {
   Action,
   ActionTypes,
   Interventions,
-} from "../../../models/types";
+} from '../../../models/types';
 
 interface GetInterventionsAction {
   error?: string;

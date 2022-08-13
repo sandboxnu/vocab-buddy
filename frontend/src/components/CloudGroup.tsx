@@ -1,6 +1,6 @@
-import React, { ReactElement } from "react";
-import styled from "styled-components";
-import CloudImage from "./CloudImage";
+import React, { ReactElement } from 'react';
+import styled from 'styled-components';
+import CloudImage from './CloudImage';
 
 const Container = styled.div``;
 

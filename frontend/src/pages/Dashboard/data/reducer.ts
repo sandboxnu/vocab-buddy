@@ -1,9 +1,9 @@
-import { RootStateOrAny } from "react-redux";
+import { RootStateOrAny } from 'react-redux';
 import {
   Action,
   ActionTypes,
   DashboardState,
-} from "../../../models/types";
+} from '../../../models/types';
 
 const initialState: DashboardState = {
   isSignedOut: false,

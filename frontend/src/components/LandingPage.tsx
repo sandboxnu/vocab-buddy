@@ -1,8 +1,8 @@
-import React, { FunctionComponent, ReactElement } from "react";
-import styled from "styled-components";
-import { CLOUD, LOGIN_BACKGROUND } from "../constants/colors";
-import Layout from "./Layout";
-import PurpleButton from "./PurpleButton";
+import React, { FunctionComponent, ReactElement } from 'react';
+import styled from 'styled-components';
+import { CLOUD, LOGIN_BACKGROUND } from '../constants/colors';
+import Layout from './Layout';
+import PurpleButton from './PurpleButton';
 
 const LandingPageContainer = styled.div`
   display: flex;
@@ -78,7 +78,7 @@ const LandingPage: FunctionComponent<LandingPageProps> = ({
             {title}
             <Prompt>{subtitle}</Prompt>
             <PurpleButton
-              text={"begin"}
+              text={'begin'}
               top={100}
               onClick={onBegin}
             />

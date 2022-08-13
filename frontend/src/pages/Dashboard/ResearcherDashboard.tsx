@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useState } from "react";
-import styled from "styled-components";
-import { User } from "../../models/types";
-import { Dropdown, Menu } from "antd";
-import caret from "../../assets/caret.svg";
-import { CLOUD, SKY } from "../../constants/colors";
-import { useNavigate } from "react-router";
+import React, { FunctionComponent, useState } from 'react';
+import styled from 'styled-components';
+import { User } from '../../models/types';
+import { Dropdown, Menu } from 'antd';
+import caret from '../../assets/caret.svg';
+import { CLOUD, SKY } from '../../constants/colors';
+import { useNavigate } from 'react-router';
 
 const ResearcherDashboardContainer = styled.div`
   display: flex;
@@ -59,7 +59,7 @@ const StudentCardContainer = styled.div`
 `;
 
 const TitleText = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 26px;
   font-weight: 700;
   text-transform: lowercase;
@@ -168,7 +168,7 @@ const StudentCard: FunctionComponent<StudentCardParams> = ({
       <Avatar
         src={
           student.profileIcon ??
-          "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Frocketcircle.svg?alt=media&token=2378a891-001b-4a7f-9522-3dffee8d202d"
+          'https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/icons%2Frocketcircle.svg?alt=media&token=2378a891-001b-4a7f-9522-3dffee8d202d'
         }
       />
       <StudentCardLabel>{student.name}</StudentCardLabel>
@@ -181,9 +181,9 @@ const sortBy = (
   studentA: User,
   studentB: User
 ): number => {
-  if (key === "age") {
+  if (key === 'age') {
     return sortByAge(studentA, studentB);
-  } else if (key === "session") {
+  } else if (key === 'session') {
     return sortBySession(studentA, studentB);
   } else {
     return sortByName(studentA, studentB);
@@ -221,7 +221,7 @@ const ResearcherDashboard: FunctionComponent<
   ResearcherDashboardParams
 > = ({ students }) => {
   const [sortByLabel, setSortByLabel] = useState(
-    () => "alphabetical"
+    () => 'alphabetical'
   );
 
   const menuOnClick = ({ key }: any) => {
@@ -240,7 +240,7 @@ const ResearcherDashboard: FunctionComponent<
     <ResearcherDashboardContainer>
       <ResearcherTopBar>
         <TitleText>students</TitleText>
-        <StudentFilter trigger={["click"]} overlay={menu}>
+        <StudentFilter trigger={['click']} overlay={menu}>
           <DropdownLabel>
             <p>sort by: {sortByLabel}</p>
             <DropdownCaret src={caret}></DropdownCaret>

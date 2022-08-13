@@ -2,9 +2,9 @@ import React, {
   FunctionComponent,
   ReactElement,
   useState,
-} from "react";
-import styled from "styled-components";
-import { BALLOON } from "../constants/images";
+} from 'react';
+import styled from 'styled-components';
+import { BALLOON } from '../constants/images';
 
 interface BalloonContainerProps {
   top: number;

@@ -2,9 +2,9 @@ import React, {
   ChangeEvent,
   KeyboardEvent,
   ReactElement,
-} from "react";
-import styled from "styled-components";
-import { SEA_FOAM } from "../constants/colors";
+} from 'react';
+import styled from 'styled-components';
+import { SEA_FOAM } from '../constants/colors';
 
 interface TextInputProps {
   value: string;
@@ -22,14 +22,14 @@ interface LoginInputProps {
 }
 
 const TextInput = ({
-  className = "",
+  className = '',
   value,
   onChange,
   text,
   type,
   expectedValue = null,
   onKeyDown = () => {},
-  autoComplete = "on",
+  autoComplete = 'on',
 }: TextInputProps): ReactElement => {
   return (
     <InputDiv className={className}>
@@ -52,8 +52,8 @@ const TextInput = ({
 
 TextInput.defaultProps = {
   expectedValue: null,
-  className: "",
-  autoComplete: "on",
+  className: '',
+  autoComplete: 'on',
   onKeyDown: () => {},
 };
 
@@ -76,11 +76,11 @@ const LoginInput = styled.input`
   border-radius: 12px;
   padding: 10px;
   border: ${({ isExpectedValue }: LoginInputProps) =>
-    isExpectedValue ? "1px solid #d4d6e2" : "1px solid red"};
+    isExpectedValue ? '1px solid #d4d6e2' : '1px solid red'};
 
   :focus {
     border: ${({ isExpectedValue }: LoginInputProps) =>
-      isExpectedValue ? `1px solid ${SEA_FOAM}` : "1px solid red"};
+      isExpectedValue ? `1px solid ${SEA_FOAM}` : '1px solid red'};
     outline: none !important;
   }
 `;

@@ -1,12 +1,12 @@
-import React, { ReactElement, useEffect, useState } from "react";
-import styled from "styled-components";
-import Blocker from "../../components/Blocker";
-import Layout from "../../components/Layout";
-import CloudGroup from "../../components/CloudGroup";
-import DelayedNextButton from "../../components/DelayedNextButton";
-import { SKY, SKY_RGBA } from "../../constants/colors";
-import ExpandableImage from "../../components/ExpandableImage";
-import TriggeredPrompt from "../../components/TriggeredPrompt";
+import React, { ReactElement, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Blocker from '../../components/Blocker';
+import Layout from '../../components/Layout';
+import CloudGroup from '../../components/CloudGroup';
+import DelayedNextButton from '../../components/DelayedNextButton';
+import { SKY, SKY_RGBA } from '../../constants/colors';
+import ExpandableImage from '../../components/ExpandableImage';
+import TriggeredPrompt from '../../components/TriggeredPrompt';
 
 interface FirstActivityProps {
   title: string;
@@ -29,14 +29,14 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -115,7 +115,7 @@ const FirstActivity = ({
           <ButtonContainer>
             <Blocker afterSeconds={30} repeatable={false}>
               <DelayedNextButton
-                text={"next"}
+                text={'next'}
                 top={20}
                 delay={6000}
                 onClick={updateIntervention}

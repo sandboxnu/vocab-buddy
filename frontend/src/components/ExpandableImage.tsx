@@ -1,5 +1,5 @@
-import React, { ReactElement, useState } from "react";
-import styled from "styled-components";
+import React, { ReactElement, useState } from 'react';
+import styled from 'styled-components';
 
 interface ExpandableImageProps {
   src: string;
@@ -24,7 +24,7 @@ const Image = styled.img`
 `;
 
 const ExpandableImage = ({
-  className = "",
+  className = '',
   src,
 }: ExpandableImageProps): ReactElement => {
   let [isExpanded, setIsExpanded] = useState(false);
@@ -39,7 +39,7 @@ const ExpandableImage = ({
 };
 
 ExpandableImage.defaultProps = {
-  className: "",
+  className: '',
 };
 
 export default ExpandableImage;

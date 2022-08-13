@@ -1,12 +1,12 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
-import FirebaseInteractor from "../../../firebase/firebaseInteractor";
-import { Action, ActionTypes } from "../../../models/types";
+import { all, call, put, takeLatest } from 'redux-saga/effects';
+import FirebaseInteractor from '../../../firebase/firebaseInteractor';
+import { Action, ActionTypes } from '../../../models/types';
 import {
   getInterventions,
   updateIntervention,
   finishedIntervention,
   getCurrentIntervention,
-} from "./actions";
+} from './actions';
 
 let firebaseInteractor = new FirebaseInteractor();
 
@@ -100,7 +100,7 @@ function* watchFinishedIntervention(action: Action) {
 
 function* watchGetCurrentIntervention(action: Action) {
   try {
-    let interventionId = "";
+    let interventionId = '';
     const getCurrent = async () => {
       interventionId = await firebaseInteractor.getCurrentExerciseId(
         false

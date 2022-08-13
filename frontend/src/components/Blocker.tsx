@@ -1,15 +1,15 @@
-import Modal from "antd/lib/modal/Modal";
+import Modal from 'antd/lib/modal/Modal';
 import React, {
   FunctionComponent,
   ReactElement,
   useEffect,
   useState,
-} from "react";
-import { Range } from "react-range";
-import styled from "styled-components";
-import star from "../assets/star.svg";
-import background from "../assets/slider.svg";
-import { SEA_FOAM } from "../constants/colors";
+} from 'react';
+import { Range } from 'react-range';
+import styled from 'styled-components';
+import star from '../assets/star.svg';
+import background from '../assets/slider.svg';
+import { SEA_FOAM } from '../constants/colors';
 
 interface BlockerProps {
   children: ReactElement;

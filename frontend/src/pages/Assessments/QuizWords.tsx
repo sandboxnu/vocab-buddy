@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Layout from "../../components/Layout";
-import PurpleButton from "../../components/PurpleButton";
-import CloudGroup from "../../components/CloudGroup";
-import WordImages from "../../components/WordImages";
-import { CLOUD } from "../../constants/colors";
-import { Assessment, AssessmentResult } from "../../models/types";
-import { shuffle } from "../../constants/utils";
-import TriggeredPrompt from "../../components/TriggeredPrompt";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Layout from '../../components/Layout';
+import PurpleButton from '../../components/PurpleButton';
+import CloudGroup from '../../components/CloudGroup';
+import WordImages from '../../components/WordImages';
+import { CLOUD } from '../../constants/colors';
+import { Assessment, AssessmentResult } from '../../models/types';
+import { shuffle } from '../../constants/utils';
+import TriggeredPrompt from '../../components/TriggeredPrompt';
 
 interface QuizWordsProps {
   assessment: Assessment;
@@ -32,7 +32,7 @@ const MainContent = styled.div`
 
 const WordTitle = styled.p`
   margin-bottom: 10px;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 35px;
   font-weight: 700;
   text-transform: lowercase;
@@ -58,7 +58,7 @@ const Prompt = styled.div`
 
 const PromptText = styled.span`
   margin-right: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 15px;
   flex: 1;
 `;
@@ -169,7 +169,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
             />
           </ImageContainer>
           <ButtonContainer>
-            <PurpleButton text={"next"} onClick={nextWord} />
+            <PurpleButton text={'next'} onClick={nextWord} />
           </ButtonContainer>
         </MainContent>
       </Container>

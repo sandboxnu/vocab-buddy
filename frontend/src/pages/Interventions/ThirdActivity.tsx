@@ -1,11 +1,11 @@
-import React, { ReactElement, useState } from "react";
-import styled from "styled-components";
-import Layout from "../../components/Layout";
-import { SKY, SKY_RGBA } from "../../constants/colors";
-import CloudGroup from "../../components/CloudGroup";
-import YesNoSelection from "../../components/YesNoSelection";
-import DelayedNextButton from "../../components/DelayedNextButton";
-import TriggeredPrompt from "../../components/TriggeredPrompt";
+import React, { ReactElement, useState } from 'react';
+import styled from 'styled-components';
+import Layout from '../../components/Layout';
+import { SKY, SKY_RGBA } from '../../constants/colors';
+import CloudGroup from '../../components/CloudGroup';
+import YesNoSelection from '../../components/YesNoSelection';
+import DelayedNextButton from '../../components/DelayedNextButton';
+import TriggeredPrompt from '../../components/TriggeredPrompt';
 
 interface ThirdActivityProps {
   title: string;
@@ -29,14 +29,14 @@ const MainContent = styled.div`
 
 const DescriptionText = styled.p`
   color: #666;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 `;
 
 const WordTitle = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 10px;

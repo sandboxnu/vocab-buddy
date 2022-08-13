@@ -1,5 +1,5 @@
-import React, { FunctionComponent, ReactElement } from "react";
-import styled from "styled-components";
+import React, { FunctionComponent, ReactElement } from 'react';
+import styled from 'styled-components';
 
 const FooterContainer = styled.footer`
   bottom: 0;

@@ -1,8 +1,8 @@
-import React from "react";
-import { useStore } from "react-redux";
-import { connect } from "react-redux";
-import { Navigate, Route, RouteProps } from "react-router-dom";
-import { State } from "../models/types";
+import React from 'react';
+import { useStore } from 'react-redux';
+import { connect } from 'react-redux';
+import { Navigate, Route, RouteProps } from 'react-router-dom';
+import { State } from '../models/types';
 
 const AuthorizedRoute = (props: RouteProps) => {
   const { signedIn } = useStore().getState() as State;

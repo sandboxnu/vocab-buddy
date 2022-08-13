@@ -1,19 +1,19 @@
-import React, { FunctionComponent } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { SessionStats, WordResult } from "../../models/types";
+import React, { FunctionComponent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { SessionStats, WordResult } from '../../models/types';
 import {
   CLOUD,
   CORAL,
   GRAY,
   INK,
   SEA_FOAM,
-} from "../../constants/colors";
+} from '../../constants/colors';
 import {
   CheckCircleFilled,
   CloseCircleFilled,
   MinusCircleFilled,
-} from "@ant-design/icons";
+} from '@ant-design/icons';
 
 interface SessionDashboardParams {
   userSessionData: SessionStats;
@@ -27,7 +27,7 @@ interface StatParams {
 
 const DashboardRedirect = styled.div`
   color: ${INK};
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 18px;
   font-weight: 700;
   text-transform: lowercase;
@@ -70,7 +70,7 @@ const WordContainer = styled.div`
 
 const SessionTitle = styled.p`
   color: #000000;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 56px;
   font-weight: 700;
   @media (max-width: 900px) {
@@ -89,13 +89,13 @@ const StatContainer = styled.ul`
 
 const StatTitle = styled.p`
   color: #000000;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 26px;
   font-weight: 700;
 `;
 
 const FormattedStat = styled.li`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 20px;
   font-weight: 700;
   text-transform: lowercase;
@@ -221,29 +221,29 @@ const WordResultDiv = ({ word }: { word: WordResult }) => {
     <WordResultWrapper>
       <StatTitle>{word.word}</StatTitle>
       <WordStatsContainer>
-        <StatsDiv color={"transparent"}>
+        <StatsDiv color={'transparent'}>
           <WordResultText>assessments</WordResultText>
           <StatsResultIcon result={word.assessmentCorrect} />
         </StatsDiv>
-        <StatsDiv color={"#fff"}>
+        <StatsDiv color={'#fff'}>
           <WordResultText>
             interventions: example vs. non-example
           </WordResultText>
           <StatsResultIcon result={word.activity2Correct} />
         </StatsDiv>
-        <StatsDiv color={"transparent"}>
+        <StatsDiv color={'transparent'}>
           <WordResultText>
             interventions: yes or no context question 1
           </WordResultText>
           <StatsResultIcon result={word.activity3Correct} />
         </StatsDiv>
-        <StatsDiv color={"#fff"}>
+        <StatsDiv color={'#fff'}>
           <WordResultText>
             interventions: yes or no context question 2
           </WordResultText>
           <StatsResultIcon result={word.activity3Part2Correct} />
         </StatsDiv>
-        <StatsDiv color={"transparent"}>
+        <StatsDiv color={'transparent'}>
           <WordResultText>
             interventions: yes or no context question 3
           </WordResultText>
@@ -268,7 +268,7 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
             navigate(`/dashboard/student/${userSessionData.userId}/`);
           }}
         >
-          {"< back to " + userName + "'s data"}
+          {'< back to ' + userName + "'s data"}
         </DashboardRedirect>
         <SessionTitle>
           session {userSessionData.sessionId + 1}
@@ -290,21 +290,21 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
           <StatTitle>stats</StatTitle>
           <Stat
             stat={formatDuration(userSessionData.assessmentDuration)}
-            description={"assessments completion time"}
+            description={'assessments completion time'}
           />
           <Stat
             stat={formatDuration(
               userSessionData.interventionDuration
             )}
-            description={"interventions completion time"}
+            description={'interventions completion time'}
           />
           <Stat
             stat={userSessionData.correctWords.toString()}
-            description={"words answered correctly"}
+            description={'words answered correctly'}
           />
           <Stat
             stat={userSessionData.incorrectWords.toString()}
-            description={"words answered incorrectly"}
+            description={'words answered incorrectly'}
           />
         </StatContainer>
       </SessionBody>

@@ -1,21 +1,21 @@
-import React, { FunctionComponent, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { FunctionComponent, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   CLOUD,
   INK,
   SKY,
   INCOMPLETE_GRAY,
-} from "../../constants/colors";
-import PurpleButton from "../../components/PurpleButton";
-import { User } from "../../models/types";
-import star from "../../assets/star.svg";
-import ellipse from "../../assets/ellipse.svg";
-import ColoredSessionIcons from "../../assets/icons/session/color/ColoredSessionIcons";
-import GrayscaleSessionIcons from "../../assets/icons/session/grayscale/GrayscaleSessionIcons";
-import { dayStreak } from "../../constants/utils";
-import { DownloadOutlined } from "@ant-design/icons";
-import { Alert } from "antd";
+} from '../../constants/colors';
+import PurpleButton from '../../components/PurpleButton';
+import { User } from '../../models/types';
+import star from '../../assets/star.svg';
+import ellipse from '../../assets/ellipse.svg';
+import ColoredSessionIcons from '../../assets/icons/session/color/ColoredSessionIcons';
+import GrayscaleSessionIcons from '../../assets/icons/session/grayscale/GrayscaleSessionIcons';
+import { dayStreak } from '../../constants/utils';
+import { DownloadOutlined } from '@ant-design/icons';
+import { Alert } from 'antd';
 
 interface StudentDashboardParams {
   student: User;
@@ -26,7 +26,7 @@ interface StudentDashboardParams {
 }
 
 const TitleText = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 26px;
   font-weight: 700;
   text-transform: lowercase;
@@ -92,7 +92,7 @@ const SessionBox = styled.div`
       isComplete,
       isStudentView,
     }: SessionCompletionProps) =>
-      isComplete && !isStudentView ? "pointer" : "auto"};
+      isComplete && !isStudentView ? 'pointer' : 'auto'};
     opacity: ${({
       isComplete,
       isStudentView,
@@ -176,7 +176,7 @@ const ProgressBox = styled.div`
 `;
 
 const ProgressStatNumber = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 3vw;
   font-weight: 700;
   text-transform: lowercase;
@@ -280,7 +280,7 @@ const DayContainer = styled.div`
 `;
 
 const StudentNameTitle = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 56px;
   font-weight: 700;
   text-transform: lowercase;
@@ -294,7 +294,7 @@ const StudentNameTitle = styled.p`
 
 const BackToDashboard = styled.p`
   color: ${INK};
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 18px;
   font-weight: 700;
   text-transform: lowercase;
@@ -309,12 +309,12 @@ const BackToDashboard = styled.p`
 const getTitleOfButton = (user: User): string => {
   switch (user.sessionId) {
     case -1:
-      return "Begin pre-assessment";
+      return 'Begin pre-assessment';
     case 8:
-      return "Congratulations on finishing the study";
+      return 'Congratulations on finishing the study';
     default:
       return (
-        (user.onAssessment ? "Continue session " : "Begin session ") +
+        (user.onAssessment ? 'Continue session ' : 'Begin session ') +
         (user.sessionId + 1)
       );
   }
@@ -464,7 +464,7 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
   downloadDataLoading,
 }) => {
   const navigate = useNavigate();
-  const dayLabels = ["su", "mo", "tu", "we", "th", "fr", "sa"];
+  const dayLabels = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
   const sessionNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
   const daysActiveThisWeek = student.daysActive.filter((day) =>
     filterByThisWeek(day)
@@ -487,8 +487,8 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
               onClick={() =>
                 navigate(
                   student.onAssessment
-                    ? "/assessments"
-                    : "/interventions"
+                    ? '/assessments'
+                    : '/interventions'
                 )
               }
               disabled={student.sessionId === 8}
@@ -496,11 +496,11 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
           </>
         ) : (
           <>
-            <BackToDashboard onClick={() => navigate("/dashboard")}>
-              {"<"} back to student selections
+            <BackToDashboard onClick={() => navigate('/dashboard')}>
+              {'<'} back to student selections
             </BackToDashboard>
             <StudentNameTitle>
-              {student.name}'s Data{" "}
+              {student.name}'s Data{' '}
               <DownloadOutlined onClick={downloadStudentData} />
             </StudentNameTitle>
             {downloadDataLoading && (
@@ -555,7 +555,7 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
 
         <TitleText>
           {isStudentView
-            ? "your progress"
+            ? 'your progress'
             : `${student.name}'s progress`}
         </TitleText>
         <ProgressStatsContainer>
@@ -563,21 +563,21 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
             number={dayStreak(
               student.daysActive.map((val) => new Date(val))
             )}
-            description={"day streak"}
+            description={'day streak'}
           />
           <Stat
             number={totalWordsLearned}
-            description={"words learned"}
+            description={'words learned'}
           />
           <Stat
             number={student.sessionId + 1}
-            description={"assessments completed"}
+            description={'assessments completed'}
           />
           <Stat
             number={
               student.sessionId + (student.onAssessment ? 1 : 0)
             }
-            description={"interventions completed"}
+            description={'interventions completed'}
           />
         </ProgressStatsContainer>
       </WeekProgressContainer>

@@ -2,8 +2,8 @@ import {
   Action,
   ActionTypes,
   Interventions,
-} from "../../../models/types";
-import { RootStateOrAny } from "react-redux";
+} from '../../../models/types';
+import { RootStateOrAny } from 'react-redux';
 
 interface InterventionState {
   interventions?: Interventions;

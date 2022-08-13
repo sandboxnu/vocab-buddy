@@ -3,25 +3,25 @@ import React, {
   ReactElement,
   useEffect,
   useState,
-} from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { connect } from "react-redux";
+} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
   getCurrentInterventions,
   getError,
-} from "../Interventions/data/reducer";
-import { Interventions } from "../../models/types";
+} from '../Interventions/data/reducer';
+import { Interventions } from '../../models/types';
 import {
   finishedIntervention,
   getInterventions,
   updateIntervention,
-} from "./data/actions";
-import ActivitiesComponent from "../Interventions/ActivitiesComponent";
+} from './data/actions';
+import ActivitiesComponent from '../Interventions/ActivitiesComponent';
 import {
   getNextActivityIdx,
   getNextWordIdx,
-} from "../../constants/utils";
-import LoadingScreen from "../Loading/LoadingScreen";
+} from '../../constants/utils';
+import LoadingScreen from '../Loading/LoadingScreen';
 
 interface ActivityProps {
   interventions: Interventions;
@@ -106,7 +106,7 @@ const Activities: FunctionComponent<ActivityProps> = ({
   const navigate = useNavigate();
 
   if (error) {
-    navigate("/error");
+    navigate('/error');
   }
 
   if (!interventions) {

@@ -1,10 +1,10 @@
-import { Alert } from "antd";
-import React, { FunctionComponent } from "react";
-import styled from "styled-components";
+import { Alert } from 'antd';
+import React, { FunctionComponent } from 'react';
+import styled from 'styled-components';
 
 const StyledAlert = styled(Alert)<ToastProps>`
   position: sticky;
-  top: ${({ topMargin }) => (topMargin ? topMargin : "10px")};
+  top: ${({ topMargin }) => (topMargin ? topMargin : '10px')};
 
   @media (max-width: 900px) {
     width: 100%;
@@ -22,7 +22,7 @@ interface ToastProps {
   message?: string;
   onClose: () => void;
   topMargin?: string;
-  alertType?: "success" | "info" | "warning" | "error";
+  alertType?: 'success' | 'info' | 'warning' | 'error';
 }
 
 const Toast: FunctionComponent<ToastProps> = ({
@@ -37,7 +37,7 @@ const Toast: FunctionComponent<ToastProps> = ({
         banner
         topMargin={topMargin}
         message={message}
-        type={alertType === undefined ? "error" : alertType}
+        type={alertType === undefined ? 'error' : alertType}
         closable
         onClose={onClose}
       />

@@ -1,6 +1,6 @@
-import React, { FunctionComponent, ReactElement } from "react";
-import styled from "styled-components";
-import { SEA_FOAM } from "../constants/colors";
+import React, { FunctionComponent, ReactElement } from 'react';
+import styled from 'styled-components';
+import { SEA_FOAM } from '../constants/colors';
 
 interface ImagesProp {
   images: string[];

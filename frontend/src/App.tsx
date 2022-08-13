@@ -1,22 +1,21 @@
-import React, { ReactElement } from "react";
-import { connect } from "react-redux";
+import React, { ReactElement } from 'react';
 import {
   BrowserRouter as Router,
   Navigate,
   Route,
   Routes,
-} from "react-router-dom";
-import AuthenticatedRoute from "./components/AuthenticatedRoute";
-import Assessments from "./pages/Assessments/Assessments";
-import Quiz from "./pages/Assessments/Quiz";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import Interventions from "./pages/Interventions/Interventions";
-import Activities from "./pages/Interventions/Activities";
-import CreateUser from "./pages/Login/CreateUser";
-import Login from "./pages/Login/Login";
-import AssessmentRewardPage from "./pages/Reward/AssessmentsReward/AssessmentRewardPage";
-import Reward from "./pages/Reward/InterventionsReward/Reward";
-import ErrorScreen from "./pages/Errors/ErrorScreen";
+} from 'react-router-dom';
+import AuthenticatedRoute from './components/AuthenticatedRoute';
+import Assessments from './pages/Assessments/Assessments';
+import Quiz from './pages/Assessments/Quiz';
+import Dashboard from './pages/Dashboard/Dashboard';
+import Interventions from './pages/Interventions/Interventions';
+import Activities from './pages/Interventions/Activities';
+import CreateUser from './pages/Login/CreateUser';
+import Login from './pages/Login/Login';
+import AssessmentRewardPage from './pages/Reward/AssessmentsReward/AssessmentRewardPage';
+import Reward from './pages/Reward/InterventionsReward/Reward';
+import ErrorScreen from './pages/Errors/ErrorScreen';
 
 const App = (): ReactElement => {
   return (
@@ -72,6 +71,4 @@ const App = (): ReactElement => {
   );
 };
 
-const connector = connect((state) => state, {});
-
-export default connector(App);
+export default App;

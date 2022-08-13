@@ -1,11 +1,11 @@
-import { Button } from "antd";
-import React, { MouseEvent, ReactElement } from "react";
-import styled from "styled-components";
-import { INK, INK_HOVER } from "../constants/colors";
+import { Button } from 'antd';
+import React, { MouseEvent, ReactElement } from 'react';
+import styled from 'styled-components';
+import { INK, INK_HOVER } from '../constants/colors';
 
 interface PurpleButtonProps {
   top?: number;
-  text?: string | "";
+  text?: string | '';
   onClick?: (event: MouseEvent<HTMLInputElement>) => void;
   check?: ReactElement;
   icon?: ReactElement;
@@ -44,7 +44,7 @@ const ButtonContainer = styled(Button)`
 `;
 
 const PurpleButton = ({
-  className = "",
+  className = '',
   text,
   top,
   onClick,
@@ -69,7 +69,7 @@ const PurpleButton = ({
 };
 
 PurpleButton.defaultProps = {
-  className: "",
+  className: '',
 };
 
 export default PurpleButton;

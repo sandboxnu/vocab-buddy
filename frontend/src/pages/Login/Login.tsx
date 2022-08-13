@@ -3,18 +3,17 @@ import React, {
   ReactElement,
   useEffect,
   useState,
-} from "react";
-import { connect } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
-import styled from "styled-components";
-import Toast from "../../components/Toast";
-import Layout from "../../components/Layout";
-import PurpleButton from "../../components/PurpleButton";
-import { TextInput } from "../../components/TextInput";
-import { INK, LOGIN_BACKGROUND } from "../../constants/colors";
-import { LoginParams, ResetPasswordParams } from "../../models/types";
-import { authenticationRequest } from "./data/actions";
-import { getLoginError, getSignedIn } from "./data/reducer";
+} from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import Toast from '../../components/Toast';
+import Layout from '../../components/Layout';
+import PurpleButton from '../../components/PurpleButton';
+import { TextInput } from '../../components/TextInput';
+import { INK, LOGIN_BACKGROUND } from '../../constants/colors';
+import { authenticationRequest } from './data/actions';
+import { getLoginError, getSignedIn } from './data/reducer';
 
 const ResetUserButton = styled.button`
   padding-left: 0;
@@ -131,42 +130,22 @@ const StyledPurpleButton = styled(PurpleButton)`
   padding: 10px;
 `;
 
-// An example of using a connector
-const connector = connect(
-  (state) => ({
-    signedIn: getSignedIn(state),
-    error: getLoginError(state),
-  }),
-  {
-    signIn: authenticationRequest.signIn,
-    resetPassword: authenticationRequest.resetPassword,
-  }
-);
-
 const loginIllustration =
-  "https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/login_illustration.png?alt=media&token=1a270ca5-e24b-4327-83af-89972e0e112e";
-
-interface LoginProps {
-  signedIn: boolean;
-  signIn: ({ email, password }: LoginParams) => void;
-  resetPassword: ({ email }: ResetPasswordParams) => void;
-  error?: Error;
-}
+  'https://firebasestorage.googleapis.com/v0/b/vocab-buddy-53eca.appspot.com/o/login_illustration.png?alt=media&token=1a270ca5-e24b-4327-83af-89972e0e112e';
 
 interface State {
   redirect: string;
 }
 
-const Login: FunctionComponent<LoginProps> = ({
-  signedIn,
-  signIn,
-  resetPassword,
-  error,
-}): ReactElement => {
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
+const Login: FunctionComponent<{}> = (): ReactElement => {
+  const signIn = authenticationRequest.signIn;
+  const resetPassword = authenticationRequest.resetPassword;
+  const signedIn = useSelector(getSignedIn);
+  const error = useSelector(getLoginError);
+  let [email, setEmail] = useState('');
+  let [password, setPassword] = useState('');
   let [showError, setShowError] = useState(false);
-  let history = useNavigate();
+  let navigate = useNavigate();
   let location = useLocation();
   let redirect: string | null = null;
   if (location.state != null) {
@@ -174,9 +153,9 @@ const Login: FunctionComponent<LoginProps> = ({
   }
 
   let doResetPassword = () => {
-    let email = prompt("What is your email?");
+    let email = prompt('What is your email?');
 
-    if (email == null || email === "") {
+    if (email == null || email === '') {
       return;
     }
 
@@ -193,9 +172,9 @@ const Login: FunctionComponent<LoginProps> = ({
   useEffect(() => {
     if (signedIn) {
       if (redirect != null) {
-        history.replace(redirect);
+        navigate(redirect);
       } else {
-        navigate("/dashboard");
+        navigate('/dashboard');
       }
     }
   }, [signedIn, history, redirect]);
@@ -229,11 +208,11 @@ const Login: FunctionComponent<LoginProps> = ({
                   value={password}
                   type="password"
                   text="password"
-                  onKeyDown={(e) => e.key === "Enter" && doSignIn()}
+                  onKeyDown={(e) => e.key === 'Enter' && doSignIn()}
                 />
 
                 <StyledPurpleButton
-                  text={"login"}
+                  text={'login'}
                   top={0}
                   onClick={() => doSignIn()}
                 />
@@ -244,7 +223,7 @@ const Login: FunctionComponent<LoginProps> = ({
                 <HorizontalDiv>
                   Don't have an account?
                   <CreateUserButton
-                    onClick={() => navigate("/sign_up")}
+                    onClick={() => navigate('/sign_up')}
                   >
                     sign up
                   </CreateUserButton>
@@ -259,4 +238,4 @@ const Login: FunctionComponent<LoginProps> = ({
   );
 };
 
-export default connector(Login);
+export default Login;

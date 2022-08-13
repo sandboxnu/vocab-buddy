@@ -1,22 +1,21 @@
-import { RootStateOrAny } from "react-redux";
 import {
   Action,
   ActionTypes,
   Assessment,
-} from "../../../models/types";
-import { UpdateAssessmentSuccess } from "./actions";
+} from '../../../models/types';
+import { UpdateAssessmentSuccess } from './actions';
 
-const initialState: RootStateOrAny = {
-  assessment: null,
-  finished: false,
-};
-
-interface AssessmentState {
+export interface AssessmentState {
   assessment?: Assessment;
   finished: boolean;
   assessmentId?: string;
   error?: Error;
 }
+
+const initialState: AssessmentState = {
+  assessment: undefined,
+  finished: false,
+};
 
 const assessmentReducer = (
   state: AssessmentState = initialState,
@@ -63,20 +62,20 @@ const assessmentReducer = (
   }
 };
 
-export const getAssessment = (state: RootStateOrAny) => {
-  return state.assessment.assessment;
+export const getAssessment = (state: AssessmentState) => {
+  return state.assessment;
 };
 
-export const getIsFinished = (state: RootStateOrAny) => {
-  return state.assessment.finished;
+export const getIsFinished = (state: AssessmentState) => {
+  return state.finished;
 };
 
-export const getError = (state: RootStateOrAny) => {
-  return state.assessment.error;
+export const getError = (state: AssessmentState) => {
+  return state.error;
 };
 
-export const getAssessmentId = (state: RootStateOrAny) => {
-  return state.assessment.assessmentId;
+export const getAssessmentId = (state: AssessmentState) => {
+  return state.assessmentId;
 };
 
 export default assessmentReducer;

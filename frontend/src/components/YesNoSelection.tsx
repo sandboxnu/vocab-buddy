@@ -3,12 +3,12 @@ import {
   CloseCircleFilled,
   DislikeFilled,
   LikeFilled,
-} from "@ant-design/icons";
-import React, { FunctionComponent, ReactElement } from "react";
-import styled from "styled-components";
-import { CORAL, SEA_FOAM } from "../constants/colors";
-import Blocker from "./Blocker";
-import PurpleButton from "./PurpleButton";
+} from '@ant-design/icons';
+import React, { FunctionComponent, ReactElement } from 'react';
+import styled from 'styled-components';
+import { CORAL, SEA_FOAM } from '../constants/colors';
+import Blocker from './Blocker';
+import PurpleButton from './PurpleButton';
 
 interface YesNoSelectionProps {
   correctAnswer: boolean;

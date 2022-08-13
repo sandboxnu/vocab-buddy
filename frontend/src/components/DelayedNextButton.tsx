@@ -1,16 +1,16 @@
-import { Button } from "antd";
+import { Button } from 'antd';
 import React, {
   MouseEvent,
   ReactElement,
   useState,
   useEffect,
-} from "react";
-import styled from "styled-components";
-import { INK, INK_HOVER } from "../constants/colors";
+} from 'react';
+import styled from 'styled-components';
+import { INK, INK_HOVER } from '../constants/colors';
 
 interface NextButtonProps {
   top?: number;
-  text?: string | "";
+  text?: string | '';
   onClick?: (event: MouseEvent<HTMLInputElement>) => void;
   icon?: ReactElement;
   className: string;
@@ -44,7 +44,7 @@ const ButtonContainer = styled(Button)`
 type DelayedNextButton = NextButtonProps & { canBeShown: boolean };
 
 const DelayedNextButton = ({
-  className = "",
+  className = '',
   text,
   top,
   onClick,
@@ -81,7 +81,7 @@ const DelayedNextButton = ({
 };
 
 DelayedNextButton.defaultProps = {
-  className: "",
+  className: '',
 };
 
 export default DelayedNextButton;

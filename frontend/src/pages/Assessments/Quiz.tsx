@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { Assessment, AssessmentResult } from "../../models/types";
-import LoadingScreen from "../Loading/LoadingScreen";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Assessment, AssessmentResult } from '../../models/types';
+import LoadingScreen from '../Loading/LoadingScreen';
 import {
   getAssessment as getAssessmentAction,
   updateAssessment,
   UpdateAssessmentAction,
-} from "./data/actions";
+} from './data/actions';
 import {
   getAssessment as getAssessmentReducer,
   getError,
   getIsFinished,
-} from "./data/reducer";
-import QuizWords from "./QuizWords";
+} from './data/reducer';
+import QuizWords from './QuizWords';
 
 interface QuizProps {
   getAssessment: (id: string) => void;
@@ -49,11 +49,11 @@ const Quiz = ({
   let history = useNavigate();
   let params = useParams<QuizParams>();
   if (isFinished) {
-    navigate("/assessments/reward");
+    navigate('/assessments/reward');
   }
 
   if (error) {
-    navigate("/error");
+    navigate('/error');
   }
 
   useEffect(() => {

@@ -2,14 +2,14 @@ import React, {
   FunctionComponent,
   ReactElement,
   useState,
-} from "react";
-import LandingPage from "../../components/LandingPage";
-import { ASSESSMENTS_LANDING } from "../../constants/images";
-import { useNavigate } from "react-router-dom";
-import { connect } from "react-redux";
-import { getCurrentIntervention } from "./data/actions";
-import { getError, getInterventionId } from "./data/reducer";
-import Toast from "../../components/Toast";
+} from 'react';
+import LandingPage from '../../components/LandingPage';
+import { ASSESSMENTS_LANDING } from '../../constants/images';
+import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getCurrentIntervention } from './data/actions';
+import { getError, getInterventionId } from './data/reducer';
+import Toast from '../../components/Toast';
 
 const connector = connect(
   (state) => ({

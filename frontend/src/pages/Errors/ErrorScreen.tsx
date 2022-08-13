@@ -1,17 +1,17 @@
-import React from "react";
-import { connect } from "react-redux";
-import { useNavigate } from "react-router";
-import styled from "styled-components";
-import CloudGroup from "../../components/CloudGroup";
-import Layout from "../../components/Layout";
-import PurpleButton from "../../components/PurpleButton";
-import { INK } from "../../constants/colors";
-import { ERROR_IMAGE } from "../../constants/images";
-import { SignOut } from "../Dashboard/data/actions";
-import { getIsSignedOut } from "../Dashboard/data/reducer";
+import React from 'react';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
+import CloudGroup from '../../components/CloudGroup';
+import Layout from '../../components/Layout';
+import PurpleButton from '../../components/PurpleButton';
+import { INK } from '../../constants/colors';
+import { ERROR_IMAGE } from '../../constants/images';
+import { SignOut } from '../Dashboard/data/actions';
+import { getIsSignedOut } from '../Dashboard/data/reducer';
 
 const TitleText = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 26px;
   font-weight: 700;
   text-transform: lowercase;
@@ -65,7 +65,7 @@ function ErrorScreen({ logOut, signedOut }: ErrorScreenProps) {
   let history = useNavigate();
 
   if (signedOut) {
-    navigate("/login");
+    navigate('/login');
   }
 
   return (
@@ -77,7 +77,7 @@ function ErrorScreen({ logOut, signedOut }: ErrorScreenProps) {
           <TitleText>oops, something went wrong</TitleText>
           <PurpleButton
             text="return to dashboard"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate('/dashboard')}
           />
           <SignOutButton onClick={logOut}>log out</SignOutButton>
         </WrappingDiv>

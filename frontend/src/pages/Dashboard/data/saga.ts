@@ -4,9 +4,9 @@ import {
   put,
   takeEvery,
   takeLatest,
-} from "redux-saga/effects";
-import FirebaseInteractor from "../../../firebase/firebaseInteractor";
-import { Action, ActionTypes } from "../../../models/types";
+} from 'redux-saga/effects';
+import FirebaseInteractor from '../../../firebase/firebaseInteractor';
+import { Action, ActionTypes } from '../../../models/types';
 import {
   DownloadData,
   GetData,
@@ -15,7 +15,7 @@ import {
   ChangeProfileIcon,
   SignOut,
   UpdateUserSettings,
-} from "./actions";
+} from './actions';
 
 let firebaseInteractor = new FirebaseInteractor();
 

@@ -3,7 +3,7 @@ import {
   SessionStats,
   User,
   UserSettings,
-} from "../../../models/types";
+} from '../../../models/types';
 
 export const SignOut = {
   request: () => ({

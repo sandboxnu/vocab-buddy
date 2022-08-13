@@ -3,9 +3,9 @@ import React, {
   ReactElement,
   useEffect,
   useState,
-} from "react";
-import ReplayButton from "./ReplayButton";
-import PlayButton from "./PlayButton";
+} from 'react';
+import ReplayButton from './ReplayButton';
+import PlayButton from './PlayButton';
 
 interface TriggeredPromptProps {
   prompt1Url: string;
@@ -78,8 +78,8 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
     secondPromptFinishedHandler?.();
   };
 
-  prompt1.preload = "metadata";
-  prompt2.preload = "metadata";
+  prompt1.preload = 'metadata';
+  prompt2.preload = 'metadata';
 
   useEffect(() => {
     //loop prompt if this is an assessment

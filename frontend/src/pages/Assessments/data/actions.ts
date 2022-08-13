@@ -4,7 +4,7 @@ import {
   Assessment,
   AssessmentResult,
   SessionId,
-} from "../../../models/types";
+} from '../../../models/types';
 
 interface GetAssessmentAction {
   error?: string;

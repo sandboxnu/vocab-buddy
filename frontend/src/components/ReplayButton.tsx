@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
-import styled from "styled-components";
+import React, { ReactElement } from 'react';
+import styled from 'styled-components';
 
 interface ReplayProps {
   scale?: number;
@@ -21,7 +21,7 @@ const ReplayButtonContainer = styled.div`
 
 const ReplayText = styled.p`
   color: #000;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-weight: 700;
   margin-bottom: 0;
   margin-right: 5px;

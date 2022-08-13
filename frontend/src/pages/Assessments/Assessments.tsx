@@ -2,36 +2,23 @@ import React, {
   FunctionComponent,
   ReactElement,
   useState,
-} from "react";
-import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Toast from "../../components/Toast";
-import LandingPage from "../../components/LandingPage";
-import { ASSESSMENTS_LANDING } from "../../constants/images";
-import { getCurrentAssessment } from "./data/actions";
-import { getAssessmentId, getError } from "./data/reducer";
+} from 'react';
+import { connect, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Toast from '../../components/Toast';
+import LandingPage from '../../components/LandingPage';
+import { ASSESSMENTS_LANDING } from '../../constants/images';
+import { getCurrentAssessment } from './data/actions';
+import {
+  AssessmentState,
+  getAssessmentId,
+  getError,
+} from './data/reducer';
 
-const connector = connect(
-  (state) => ({
-    assessmentId: getAssessmentId(state),
-    error: getError(state),
-  }),
-  {
-    getAssessmentRequest: getCurrentAssessment.request,
-  }
-);
-
-interface AssessmentsProps {
-  assessmentId?: string;
-  getAssessmentRequest: () => void;
-  error?: Error;
-}
-
-const Assessments: FunctionComponent<AssessmentsProps> = ({
-  assessmentId,
-  getAssessmentRequest,
-  error,
-}): ReactElement => {
+const Assessments: FunctionComponent<{}> = (): ReactElement => {
+  const assessmentId = useSelector(getAssessmentId);
+  const error = useSelector(getError);
+  const getAssessmentRequest = getCurrentAssessment.request;
   const navigate = useNavigate();
   const [hasClickedButton, setHasClickedButton] = useState(false);
   if (assessmentId && hasClickedButton) {
@@ -58,4 +45,4 @@ const Assessments: FunctionComponent<AssessmentsProps> = ({
   );
 };
 
-export default connector(Assessments);
+export default Assessments;

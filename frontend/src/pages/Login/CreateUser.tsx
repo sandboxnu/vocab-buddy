@@ -3,19 +3,19 @@ import React, {
   ReactElement,
   useEffect,
   useState,
-} from "react";
-import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import CloudGroup from "../../components/CloudGroup";
-import Layout from "../../components/Layout";
-import PurpleButton from "../../components/PurpleButton";
-import { TextInput } from "../../components/TextInput";
-import { INK, SEA_FOAM } from "../../constants/colors";
-import { authenticationRequest } from "./data/actions";
-import { AccountType, CreateUserParams } from "../../models/types";
-import { getCreateUserError, getSignedIn } from "./data/reducer";
-import Toast from "../../components/Toast";
+} from 'react';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import CloudGroup from '../../components/CloudGroup';
+import Layout from '../../components/Layout';
+import PurpleButton from '../../components/PurpleButton';
+import { TextInput } from '../../components/TextInput';
+import { INK, SEA_FOAM } from '../../constants/colors';
+import { authenticationRequest } from './data/actions';
+import { AccountType, CreateUserParams } from '../../models/types';
+import { getCreateUserError, getSignedIn } from './data/reducer';
+import Toast from '../../components/Toast';
 
 const LoginHoldingDiv = styled.div`
   display: flex;
@@ -53,7 +53,7 @@ interface RadioTextProps {
 }
 const RadioText = styled.p`
   border-bottom: ${({ isActive }: RadioTextProps) =>
-    !isActive ? "0px solid clear" : `4px solid ${SEA_FOAM}`};
+    !isActive ? '0px solid clear' : `4px solid ${SEA_FOAM}`};
   flex: 1;
   margin-right: 15px;
 
@@ -115,7 +115,7 @@ interface NameTextInputProps {
 const NameTextInput = styled(TextInput)`
   flex: 3;
   margin-right: ${({ isStudent }: NameTextInputProps) =>
-    isStudent ? "15px" : "0px"};
+    isStudent ? '15px' : '0px'};
 `;
 
 const AgeTextInput = styled(TextInput)`
@@ -151,26 +151,26 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
   createUser,
   error,
 }): ReactElement => {
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
-  let [confirmPassword, setConfirmPassword] = useState("");
-  let [name, setName] = useState("");
-  let [accountType, setAccountType] = useState("STUDENT");
-  let [age, setAge] = useState("");
-  let [errorString, setErrorString] = useState("");
+  let [email, setEmail] = useState('');
+  let [password, setPassword] = useState('');
+  let [confirmPassword, setConfirmPassword] = useState('');
+  let [name, setName] = useState('');
+  let [accountType, setAccountType] = useState('STUDENT');
+  let [age, setAge] = useState('');
+  let [errorString, setErrorString] = useState('');
   let [networkErrorShown, setNetworkErrorShown] = useState(false);
   let createUserWithCheck = () => {
     if (confirmPassword !== password) {
       setErrorString(
-        "you need to confirm the password with the same password"
+        'you need to confirm the password with the same password'
       );
     } else if (
-      (accountType === "STUDENT" && !age) ||
+      (accountType === 'STUDENT' && !age) ||
       !name ||
       !password ||
       !email
     ) {
-      setErrorString("please fill in all fields");
+      setErrorString('please fill in all fields');
     } else {
       setNetworkErrorShown(true);
       createUser({
@@ -178,7 +178,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
         password,
         name,
         accountType: accountType as AccountType,
-        age: accountType === "RESEARCHER" ? null : parseInt(age),
+        age: accountType === 'RESEARCHER' ? null : parseInt(age),
       });
     }
   };
@@ -187,7 +187,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
 
   useEffect(() => {
     if (signedIn) {
-      navigate("/dashboard");
+      navigate('/dashboard');
     }
   }, [signedIn, history]);
   // For right now, go to dashboard when signed in
@@ -199,14 +199,14 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
         <LoginHoldingDiv>
           <Toast
             message={
-              errorString === ""
+              errorString === ''
                 ? networkErrorShown
                   ? error?.message
                   : undefined
                 : errorString
             }
             onClose={() => {
-              setErrorString("");
+              setErrorString('');
               setNetworkErrorShown(false);
             }}
           />
@@ -217,14 +217,14 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
               <HorizontalDiv>
                 <HorizontalDiv>
                   <RadioText
-                    isActive={accountType === "STUDENT"}
-                    onClick={() => setAccountType("STUDENT")}
+                    isActive={accountType === 'STUDENT'}
+                    onClick={() => setAccountType('STUDENT')}
                   >
                     student
                   </RadioText>
                   <RadioText
-                    isActive={accountType === "RESEARCHER"}
-                    onClick={() => setAccountType("RESEARCHER")}
+                    isActive={accountType === 'RESEARCHER'}
+                    onClick={() => setAccountType('RESEARCHER')}
                   >
                     researcher
                   </RadioText>
@@ -237,9 +237,9 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
                   value={name}
                   type="text"
                   text="name"
-                  isStudent={accountType === "STUDENT"}
+                  isStudent={accountType === 'STUDENT'}
                 />
-                {accountType === "STUDENT" && (
+                {accountType === 'STUDENT' && (
                   <AgeTextInput
                     onChange={(e) => {
                       if (parseInt(e.target.value) != null) {
@@ -273,14 +273,14 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
               />
 
               <StyledPurpleButton
-                text={"sign up"}
+                text={'sign up'}
                 top={0}
                 onClick={() => createUserWithCheck()}
               />
 
               <HorizontalDiv>
                 Have an account?
-                <LoginButton onClick={() => navigate("/")}>
+                <LoginButton onClick={() => navigate('/')}>
                   login
                 </LoginButton>
               </HorizontalDiv>

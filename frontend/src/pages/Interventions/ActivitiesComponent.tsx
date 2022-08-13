@@ -1,10 +1,10 @@
-import React, { FunctionComponent, ReactElement } from "react";
-import { ActivityList } from "../../models/types";
-import FirstActivity from "../Interventions/FirstActivity";
-import SecondActivity from "../Interventions/SecondActivity";
-import ThirdActivity from "../Interventions/ThirdActivity";
-import FourthActivity from "../Interventions/FourthActivity";
-import LoadingScreen from "../Loading/LoadingScreen";
+import React, { FunctionComponent, ReactElement } from 'react';
+import { ActivityList } from '../../models/types';
+import FirstActivity from '../Interventions/FirstActivity';
+import SecondActivity from '../Interventions/SecondActivity';
+import ThirdActivity from '../Interventions/ThirdActivity';
+import FourthActivity from '../Interventions/FourthActivity';
+import LoadingScreen from '../Loading/LoadingScreen';
 
 interface ActivityComponentProp {
   idx: number;

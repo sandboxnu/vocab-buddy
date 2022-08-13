@@ -3,13 +3,13 @@ import React, {
   ReactElement,
   useEffect,
   useState,
-} from "react";
-import { connect } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import Layout from "../../components/Layout";
-import { SessionStats, User } from "../../models/types";
-import { CLOUD, INK } from "../../constants/colors";
+} from 'react';
+import { connect } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import Layout from '../../components/Layout';
+import { SessionStats, User } from '../../models/types';
+import { CLOUD, INK } from '../../constants/colors';
 import {
   GetData,
   GetDataForResearchers,
@@ -20,7 +20,7 @@ import {
   SignOut,
   ChangeProfileIcon,
   DownloadData,
-} from "./data/actions";
+} from './data/actions';
 import {
   getCurrentUser,
   getDataForResearchers,
@@ -31,16 +31,16 @@ import {
   getCurrentStudentData,
   getCurrentStudentTotalWordsLearned,
   getSessionStats,
-} from "./data/reducer";
-import ResearcherDashboard from "../Dashboard/ResearcherDashboard";
-import StudentDashboard from "../Dashboard/StudentDashboard";
-import overviewIcon from "../../assets/icons/dashboard-menu/overview.svg";
-import settingsIcon from "../../assets/icons/dashboard-menu/settings.svg";
-import caret from "../../assets/caret.svg";
-import ProfileEditModal from "../../components/ProfileEditModal";
-import SessionDashboard from "./SessionDashboard";
-import Settings from "./Settings";
-import LoadingScreen from "../Loading/LoadingScreen";
+} from './data/reducer';
+import ResearcherDashboard from '../Dashboard/ResearcherDashboard';
+import StudentDashboard from '../Dashboard/StudentDashboard';
+import overviewIcon from '../../assets/icons/dashboard-menu/overview.svg';
+import settingsIcon from '../../assets/icons/dashboard-menu/settings.svg';
+import caret from '../../assets/caret.svg';
+import ProfileEditModal from '../../components/ProfileEditModal';
+import SessionDashboard from './SessionDashboard';
+import Settings from './Settings';
+import LoadingScreen from '../Loading/LoadingScreen';
 
 interface DashboardParams {
   isSignedOut: boolean;
@@ -171,8 +171,8 @@ const MenuButtonContainer = styled.div`
   justify-items: start;
 
   grid-template-areas:
-    "icon1 button1"
-    "icon2 button2";
+    'icon1 button1'
+    'icon2 button2';
 
   @media (max-width: 900px) {
     width: 90vw;
@@ -180,9 +180,9 @@ const MenuButtonContainer = styled.div`
     grid-template-rows: auto;
 
     grid-template-areas:
-      "icon1 button1 dropdown"
-      "icon2 button2 ."
-      ". signout .";
+      'icon1 button1 dropdown'
+      'icon2 button2 .'
+      '. signout .';
   }
 `;
 
@@ -206,7 +206,7 @@ interface MenuButtonProps extends MenuGridProps {
 
 const MenuButtonText = styled.p`
   font-weight: ${({ selected }: MenuButtonProps) =>
-    selected ? `700` : "400"};
+    selected ? `700` : '400'};
 
   grid-area: ${({ gridArea }: MenuButtonProps) => gridArea};
 
@@ -216,7 +216,7 @@ const MenuButtonText = styled.p`
 `;
 
 const TitleText = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 26px;
   font-weight: 700;
   text-transform: lowercase;
@@ -313,12 +313,12 @@ const getButtonGridArea = (
   menuButtonNumber: number,
   menuOpen: boolean,
   isDropdown: boolean,
-  type: "icon" | "button"
+  type: 'icon' | 'button'
 ) => {
   if (isDropdown && !menuOpen) {
     if (selectedMenuButton === menuButtonNumber) {
       // First row
-      return type + "1";
+      return type + '1';
     } else {
       // put it out of place
       return type + 3;
@@ -344,7 +344,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           1,
           menuOpen,
           isDropdown,
-          "icon"
+          'icon'
         )}
         src={overviewIcon}
       />
@@ -354,7 +354,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           1,
           menuOpen,
           isDropdown,
-          "button"
+          'button'
         )}
         selected={selectedMenuButton === 1}
         onClick={() => {
@@ -377,7 +377,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           2,
           menuOpen,
           isDropdown,
-          "icon"
+          'icon'
         )}
         src={settingsIcon}
       />
@@ -387,7 +387,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           2,
           menuOpen,
           isDropdown,
-          "button"
+          'button'
         )}
         selected={selectedMenuButton === 2}
         onClick={() => {
@@ -453,7 +453,7 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 }): ReactElement => {
   let history = useNavigate();
   if (isSignedOut) {
-    navigate("/login");
+    navigate('/login');
   }
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [showModal, setShowModal] = useState(false);
@@ -468,9 +468,9 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     const resizeScreen = () => {
       setScreenWidth(window.innerWidth);
     };
-    window.addEventListener("resize", resizeScreen);
+    window.addEventListener('resize', resizeScreen);
     return () => {
-      window.removeEventListener("resize", resizeScreen);
+      window.removeEventListener('resize', resizeScreen);
     };
   }, []);
 
@@ -486,14 +486,14 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
     hasPerformedNetworkRequest &&
     selectedMenuButton !== 3
   ) {
-    navigate("/error");
+    navigate('/error');
   }
 
   useEffect(() => {
     if (
       !dataForResearchers &&
       currentUser &&
-      currentUser.accountType === "RESEARCHER"
+      currentUser.accountType === 'RESEARCHER'
     ) {
       getDataForResearchers({});
     }
@@ -571,15 +571,15 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
 
   if (
     (params.id || sessionParams.userId || sessionParams.sessionId) &&
-    currentUser.accountType === "STUDENT"
+    currentUser.accountType === 'STUDENT'
   ) {
-    navigate("/error");
+    navigate('/error');
   }
 
   const chooseDashboardView = (menuButtonNumber: number) => {
     switch (menuButtonNumber) {
       case 1:
-        return currentUser.accountType === "STUDENT" ? (
+        return currentUser.accountType === 'STUDENT' ? (
           <StudentDashboard
             isStudentView={true}
             student={currentUser}

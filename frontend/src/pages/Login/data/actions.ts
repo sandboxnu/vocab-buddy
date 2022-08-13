@@ -4,7 +4,7 @@ import {
   CreateUserParams,
   LoginParams,
   ResetPasswordParams,
-} from "../../../models/types";
+} from '../../../models/types';
 
 export const authenticationRequest = {
   createUser: ({

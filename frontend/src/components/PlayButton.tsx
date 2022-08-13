@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from "react";
-import styled from "styled-components";
-import { INK_RGBA } from "../constants/colors";
+import React, { FunctionComponent } from 'react';
+import styled from 'styled-components';
+import { INK_RGBA } from '../constants/colors';
 
 const TriangleButton = styled.svg`
   ${(props) =>

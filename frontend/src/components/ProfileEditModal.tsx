@@ -1,8 +1,8 @@
-import Modal from "antd/lib/modal/Modal";
-import React, { FunctionComponent, useState } from "react";
-import styled from "styled-components";
-import { SEA_FOAM } from "../constants/colors";
-import { allProfileIcons } from "../firebase/firebaseInteractor";
+import Modal from 'antd/lib/modal/Modal';
+import React, { FunctionComponent, useState } from 'react';
+import styled from 'styled-components';
+import { SEA_FOAM } from '../constants/colors';
+import { allProfileIcons } from '../firebase/firebaseInteractor';
 
 interface ProfileEditModalProps {
   currentIcon: string;

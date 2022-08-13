@@ -1,6 +1,6 @@
-import React, { ReactElement } from "react";
-import styled from "styled-components";
-import Nav from "./Nav";
+import React, { ReactElement } from 'react';
+import styled from 'styled-components';
+import Nav from './Nav';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -13,9 +13,9 @@ interface ContentProps {
 const Content = styled.main`
   height: 100vh;
   margin: ${({ shouldAddPadding }: ContentProps) =>
-    shouldAddPadding ? "0 auto" : 0};
+    shouldAddPadding ? '0 auto' : 0};
   padding: ${({ shouldAddPadding }: ContentProps) =>
-    shouldAddPadding ? "6em 2em 5em 3.5em" : 0};
+    shouldAddPadding ? '6em 2em 5em 3.5em' : 0};
   width: 100%;
 `;
 

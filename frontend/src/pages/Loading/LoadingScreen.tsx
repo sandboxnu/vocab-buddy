@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { INK } from "../../constants/colors";
-import loading from "../../assets/loading.svg";
+import React from 'react';
+import styled from 'styled-components';
+import { INK } from '../../constants/colors';
+import loading from '../../assets/loading.svg';
 
 const LoadingIcon = styled.img`
   animation: rotation 1.5s infinite linear;
@@ -17,7 +17,7 @@ const LoadingIcon = styled.img`
 `;
 
 const LoadingTitle = styled.p`
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-size: 26px;
   font-weight: 700;
   margin-top: 3vh;

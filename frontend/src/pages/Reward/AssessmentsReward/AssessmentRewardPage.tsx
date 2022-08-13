@@ -1,10 +1,10 @@
-import React, { ReactElement, useEffect } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import Layout from "../../../components/Layout";
-import CloudGroup from "../../../components/CloudGroup";
-import PurpleButton from "../../../components/PurpleButton";
-import { ASSESSMENTS_LANDING } from "../../../constants/images";
+import React, { ReactElement, useEffect } from 'react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import Layout from '../../../components/Layout';
+import CloudGroup from '../../../components/CloudGroup';
+import PurpleButton from '../../../components/PurpleButton';
+import { ASSESSMENTS_LANDING } from '../../../constants/images';
 
 const Container = styled.div``;
 
@@ -71,9 +71,9 @@ const AssessmentRewardPage = (): ReactElement => {
           <PurpleButton
             padding={5}
             top={20}
-            text={"back to dashboard"}
+            text={'back to dashboard'}
             onClick={() => {
-              navigate("/dashboard");
+              navigate('/dashboard');
             }}
           />
         </ButtonContainer>
