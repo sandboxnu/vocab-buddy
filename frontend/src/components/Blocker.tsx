@@ -5,11 +5,8 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Range } from "react-range";
 import styled from "styled-components";
-import star from "../assets/star.svg";
-import background from "../assets/slider.svg";
-import { SEA_FOAM } from "../constants/colors";
+import { INK, INK_HOVER } from "../constants/colors";
 
 interface BlockerProps {
   children: ReactElement;
@@ -37,43 +34,34 @@ const BodyText = styled.p`
   text-align: center;
 `;
 
-const BlockerContainer = styled.div``;
-
-const SliderContainer = styled.div`
+const BlockerContainer = styled.div`
   display: flex;
-  justify-content: stretch;
-  margin: 0px 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-interface SliderProps {
-  progress: number;
-}
+const ContinueButton = styled.button`
+  border-radius: 10px;
+  padding: 5px 10px;
+  background: ${INK} !important;
+  width: 40%;
+  height: 60px;
+  text-align: center;
 
-const SliderDiv = styled.div`
-  height: 100px;
-  width: 100%;
-`;
-
-const SliderTrack = styled.img`
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-`;
-
-const SliderThumbDiv = styled.div`
-  background: url(${star});
-  height: 75px;
-  width: 75px;
-  background-size: contain;
-  background-repeat: no-repeat;
-
-  :focus {
-    box-shadow: 0 0 0 3px ${SEA_FOAM};
-    outline: none;
-    border-radius: 10px;
+  :hover {
+    background: ${INK_HOVER} !important;
+    cursor: pointer;
   }
+`;
+
+const ContinueButtonText = styled.p`
+  color: #ffffff;
+  font-family: "Rubik";
+  font-weight: 700;
+  margin-bottom: 0;
+  margin-right: 5px;
+  font-size: 18px;
 `;
 
 const Blocker: FunctionComponent<BlockerProps> = ({
@@ -84,7 +72,6 @@ const Blocker: FunctionComponent<BlockerProps> = ({
   const [lastTap, setLastTap] = useState(new Date());
   const [currentTime, setCurrentTime] = useState(new Date());
   const [hasShown, setHasShown] = useState(false);
-  const [progress, setProgress] = useState(2);
 
   let onClick = children.props.onClick;
   let newOnClick = () => {
@@ -114,11 +101,6 @@ const Blocker: FunctionComponent<BlockerProps> = ({
     }
   };
 
-  if (progress === 100) {
-    finishedShowing();
-    setProgress(0);
-  }
-
   return (
     <>
       <Modal
@@ -134,25 +116,10 @@ const Blocker: FunctionComponent<BlockerProps> = ({
       >
         <BlockerContainer>
           <TitleText>oops!</TitleText>
-          <BodyText>drag the star to the end to continue.</BodyText>
-          <SliderContainer>
-            <Range
-              values={[progress]}
-              min={0}
-              max={100}
-              step={1}
-              onChange={(values) => setProgress(values[0])}
-              renderTrack={({ props, children }) => (
-                <SliderDiv {...props}>
-                  <SliderTrack src={background} />
-                  {children}
-                </SliderDiv>
-              )}
-              renderThumb={({ props }) => (
-                <SliderThumbDiv {...props}></SliderThumbDiv>
-              )}
-            />
-          </SliderContainer>
+          <BodyText>click the button to continue.</BodyText>
+          <ContinueButton onClick={finishedShowing}>
+            <ContinueButtonText>continue</ContinueButtonText>
+          </ContinueButton>
         </BlockerContainer>
       </Modal>
       {React.cloneElement(children, {

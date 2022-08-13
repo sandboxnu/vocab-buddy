@@ -114,7 +114,7 @@ const FourthActivity = ({
           </Prompt>
           <Image src={imageUrl} />
           <ButtonContainer>
-            <Blocker afterSeconds={30} repeatable={false}>
+            <Blocker afterSeconds={60} repeatable={false}>
               <DelayedNextButton
                 text={"next"}
                 top={20}
