@@ -1,4 +1,3 @@
-import { RootStateOrAny } from 'react-redux';
 import {
   Action,
   ActionTypes,
@@ -117,42 +116,42 @@ const dashboardReducer = (
   }
 };
 
-export const getIsSignedOut = (state: RootStateOrAny) => {
-  return state.dashboard.isSignedOut;
+export const getIsSignedOut = (state: DashboardState) => {
+  return state.isSignedOut;
 };
 
-export const getCurrentUser = (state: RootStateOrAny) => {
-  return state.dashboard.user;
+export const getCurrentUser = (state: DashboardState) => {
+  return state.user;
 };
 
-export const getDataForResearchers = (state: RootStateOrAny) => {
-  return state.dashboard.students;
+export const getDataForResearchers = (state: DashboardState) => {
+  return state.students;
 };
 
-export const getCurrentStudentData = (state: RootStateOrAny) => {
-  return state.dashboard.currentStudent;
+export const getCurrentStudentData = (state: DashboardState) => {
+  return state.currentStudent;
 };
 
 export const getCurrentStudentTotalWordsLearned = (
-  state: RootStateOrAny
+  state: DashboardState
 ) => {
-  return state.dashboard.currentStudentTotalWordsLearned;
+  return state.currentStudentTotalWordsLearned;
 };
 
-export const getTotalWordsLearned = (state: RootStateOrAny) => {
-  return state.dashboard.totalWordsLearned;
+export const getTotalWordsLearned = (state: DashboardState) => {
+  return state.totalWordsLearned;
 };
 
-export const getDashboardError = (state: RootStateOrAny) => {
-  return state.dashboard.error;
+export const getDashboardError = (state: DashboardState) => {
+  return state.error;
 };
 
-export const getSessionStats = (state: RootStateOrAny) => {
-  return state.dashboard.sessionStats;
+export const getSessionStats = (state: DashboardState) => {
+  return state.sessionStats;
 };
 
-export const getDownloadDataLoading = (state: RootStateOrAny) => {
-  return state.dashboard.downloadDataLoading;
+export const getDownloadDataLoading = (state: DashboardState) => {
+  return state.downloadDataLoading;
 };
 
 export default dashboardReducer;

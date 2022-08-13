@@ -44,7 +44,8 @@ function* watchGetInterventions(action: Action) {
     yield call(updateWithSuccess);
     yield put(getInterventions.success({ interventions }));
   } catch (error) {
-    yield put(getInterventions.error({ error }));
+    const err = error as string | undefined
+    yield put(getInterventions.error({ error: err }));
   }
 }
 
@@ -79,7 +80,8 @@ function* watchUpdateIntervention(action: Action) {
     yield call(updateAndGetNewInterventions);
     yield put(updateIntervention.success({ interventions }));
   } catch (error) {
-    yield put(updateIntervention.error(error));
+    const err = error as Error
+    yield put(updateIntervention.error(err));
   }
 }
 
@@ -94,7 +96,8 @@ function* watchFinishedIntervention(action: Action) {
     yield call(createNewAssessment);
     yield put(finishedIntervention.success());
   } catch (error) {
-    yield put(finishedIntervention.error({ error }));
+    const err = error as string | undefined
+    yield put(finishedIntervention.error({ error: err }));
   }
 }
 
@@ -109,6 +112,7 @@ function* watchGetCurrentIntervention(action: Action) {
     yield call(getCurrent);
     yield put(getCurrentIntervention.success({ id: interventionId }));
   } catch (error) {
-    yield put(getCurrentIntervention.error(error));
+    const err = error as Error
+    yield put(getCurrentIntervention.error(err));
   }
 }

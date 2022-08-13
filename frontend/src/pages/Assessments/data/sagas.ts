@@ -39,7 +39,8 @@ function* watchGetAssessment(action: Action) {
     yield call(updateWithSuccess);
     yield put(getAssessment.success({ assessment }));
   } catch (error) {
-    yield put(getAssessment.error({ error }));
+    const errorStr = error as string | undefined
+    yield put(getAssessment.error({ error: errorStr }));
   }
 }
 
@@ -71,7 +72,8 @@ function* watchUpdateAssessment(action: Action) {
     }
     yield put(updateAssessment.success({ isFinished }));
   } catch (error) {
-    yield put(updateAssessment.error(error));
+    const e = error as Error
+    yield put(updateAssessment.error(e));
   }
 }
 
@@ -86,6 +88,7 @@ function* watchGetCurrentAssessment(action: Action) {
     yield call(getCurrent);
     yield put(getCurrentAssessment.success({ id: assessmentId }));
   } catch (error) {
-    yield put(getCurrentAssessment.error(error));
+    const e = error as Error
+    yield put(getCurrentAssessment.error(e));
   }
 }

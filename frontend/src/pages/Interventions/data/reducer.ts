@@ -3,7 +3,6 @@ import {
   ActionTypes,
   Interventions,
 } from '../../../models/types';
-import { RootStateOrAny } from 'react-redux';
 
 interface InterventionState {
   interventions?: Interventions;
@@ -11,7 +10,7 @@ interface InterventionState {
   error?: Error;
 }
 
-const initialState: RootStateOrAny = { interventions: null };
+const initialState: InterventionState = { interventions: undefined };
 
 const interventionReducer = (
   state: InterventionState = initialState,
@@ -49,16 +48,16 @@ const interventionReducer = (
   }
 };
 
-export const getCurrentInterventions = (state: RootStateOrAny) => {
-  return state.interventions.interventions;
+export const getCurrentInterventions = (state: InterventionState) => {
+  return state.interventions;
 };
 
-export const getInterventionId = (state: RootStateOrAny) => {
-  return state.interventions.interventionId;
+export const getInterventionId = (state: InterventionState) => {
+  return state.interventionId;
 };
 
-export const getError = (state: RootStateOrAny) => {
-  return state.interventions.error;
+export const getError = (state: InterventionState) => {
+  return state.error;
 };
 
 export default interventionReducer;

@@ -36,7 +36,7 @@ function* watchCreateUser(action: Action) {
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
-    yield put(authenticationRequest.createUserError(error));
+    yield put(authenticationRequest.createUserError(error as Error));
   }
 }
 
@@ -51,7 +51,7 @@ function* watchSignIn(action: Action) {
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
-    yield put(authenticationRequest.error(error));
+    yield put(authenticationRequest.error(error as Error));
   }
 }
 
@@ -61,7 +61,7 @@ function* watchResetPassword(action: Action) {
     yield call(() => firebaseInteractor.resetPassword(email));
     yield put(authenticationRequest.resetPasswordSuccess());
   } catch (error) {
-    yield put(authenticationRequest.error(error));
+    yield put(authenticationRequest.error(error as Error));
   }
 }
 

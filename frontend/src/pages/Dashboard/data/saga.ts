@@ -80,7 +80,8 @@ function* watchGetDashboardData(action: Action) {
       yield put(GetData.success({ user, totalWordsLearned }));
     }
   } catch (error) {
-    yield put(GetData.error({ error }));
+    const err = error as Error
+    yield put(GetData.error({ error: err }));
   }
 }
 
@@ -93,7 +94,8 @@ function* watchGetDataForResearchers() {
     yield call(getValue);
     yield put(GetDataForResearchers.success({ students }));
   } catch (error) {
-    yield put(GetDataForResearchers.error({ error }));
+    const err = error as Error
+    yield put(GetDataForResearchers.error({ error: err }));
   }
 }
 
@@ -110,7 +112,8 @@ function* watchGetUserSessionData(action: Action) {
     yield call(getValue);
     yield put(GetUserSessionData.success({ sessionStats }));
   } catch (error) {
-    yield put(GetUserSessionData.error({ error }));
+    const err = error as Error | undefined
+    yield put(GetUserSessionData.error({ error: err }));
   }
 }
 
@@ -125,7 +128,8 @@ function* watchChangeProfileIcon(action: Action) {
     yield call(changeIcon);
     yield put(ChangeProfileIcon.success(url));
   } catch (error) {
-    yield put(ChangeProfileIcon.error(error));
+    const err = error as Error
+    yield put(ChangeProfileIcon.error(err));
   }
 }
 
@@ -141,7 +145,8 @@ function* watchUpdateUserSettings(action: Action) {
     yield call(updateSettings);
     yield put(UpdateUserSettings.success({ user: newUser }));
   } catch (error) {
-    yield put(UpdateUserSettings.error(error));
+    const err = error as Error
+    yield put(UpdateUserSettings.error({error: err}));
   }
 }
 
