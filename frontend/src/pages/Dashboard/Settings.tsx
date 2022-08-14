@@ -4,11 +4,11 @@ import React, {
   FunctionComponent,
   useState,
 } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { User, UserSettings } from '../../models/types';
 import PurpleButton from '../../components/PurpleButton';
-import { TextInput } from '../../components/TextInput';
+import TextInput from '../../components/TextInput';
 import { getCurrentUser, getDashboardError } from './data/reducer';
 import { UpdateUserSettings } from './data/actions';
 import Toast from '../../components/Toast';
@@ -87,40 +87,16 @@ const AgeTextInput = styled(TextInput)`
   margin-left: 5;
 `;
 
-// An example of using a connector
-const connector = connect(
-  (state) => ({
-    user: getCurrentUser(state),
-    error: getDashboardError(state),
-  }),
-  {
-    updateSettings: UpdateUserSettings.request,
-  },
-);
-
-interface SettingsProps {
-  user: User;
-  error?: Error;
-  updateSettings: ({
-    newName,
-    newAge,
-    newEmail,
-    newPassword,
-    currentPassword,
-  }: UserSettings) => void;
-}
-
-const Settings: FunctionComponent<SettingsProps> = ({
-  user,
-  error,
-  updateSettings,
-}): ReactElement => {
+const Settings = (): ReactElement => {
+  const user = useSelector(getCurrentUser);
+  const error = useSelector(getDashboardError);
+  const updateSettings = UpdateUserSettings.request;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
-  const [name, setName] = useState(user.name);
-  const [age, setAge] = useState(user.age);
+  const [name, setName] = useState(user?.name || '');
+  const [age, setAge] = useState(user?.age || -1);
   const [errorString, setErrorString] = useState('');
   const [networkErrorShown, setNetworkErrorShown] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -152,8 +128,8 @@ const Settings: FunctionComponent<SettingsProps> = ({
     setNetworkErrorShown(true);
 
     updateSettings({
-      newName: name === user.name ? undefined : name,
-      newAge: age === user.age ? undefined : age,
+      newName: name === user?.name ? undefined : name,
+      newAge: age === user?.age ? undefined : age,
       newEmail: email === '' ? undefined : email,
       newPassword: password === '' ? undefined : password,
       currentPassword:
@@ -208,9 +184,9 @@ const Settings: FunctionComponent<SettingsProps> = ({
               value={name}
               type="text"
               text="name"
-              isStudent={user.accountType === 'STUDENT'}
+              isStudent={user?.accountType === 'STUDENT'}
             />
-            {user.accountType === 'STUDENT' && (
+            {user?.accountType === 'STUDENT' && (
               <AgeTextInput
                 onChange={(e) => {
                   if (parseInt(e.target.value, 10) != null) {

@@ -12,7 +12,7 @@ import Layout from '../../components/Layout';
 import PurpleButton from '../../components/PurpleButton';
 import TextInput from '../../components/TextInput';
 import { INK, LOGIN_BACKGROUND } from '../../constants/colors';
-import { authenticationRequest } from './data/actions';
+import authenticationRequest from './data/actions';
 import { getLoginError, getSignedIn } from './data/reducer';
 
 const ResetUserButton = styled.button`

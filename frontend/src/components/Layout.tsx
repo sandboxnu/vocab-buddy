@@ -18,8 +18,8 @@ const Content = styled.main`
 `;
 
 interface LayoutProps {
-  shouldAddPadding: boolean;
-  hideBar: boolean;
+  shouldAddPadding?: boolean;
+  hideBar?: boolean;
   children: JSX.Element | string;
 }
 

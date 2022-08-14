@@ -4,9 +4,10 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { type } from 'os';
 import Layout from '../../components/Layout';
 import { SessionStats, User } from '../../models/types';
 import { CLOUD, INK } from '../../constants/colors';
@@ -42,57 +43,14 @@ import SessionDashboard from './SessionDashboard';
 import Settings from './Settings';
 import LoadingScreen from '../Loading/LoadingScreen';
 
-interface DashboardParams {
-  isSignedOut: boolean;
-  currentUser?: User;
-  totalWordsLearned?: number;
-  dataForResearchers?: User[];
-  userSessionData?: SessionStats;
-  getUserSessionData: (val: GetUserSessionDataRequestProps) => void;
-  signOut: () => void;
-  getUser: (val: GetDataRequestProps) => void;
-  getDataForResearchers: (
-    val: GetDataForResearchersRequestProps
-  ) => void;
-  changeIconRequest: (url: string) => void;
-  error?: Error;
-  requestedStudent?: User;
-  requestedStudentTotalWordsLearned?: number;
-  downloadData: (studentId: string, userId: string) => void;
-  downloadDataLoading: boolean;
-}
-
-interface IndividualDashboardParams {
+type IndividualDashboardParams = {
   id?: string;
-}
+};
 
-interface SessionDashboardParams {
+type SessionDashboardParams = {
   userId?: string;
   sessionId?: string;
-}
-
-const connector = connect(
-  (state) => ({
-    isSignedOut: getIsSignedOut(state),
-    currentUser: getCurrentUser(state),
-    dataForResearchers: getDataForResearchers(state),
-    totalWordsLearned: getTotalWordsLearned(state),
-    error: getDashboardError(state),
-    requestedStudent: getCurrentStudentData(state),
-    userSessionData: getSessionStats(state),
-    requestedStudentTotalWordsLearned:
-      getCurrentStudentTotalWordsLearned(state),
-    downloadDataLoading: getDownloadDataLoading(state),
-  }),
-  {
-    signOut: SignOut.request,
-    getUser: GetData.request,
-    getDataForResearchers: GetDataForResearchers.request,
-    changeIconRequest: ChangeProfileIcon.request,
-    getUserSessionData: GetUserSessionData.request,
-    downloadData: DownloadData.request,
-  },
-);
+};
 
 const SignOutButton = styled.button`
   background-color: #fff0;
@@ -434,24 +392,25 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
   );
 };
 
-const Dashboard: FunctionComponent<DashboardParams> = ({
-  isSignedOut,
-  signOut,
-  currentUser,
-  totalWordsLearned,
-  getUser,
-  userSessionData,
-  getUserSessionData,
-  dataForResearchers,
-  getDataForResearchers,
-  error,
-  changeIconRequest,
-  requestedStudent,
-  requestedStudentTotalWordsLearned,
-  downloadData,
-  downloadDataLoading,
-}): ReactElement => {
-  const history = useNavigate();
+const Dashboard = (): ReactElement => {
+  const signOut = SignOut.request;
+  const getUser = GetData.request;
+  const getDataForResearchersRequest = GetDataForResearchers.request;
+  const changeIconRequest = ChangeProfileIcon.request;
+  const getUserSessionData = GetUserSessionData.request;
+  const downloadData = DownloadData.request;
+  const isSignedOut = useSelector(getIsSignedOut);
+  const currentUser = useSelector(getCurrentUser);
+  const dataForResearchers = useSelector(getDataForResearchers);
+  const totalWordsLearned = useSelector(getTotalWordsLearned);
+  const error = useSelector(getDashboardError);
+  const requestedStudent = useSelector(getCurrentStudentData);
+  const userSessionData = useSelector(getSessionStats);
+  const requestedStudentTotalWordsLearned = useSelector(
+    getCurrentStudentTotalWordsLearned,
+  );
+  const downloadDataLoading = useSelector(getDownloadDataLoading);
+  const navigate = useNavigate();
   if (isSignedOut) {
     navigate('/login');
   }
@@ -494,13 +453,13 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
       && currentUser
       && currentUser.accountType === 'RESEARCHER'
     ) {
-      getDataForResearchers({});
+      getDataForResearchersRequest({});
     }
   }, [
     currentUser,
     getUser,
     dataForResearchers,
-    getDataForResearchers,
+    getDataForResearchersRequest,
   ]);
 
   useEffect(() => {
@@ -651,4 +610,4 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   );
 };
 
-export default connector(Dashboard);
+export default Dashboard;

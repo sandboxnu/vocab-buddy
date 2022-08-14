@@ -1,14 +1,15 @@
 import React from 'react';
-import { useStore, connect } from 'react-redux';
-import { Navigate, Route, RouteProps } from 'react-router-dom';
-import { State } from '../models/types';
+import { useSelector } from 'react-redux';
+import { Route, RouteProps, useNavigate } from 'react-router-dom';
+import { getSignedIn } from '../pages/Login/data/reducer';
 
 function AuthorizedRoute(props: RouteProps) {
-  const { signedIn } = useStore().getState() as State;
-  if (signedIn) {
-    return <Route {...props} />;
+  const signedIn = useSelector(getSignedIn);
+  const navigate = useNavigate();
+  if (!signedIn) {
+    navigate('/login');
   }
-  return <Navigate to="/login" />;
+  return <Route {...props} />;
 }
 
 export default AuthorizedRoute;

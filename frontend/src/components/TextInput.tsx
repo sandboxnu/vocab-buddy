@@ -11,9 +11,9 @@ interface TextInputProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   text: string;
   type: string;
-  expectedValue: string | null;
-  className: string;
-  onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
+  expectedValue?: string | null;
+  className?: string;
+  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
   autoComplete?: string;
 }
 

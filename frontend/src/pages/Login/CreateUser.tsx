@@ -12,7 +12,7 @@ import Layout from '../../components/Layout';
 import PurpleButton from '../../components/PurpleButton';
 import TextInput from '../../components/TextInput';
 import { INK, SEA_FOAM } from '../../constants/colors';
-import { authenticationRequest } from './data/actions';
+import authenticationRequest from './data/actions';
 import { AccountType, CreateUserParams } from '../../models/types';
 import { getCreateUserError, getSignedIn } from './data/reducer';
 import Toast from '../../components/Toast';
@@ -121,32 +121,12 @@ const AgeTextInput = styled(TextInput)`
   margin-left: 5;
 `;
 
-// An example of using a connector
-const connector = connect(
-  (state) => ({
-    signedIn: getSignedIn(state),
-    error: getCreateUserError(state),
-  }),
-  {
-    createUser: authenticationRequest.createUser,
-  },
-);
-
-interface CreateUserProps {
-  signedIn: boolean;
-  createUser: ({
-    email,
-    password,
-    name,
-    accountType,
-    age,
-  }: CreateUserParams) => void;
-  error?: Error;
-}
-
-const CreateUser: FunctionComponent<{}> = (): ReactElement => {
+const CreateUser = (): ReactElement => {
   const signedIn = useSelector(getSignedIn);
   const error = useSelector(getCreateUserError);
+  const { createUser } = authenticationRequest;
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

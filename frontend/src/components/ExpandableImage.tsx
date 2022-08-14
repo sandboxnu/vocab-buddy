@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface ExpandableImageProps {
   src: string;
-  className: string;
+  className?: string;
 }
 
 interface ClickedProps {

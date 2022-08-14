@@ -5,13 +5,13 @@ import React, {
   useState,
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { getCurrentInterventions, getError } from './data/reducer';
 import { Interventions } from '../../models/types';
 import {
-  finishedIntervention,
-  getInterventions,
-  updateIntervention,
+  finishedIntervention as FinishedIntervention,
+  getInterventions as GetInterventions,
+  updateIntervention as UpdateIntervention,
 } from './data/actions';
 import ActivitiesComponent from './ActivitiesComponent';
 import {
@@ -46,33 +46,25 @@ interface ActivityProps {
   finishedIntervention: ({ setId }: { setId: string }) => void;
 }
 
-interface ActivityParams {
+type ActivityParams = {
   id: string;
-}
+};
 
-const connector = connect(
-  (state) => ({
-    interventions: getCurrentInterventions(state),
-    error: getError(state),
-  }),
-  {
-    getInterventions: getInterventions.request,
-    updateIntervention: updateIntervention.request,
-    finishedIntervention: finishedIntervention.request,
-  },
-);
-
-const Activities: FunctionComponent<ActivityProps> = ({
-  interventions,
-  getInterventions,
-  updateIntervention,
-  finishedIntervention,
-  error,
-}): ReactElement => {
+const Activities = (): ReactElement => {
+  const interventions = useSelector(getCurrentInterventions);
+  const error = useSelector(getError);
   const params = useParams<ActivityParams>();
+  const getInterventions = GetInterventions.request;
+  const updateIntervention = UpdateIntervention.request;
+  const finishedIntervention = FinishedIntervention.request;
+
   useEffect(() => {
-    if (!interventions) getInterventions(params.id);
+    if (!interventions) getInterventions(params.id || 'err');
   }, [interventions, getInterventions, params.id]);
+
+  if (!interventions) {
+    return <LoadingScreen />;
+  }
 
   const [activityStartTime, setActivityStartTime] = useState(
     new Date(),
@@ -103,9 +95,6 @@ const Activities: FunctionComponent<ActivityProps> = ({
     navigate('/error');
   }
 
-  if (!interventions) {
-    return <LoadingScreen />;
-  }
   return (
     <ActivitiesComponent
       idx={currentActivityIdx}
@@ -142,4 +131,4 @@ const Activities: FunctionComponent<ActivityProps> = ({
   );
 };
 
-export default connector(Activities);
+export default Activities;

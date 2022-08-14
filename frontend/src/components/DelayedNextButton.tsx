@@ -13,7 +13,7 @@ interface NextButtonProps {
   text?: string | '';
   onClick?: (event: MouseEvent<HTMLInputElement>) => void;
   icon?: ReactElement;
-  className: string;
+  className?: string;
   delay: number;
 }
 

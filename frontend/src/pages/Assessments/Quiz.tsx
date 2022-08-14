@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Assessment, AssessmentResult } from '../../models/types';
+import { AssessmentResult } from '../../models/types';
 import LoadingScreen from '../Loading/LoadingScreen';
 import {
   getAssessment as getAssessmentAction,
@@ -15,38 +15,16 @@ import {
 } from './data/reducer';
 import QuizWords from './QuizWords';
 
-interface QuizProps {
-  getAssessment: (id: string) => void;
-  assessment: Assessment;
-  updateAssessment: (action: UpdateAssessmentAction) => void;
-  isFinished: boolean;
-  error?: Error;
-}
-
-const connector = connect(
-  (state) => ({
-    assessment: getAssessmentReducer(state),
-    isFinished: getIsFinished(state),
-    error: getError(state),
-  }),
-  {
-    getAssessment: getAssessmentAction.request,
-    updateAssessment: updateAssessment.request,
-  },
-);
-
-interface QuizParams {
+type QuizParams = {
   id: string;
-}
+};
 
-function Quiz({
-  getAssessment,
-  assessment,
-  updateAssessment,
-  isFinished,
-  error,
-}: QuizProps) {
-  const history = useNavigate();
+function Quiz() {
+  const assessment = useSelector(getAssessmentReducer);
+  const isFinished = useSelector(getIsFinished);
+  const error = useSelector(getError);
+  const getAssessment = getAssessmentAction.request;
+  const navigate = useNavigate();
   const params = useParams<QuizParams>();
   if (isFinished) {
     navigate('/assessments/reward');
@@ -57,7 +35,7 @@ function Quiz({
   }
 
   useEffect(() => {
-    if (!assessment) getAssessment(params.id);
+    if (!assessment) getAssessment(params.id || 'err');
   }, [assessment, getAssessment, params]);
 
   if (!assessment) {
@@ -69,9 +47,9 @@ function Quiz({
     currentIdx: number,
     durationInSeconds: number,
   ) => {
-    updateAssessment({
+    updateAssessment.request({
       responses,
-      id: params.id,
+      id: params.id || 'err',
       sessionId: assessment.sessionId,
       isFinished,
       currentIdx,
@@ -86,4 +64,4 @@ function Quiz({
   );
 }
 
-export default connector(Quiz);
+export default Quiz;

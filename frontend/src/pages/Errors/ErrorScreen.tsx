@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import CloudGroup from '../../components/CloudGroup';
@@ -47,22 +47,10 @@ const TopImage = styled.img`
   max-width: 80vw;
 `;
 
-interface ErrorScreenProps {
-  logOut: () => void;
-  signedOut: boolean;
-}
-
-const connector = connect(
-  (state) => ({
-    signedOut: getIsSignedOut(state),
-  }),
-  {
-    logOut: SignOut.request,
-  },
-);
-
-function ErrorScreen({ logOut, signedOut }: ErrorScreenProps) {
-  const history = useNavigate();
+function ErrorScreen() {
+  const signedOut = useSelector(getIsSignedOut);
+  const logOut = SignOut.request;
+  const navigate = useNavigate();
 
   if (signedOut) {
     navigate('/login');
@@ -86,4 +74,4 @@ function ErrorScreen({ logOut, signedOut }: ErrorScreenProps) {
   );
 }
 
-export default connector(ErrorScreen);
+export default ErrorScreen;

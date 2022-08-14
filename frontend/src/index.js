@@ -1,7 +1,8 @@
 import React from 'react';
 import createSagaMiddleware from 'redux-saga';
 import { render } from 'react-dom';
-import { configureStore, applyMiddleware } from 'redux';
+import { applyMiddleware } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { logger } from 'redux-logger';
 import { reducer, saga } from './pages/index';
@@ -10,10 +11,10 @@ import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = configureStore(
+const store = configureStore({
   reducer,
-  applyMiddleware(sagaMiddleware, logger),
-);
+  middleware: applyMiddleware(sagaMiddleware, logger),
+});
 
 sagaMiddleware.run(saga);
 

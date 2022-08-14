@@ -4,35 +4,19 @@ import React, {
   useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import LandingPage from '../../components/LandingPage';
 import { ASSESSMENTS_LANDING } from '../../constants/images';
-import { getCurrentIntervention } from './data/actions';
+import { getCurrentIntervention as GetCurrentIntervention } from './data/actions';
 import { getError, getInterventionId } from './data/reducer';
 import Toast from '../../components/Toast';
 
-const connector = connect(
-  (state) => ({
-    interventionId: getInterventionId(state),
-    error: getError(state),
-  }),
-  {
-    getInterventionRequest: getCurrentIntervention.request,
-  },
-);
-
-interface InterventionProps {
-  interventionId?: string;
-  getInterventionRequest: () => void;
-  error?: Error;
-}
-
-const Interventions: FunctionComponent<InterventionProps> = ({
-  interventionId,
-  getInterventionRequest,
-  error,
-}): ReactElement => {
+const Interventions = (): ReactElement => {
   const navigate = useNavigate();
+  const interventionId = useSelector(getInterventionId);
+  const error = useSelector(getError);
+  const getInterventionRequest = GetCurrentIntervention.request;
+
   const [hasClickedButton, setHasClickedButton] = useState(false);
   if (interventionId && hasClickedButton) {
     navigate(`/interventions/${interventionId}`);
@@ -58,4 +42,4 @@ const Interventions: FunctionComponent<InterventionProps> = ({
   );
 };
 
-export default connector(Interventions);
+export default Interventions;
