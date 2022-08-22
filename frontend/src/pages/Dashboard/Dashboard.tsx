@@ -595,6 +595,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             student={requestedStudent}
             isStudentView={false}
             totalWordsLearned={requestedStudentTotalWordsLearned}
+            downloadData={downloadData}
+            downloadDataLoading={downloadDataLoading}
           />
         ) : userSessionData !== undefined &&
           requestedStudent &&
