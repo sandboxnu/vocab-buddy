@@ -55,5 +55,8 @@ module.exports = {
     'react/no-unescaped-entities': 'warn',
     'default-param-last': 'off',
     'no-restricted-globals': 'off',
+    'comma-dangle': 'off',
+    'arrow-body-style': 'off',
+    'react/jsx-wrap-multilines': 'warn',
   },
 };

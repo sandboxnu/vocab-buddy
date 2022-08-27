@@ -138,7 +138,7 @@ const CreateUser = (): ReactElement => {
   const createUserWithCheck = () => {
     if (confirmPassword !== password) {
       setErrorString(
-        'you need to confirm the password with the same password',
+        'you need to confirm the password with the same password'
       );
     } else if (
       (accountType === 'STUDENT' && !age)
@@ -159,13 +159,11 @@ const CreateUser = (): ReactElement => {
     }
   };
 
-  const history = useNavigate();
-
   useEffect(() => {
     if (signedIn) {
       navigate('/dashboard');
     }
-  }, [signedIn, history]);
+  }, [signedIn, navigate]);
   // For right now, go to dashboard when signed in
 
   return (

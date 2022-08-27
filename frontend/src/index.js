@@ -1,6 +1,6 @@
 import React from 'react';
 import createSagaMiddleware from 'redux-saga';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { applyMiddleware } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
@@ -13,14 +13,19 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
   reducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware).concat(logger),
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware()
+      .concat(sagaMiddleware)
+      .concat(logger);
+  },
 });
 
 sagaMiddleware.run(saga);
 
-render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
   <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root'),
+    <App tab="login" />
+  </Provider>
 );

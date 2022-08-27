@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
 import {
   BrowserRouter as Router,
-  Navigate,
   Route,
   Routes,
 } from 'react-router-dom';
-import AuthenticatedRoute from './components/AuthenticatedRoute';
+import AuthenticatedElement from './components/AuthenticatedElement';
 import Assessments from './pages/Assessments/Assessments';
 import Quiz from './pages/Assessments/Quiz';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -21,51 +20,53 @@ function App(): ReactElement {
   return (
     <Router>
       <Routes>
-        <Navigate to="/login" />
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign_up" element={<CreateUser />} />
-        <AuthenticatedRoute
+        <Route
           path="/dashboard"
-          element={<Dashboard />}
+          element={<AuthenticatedElement element={<Dashboard />} />}
         />
-        <AuthenticatedRoute
+        <Route
           path="/dashboard/student/:id"
-          element={<Dashboard />}
+          element={<AuthenticatedElement element={<Dashboard />} />}
         />
-        <AuthenticatedRoute
+        <Route
           path="/dashboard/:userId/session/:sessionId"
-          element={<Dashboard />}
+          element={<AuthenticatedElement element={<Dashboard />} />}
         />
-        <AuthenticatedRoute
+        <Route
           path="/interventions"
-          element={<Interventions />}
+          element={
+            <AuthenticatedElement element={<Interventions />} />
+          }
         />
-        <AuthenticatedRoute
+        <Route
           path="/interventions/reward"
-          element={<Reward />}
+          element={<AuthenticatedElement element={<Reward />} />}
         />
-        <AuthenticatedRoute
-          path="/interventions/:id"
-          element={<Activities />}
-        />
-        <AuthenticatedRoute
+        <Route
           path="/assessments/reward"
-          element={<AssessmentRewardPage />}
+          element={(
+            <AuthenticatedElement
+              element={<AssessmentRewardPage />}
+            />
+          )}
         />
-        <AuthenticatedRoute
+        <Route
           path="/interventions/:id"
-          element={<Activities />}
+          element={<AuthenticatedElement element={<Activities />} />}
         />
-        <AuthenticatedRoute
+        <Route
           path="/assessments/:id"
-          element={<Quiz />}
+          element={<AuthenticatedElement element={<Quiz />} />}
         />
-        <AuthenticatedRoute
+        <Route
           path="/assessments"
-          element={<Assessments />}
+          element={<AuthenticatedElement element={<Assessments />} />}
         />
         <Route path="/error" element={<ErrorScreen />} />
-        <Navigate to="/error" />
+        <Route path="/*" element={<ErrorScreen />} />
       </Routes>
     </Router>
   );
