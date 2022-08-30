@@ -155,7 +155,7 @@ export const UpdateUserSettings = {
 };
 
 export const DownloadData = {
-  request: (userId: string, name: string) => ({
+  request: ({ userId, name }: { userId: string; name: string }) => ({
     type: ActionTypes.DOWNLOAD_USER_DATA_REQUEST,
     payload: { userId, name },
   }),

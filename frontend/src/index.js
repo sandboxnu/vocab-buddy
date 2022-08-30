@@ -1,7 +1,6 @@
 import React from 'react';
 import createSagaMiddleware from 'redux-saga';
 import { createRoot } from 'react-dom/client';
-import { applyMiddleware } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { logger } from 'redux-logger';

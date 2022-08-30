@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import CloudGroup from '../../components/CloudGroup';
@@ -14,7 +14,7 @@ import TextInput from '../../components/TextInput';
 import { INK, SEA_FOAM } from '../../constants/colors';
 import authenticationRequest from './data/actions';
 import { AccountType, CreateUserParams } from '../../models/types';
-import { getCreateUserError, getSignedIn } from './data/reducer';
+import { selectors } from '../index';
 import Toast from '../../components/Toast';
 
 const LoginHoldingDiv = styled.div`
@@ -122,8 +122,9 @@ const AgeTextInput = styled(TextInput)`
 `;
 
 const CreateUser = (): ReactElement => {
-  const signedIn = useSelector(getSignedIn);
-  const error = useSelector(getCreateUserError);
+  const dispatch = useDispatch();
+  const signedIn = useSelector(selectors.login.getSignedIn);
+  const error = useSelector(selectors.login.getCreateUserError);
   const { createUser } = authenticationRequest;
   const navigate = useNavigate();
 
@@ -149,13 +150,16 @@ const CreateUser = (): ReactElement => {
       setErrorString('please fill in all fields');
     } else {
       setNetworkErrorShown(true);
-      createUser({
-        email,
-        password,
-        name,
-        accountType: accountType as AccountType,
-        age: accountType === 'RESEARCHER' ? null : parseInt(age, 10),
-      });
+      dispatch(
+        createUser({
+          email,
+          password,
+          name,
+          accountType: accountType as AccountType,
+          age:
+            accountType === 'RESEARCHER' ? null : parseInt(age, 10),
+        })
+      );
     }
   };
 

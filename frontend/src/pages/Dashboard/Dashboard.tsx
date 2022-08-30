@@ -4,12 +4,12 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { type } from 'os';
 import Layout from '../../components/Layout';
-import { SessionStats, User } from '../../models/types';
+import { ActionTypes, SessionStats, User } from '../../models/types';
 import { CLOUD, INK } from '../../constants/colors';
 import {
   GetData,
@@ -22,17 +22,7 @@ import {
   ChangeProfileIcon,
   DownloadData,
 } from './data/actions';
-import {
-  getCurrentUser,
-  getDataForResearchers,
-  getDownloadDataLoading,
-  getIsSignedOut,
-  getTotalWordsLearned,
-  getDashboardError,
-  getCurrentStudentData,
-  getCurrentStudentTotalWordsLearned,
-  getSessionStats,
-} from './data/reducer';
+import { selectors } from '../index';
 import ResearcherDashboard from './ResearcherDashboard';
 import StudentDashboard from './StudentDashboard';
 import overviewIcon from '../../assets/icons/dashboard-menu/overview.svg';
@@ -269,7 +259,7 @@ const getButtonGridArea = (
   menuButtonNumber: number,
   menuOpen: boolean,
   isDropdown: boolean,
-  type: 'icon' | 'button',
+  type: 'icon' | 'button'
 ) => {
   if (isDropdown && !menuOpen) {
     if (selectedMenuButton === menuButtonNumber) {
@@ -299,7 +289,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           1,
           menuOpen,
           isDropdown,
-          'icon',
+          'icon'
         )}
         src={overviewIcon}
       />
@@ -309,13 +299,13 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           1,
           menuOpen,
           isDropdown,
-          'button',
+          'button'
         )}
         selected={selectedMenuButton === 1}
         onClick={() => {
           setSelectedMenuButton(1);
           setMenuOpen(
-            !menuOpen && selectedMenuButton === 1 ? true : menuOpen,
+            !menuOpen && selectedMenuButton === 1 ? true : menuOpen
           );
         }}
       >
@@ -332,7 +322,7 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           2,
           menuOpen,
           isDropdown,
-          'icon',
+          'icon'
         )}
         src={settingsIcon}
       />
@@ -342,13 +332,13 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
           2,
           menuOpen,
           isDropdown,
-          'button',
+          'button'
         )}
         selected={selectedMenuButton === 2}
         onClick={() => {
           setSelectedMenuButton(2);
           setMenuOpen(
-            !menuOpen && selectedMenuButton === 2 ? true : menuOpen,
+            !menuOpen && selectedMenuButton === 2 ? true : menuOpen
           );
         }}
       >
@@ -393,23 +383,41 @@ const MenuButtonPanel: FunctionComponent<MenuButtonPanelProps> = ({
 };
 
 const Dashboard = (): ReactElement => {
-  const signOut = SignOut.request;
-  const getUser = GetData.request;
-  const getDataForResearchersRequest = GetDataForResearchers.request;
-  const changeIconRequest = ChangeProfileIcon.request;
-  const getUserSessionData = GetUserSessionData.request;
-  const downloadData = DownloadData.request;
-  const isSignedOut = useSelector(getIsSignedOut);
-  const currentUser = useSelector(getCurrentUser);
-  const dataForResearchers = useSelector(getDataForResearchers);
-  const totalWordsLearned = useSelector(getTotalWordsLearned);
-  const error = useSelector(getDashboardError);
-  const requestedStudent = useSelector(getCurrentStudentData);
-  const userSessionData = useSelector(getSessionStats);
-  const requestedStudentTotalWordsLearned = useSelector(
-    getCurrentStudentTotalWordsLearned,
+  const dispatch = useDispatch();
+  function dispatchify<Type>(
+    request: (props: Type) => { type: ActionTypes }
+  ) {
+    return (props: Type) => dispatch(request(props));
+  }
+  const signOut = dispatchify(SignOut.request);
+  const getUser = dispatchify(GetData.request);
+  const getDataForResearchersRequest = dispatchify(
+    GetDataForResearchers.request
   );
-  const downloadDataLoading = useSelector(getDownloadDataLoading);
+  const changeIconRequest = dispatchify(ChangeProfileIcon.request);
+  const getUserSessionData = dispatchify(GetUserSessionData.request);
+  const downloadData = dispatchify(DownloadData.request);
+  const isSignedOut = useSelector(selectors.dashboard.getIsSignedOut);
+  const currentUser = useSelector(selectors.dashboard.getCurrentUser);
+  const dataForResearchers = useSelector(
+    selectors.dashboard.getDataForResearchers
+  );
+  const totalWordsLearned = useSelector(
+    selectors.dashboard.getTotalWordsLearned
+  );
+  const error = useSelector(selectors.dashboard.getDashboardError);
+  const requestedStudent = useSelector(
+    selectors.dashboard.getCurrentStudentData
+  );
+  const userSessionData = useSelector(
+    selectors.dashboard.getSessionStats
+  );
+  const requestedStudentTotalWordsLearned = useSelector(
+    selectors.dashboard.getCurrentStudentTotalWordsLearned
+  );
+  const downloadDataLoading = useSelector(
+    selectors.dashboard.getDownloadDataLoading
+  );
   const navigate = useNavigate();
   if (isSignedOut) {
     navigate('/login');
@@ -594,7 +602,7 @@ const Dashboard = (): ReactElement => {
               </TitleText>
               <MenuButtonPanel
                 isDropdown={screenWidth < 900}
-                signOutHandler={signOut}
+                signOutHandler={() => signOut(null)}
                 selectedMenuButton={selectedMenuButton}
                 setSelectedMenuButton={setSelectedMenuButton}
               />

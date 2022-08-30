@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Toast from '../../components/Toast';
@@ -14,6 +14,7 @@ import TextInput from '../../components/TextInput';
 import { INK, LOGIN_BACKGROUND } from '../../constants/colors';
 import authenticationRequest from './data/actions';
 import { getLoginError, getSignedIn } from './data/reducer';
+import { selectors } from '..';
 
 const ResetUserButton = styled.button`
   padding-left: 0;
@@ -137,16 +138,18 @@ interface State {
 }
 
 const Login: FunctionComponent<{}> = (): ReactElement => {
+  const dispatch = useDispatch();
   const { signIn } = authenticationRequest;
   const { resetPassword } = authenticationRequest;
-  const signedIn = useSelector(getSignedIn);
-  const error = useSelector(getLoginError);
+  const signedIn = useSelector(selectors.login.getSignedIn);
+  const error = useSelector(selectors.login.getLoginError);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   let redirect: string | null = null;
+
   if (location.state != null) {
     redirect = (location.state as State).redirect;
   }
@@ -160,12 +163,12 @@ const Login: FunctionComponent<{}> = (): ReactElement => {
 
     setShowError(true);
 
-    resetPassword({ email });
+    dispatch(resetPassword({ email }));
   };
 
   const doSignIn = () => {
     setShowError(true);
-    signIn({ email, password });
+    dispatch(signIn({ email, password }));
   };
 
   useEffect(() => {
