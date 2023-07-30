@@ -157,15 +157,25 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
               selected={selectedIndex}
               setSelected={(idx) => {
                 setSelectedIndex(idx);
-                setWordResponses(
-                  wordResponses.concat([
-                    {
-                      word: word.id,
-                      imageSelected: shuffled[idx],
-                      correct: shuffled[idx] === word.correctImage,
-                    },
-                  ])
-                );
+                setWordResponses((prevWordResponses) => {
+                  const newWordEntry = {
+                    word: word.id,
+                    imageSelected: shuffled[idx],
+                    correct: shuffled[idx] === word.correctImage,
+                  };
+                  const existingWordResponse = prevWordResponses.findIndex(
+                    (response) => response.word === word.id
+                  );
+                  if (existingWordResponse === -1) {
+                    return wordResponses.concat([newWordEntry]);
+                  } else {
+                    const newResponses = wordResponses.slice(
+                      existingWordResponse,
+                      existingWordResponse + 1
+                    );
+                    return newResponses.concat([newWordEntry]);
+                  }
+                });
               }}
             />
           </ImageContainer>

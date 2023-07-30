@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { SessionStats, WordResult } from "../../models/types";
@@ -14,6 +14,8 @@ import {
   CloseCircleFilled,
   MinusCircleFilled,
 } from "@ant-design/icons";
+import PurpleButton from "../../components/PurpleButton";
+import Modal from "antd/lib/modal/Modal";
 
 interface SessionDashboardParams {
   userSessionData: SessionStats;
@@ -137,6 +139,7 @@ const StatsDiv = styled.div`
   display: flex;
   background-color: ${({ color }: { color: string }) => color};
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   padding: 3vh 1vw;
 `;
@@ -155,7 +158,7 @@ const StatsIconContainer = styled.div`
 
 const StatsText = styled.p`
   font-family: Open Sans;
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
   margin-right: 15px;
@@ -168,10 +171,16 @@ const StatsText = styled.p`
 
 const WordResultText = styled.p`
   font-family: Open Sans;
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  margin-right: 15px;
+  margin-right: auto;
+  margin-bottom: 0;
+`;
+
+const ViewImageButton = styled(PurpleButton)`
+  height: 50%;
+  margin-left: 15px;
   margin-bottom: 0;
 `;
 
@@ -216,7 +225,15 @@ const StatsResultIcon = ({ result }: { result?: boolean }) => {
   );
 };
 
-const WordResultDiv = ({ word }: { word: WordResult }) => {
+const WordResultDiv = ({
+  word,
+  isPreassessment,
+  setModalImage,
+}: {
+  word: WordResult;
+  isPreassessment: boolean;
+  setModalImage: (val?: { src?: string; selected?: true }) => void;
+}) => {
   return (
     <WordResultWrapper>
       <StatTitle>{word.word}</StatTitle>
@@ -224,31 +241,81 @@ const WordResultDiv = ({ word }: { word: WordResult }) => {
         <StatsDiv color={"transparent"}>
           <WordResultText>assessments</WordResultText>
           <StatsResultIcon result={word.assessmentCorrect} />
+          {word.assessmentImageSelected && (
+            <ViewImageButton
+              text="view image"
+              onClick={() =>
+                setModalImage({
+                  src: word.assessmentImageSelected,
+                  selected: true,
+                })
+              }
+            />
+          )}
         </StatsDiv>
-        <StatsDiv color={"#fff"}>
-          <WordResultText>
-            interventions: example vs. non-example
-          </WordResultText>
-          <StatsResultIcon result={word.activity2Correct} />
-        </StatsDiv>
-        <StatsDiv color={"transparent"}>
-          <WordResultText>
-            interventions: yes or no context question 1
-          </WordResultText>
-          <StatsResultIcon result={word.activity3Correct} />
-        </StatsDiv>
-        <StatsDiv color={"#fff"}>
-          <WordResultText>
-            interventions: yes or no context question 2
-          </WordResultText>
-          <StatsResultIcon result={word.activity3Part2Correct} />
-        </StatsDiv>
-        <StatsDiv color={"transparent"}>
-          <WordResultText>
-            interventions: yes or no context question 3
-          </WordResultText>
-          <StatsResultIcon result={word.activity3Part3Correct} />
-        </StatsDiv>
+        {!isPreassessment && (
+          <>
+            <StatsDiv color={"#fff"}>
+              <WordResultText>
+                interventions: example vs. non-example
+              </WordResultText>
+              <StatsResultIcon result={word.activity2Correct} />
+              {word.activity2ImageSelected && (
+                <ViewImageButton
+                  text="view image"
+                  onClick={() =>
+                    setModalImage({
+                      src: word.activity2ImageSelected,
+                      selected: true,
+                    })
+                  }
+                />
+              )}
+            </StatsDiv>
+            <StatsDiv color={"transparent"}>
+              <WordResultText>
+                interventions: yes or no context question 1
+              </WordResultText>
+              <StatsResultIcon result={word.activity3Correct} />
+              {word.activity3Image && (
+                <ViewImageButton
+                  text="view image"
+                  onClick={() =>
+                    setModalImage({ src: word.activity3Image })
+                  }
+                />
+              )}
+            </StatsDiv>
+            <StatsDiv color={"#fff"}>
+              <WordResultText>
+                interventions: yes or no context question 2
+              </WordResultText>
+              <StatsResultIcon result={word.activity3Part2Correct} />
+              {word.activity3Part2Image && (
+                <ViewImageButton
+                  text="view image"
+                  onClick={() =>
+                    setModalImage({ src: word.activity3Part2Image })
+                  }
+                />
+              )}
+            </StatsDiv>
+            <StatsDiv color={"transparent"}>
+              <WordResultText>
+                interventions: yes or no context question 3
+              </WordResultText>
+              <StatsResultIcon result={word.activity3Part3Correct} />
+              {word.activity3Part3Image && (
+                <ViewImageButton
+                  text="view image"
+                  onClick={() =>
+                    setModalImage({ src: word.activity3Part3Image })
+                  }
+                />
+              )}
+            </StatsDiv>
+          </>
+        )}
       </WordStatsContainer>
     </WordResultWrapper>
   );
@@ -260,6 +327,11 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
 }) => {
   const history = useHistory();
   const wordResults = userSessionData.wordResults;
+  const isPreassessment = userSessionData.sessionId === -1;
+  const [modalImage, setModalImage] = useState<{
+    src?: string;
+    selected?: boolean;
+  }>();
   return (
     <SessionContainer>
       <SessionHeader>
@@ -273,17 +345,41 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
           {"< back to " + userName + "'s data"}
         </DashboardRedirect>
         <SessionTitle>
-          session {userSessionData.sessionId + 1}
+          {isPreassessment
+            ? "pre-assessment"
+            : `session ${userSessionData.sessionId + 1}`}
         </SessionTitle>
       </SessionHeader>
       <SessionBody>
+        <Modal
+          title={
+            modalImage?.selected
+              ? "view selected image"
+              : "view image"
+          }
+          destroyOnClose
+          visible={modalImage !== undefined}
+          onCancel={() => setModalImage(undefined)}
+          footer={null}
+        >
+          <img
+            style={{ borderRadius: "20px", width: "100%" }}
+            src={modalImage?.src}
+          />
+        </Modal>
         <WordContainer>
           <WordResultsContainer>
             {wordResults.length === 0 ? (
               <StatTitle> No Data </StatTitle>
             ) : (
               wordResults.map((wordResult) => {
-                return <WordResultDiv word={wordResult} />;
+                return (
+                  <WordResultDiv
+                    word={wordResult}
+                    isPreassessment={isPreassessment}
+                    setModalImage={setModalImage}
+                  />
+                );
               })
             )}
           </WordResultsContainer>
@@ -294,12 +390,14 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
             stat={formatDuration(userSessionData.assessmentDuration)}
             description={"assessments completion time"}
           />
-          <Stat
-            stat={formatDuration(
-              userSessionData.interventionDuration
-            )}
-            description={"interventions completion time"}
-          />
+          {!isPreassessment && (
+            <Stat
+              stat={formatDuration(
+                userSessionData.interventionDuration
+              )}
+              description={"interventions completion time"}
+            />
+          )}
           <Stat
             stat={userSessionData.correctWords.toString()}
             description={"words answered correctly"}

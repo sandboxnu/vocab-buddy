@@ -189,7 +189,7 @@ const SecondActivity = ({
           <Blocker afterSeconds={45} repeatable={false}>
             <StyledDivForClicks>
               {imageUrls.map((img, index) => (
-                <ImageContainer>
+                <ImageContainer key={img.url}>
                   <Image
                     url={img.url}
                     correct={img.correct}

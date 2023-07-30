@@ -515,6 +515,28 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
           </>
         )}
 
+        {!isStudentView && (
+          <>
+            <TitleText>pre-assessment</TitleText>
+            <SessionCardContainer>
+              {" "}
+              <SessionBox
+                isComplete={student.sessionId > -1}
+                isStudentView={false}
+                onClick={() => {
+                  if (student.sessionId > -1) {
+                    history.push(
+                      `/dashboard/${student.id}/session/-1`
+                    );
+                  }
+                }}
+              >
+                <SessionNumber>data</SessionNumber>
+              </SessionBox>
+            </SessionCardContainer>
+          </>
+        )}
+
         <TitleText>list of sessions</TitleText>
 
         <SessionCardContainer>

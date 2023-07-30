@@ -573,6 +573,7 @@ export default class FirebaseInteractor {
         wordResults.push({
           word: word.value,
           assessmentCorrect: result.data().correct,
+          assessmentImageSelected: result.data().imageSelected,
         });
       }
     }
@@ -656,7 +657,7 @@ export default class FirebaseInteractor {
 
   async createDataZip(userId: string, name: string) {
     const zip = new JSZip();
-    this.getDataForOneUser(userId, name, zip);
+    await this.getDataForOneUser(userId, name, zip);
     let fileBlob = await zip.generateAsync({ type: "blob" });
     window.open(URL.createObjectURL(fileBlob));
   }
