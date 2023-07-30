@@ -97,6 +97,10 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
   }
 
   const nextWord = () => {
+    if (selectedIndex === -1) {
+      return;
+    }
+
     let curDate = new Date();
     let durationInSeconds =
       (curDate.getTime() - wordStartTime.getTime()) / 1000;

@@ -65,7 +65,7 @@ const DelayedNextButton = ({
     };
   }, [delay]);
 
-  return shown && canBeShown ? (
+  return canBeShown ? (
     <ButtonContainer
       className={className}
       top={top}
