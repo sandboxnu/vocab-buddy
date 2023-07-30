@@ -5,7 +5,8 @@
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "upload": "node script.js"
+    "upload": "node script.js",
+    "reset": "echo 'Are you sure? [y/N]' && read response && node reset-database.js $response"
   },
   "author": "",
   "license": "ISC",

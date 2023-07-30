@@ -1,3 +1,5 @@
+console.log('starting word upload...')
+
 const fs = require('fs');
 const firebase = require('firebase-admin');
 // To get credentials for a service account, follow instructions here and then put url to path credentials below:
@@ -82,7 +84,6 @@ const performUpload = async () => {
         for (let activity3Option of activity3Strings) {
             let lastComponent = activity3Option.substring(activity3Option.lastIndexOf("/"));
             let lastComponentWithoutSlash = lastComponent.replace("/", "")
-            console.log(lastComponent)
             allActivity3Options.push({
                 correctAnswer: activity3Option.includes(correctFolder),
                 url: await uploadFileToFirebaseStorage(activity3Option, wordRef.id + lastComponent),
@@ -109,4 +110,4 @@ const performUpload = async () => {
     }
 }
 
-performUpload().then(() => console.log("done :)")).catch(console.log);
+performUpload().then(() => console.log("done uploading words :)")).catch(console.log);
