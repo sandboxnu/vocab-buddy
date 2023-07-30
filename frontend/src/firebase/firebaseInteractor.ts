@@ -142,12 +142,9 @@ export default class FirebaseInteractor {
     let idToUse = id || this.auth.currentUser?.uid;
     let user = await this.db.collection("users").doc(idToUse).get();
     let userData = user.data();
-    if (userData != undefined) {
-      return this.getUserFromData(idToUse || "", userData);
+    if (idToUse != null && userData != null) {
+      return this.getUserFromData(idToUse, userData);
     } else {
-      if (id === undefined) {
-        await this.auth.currentUser?.delete();
-      }
       throw new Error("Invalid user");
     }
   }
