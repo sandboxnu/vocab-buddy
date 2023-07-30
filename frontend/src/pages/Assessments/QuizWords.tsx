@@ -15,7 +15,7 @@ interface QuizWordsProps {
     results: AssessmentResult[],
     isFinished: boolean,
     currentIdx: number,
-    durationInSeconds: number
+    durationsInSeconds: number
   ) => void;
 }
 
@@ -98,7 +98,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
 
   const nextWord = () => {
     let curDate = new Date();
-    let durationInSeconds =
+    let durationsInSeconds =
       (curDate.getTime() - wordStartTime.getTime()) / 1000;
     setWordStartTime(curDate);
 
@@ -111,7 +111,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
         wordResponses,
         true,
         currentIndex,
-        durationInSeconds
+        durationsInSeconds
       );
     } else if (currentIndex < assessment.words.length - 1) {
       // We still have words
@@ -119,7 +119,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
         wordResponses,
         false,
         currentIndex + 1,
-        durationInSeconds
+        durationsInSeconds
       );
       setShuffled([]);
       setSelectedIndex(-1);
@@ -130,7 +130,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
         wordResponses,
         true,
         currentIndex,
-        durationInSeconds
+        durationsInSeconds
       );
     }
   };
@@ -161,6 +161,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
                   wordResponses.concat([
                     {
                       word: word.id,
+                      imageSelected: shuffled[idx],
                       correct: shuffled[idx] === word.correctImage,
                     },
                   ])

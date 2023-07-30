@@ -176,6 +176,9 @@ export enum ActionTypes {
   DOWNLOAD_USER_DATA_REQUEST = "DOWNLOAD_USER_DATA_REQUEST",
   DOWNLOAD_USER_DATA_SUCCESS = "DOWNLOAD_USER_DATA_SUCCESS",
   DOWNLOAD_USER_DATA_ERROR = "DOWNLOAD_USER_DATA_ERROR",
+  DOWNLOAD_ALL_USER_DATA_REQUEST = "DOWNLOAD_ALL_USER_DATA_REQUEST",
+  DOWNLOAD_ALL_USER_DATA_SUCCESS = "DOWNLOAD_ALL_USER_DATA_SUCCESS",
+  DOWNLOAD_ALL_USER_DATA_ERROR = "DOWNLOAD_ALL_USER_DATA_ERROR",
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense
@@ -224,10 +227,15 @@ export interface SessionStats {
 export interface WordResult {
   word: string;
   assessmentCorrect?: boolean;
+  assessmentImageSelected?: string;
   activity2Correct?: boolean;
+  activity2ImageSelected?: string;
   activity3Correct?: boolean;
+  activity3Image?: string;
   activity3Part2Correct?: boolean;
+  activity3Part2Image?: string;
   activity3Part3Correct?: boolean;
+  activity3Part3Image?: string;
 }
 
 export interface DashboardState {
@@ -244,6 +252,7 @@ export interface DashboardState {
 
 export interface AssessmentResult {
   word: string;
+  imageSelected: string;
   correct: boolean;
 }
 

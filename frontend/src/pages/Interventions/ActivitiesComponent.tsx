@@ -10,7 +10,7 @@ interface ActivityComponentProp {
   idx: number;
   title: string;
   activities: ActivityList;
-  updateIntervention: (correct: boolean) => void;
+  updateIntervention: (correct: boolean, image?: string) => void;
 }
 
 const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({

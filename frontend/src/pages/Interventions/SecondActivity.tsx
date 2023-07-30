@@ -19,7 +19,7 @@ interface SecondActivityProps {
   prompt1Url: string;
   prompt2Url: string;
   imageUrls: ImageProps[];
-  updateIntervention: (correct: boolean) => void;
+  updateIntervention: (correct: boolean, image?: string) => void;
 }
 
 interface ImageProps {
@@ -220,7 +220,8 @@ const SecondActivity = ({
               onClick={() =>
                 updateIntervention(
                   selectedIndex ===
-                    indexOf(imageUrls, (val) => val.correct)
+                    indexOf(imageUrls, (val) => val.correct),
+                  imageUrls[selectedIndex].url
                 )
               }
               canBeShown={selectedIndex !== -1 && showNextButton}
