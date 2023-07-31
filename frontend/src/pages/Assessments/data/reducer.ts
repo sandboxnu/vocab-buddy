@@ -25,7 +25,7 @@ const assessmentReducer = (
           id: payload.assessment.id,
           currentIndex: payload.assessment.currentIndex,
           words: payload.assessment.words,
-          firebaseId: payload.assessment.firebaseId,
+          assessmentId: payload.assessment.assessmentId,
           sessionId: payload.assessment.sessionId,
         },
         finished: false,
@@ -40,6 +40,7 @@ const assessmentReducer = (
       return {
         ...state,
         assessmentId: payload.id,
+        finished: false,
       };
     case ActionTypes.SIGN_OUT_SUCCESS:
       return {

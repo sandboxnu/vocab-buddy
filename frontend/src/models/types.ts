@@ -6,7 +6,7 @@ export interface Assessment {
   sessionId: SessionId;
   words: Word[];
   currentIndex: number;
-  firebaseId: string;
+  assessmentId: string;
 }
 
 /**

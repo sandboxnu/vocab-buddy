@@ -324,7 +324,7 @@ export default class FirebaseInteractor {
       id,
       currentIndex,
       words: actualWords,
-      firebaseId: assessment.id,
+      assessmentId: assessment.id,
       sessionId: assessment.session === undefined ? -1 : assessment.session,
     };
   }
