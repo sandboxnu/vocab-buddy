@@ -5,18 +5,16 @@ if (process.argv[2].match(/y(es)?/i)) {
   process.exit();
 }
 
+const resetWords = process.argv[3].match(/y(es)?/i);
+
 const firebase = require('firebase-admin');
 // To get credentials for a service account, follow instructions here and then put url to path credentials below:
 // https://cloud.google.com/docs/authentication/getting-started
-const serviceAccount = require('PATH_TO_CREDENTIALS');
+const serviceAccount = require('./firebase-admin.json');
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyB3LUG_O4Ev6xOPaEKPgnyjUjUttar3PmA",
-    authDomain: "vocab-buddy-53eca.firebaseapp.com",
-    projectId: "vocab-buddy-53eca",
-    storageBucket: "vocab-buddy-53eca.appspot.com",
-    appId: "1:620084102964:web:4ea8f577f47430fb208761",
+    ...require('./firebase-config.json'),
     credential: firebase.credential.cert(serviceAccount),
 };
   
@@ -25,15 +23,17 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-const databases = ['assessments', 'interventions', 'words'];
-const promises = databases.map(database => {
+const databasesToClear = ['assessments', 'interventions', ...resetWords ? ['words'] : []];
+const promises = databasesToClear.map(database => {
   console.log(`Deleting ${database}`);
   const dbRef = db.collection(database)
   return db.recursiveDelete(dbRef).then(() => console.log(`Deleted ${database}`));
 });
 
-console.log('Deleting media from storage bucket')
-promises.push(storage.bucket().delete().then(() => console.log('Deleted media from storage bucket')));
+if (resetWords) {
+  console.log('Deleting media from storage bucket')
+  promises.push(storage.bucket().delete().then(() => console.log('Deleted media from storage bucket')));
+}
 
 console.log('Deleting users');
 const deleteUsers = async () => {
@@ -45,11 +45,12 @@ const deleteUsers = async () => {
 
 promises.push(deleteUsers());
 
-await Promise.all(promises);
-
-const { exec } = require('child_process');
-const child = exec('yarn upload');
-child.stdout.setEncoding('utf8');
-child.stdout.on('data', (message) => {
-  console.log(message.toString().trim())
-})
+Promise.all(promises).then(() => {
+  if (!resetWords) return;
+  const { exec } = require('child_process');
+  const child = exec('yarn upload');
+  child.stdout.setEncoding('utf8');
+  child.stdout.on('data', (message) => {
+    console.log(message.toString().trim())
+  })
+});

@@ -4,15 +4,11 @@ const fs = require('fs');
 const firebase = require('firebase-admin');
 // To get credentials for a service account, follow instructions here and then put url to path credentials below:
 // https://cloud.google.com/docs/authentication/getting-started
-const serviceAccount = require('PATH_TO_CREDENTIALS');
+const serviceAccount = require('./firebase-admin.json');
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyB3LUG_O4Ev6xOPaEKPgnyjUjUttar3PmA",
-    authDomain: "vocab-buddy-53eca.firebaseapp.com",
-    projectId: "vocab-buddy-53eca",
-    storageBucket: "vocab-buddy-53eca.appspot.com",
-    appId: "1:620084102964:web:4ea8f577f47430fb208761",
+    ...require('./firebase-config.json'),
     credential: firebase.credential.cert(serviceAccount),
 };
   

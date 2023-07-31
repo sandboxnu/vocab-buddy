@@ -106,3 +106,6 @@ dist
 # for our mac users
 .DS_Store
 /.idea/
+
+scripts/firebase-admin.json
+scripts/firebase-config.json
