@@ -23,13 +23,7 @@ import {
 } from "../models/types";
 
 // Your web app's Firebase configuration
-var firebaseConfig = {
-  apiKey: "AIzaSyB3LUG_O4Ev6xOPaEKPgnyjUjUttar3PmA",
-  authDomain: "vocab-buddy-53eca.firebaseapp.com",
-  projectId: "vocab-buddy-53eca",
-  storageBucket: "vocab-buddy-53eca.appspot.com",
-  appId: "1:620084102964:web:4ea8f577f47430fb208761",
-};
+var firebaseConfig = require("./firebase-config.json");
 
 firebase.initializeApp(firebaseConfig);
 

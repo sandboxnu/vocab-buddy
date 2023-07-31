@@ -23,17 +23,24 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
+const promises = []
+
+if (resetWords) {
+  console.log('Deleting word-related-media from storage bucket')
+  const wordDb = db.collection('words')
+  const deleteWordMedias = async () => {
+    const wordIds = (await wordDb.listDocuments()).map(doc => doc.id)
+    return Promise.all(wordIds.map(id => storage.bucket().file(id).delete()))
+  }
+  promises.push(deleteWordMedias.then(() => console.log('Deleted media from storage bucket')));
+}
+
 const databasesToClear = ['assessments', 'interventions', ...resetWords ? ['words'] : []];
-const promises = databasesToClear.map(database => {
+promises.push(...databasesToClear.map(database => {
   console.log(`Deleting ${database}`);
   const dbRef = db.collection(database)
   return db.recursiveDelete(dbRef).then(() => console.log(`Deleted ${database}`));
-});
-
-if (resetWords) {
-  console.log('Deleting media from storage bucket')
-  promises.push(storage.bucket().delete().then(() => console.log('Deleted media from storage bucket')));
-}
+}));
 
 console.log('Deleting users');
 const deleteUsers = async () => {
