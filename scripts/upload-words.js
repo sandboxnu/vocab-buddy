@@ -40,14 +40,15 @@ const performUpload = async () => {
         let incorrectFolder = wordFolder + "incorrect/";
         let wordRef = db.collection("words").doc();
         // Create the base assessment information
+        const ids = [1, 2, 3, 4].sort((_a, _b) => Math.random() - 0.5)
         let wordBaseInfo = {
             value: word,
-            correctImage: await uploadFileToFirebaseStorage(correctFolder + "correct_assessment.jpg", wordRef.id + "/correct_assessment.jpg"),
+            correctImage: await uploadFileToFirebaseStorage(correctFolder + "correct_assessment.jpg", wordRef.id + `/assessment${ids[0]}.jpg`),
             dateCreated: new Date(),
             incorrectImages: [
-                await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment1.jpg", wordRef.id + "/incorrect_assessment1.jpg"),
-                await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment2.jpg", wordRef.id + "/incorrect_assessment2.jpg"),
-                await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment3.jpg", wordRef.id + "/incorrect_assessment3.jpg"),
+                await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment1.jpg", wordRef.id + `/assessment${ids[1]}.jpg`),
+                await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment2.jpg", wordRef.id + `/assessment${ids[2]}.jpg`),
+                await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_assessment3.jpg", wordRef.id + `/assessment${ids[3]}.jpg`),
             ],
             assessmentPrompt: await uploadFileToFirebaseStorage(promptFolder + "assessment.mp3", wordRef.id + "/assessment.mp3")
         };
@@ -56,14 +57,15 @@ const performUpload = async () => {
         let activity1 = {
             prompt: await uploadFileToFirebaseStorage(promptFolder + "activity1.mp3", wordRef.id + "/activity1.mp3"),
             prompt2: await uploadFileToFirebaseStorage(promptFolder + "activity1_part2.mp3", wordRef.id + "/activity1_part2.mp3"),
-            url: await uploadFileToFirebaseStorage(correctFolder + "correct_activity1.jpg", wordRef.id + "/correct_activity1.jpg")
+            url: await uploadFileToFirebaseStorage(correctFolder + "correct_activity1.jpg", wordRef.id + "/activity1.jpg")
         };
 
+        const activity2Ids = [1, 2].sort((_a, _b) => Math.random() - 0.5)
         let activity2 = {
             prompt: await uploadFileToFirebaseStorage(promptFolder + "activity2.mp3", wordRef.id + "/activity2.mp3"),
             prompt2: await uploadFileToFirebaseStorage(promptFolder + "activity2_part2.mp3", wordRef.id + "/activity2_part2.mp3"),
-            correctUrl: await uploadFileToFirebaseStorage(correctFolder + "correct_activity2.jpg", wordRef.id + "/correct_activity2.jpg"),
-            incorrectUrl: await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_activity2.jpg", wordRef.id + "/incorrect_activity2.jpg")
+            correctUrl: await uploadFileToFirebaseStorage(correctFolder + "correct_activity2.jpg", wordRef.id + `/activity2_id${activity2Ids[0]}.jpg`),
+            incorrectUrl: await uploadFileToFirebaseStorage(incorrectFolder + "incorrect_activity2.jpg", wordRef.id + `/activity2_id${activity2Ids[1]}.jpg`)
         };
 
         // We want activity 3 shuffled, so get all values, and then shuffle
@@ -76,22 +78,26 @@ const performUpload = async () => {
             fs.existsSync(incorrectFolder + "incorrect_activity3_2.jpg") ? incorrectFolder + "incorrect_activity3_2.jpg" : correctFolder + "correct_activity3_2.jpg"
         ];
         activity3Strings.sort((obj1, obj2) => Math.random() - 0.5);
+        const activity3Ids = [1, 2, 3].sort((_a, _b) => Math.random() - 0.5)
         let allActivity3Options = [];
-        for (let activity3Option of activity3Strings) {
+        for (let i in activity3Strings) {
+          const activity3Option = activity3Strings[i];
+          const activity3Id = activity3Ids[i];
             let lastComponent = activity3Option.substring(activity3Option.lastIndexOf("/"));
             let lastComponentWithoutSlash = lastComponent.replace("/", "")
+            let lastComponentFixedName = lastComponent.replace(/(in)?correct_activity3/, "activity3_id" + activity3Id)
             allActivity3Options.push({
                 correctAnswer: activity3Option.includes(correctFolder),
-                url: await uploadFileToFirebaseStorage(activity3Option, wordRef.id + lastComponent),
-                prompt: await uploadFileToFirebaseStorage(promptFolder + lastComponentWithoutSlash.replace("jpg", "mp3"), wordRef.id + lastComponent.replace("jpg", "mp3")),
-                prompt2: await uploadFileToFirebaseStorage(promptFolder + lastComponentWithoutSlash.replace(".jpg", "_part2.mp3"), wordRef.id + lastComponent.replace(".jpg", "_part2.mp3")),
+                url: await uploadFileToFirebaseStorage(activity3Option, wordRef.id + lastComponentFixedName),
+                prompt: await uploadFileToFirebaseStorage(promptFolder + lastComponentWithoutSlash.replace("jpg", "mp3"), wordRef.id + lastComponentFixedName.replace("jpg", "mp3")),
+                prompt2: await uploadFileToFirebaseStorage(promptFolder + lastComponentWithoutSlash.replace(".jpg", "_part2.mp3"), wordRef.id + lastComponentFixedName.replace(".jpg", "_part2.mp3")),
             });
         }
 
         let activity4 = {
             prompt: await uploadFileToFirebaseStorage(promptFolder + "activity4.mp3", wordRef.id + "/activity4.mp3"),
             prompt2: await uploadFileToFirebaseStorage(promptFolder + "activity4_part2.mp3", wordRef.id + "/activity4_part2.mp3"),
-            url: await uploadFileToFirebaseStorage(correctFolder + "correct_activity4.jpg", wordRef.id + "/correct_activity4.jpg")
+            url: await uploadFileToFirebaseStorage(correctFolder + "correct_activity4.jpg", wordRef.id + "/activity4.jpg")
         };
         // Upload everything to firebase
         console.log(`Uploading ${word} to firebase at id ${wordRef.id}`);

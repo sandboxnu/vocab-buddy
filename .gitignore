@@ -107,5 +107,4 @@ dist
 .DS_Store
 /.idea/
 
-scripts/firebase-admin.json
-**/firebase-config.json
+scripts/firebase-*.json
