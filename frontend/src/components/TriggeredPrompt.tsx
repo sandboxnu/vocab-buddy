@@ -3,6 +3,8 @@ import React, {
   ReactElement,
   useEffect,
   useState,
+  useCallback,
+  useRef,
 } from "react";
 import ReplayButton from "./ReplayButton";
 import PlayButton from "./PlayButton";
@@ -12,157 +14,111 @@ interface TriggeredPromptProps {
   prompt2Url?: string;
   triggerSecondPrompt?: boolean;
   isAssessment?: boolean;
-  currentWord?: number;
-  promptDelay?: number;
   secondPromptFinishedHandler?: () => void;
 }
-
-const getDuration = (
-  audio: HTMLMediaElement,
-  reattemptNumber: number,
-  durationQueryLimit: number,
-  canPlayHandler: (canPlay: boolean, duration: number) => void
-) => {
-  if (
-    !isNaN(audio.duration) &&
-    audio.duration !== undefined &&
-    audio.duration > 0
-  ) {
-    canPlayHandler(true, audio.duration);
-    return audio.duration;
-  }
-
-  if (reattemptNumber > durationQueryLimit) {
-    canPlayHandler(true, 5000);
-    return 5000; // default wait time
-  }
-
-  setTimeout(() => {
-    return getDuration(
-      audio,
-      reattemptNumber + 1,
-      durationQueryLimit,
-      canPlayHandler
-    );
-  }, 30);
-};
 
 const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
   prompt1Url,
   prompt2Url,
   triggerSecondPrompt,
   isAssessment,
-  currentWord,
-  promptDelay,
   secondPromptFinishedHandler,
 }): ReactElement => {
-  let [canPlayPrompt1, setCanPlayPrompt1] = useState(false);
-  let [canPlayPrompt2, setCanPlayPrompt2] = useState(false);
-  let [prompt1Duration, setPrompt1Duration] = useState(0);
-  let [prompt2Duration, setPrompt2Duration] = useState(0);
+  const [audio1, setAudio1] = useState(new Audio(prompt1Url));
+  const [audio2, setAudio2] = useState(new Audio(prompt2Url));
+  const audioTimeoutId = useRef<NodeJS.Timeout>();
+  const [lastPlayed, setLastPlayed] = useState<"audio1" | "audio2">(
+    "audio1"
+  );
+  const [
+    prevTriggerSecondPrompt,
+    setPrevTriggerSecondPrompt,
+  ] = useState(triggerSecondPrompt);
+  const [prevPrompt1Url, setPrevPrompt1Url] = useState(prompt1Url);
+  const [prevPrompt2Url, setPrevPrompt2Url] = useState(prompt2Url);
 
-  const updatePrompt1 = (canPlay: boolean, duration: number) => {
-    setPrompt1Duration(duration);
-    setCanPlayPrompt1(canPlay);
-  };
+  const onClickHandler = useCallback(() => {
+    if (audioTimeoutId.current) {
+      clearTimeout(audioTimeoutId.current);
+    }
+    if (
+      audio1.paused &&
+      triggerSecondPrompt &&
+      audio2.paused &&
+      lastPlayed === "audio1"
+    ) {
+      audio1.currentTime = 0;
+      audio2.currentTime = 0;
+      audio1.pause();
+      audio2.play();
+      setLastPlayed("audio2");
+    } else if (audio1.paused && audio2.paused) {
+      audio1.currentTime = 0;
+      audio1.play();
+      setLastPlayed("audio1");
+    }
+  }, [audio1, audio2, triggerSecondPrompt, lastPlayed]);
 
-  const updatePrompt2 = (canPlay: boolean, duration: number) => {
-    setPrompt2Duration(duration);
-    setCanPlayPrompt2(canPlay);
-  };
+  const onPauseCallback = useCallback(() => {
+    if (audioTimeoutId.current) {
+      clearTimeout(audioTimeoutId.current);
+    }
+    if (isAssessment) {
+      audioTimeoutId.current = setTimeout(onClickHandler, 8000);
+    } else if (triggerSecondPrompt) {
+      audio2.currentTime = 0;
+      audio2.play();
+      setLastPlayed("audio2");
+    }
+  }, [onClickHandler, isAssessment, audio2]);
 
-  const prompt1 = new Audio(prompt1Url);
-  const prompt2 = new Audio(prompt2Url);
+  audio1.onpause = onPauseCallback;
+  audio2.onended = secondPromptFinishedHandler || (() => {});
 
-  prompt2.onended = () => {
-    secondPromptFinishedHandler?.();
-  };
+  if (
+    triggerSecondPrompt !== prevTriggerSecondPrompt &&
+    triggerSecondPrompt
+  ) {
+    if (audioTimeoutId.current) {
+      clearTimeout(audioTimeoutId.current);
+    }
+    onClickHandler();
+    setPrevTriggerSecondPrompt(triggerSecondPrompt);
+  }
 
-  prompt1.preload = "metadata";
-  prompt2.preload = "metadata";
+  if (
+    prevPrompt1Url !== prompt1Url ||
+    prevPrompt2Url !== prompt2Url
+  ) {
+    if (audioTimeoutId.current) {
+      clearTimeout(audioTimeoutId.current);
+    }
+    audio1.onpause = () => {};
+    audio2.onpause = () => {};
+    audio1.pause();
+    audio2.pause();
+    const newAudio1 = new Audio(prompt1Url);
+    const newAudio2 = new Audio(prompt2Url);
+    newAudio1.play();
+    setAudio1(newAudio1);
+    setAudio2(newAudio2);
+    setLastPlayed("audio1");
+    setPrevPrompt1Url(prompt1Url);
+    setPrevPrompt2Url(prompt2Url);
+  }
 
   useEffect(() => {
-    //loop prompt if this is an assessment
-    getDuration(prompt1, 0, 50, updatePrompt1);
-
-    if (isAssessment && canPlayPrompt1) {
-      playPrompt1();
-      const interval = setInterval(
-        playPrompt1,
-        prompt1Duration * 1000 + 8000
-      );
-      return () => {
-        stopAudio(prompt1);
-        stopAudio(prompt2);
-        clearInterval(interval);
-      };
-    }
-
-    // Intervention activities
-    if (prompt2Url !== undefined) {
-      getDuration(prompt2, 0, 50, updatePrompt2);
-      if (canPlayPrompt1 && canPlayPrompt2) {
-        if (triggerSecondPrompt) {
-          stopAudio(prompt1);
-          playPrompt2();
-        } else {
-          playPrompt1();
-        }
+    audio1.play();
+    return () => {
+      if (audioTimeoutId.current) {
+        clearTimeout(audioTimeoutId.current);
       }
-    }
-
-    return () => {
-      stopAudio(prompt1);
-      stopAudio(prompt2);
+      audio1.onpause = () => {};
+      audio2.onpause = () => {};
+      audio1.pause();
+      audio2.pause();
     };
-  }, [
-    triggerSecondPrompt,
-    currentWord,
-    canPlayPrompt1,
-    canPlayPrompt2,
-    prompt1Duration,
-    prompt2Duration,
-  ]);
-
-  const playPrompt1 = () => {
-    prompt1.currentTime = 0;
-    setTimeout(() => {
-      prompt1.play();
-    }, 500);
-  };
-
-  const playPrompt2 = () => {
-    prompt2.currentTime = 0;
-    setTimeout(() => {
-      prompt2.play();
-    }, 500);
-  };
-
-  const stopAudio = (audio: HTMLAudioElement) => {
-    audio.pause();
-    audio.currentTime = 0;
-  };
-
-  const onClickHandler = () => {
-    if (triggerSecondPrompt) {
-      stopAudio(prompt2);
-      playPrompt2();
-    } else {
-      stopAudio(prompt1);
-      playPrompt1();
-    }
-    return () => {
-      stopAudio(prompt1);
-      stopAudio(prompt2);
-    };
-  };
-
-  useEffect(() => {
-    return () => {
-      stopAudio(prompt1);
-      stopAudio(prompt2);
-    };
-  });
+  }, [audio1, audio2]);
 
   return isAssessment ? (
     <PlayButton scale={0.8} onClickHandler={onClickHandler} />
