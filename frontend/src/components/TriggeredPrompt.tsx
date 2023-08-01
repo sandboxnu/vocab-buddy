@@ -3,7 +3,6 @@ import React, {
   ReactElement,
   useEffect,
   useState,
-  useMemo,
   useCallback,
   useRef,
 } from "react";
@@ -15,8 +14,6 @@ interface TriggeredPromptProps {
   prompt2Url?: string;
   triggerSecondPrompt?: boolean;
   isAssessment?: boolean;
-  currentWord?: number;
-  promptDelay?: number;
   secondPromptFinishedHandler?: () => void;
 }
 
@@ -25,11 +22,10 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
   prompt2Url,
   triggerSecondPrompt,
   isAssessment,
-  currentWord,
-  promptDelay,
   secondPromptFinishedHandler,
 }): ReactElement => {
   const [audio1, setAudio1] = useState(new Audio(prompt1Url));
+  const [audio2, setAudio2] = useState(new Audio(prompt2Url));
   const audioTimeoutId = useRef<NodeJS.Timeout>();
   const [lastPlayed, setLastPlayed] = useState<"audio1" | "audio2">(
     "audio1"
@@ -41,7 +37,6 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
   const [prevPrompt1Url, setPrevPrompt1Url] = useState(prompt1Url);
   const [prevPrompt2Url, setPrevPrompt2Url] = useState(prompt2Url);
 
-  const [audio2, setAudio2] = useState(new Audio(prompt2Url));
   const onClickHandler = useCallback(() => {
     if (audioTimeoutId.current) {
       clearTimeout(audioTimeoutId.current);

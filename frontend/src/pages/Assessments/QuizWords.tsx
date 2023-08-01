@@ -151,7 +151,6 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
             </PromptText>
             <TriggeredPrompt
               isAssessment={true}
-              currentWord={currentIndex}
               prompt1Url={word.assessmentPrompt}
             />
           </Prompt>
