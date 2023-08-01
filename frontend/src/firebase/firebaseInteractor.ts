@@ -142,7 +142,7 @@ export default class FirebaseInteractor {
     let idToUse = id || this.auth.currentUser?.uid;
     let user = await this.db.collection("users").doc(idToUse).get();
     let userData = user.data();
-    if (userData != undefined) {
+    if (userData !== undefined) {
       return this.getUserFromData(idToUse || "", userData);
     } else {
       if (id === undefined) {
