@@ -4,7 +4,7 @@ import React, {
   useState,
 } from "react";
 import LandingPage from "../../components/LandingPage";
-import { ASSESSMENTS_LANDING } from "../../constants/images";
+import { INTERVENTIONS_LANDING } from "../../constants/images";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCurrentIntervention } from "./data/actions";
@@ -44,7 +44,7 @@ const Interventions: FunctionComponent<InterventionProps> = ({
           getInterventionRequest();
           setHasClickedButton(true);
         }}
-        image={ASSESSMENTS_LANDING}
+        image={INTERVENTIONS_LANDING}
         title="interventions"
         subtitle="start an intervention"
       />

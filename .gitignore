@@ -108,3 +108,4 @@ dist
 /.idea/
 
 scripts/firebase-*.json
+scripts/words
