@@ -22,6 +22,7 @@ import {
   WordMapping,
   WordResult,
 } from "../models/types";
+import _ from "lodash";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -405,13 +406,10 @@ export default class FirebaseInteractor {
       .filter(([_id, result]) => !result.correct)
       .map(([id, _result]) => id);
     shuffle(incorrectWords);
-    for (let i = 0; i < 8; i++) {
+    const interventionWords = _.chunk(incorrectWords, 3).slice(0, 8); // just in case we have more than 24 for some reason
+    for (let session in interventionWords) {
       // Add 3 words per intervention (wrapping around for now)
-      let wordList = [
-        incorrectWords[(i * 3) % incorrectWords.length],
-        incorrectWords[(i * 3 + 1) % incorrectWords.length],
-        incorrectWords[(i * 3 + 2) % incorrectWords.length],
-      ];
+      let wordList = interventionWords[session];
       let newIntervention = await this.db.collection("interventions").add({
         durationsInSeconds: 0,
         activityIdx: 0,
@@ -420,10 +418,10 @@ export default class FirebaseInteractor {
         // Assign it to the current user
         userId: this.auth.currentUser?.uid,
         // Decide which session the intervention is in
-        session: i,
+        session: Number.parseInt(session, 10),
         results: {},
       });
-      if (i === 0) {
+      if (session === "0") {
         await this.updateCurrentUser({
           sessionId: 0,
           onAssessment: false,
@@ -628,12 +626,12 @@ export default class FirebaseInteractor {
     zip: JSZip,
     idToWord: WordMapping = new Map()
   ) {
-    let sessionPromises: Promise<SessionStats>[] = [];
+    let sessionPromises: Promise<SessionStats | undefined>[] = [];
     for (let idx = -1; idx < 8; idx++) {
       sessionPromises.push(this.getStatsForSession(userId, idx, idToWord));
     }
     const folder = zip.folder(name);
-    const sessionStats = await Promise.all(sessionPromises);
+    const sessionStats = _.compact(await Promise.all(sessionPromises));
     sessionStats.forEach((stats, index) => {
       folder?.file(
         index === 0 ? "pre-assessment.csv" : `session${index}.csv`,
