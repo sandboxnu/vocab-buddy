@@ -8,27 +8,29 @@ import {
   AccountType,
   Assessment,
   AssessmentResult,
-  Context,
-  Definition,
-  Example,
+  FirebaseAssessmentResults,
+  FirebaseInterventionResult,
+  FirebaseInterventionResults,
+  FirebaseWordIntervention,
   Interventions,
   InterventionWord,
-  Review,
   SessionId,
   SessionStats,
   User,
   UserSettings,
   Word,
+  WordMapping,
   WordResult,
 } from "../models/types";
+import _ from "lodash";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: "AIzaSyB3LUG_O4Ev6xOPaEKPgnyjUjUttar3PmA",
-  authDomain: "vocab-buddy-53eca.firebaseapp.com",
-  projectId: "vocab-buddy-53eca",
-  storageBucket: "vocab-buddy-53eca.appspot.com",
-  appId: "1:620084102964:web:4ea8f577f47430fb208761",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -142,9 +144,13 @@ export default class FirebaseInteractor {
     let idToUse = id || this.auth.currentUser?.uid;
     let user = await this.db.collection("users").doc(idToUse).get();
     let userData = user.data();
-    if (idToUse != null && userData != null) {
-      return this.getUserFromData(idToUse, userData);
+    if (userData !== undefined) {
+      return this.getUserFromData(idToUse || "", userData);
     } else {
+      if (id === undefined) {
+        // user exists in auth but has been deleted from database
+        await this.auth.currentUser?.delete();
+      }
       throw new Error("Invalid user");
     }
   }
@@ -170,10 +176,11 @@ export default class FirebaseInteractor {
     let wordIds = words.docs.map((word) => word.id);
     let newAssessmentFields = {
       currentIndex: 0,
-      durationInSeconds: 0,
+      durationsInSeconds: 0,
       words: wordIds,
       userId: this.auth.currentUser?.uid,
       session: -1,
+      results: {},
     };
     let newAssessment = this.db.collection("assessments").doc();
     await newAssessment.set(newAssessmentFields);
@@ -187,52 +194,66 @@ export default class FirebaseInteractor {
     interventions: Interventions,
     wordIdx: number,
     activityIdx: number,
-    durationInSeconds: number,
+    durationsInSeconds: number,
     activity2Correct?: boolean,
+    activity2ImageSelected?: string,
     activity3Correct?: boolean,
+    activity3Image?: string,
     activity3Part2Correct?: boolean,
-    activity3Part3Correct?: boolean
+    activity3Part2Image?: string,
+    activity3Part3Correct?: boolean,
+    activity3Part3Image?: string
   ) {
     let intervention = this.db
       .collection("interventions")
       .doc(interventions.setId);
 
+    let newResult: FirebaseInterventionResult = {};
+
     let wordList: string[] = interventions.wordList.map((word) => word.word.id);
     if (activity2Correct !== undefined) {
-      await intervention.collection("responses").doc(wordList[wordIdx]).set({
+      newResult = {
+        activity2ImageSelected,
         activity2Correct,
-      });
+      };
     }
 
     if (activity3Correct !== undefined) {
-      await intervention.collection("responses").doc(wordList[wordIdx]).update({
+      newResult = {
+        ...newResult,
+        activity3Image,
         activity3Correct,
-      });
+      };
     }
 
     if (activity3Part2Correct !== undefined) {
-      await intervention.collection("responses").doc(wordList[wordIdx]).update({
+      newResult = {
+        ...newResult,
+        activity3Part2Image,
         activity3Part2Correct,
-      });
+      };
     }
 
     if (activity3Part3Correct !== undefined) {
-      await intervention.collection("responses").doc(wordList[wordIdx]).update({
+      newResult = {
+        ...newResult,
+        activity3Part3Image,
         activity3Part3Correct,
-      });
+      };
     }
 
     const increment = firebase.firestore.FieldValue.increment(
-      durationInSeconds
+      durationsInSeconds
     );
 
     let object: any = {
       wordIdx,
       activityIdx,
       durationsInSeconds: increment,
+      results: { [wordList[wordIdx]]: newResult },
     };
 
-    intervention.update(object);
+    intervention.set(object, { merge: true });
     this.updateDaysActive();
   }
 
@@ -272,10 +293,11 @@ export default class FirebaseInteractor {
     await this.createCurrentUser();
     let initialAssessmentFields = {
       currentIndex: 0,
-      durationInSeconds: 0,
+      durationsInSeconds: 0,
       words: wordList,
       userId: this.auth.currentUser?.uid,
       session: this.currentUser?.sessionId,
+      results: {},
     };
     await newAssessment.set(initialAssessmentFields);
     await this.updateCurrentUser({
@@ -333,27 +355,29 @@ export default class FirebaseInteractor {
     id: string,
     responses: AssessmentResult[],
     currentIdx: number,
-    durationInSeconds: number
+    durationsInSeconds: number
   ) {
-    await Promise.all(
-      responses.map(async (response) => {
-        return await this.db
-          .collection("assessments")
-          .doc(id)
-          .collection("results")
-          .doc(response.word)
-          .set({ correct: response.correct });
-      })
-    );
-
     const increment = firebase.firestore.FieldValue.increment(
-      durationInSeconds
+      durationsInSeconds
     );
 
-    await this.db.collection("assessments").doc(id).update({
-      currentIndex: currentIdx,
-      durationsInSeconds: increment,
-    });
+    await this.db
+      .collection("assessments")
+      .doc(id)
+      .update({
+        ...Object.fromEntries(
+          responses.map((response) => [
+            `results.${response.word}`,
+            {
+              correct: response.correct,
+              imageSelected: response.imageSelected,
+            },
+          ])
+        ),
+        currentIndex: currentIdx,
+        durationsInSeconds: increment,
+      });
+
     this.updateDaysActive();
   }
 
@@ -376,24 +400,16 @@ export default class FirebaseInteractor {
       });
       return;
     }
-    let responses = await this.db
-      .collection("assessments")
-      .doc(id)
-      .collection("results")
-      .where("correct", "==", false)
-      .get();
-    let incorrectWords = responses.docs.map((response) => ({
-      word: response.id,
-      correct: false,
-    }));
+    let results = (await this.db.collection("assessments").doc(id).get()).data()
+      ?.results as FirebaseAssessmentResults;
+    let incorrectWords = Object.entries(results)
+      .filter(([_id, result]) => !result.correct)
+      .map(([id, _result]) => id);
     shuffle(incorrectWords);
-    for (let i = 0; i < 8; i++) {
+    const interventionWords = _.chunk(incorrectWords, 3).slice(0, 8); // just in case we have more than 24 for some reason
+    for (let session in interventionWords) {
       // Add 3 words per intervention (wrapping around for now)
-      let wordList = [
-        incorrectWords[(i * 3) % incorrectWords.length].word,
-        incorrectWords[(i * 3 + 1) % incorrectWords.length].word,
-        incorrectWords[(i * 3 + 2) % incorrectWords.length].word,
-      ];
+      let wordList = interventionWords[session];
       let newIntervention = await this.db.collection("interventions").add({
         durationsInSeconds: 0,
         activityIdx: 0,
@@ -402,9 +418,10 @@ export default class FirebaseInteractor {
         // Assign it to the current user
         userId: this.auth.currentUser?.uid,
         // Decide which session the intervention is in
-        session: i,
+        session: Number.parseInt(session, 10),
+        results: {},
       });
-      if (i === 0) {
+      if (session === "0") {
         await this.updateCurrentUser({
           sessionId: 0,
           onAssessment: false,
@@ -442,23 +459,16 @@ export default class FirebaseInteractor {
     for (let word of intervention.wordList as string[]) {
       // Get the word
       let actualWord = await this.getWord(word);
-      let wordRef = this.db
-        .collection("words")
-        .doc(word)
-        .collection("intervention-set");
-      // Get each activity from firebase
-      let activity1 = (
-        await wordRef.doc("activity1").get()
-      ).data() as Definition;
-      let activity2 = (await wordRef.doc("activity2").get()).data() as Example;
-      let activity3 = (await wordRef.doc("activity3").get()).data() as Context;
-      let activity4 = (await wordRef.doc("activity4").get()).data() as Review;
-      let activity3Part2 = (
-        await wordRef.doc("activity3-part2").get()
-      ).data() as Context;
-      let activity3Part3 = (
-        await wordRef.doc("activity3-part3").get()
-      ).data() as Context;
+      let {
+        activity1,
+        activity2,
+        activity3,
+        activity3Part2,
+        activity3Part3,
+        activity4,
+      } = (await this.db.collection("words").doc(word).get()).data()
+        ?.interventionSet as FirebaseWordIntervention;
+
       interventionWords.push({
         word: actualWord,
         activities: {
@@ -484,7 +494,8 @@ export default class FirebaseInteractor {
   // get stats for the given user's given session
   async getStatsForSession(
     userId: string,
-    sessionId: number
+    sessionId: number,
+    idToWord: WordMapping = new Map()
   ): Promise<SessionStats> {
     let interventionForSession = (
       await this.db
@@ -504,56 +515,54 @@ export default class FirebaseInteractor {
     let interventionDuration =
       !interventionForSession ||
       !interventionForSession?.data().durationsInSeconds
-        ? 0
-        : interventionForSession?.data().durationsInSeconds;
-    let assessmentDuration = 0;
+        ? -1
+        : Math.round(interventionForSession?.data().durationsInSeconds * 100) /
+          100;
+    let assessmentDuration = -1;
     let correct = 0;
     let incorrect = 0;
     let wordResults: WordResult[] = [];
     let assessmentResultObjects:
-      | firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
+      | FirebaseAssessmentResults
       | undefined = undefined;
 
     if (assessmentForSession !== undefined) {
-      assessmentDuration = assessmentForSession.data().durationInSeconds;
-      let assessmentResults = await assessmentForSession.ref
-        .collection("results")
-        .get();
+      assessmentDuration =
+        Math.round(assessmentForSession.data().durationsInSeconds * 100) / 100;
+      let assessmentResults = assessmentForSession.data()
+        .results as FirebaseAssessmentResults;
       assessmentResultObjects = assessmentResults;
-      correct = assessmentResults.docs.filter((doc) => doc.data().correct)
+      correct = Object.values(assessmentResults).filter((doc) => doc.correct)
         .length;
-      incorrect = assessmentResults.docs.filter((doc) => !doc.data().correct)
+      incorrect = Object.values(assessmentResults).filter((doc) => !doc.correct)
         .length;
     }
 
     if (interventionForSession) {
-      let interventionResults = (
-        await interventionForSession.ref.collection("responses").get()
-      ).docs;
+      let interventionResults = (await interventionForSession.data()
+        .results) as FirebaseInterventionResults;
       let interventionWords = interventionForSession.data().wordList;
       for (let word of interventionWords as string[]) {
-        let actualWord = await this.getWord(word);
-        let currentWordAssessmentStats = assessmentResultObjects?.docs.filter(
-          (doc) => doc.id === actualWord.id
-        )[0];
-        let currentWordInterventionStats = interventionResults.filter(
-          (doc) => doc.id === actualWord.id
-        )[0];
+        let actualWord = idToWord.get(word) || (await this.getWord(word));
+        let currentWordAssessmentStats = assessmentResultObjects?.[word];
+        let currentWordInterventionStats = interventionResults[word];
         let wordStats: WordResult = {
           word: actualWord.value,
-          assessmentCorrect: currentWordAssessmentStats?.data().correct,
-          ...currentWordInterventionStats?.data(),
+          assessmentCorrect: currentWordAssessmentStats?.correct,
+          assessmentImageSelected: currentWordAssessmentStats?.imageSelected,
+          ...currentWordInterventionStats,
         };
         wordResults.push(wordStats);
       }
     }
 
     if (sessionId === -1) {
-      for (let result of assessmentResultObjects?.docs ?? []) {
-        let word = await this.getWord(result.id);
+      for (let [id, result] of Object.entries(assessmentResultObjects ?? {})) {
+        let word = idToWord.get(id) || (await this.getWord(id));
         wordResults.push({
           word: word.value,
-          assessmentCorrect: result.data().correct,
+          assessmentCorrect: result.correct,
+          assessmentImageSelected: result.imageSelected,
         });
       }
     }
@@ -580,30 +589,84 @@ export default class FirebaseInteractor {
       if (assessment.data().sessionId === -1) {
         continue;
       }
-      let results = await assessment.ref.collection("results").get();
-      totalWords += results.docs.filter((doc) => doc.data().correct).length;
+      let results = (await assessment.data()
+        .results) as FirebaseAssessmentResults;
+      totalWords += Object.values(results).filter((result) => result.correct)
+        .length;
     }
     return totalWords;
   }
 
-  async createDataZip(userId: string, name: string) {
-    let sessionStats: SessionStats[] = [];
-    for (let idx = -1; idx < 8; idx++) {
-      sessionStats.push(await this.getStatsForSession(userId, idx));
-    }
+  async createAllDataZip() {
     const zip = new JSZip();
-    const folder = zip.folder(name);
-    sessionStats.forEach((stats, index) => {
-      folder?.file(
-        index === 0 ? "pre-assessment.csv" : `session${index}.csv`,
-        this.getSessionString(stats)
-      );
-    });
+    const folder = zip.folder("student_data");
+    if (folder === null) {
+      throw new Error("Error downloading data. Please try again.");
+    }
+    const [idToWord, students] = await Promise.all([
+      this.getAllWords(),
+      this.getAllStudents(),
+    ]);
+    const promises = students.map((student) =>
+      this.getDataForOneUser(
+        student.id,
+        student.name,
+        folder,
+        idToWord
+      ).catch((error) => console.log(error))
+    );
+    await Promise.all(promises);
     let fileBlob = await zip.generateAsync({ type: "blob" });
     window.open(URL.createObjectURL(fileBlob));
   }
 
-  getSessionString(session: SessionStats): string {
+  async getDataForOneUser(
+    userId: string,
+    name: string,
+    zip: JSZip,
+    idToWord: WordMapping = new Map()
+  ) {
+    let sessionPromises: Promise<SessionStats | undefined>[] = [];
+    for (let idx = -1; idx < 8; idx++) {
+      sessionPromises.push(this.getStatsForSession(userId, idx, idToWord));
+    }
+    const folder = zip.folder(name);
+    const sessionStats = _.compact(await Promise.all(sessionPromises));
+    sessionStats.forEach((stats, index) => {
+      folder?.file(
+        index === 0 ? "pre-assessment.csv" : `session${index}.csv`,
+        this.getSessionString(stats, index === 0)
+      );
+    });
+    folder?.file(
+      "durations.csv",
+      "session,type,duration\n" +
+        sessionStats
+          .map((session, idx) =>
+            idx === 0
+              ? `pre-assessment,pre-assessment,${session.assessmentDuration}`
+              : (["intervention", "assessment"] as const)
+                  .map(
+                    (type) =>
+                      `session${idx},${type},${
+                        session[`${type}Duration` as const]
+                      }`
+                  )
+                  .join("\n")
+          )
+          .join("\n")
+    );
+  }
+
+  async createDataZip(userId: string, name: string) {
+    const zip = new JSZip();
+    const idToWord = await this.getAllWords();
+    await this.getDataForOneUser(userId, name, zip, idToWord);
+    let fileBlob = await zip.generateAsync({ type: "blob" });
+    window.open(URL.createObjectURL(fileBlob));
+  }
+
+  getSessionString(session: SessionStats, preAssessment: boolean): string {
     function stringify(value: boolean | undefined): string {
       return value === undefined
         ? "incomplete"
@@ -611,16 +674,35 @@ export default class FirebaseInteractor {
         ? "correct"
         : "incorrect";
     }
+    if (preAssessment) {
+      return (
+        "word,assessmentResult,assessmentImageSelected\n" +
+        session.wordResults
+          .map(
+            ({ word, assessmentCorrect, assessmentImageSelected }) =>
+              `${word},${stringify(
+                assessmentCorrect
+              )},${assessmentImageSelected}`
+          )
+          .join("\n")
+      );
+    }
     return (
-      "word,assessmentResult,activity2Result,activity3Result,activity3Part2Result,activity3Part3Result\n" +
+      "word,assessmentResult,assessmentImageSelected,activity2Result,activity2ImageSelected,activity3Result,activity3Image,activity3Part2Result,activity3Part2Image,activity3Part3Result,activity3Part3Image\n" +
       session.wordResults
         .map(
           (stat) =>
-            `${stat.word},${stringify(stat.assessmentCorrect)},${stringify(
-              stat.activity2Correct
-            )},${stringify(stat.activity3Correct)},${stringify(
-              stat.activity3Part2Correct
-            )},${stringify(stat.activity3Part3Correct)}`
+            `${stat.word},${stringify(stat.assessmentCorrect)},${
+              stat.assessmentImageSelected
+            },${stringify(stat.activity2Correct)},${
+              stat.activity2ImageSelected
+            },${stringify(stat.activity3Correct)},${
+              stat.activity3Image
+            },${stringify(stat.activity3Part2Correct)},${
+              stat.activity3Part2Image
+            },${stringify(stat.activity3Part3Correct)},${
+              stat.activity3Part3Image
+            }`
         )
         .join("\n")
     );
@@ -727,5 +809,19 @@ export default class FirebaseInteractor {
       let studentData = student.data();
       return this.getUserFromData(student.id, studentData);
     });
+  }
+
+  async getAllWords(): Promise<WordMapping> {
+    const idToWord: WordMapping = new Map();
+    let words = (await this.db.collection("words").get()).docs;
+
+    for (let word of words) {
+      idToWord.set(word.id, {
+        ...word.data(),
+        createdAt: word.data().dateCreated.toDate(),
+      } as Word);
+    }
+
+    return idToWord;
   }
 }

@@ -107,4 +107,5 @@ dist
 .DS_Store
 /.idea/
 
-uploadscript/firebase-admin.json
+scripts/firebase-*.json
+scripts/words

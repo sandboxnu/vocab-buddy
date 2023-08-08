@@ -154,3 +154,16 @@ export const DownloadData = {
     type: ActionTypes.DOWNLOAD_USER_DATA_ERROR,
   }),
 };
+
+export const DownloadAllData = {
+  request: () => ({
+    type: ActionTypes.DOWNLOAD_ALL_USER_DATA_REQUEST,
+  }),
+  success: () => ({
+    type: ActionTypes.DOWNLOAD_ALL_USER_DATA_SUCCESS,
+  }),
+  error: (error: Error) => ({
+    type: ActionTypes.DOWNLOAD_ALL_USER_DATA_ERROR,
+    payload: error,
+  }),
+};

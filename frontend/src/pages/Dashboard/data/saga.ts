@@ -2,6 +2,7 @@ import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import FirebaseInteractor from "../../../firebase/firebaseInteractor";
 import { Action, ActionTypes } from "../../../models/types";
 import {
+  DownloadAllData,
   DownloadData,
   GetData,
   GetDataForResearchers,
@@ -40,6 +41,10 @@ function* root() {
     watchUpdateUserSettings
   );
   yield takeLatest(ActionTypes.DOWNLOAD_USER_DATA_REQUEST, watchDownloadData);
+  yield takeLatest(
+    ActionTypes.DOWNLOAD_ALL_USER_DATA_REQUEST,
+    watchDownloadAllData
+  );
 }
 
 function* watchSignOut() {
@@ -140,5 +145,17 @@ function* watchDownloadData(action: Action) {
     yield put(DownloadData.success());
   } catch (error) {
     yield put(DownloadData.error());
+  }
+}
+
+function* watchDownloadAllData(action: Action) {
+  const getData = async () => {
+    await firebaseInteractor.createAllDataZip();
+  };
+  try {
+    yield call(getData);
+    yield put(DownloadAllData.success());
+  } catch (error) {
+    yield put(DownloadAllData.error(error));
   }
 }

@@ -176,6 +176,9 @@ export enum ActionTypes {
   DOWNLOAD_USER_DATA_REQUEST = "DOWNLOAD_USER_DATA_REQUEST",
   DOWNLOAD_USER_DATA_SUCCESS = "DOWNLOAD_USER_DATA_SUCCESS",
   DOWNLOAD_USER_DATA_ERROR = "DOWNLOAD_USER_DATA_ERROR",
+  DOWNLOAD_ALL_USER_DATA_REQUEST = "DOWNLOAD_ALL_USER_DATA_REQUEST",
+  DOWNLOAD_ALL_USER_DATA_SUCCESS = "DOWNLOAD_ALL_USER_DATA_SUCCESS",
+  DOWNLOAD_ALL_USER_DATA_ERROR = "DOWNLOAD_ALL_USER_DATA_ERROR",
 }
 
 // i think we should make separate reducers to separate the different states if that makes sense
@@ -221,13 +224,53 @@ export interface SessionStats {
   wordResults: WordResult[];
 }
 
+export interface WordMapping extends Map<string, Word> {}
+
+export interface FirebaseAssessmentResult {
+  correct: boolean;
+  imageSelected: string;
+}
+
+export interface FirebaseAssessmentResults {
+  [id: string]: FirebaseAssessmentResult;
+}
+
+export interface FirebaseInterventionResult {
+  activity2Correct?: boolean;
+  activity2ImageSelected?: string;
+  activity3Correct?: boolean;
+  activity3Image?: string;
+  activity3Part2Correct?: boolean;
+  activity3Part2Image?: string;
+  activity3Part3Correct?: boolean;
+  activity3Part3Image?: string;
+}
+
+export interface FirebaseInterventionResults {
+  [id: string]: FirebaseInterventionResult;
+}
+
+export interface FirebaseWordIntervention {
+  activity1: Definition;
+  activity2: Example;
+  activity3: Context;
+  activity3Part2: Context;
+  activity3Part3: Context;
+  activity4: Review;
+}
+
 export interface WordResult {
   word: string;
   assessmentCorrect?: boolean;
+  assessmentImageSelected?: string;
   activity2Correct?: boolean;
+  activity2ImageSelected?: string;
   activity3Correct?: boolean;
+  activity3Image?: string;
   activity3Part2Correct?: boolean;
+  activity3Part2Image?: string;
   activity3Part3Correct?: boolean;
+  activity3Part3Image?: string;
 }
 
 export interface DashboardState {
@@ -244,6 +287,7 @@ export interface DashboardState {
 
 export interface AssessmentResult {
   word: string;
+  imageSelected: string;
   correct: boolean;
 }
 

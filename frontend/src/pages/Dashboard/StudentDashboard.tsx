@@ -307,6 +307,9 @@ const BackToDashboard = styled.p`
 `;
 
 const getTitleOfButton = (user: User): string => {
+  if (user.currentInterventionOrAssessment === "") {
+    return "Congratulations on finishing the study";
+  }
   switch (user.sessionId) {
     case -1:
       return "Begin pre-assessment";
@@ -491,7 +494,10 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
                     : "/interventions"
                 )
               }
-              disabled={student.sessionId === 8}
+              disabled={
+                student.sessionId === 8 ||
+                student.currentInterventionOrAssessment === ""
+              }
             />
           </>
         ) : (
@@ -512,6 +518,28 @@ const StudentDashboard: FunctionComponent<StudentDashboardParams> = ({
                 banner
               />
             )}
+          </>
+        )}
+
+        {!isStudentView && (
+          <>
+            <TitleText>pre-assessment</TitleText>
+            <SessionCardContainer>
+              {" "}
+              <SessionBox
+                isComplete={student.sessionId > -1}
+                isStudentView={false}
+                onClick={() => {
+                  if (student.sessionId > -1) {
+                    history.push(
+                      `/dashboard/${student.id}/session/-1`
+                    );
+                  }
+                }}
+              >
+                <SessionNumber>data</SessionNumber>
+              </SessionBox>
+            </SessionCardContainer>
           </>
         )}
 

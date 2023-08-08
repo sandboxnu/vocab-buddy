@@ -162,7 +162,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
     if (networkErrorShown) {
       setShowSuccessToast(true);
     }
-  }, [user]);
+  }, [user, networkErrorShown]);
 
   return (
     <LoginHoldingDiv>

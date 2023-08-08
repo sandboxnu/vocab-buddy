@@ -13,7 +13,7 @@ interface ThirdActivityProps {
   prompt2Url: string;
   imageUrl: string;
   answer: boolean;
-  updateIntervention: (correct: boolean) => void;
+  updateIntervention: (correct: boolean, image?: string) => void;
 }
 
 const Container = styled.div`
@@ -139,7 +139,10 @@ const ThirdActivity = ({
                 top={20}
                 delay={3000}
                 onClick={() => {
-                  updateIntervention((selected === 1) === answer);
+                  updateIntervention(
+                    (selected === 1) === answer,
+                    imageUrl
+                  );
                 }}
                 canBeShown={selected !== -1 && showNextButton}
               />

@@ -70,7 +70,7 @@ const TriggeredPrompt: FunctionComponent<TriggeredPromptProps> = ({
       audio2.play();
       setLastPlayed("audio2");
     }
-  }, [onClickHandler, isAssessment, audio2]);
+  }, [onClickHandler, isAssessment, triggerSecondPrompt, audio2]);
 
   audio1.onpause = onPauseCallback;
   audio2.onended = secondPromptFinishedHandler || (() => {});

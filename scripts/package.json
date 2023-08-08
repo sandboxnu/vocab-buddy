@@ -5,7 +5,8 @@
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "upload": "node script.js"
+    "upload": "node upload-words.js",
+    "reset": "echo 'Are you sure? [y/N]' && read confirm && echo 'Re-upload words too? [y/N]' && read wipeWords && node reset-database.js $confirm $wipeWords"
   },
   "author": "",
   "license": "ISC",

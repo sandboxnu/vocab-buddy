@@ -1,10 +1,15 @@
-import React, { FunctionComponent, useState } from "react";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useState,
+} from "react";
 import styled from "styled-components";
 import { User } from "../../models/types";
-import { Dropdown, Menu } from "antd";
+import { Alert, Dropdown, Menu } from "antd";
 import caret from "../../assets/caret.svg";
 import { CLOUD, SKY } from "../../constants/colors";
 import { useHistory } from "react-router";
+import { DownloadOutlined } from "@ant-design/icons";
 
 const ResearcherDashboardContainer = styled.div`
   display: flex;
@@ -153,6 +158,23 @@ const DropdownMenu = styled(Menu)`
   }
 `;
 
+const StyledAlert = styled(Alert)`
+  position: absolute;
+  top: 10px;
+  background-color: ${CLOUD};
+
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+
+  @media (min-width: 901px) {
+    width: 50%;
+    left: 25%;
+  }
+  margin: auto;
+  z-index: 1000;
+`;
+
 interface StudentCardParams {
   student: User;
 }
@@ -215,10 +237,14 @@ const sortBySession = (studentA: User, studentB: User): number => {
 
 interface ResearcherDashboardParams {
   students: User[];
+  downloadAllData?: () => void;
+  downloadAllDataLoading: boolean;
 }
 
 const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
   students,
+  downloadAllData,
+  downloadAllDataLoading,
 }) => {
   const [sortByLabel, setSortByLabel] = useState(
     () => "alphabetical"
@@ -227,6 +253,12 @@ const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
   const menuOnClick = ({ key }: any) => {
     setSortByLabel(key);
   };
+
+  const downloadAllStudentData = useCallback(() => {
+    if (downloadAllData) {
+      downloadAllData();
+    }
+  }, [downloadAllData]);
 
   const menu = (
     <DropdownMenu onClick={menuOnClick}>
@@ -239,7 +271,17 @@ const ResearcherDashboard: FunctionComponent<ResearcherDashboardParams> = ({
   return (
     <ResearcherDashboardContainer>
       <ResearcherTopBar>
-        <TitleText>students</TitleText>
+        <TitleText>
+          students{" "}
+          <DownloadOutlined onClick={downloadAllStudentData} />
+          {downloadAllDataLoading && (
+            <StyledAlert
+              type="info"
+              message={`Downloading data... Please be patient`}
+              banner
+            />
+          )}
+        </TitleText>
         <StudentFilter trigger={["click"]} overlay={menu}>
           <DropdownLabel>
             <p>sort by: {sortByLabel}</p>

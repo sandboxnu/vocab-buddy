@@ -54,11 +54,15 @@ function* watchUpdateIntervention(action: Action) {
       intervention,
       wordIdx,
       activityIdx,
-      durationInSeconds,
+      durationsInSeconds,
       answer2Correct,
+      activity2ImageSelected,
       answer3Correct,
+      activity3Image,
       answer3Part2Correct,
+      activity3Part2Image,
       answer3Part3Correct,
+      activity3Part3Image,
     } = action.payload;
     let interventions;
     const updateAndGetNewInterventions = async () => {
@@ -66,11 +70,15 @@ function* watchUpdateIntervention(action: Action) {
         intervention,
         wordIdx,
         activityIdx,
-        durationInSeconds,
+        durationsInSeconds,
         answer2Correct,
+        activity2ImageSelected,
         answer3Correct,
+        activity3Image,
         answer3Part2Correct,
-        answer3Part3Correct
+        activity3Part2Image,
+        answer3Part3Correct,
+        activity3Part3Image
       );
       intervention.wordIdx = wordIdx;
       intervention.activityIdx = activityIdx;
