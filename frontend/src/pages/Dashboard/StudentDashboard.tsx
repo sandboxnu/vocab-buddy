@@ -307,7 +307,7 @@ const BackToDashboard = styled.p`
 `;
 
 const getTitleOfButton = (user: User): string => {
-  if (user.currentInterventionOrAssessment) {
+  if (user.currentInterventionOrAssessment === "") {
     return "Congratulations on finishing the study";
   }
   switch (user.sessionId) {
