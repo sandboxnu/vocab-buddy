@@ -232,7 +232,11 @@ const WordResultDiv = ({
 }: {
   word: WordResult;
   isPreassessment: boolean;
-  setModalImage: (val?: { src?: string; selected?: true }) => void;
+  setModalImage: (val?: {
+    word?: string;
+    src?: string;
+    selected?: true;
+  }) => void;
 }) => {
   return (
     <WordResultWrapper>
@@ -248,6 +252,7 @@ const WordResultDiv = ({
                 setModalImage({
                   src: word.assessmentImageSelected,
                   selected: true,
+                  word: word.word,
                 })
               }
             />
@@ -331,6 +336,7 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
   const [modalImage, setModalImage] = useState<{
     src?: string;
     selected?: boolean;
+    word?: string;
   }>();
   return (
     <SessionContainer>
@@ -363,6 +369,7 @@ const SessionDashboard: FunctionComponent<SessionDashboardParams> = ({
           footer={null}
         >
           <img
+            alt={modalImage?.word}
             style={{ borderRadius: "20px", width: "100%" }}
             src={modalImage?.src}
           />

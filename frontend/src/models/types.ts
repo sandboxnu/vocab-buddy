@@ -224,6 +224,41 @@ export interface SessionStats {
   wordResults: WordResult[];
 }
 
+export interface WordMapping extends Map<string, Word> {}
+
+export interface FirebaseAssessmentResult {
+  correct: boolean;
+  imageSelected: string;
+}
+
+export interface FirebaseAssessmentResults {
+  [id: string]: FirebaseAssessmentResult;
+}
+
+export interface FirebaseInterventionResult {
+  activity2Correct?: boolean;
+  activity2ImageSelected?: string;
+  activity3Correct?: boolean;
+  activity3Image?: string;
+  activity3Part2Correct?: boolean;
+  activity3Part2Image?: string;
+  activity3Part3Correct?: boolean;
+  activity3Part3Image?: string;
+}
+
+export interface FirebaseInterventionResults {
+  [id: string]: FirebaseInterventionResult;
+}
+
+export interface FirebaseWordIntervention {
+  activity1: Definition;
+  activity2: Example;
+  activity3: Context;
+  activity3Part2: Context;
+  activity3Part3: Context;
+  activity4: Review;
+}
+
 export interface WordResult {
   word: string;
   assessmentCorrect?: boolean;

@@ -1,10 +1,5 @@
 import { Button } from "antd";
-import React, {
-  MouseEvent,
-  ReactElement,
-  useState,
-  useEffect,
-} from "react";
+import React, { MouseEvent, ReactElement } from "react";
 import styled from "styled-components";
 import { INK, INK_HOVER } from "../constants/colors";
 
@@ -52,19 +47,6 @@ const DelayedNextButton = ({
   delay,
   canBeShown,
 }: DelayedNextButton): ReactElement => {
-  let [shown, setShown] = useState(false);
-
-  useEffect(() => {
-    let timer1 = setTimeout(() => {
-      setShown(true);
-    }, delay);
-
-    // this will clear Timeout when component unmount like in willComponentUnmount
-    return () => {
-      clearTimeout(timer1);
-    };
-  }, [delay]);
-
   return canBeShown ? (
     <ButtonContainer
       className={className}
