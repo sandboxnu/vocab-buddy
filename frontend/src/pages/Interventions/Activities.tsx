@@ -12,6 +12,7 @@ import {
 } from "../Interventions/data/reducer";
 import { Interventions } from "../../models/types";
 import {
+  UpdateInterventionAction,
   finishedIntervention,
   getInterventions,
   updateIntervention,
@@ -27,25 +28,7 @@ interface ActivityProps {
   interventions: Interventions;
   error?: Error;
   getInterventions: (id: string) => void;
-  updateIntervention: ({
-    intervention,
-    wordIdx,
-    activityIdx,
-    durationInSeconds,
-    answer2Correct,
-    answer3Correct,
-    answer3Part2Correct,
-    answer3Part3Correct,
-  }: {
-    intervention: Interventions;
-    wordIdx: number;
-    activityIdx: number;
-    durationInSeconds: number;
-    answer2Correct: boolean | undefined;
-    answer3Correct: boolean | undefined;
-    answer3Part2Correct: boolean | undefined;
-    answer3Part3Correct: boolean | undefined;
-  }) => void;
+  updateIntervention: (props: UpdateInterventionAction) => void;
   finishedIntervention: ({ setId }: { setId: string }) => void;
 }
 
@@ -117,9 +100,9 @@ const Activities: FunctionComponent<ActivityProps> = ({
         idx={currentActivityIdx}
         title={title}
         activities={activities}
-        updateIntervention={(correct) => {
+        updateIntervention={(correct, image) => {
           let curDate = new Date();
-          let durationInSeconds =
+          let durationsInSeconds =
             (curDate.getTime() - activityStartTime.getTime()) / 1000;
           setActivityStartTime(curDate);
           if (nextWordIdx === 0 && nextActivityIdx === 0) {
@@ -130,15 +113,23 @@ const Activities: FunctionComponent<ActivityProps> = ({
               intervention: interventions,
               wordIdx: nextWordIdx,
               activityIdx: nextActivityIdx,
-              durationInSeconds,
+              durationsInSeconds,
               answer2Correct:
                 currentActivityIdx === 1 ? correct : undefined,
+              activity2ImageSelected:
+                currentActivityIdx === 1 ? image : undefined,
               answer3Correct:
                 currentActivityIdx === 2 ? correct : undefined,
+              activity3Image:
+                currentActivityIdx === 2 ? image : undefined,
               answer3Part2Correct:
                 currentActivityIdx === 3 ? correct : undefined,
+              activity3Part2Image:
+                currentActivityIdx === 3 ? image : undefined,
               answer3Part3Correct:
                 currentActivityIdx === 4 ? correct : undefined,
+              activity3Part3Image:
+                currentActivityIdx === 4 ? image : undefined,
             });
           }
         }}

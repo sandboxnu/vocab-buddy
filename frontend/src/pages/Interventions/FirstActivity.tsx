@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
 import Blocker from "../../components/Blocker";
 import Layout from "../../components/Layout";
@@ -83,17 +83,7 @@ const FirstActivity = ({
   imageUrl,
   updateIntervention,
 }: FirstActivityProps): ReactElement => {
-  const [triggerSecondPrompt, setTriggerSecondPrompt] = useState(
-    false
-  );
-
   const [showNextButton, setShowNextButton] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setTriggerSecondPrompt(true);
-    }, 5000);
-  });
 
   return (
     <Layout hideBar={true}>
@@ -106,7 +96,7 @@ const FirstActivity = ({
             <TriggeredPrompt
               prompt1Url={prompt1Url}
               prompt2Url={prompt2Url}
-              triggerSecondPrompt={triggerSecondPrompt}
+              triggerSecondPrompt={true}
               secondPromptFinishedHandler={() =>
                 setShowNextButton(true)
               }

@@ -20,6 +20,7 @@ import {
   SignOut,
   ChangeProfileIcon,
   DownloadData,
+  DownloadAllData,
 } from "./data/actions";
 import {
   getCurrentUser,
@@ -31,6 +32,7 @@ import {
   getCurrentStudentData,
   getCurrentStudentTotalWordsLearned,
   getSessionStats,
+  getDownloadAllDataLoading,
 } from "./data/reducer";
 import ResearcherDashboard from "../Dashboard/ResearcherDashboard";
 import StudentDashboard from "../Dashboard/StudentDashboard";
@@ -60,6 +62,8 @@ interface DashboardParams {
   requestedStudentTotalWordsLearned?: number;
   downloadData: (studentId: string, userId: string) => void;
   downloadDataLoading: boolean;
+  downloadAllData: () => void;
+  downloadAllDataLoading: boolean;
 }
 
 interface IndividualDashboardParams {
@@ -84,6 +88,7 @@ const connector = connect(
       state
     ),
     downloadDataLoading: getDownloadDataLoading(state),
+    downloadAllDataLoading: getDownloadAllDataLoading(state),
   }),
   {
     signOut: SignOut.request,
@@ -92,6 +97,7 @@ const connector = connect(
     changeIconRequest: ChangeProfileIcon.request,
     getUserSessionData: GetUserSessionData.request,
     downloadData: DownloadData.request,
+    downloadAllData: DownloadAllData.request,
   }
 );
 
@@ -451,6 +457,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
   requestedStudentTotalWordsLearned,
   downloadData,
   downloadDataLoading,
+  downloadAllData,
+  downloadAllDataLoading,
 }): ReactElement => {
   let history = useHistory();
   if (isSignedOut) {
@@ -595,6 +603,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
             student={requestedStudent}
             isStudentView={false}
             totalWordsLearned={requestedStudentTotalWordsLearned}
+            downloadData={downloadData}
+            downloadDataLoading={downloadDataLoading}
           />
         ) : userSessionData !== undefined &&
           requestedStudent &&
@@ -607,6 +617,8 @@ const Dashboard: FunctionComponent<DashboardParams> = ({
         ) : (
           <ResearcherDashboard
             students={dataForResearchers || []}
+            downloadAllData={downloadAllData}
+            downloadAllDataLoading={downloadAllDataLoading}
           ></ResearcherDashboard>
         );
       case 2:

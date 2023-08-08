@@ -47,7 +47,7 @@ function* watchUpdateAssessment(action: Action) {
     sessionId,
     isFinished,
     currentIdx,
-    durationInSeconds,
+    durationsInSeconds,
   }: UpdateAssessmentAction = action.payload;
   try {
     yield call(() =>
@@ -55,7 +55,7 @@ function* watchUpdateAssessment(action: Action) {
         id,
         responses,
         currentIdx,
-        durationInSeconds
+        durationsInSeconds
       )
     );
     if (isFinished) {

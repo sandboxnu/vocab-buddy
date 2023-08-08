@@ -67,7 +67,7 @@ const Quiz = ({
       responses: AssessmentResult[],
       isFinished: boolean,
       currentIdx: number,
-      durationInSeconds: number
+      durationsInSeconds: number
     ) => {
       updateAssessment({
         responses,
@@ -75,7 +75,7 @@ const Quiz = ({
         sessionId: assessment.sessionId,
         isFinished,
         currentIdx,
-        durationInSeconds,
+        durationsInSeconds,
       });
     };
     return (

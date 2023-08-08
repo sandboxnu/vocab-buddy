@@ -38,15 +38,19 @@ export const getCurrentIntervention = {
   }),
 };
 
-interface UpdateInterventionAction {
+export interface UpdateInterventionAction {
   intervention: Interventions;
   wordIdx: number;
   activityIdx: number;
-  durationInSeconds: number;
+  durationsInSeconds: number;
   answer2Correct?: boolean;
+  activity2ImageSelected?: string;
   answer3Correct?: boolean;
+  activity3Image?: string;
   answer3Part2Correct?: boolean;
+  activity3Part2Image?: string;
   answer3Part3Correct?: boolean;
+  activity3Part3Image?: string;
 }
 
 interface UpdateInterventionSuccess {
@@ -58,11 +62,15 @@ export const updateIntervention = {
     intervention,
     wordIdx,
     activityIdx,
-    durationInSeconds,
+    durationsInSeconds,
     answer2Correct,
+    activity2ImageSelected,
     answer3Correct,
+    activity3Image,
     answer3Part2Correct,
+    activity3Part2Image,
     answer3Part3Correct,
+    activity3Part3Image,
   }: UpdateInterventionAction): Action => {
     return {
       type: ActionTypes.UPDATE_INTERVENTION_REQUEST,
@@ -70,11 +78,15 @@ export const updateIntervention = {
         intervention,
         wordIdx,
         activityIdx,
-        durationInSeconds,
+        durationsInSeconds,
         answer2Correct,
+        activity2ImageSelected,
         answer3Correct,
+        activity3Image,
         answer3Part2Correct,
+        activity3Part2Image,
         answer3Part3Correct,
+        activity3Part3Image,
       },
     };
   },

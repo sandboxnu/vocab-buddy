@@ -15,7 +15,7 @@ interface QuizWordsProps {
     results: AssessmentResult[],
     isFinished: boolean,
     currentIdx: number,
-    durationInSeconds: number
+    durationsInSeconds: number
   ) => void;
 }
 
@@ -97,8 +97,12 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
   }
 
   const nextWord = () => {
+    if (selectedIndex === -1) {
+      return;
+    }
+
     let curDate = new Date();
-    let durationInSeconds =
+    let durationsInSeconds =
       (curDate.getTime() - wordStartTime.getTime()) / 1000;
     setWordStartTime(curDate);
 
@@ -111,7 +115,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
         wordResponses,
         true,
         currentIndex,
-        durationInSeconds
+        durationsInSeconds
       );
     } else if (currentIndex < assessment.words.length - 1) {
       // We still have words
@@ -119,7 +123,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
         wordResponses,
         false,
         currentIndex + 1,
-        durationInSeconds
+        durationsInSeconds
       );
       setShuffled([]);
       setSelectedIndex(-1);
@@ -130,7 +134,7 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
         wordResponses,
         true,
         currentIndex,
-        durationInSeconds
+        durationsInSeconds
       );
     }
   };
@@ -147,7 +151,6 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
             </PromptText>
             <TriggeredPrompt
               isAssessment={true}
-              currentWord={currentIndex}
               prompt1Url={word.assessmentPrompt}
             />
           </Prompt>
@@ -157,14 +160,25 @@ const QuizWords = ({ assessment, updateWords }: QuizWordsProps) => {
               selected={selectedIndex}
               setSelected={(idx) => {
                 setSelectedIndex(idx);
-                setWordResponses(
-                  wordResponses.concat([
-                    {
-                      word: word.id,
-                      correct: shuffled[idx] === word.correctImage,
-                    },
-                  ])
-                );
+                setWordResponses((prevWordResponses) => {
+                  const newWordEntry = {
+                    word: word.id,
+                    imageSelected: shuffled[idx],
+                    correct: shuffled[idx] === word.correctImage,
+                  };
+                  const existingWordResponse = prevWordResponses.findIndex(
+                    (response) => response.word === word.id
+                  );
+                  if (existingWordResponse === -1) {
+                    return wordResponses.concat([newWordEntry]);
+                  } else {
+                    const newResponses = wordResponses.slice(
+                      existingWordResponse,
+                      existingWordResponse + 1
+                    );
+                    return newResponses.concat([newWordEntry]);
+                  }
+                });
               }}
             />
           </ImageContainer>

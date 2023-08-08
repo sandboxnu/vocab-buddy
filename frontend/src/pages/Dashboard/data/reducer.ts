@@ -148,4 +148,8 @@ export const getDownloadDataLoading = (state: RootStateOrAny) => {
   return state.dashboard.downloadDataLoading;
 };
 
+export const getDownloadAllDataLoading = (state: RootStateOrAny) => {
+  return state.dashboard.downloadAllDataLoading;
+};
+
 export default dashboardReducer;

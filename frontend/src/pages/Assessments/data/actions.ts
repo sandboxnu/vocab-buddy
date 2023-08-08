@@ -17,7 +17,7 @@ export interface UpdateAssessmentAction {
   sessionId: SessionId;
   isFinished: boolean;
   currentIdx: number;
-  durationInSeconds: number;
+  durationsInSeconds: number;
 }
 
 export const getAssessment = {
@@ -45,7 +45,7 @@ export const updateAssessment = {
     id,
     isFinished,
     currentIdx,
-    durationInSeconds,
+    durationsInSeconds,
     sessionId,
   }: UpdateAssessmentAction): Action => ({
     type: ActionTypes.UPDATE_ASSESSMENT_REQUEST,
@@ -54,7 +54,7 @@ export const updateAssessment = {
       id,
       isFinished,
       currentIdx,
-      durationInSeconds,
+      durationsInSeconds,
       sessionId,
     },
   }),

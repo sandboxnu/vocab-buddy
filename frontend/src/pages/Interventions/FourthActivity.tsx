@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import DelayedNextButton from "../../components/DelayedNextButton";
@@ -84,16 +84,7 @@ const FourthActivity = ({
   imageUrl,
   updateIntervention,
 }: FourthActivityProps): ReactElement => {
-  const [triggerSecondPrompt, setTriggerSecondPrompt] = useState(
-    false
-  );
   const [showNextButton, setShowNextButton] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setTriggerSecondPrompt(true);
-    }, 5000);
-  });
 
   return (
     <Layout hideBar={true}>
@@ -106,7 +97,7 @@ const FourthActivity = ({
             <TriggeredPrompt
               prompt1Url={prompt1Url}
               prompt2Url={prompt2Url}
-              triggerSecondPrompt={triggerSecondPrompt}
+              triggerSecondPrompt={true}
               secondPromptFinishedHandler={() =>
                 setShowNextButton(true)
               }
