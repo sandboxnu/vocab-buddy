@@ -275,7 +275,7 @@ export default class FirebaseInteractor {
   }
 
   /**
-   * Creates a new assessment with all of the incorrect words from the given intervention.
+   * Creates a new assessment with all of the words from the given intervention.
    */
   async createAssessmentFromIntervention(setId: string) {
     let intervention = await this.db
@@ -346,7 +346,7 @@ export default class FirebaseInteractor {
       id,
       currentIndex,
       words: actualWords,
-      firebaseId: assessment.id,
+      assessmentId: assessment.id,
       sessionId: assessment.session === undefined ? -1 : assessment.session,
     };
   }

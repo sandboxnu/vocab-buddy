@@ -48,7 +48,7 @@ const Quiz = ({
 }: QuizProps) => {
   let history = useHistory();
   let params = useParams<QuizParams>();
-  if (isFinished) {
+  if (!assessment && isFinished) {
     history.push("/assessments/reward");
   }
 
@@ -57,8 +57,8 @@ const Quiz = ({
   }
 
   useEffect(() => {
-    if (!assessment) getAssessment(params.id);
-  }, [assessment, getAssessment, params]);
+    if (!assessment && !isFinished) getAssessment(params.id);
+  }, [assessment, isFinished, getAssessment, params]);
 
   if (!assessment) {
     return <LoadingScreen />;

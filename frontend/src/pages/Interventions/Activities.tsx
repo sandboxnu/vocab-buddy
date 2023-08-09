@@ -105,12 +105,9 @@ const Activities: FunctionComponent<ActivityProps> = ({
           let durationsInSeconds =
             (curDate.getTime() - activityStartTime.getTime()) / 1000;
           setActivityStartTime(curDate);
-          if (
-            currentWordIdx === wordList.length - 1 &&
-            nextActivityIdx === 0
-          ) {
-            history.push(`/interventions/reward`);
+          if (nextWordIdx === 0 && nextActivityIdx === 0) {
             finishedIntervention({ setId });
+            history.push(`/interventions/reward`);
           } else {
             updateIntervention({
               intervention: interventions,

@@ -1,4 +1,8 @@
-import React, { FunctionComponent, ReactElement } from "react";
+import React, {
+  FunctionComponent,
+  ReactElement,
+  useMemo,
+} from "react";
 import { ActivityList } from "../../models/types";
 import FirstActivity from "../Interventions/FirstActivity";
 import SecondActivity from "../Interventions/SecondActivity";
@@ -19,6 +23,21 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
   activities,
   updateIntervention,
 }): ReactElement => {
+  const activity2ImageUrls = useMemo(() => {
+    const correctChoice = {
+      url: activities.a2.correctUrl,
+      correct: true,
+    };
+
+    const incorrectChoice = {
+      url: activities.a2.incorrectUrl,
+      correct: false,
+    };
+
+    return Math.floor(Math.random() * 2) === 0
+      ? [correctChoice, incorrectChoice]
+      : [incorrectChoice, correctChoice];
+  }, [activities]);
   switch (idx) {
     case 0:
       return (
@@ -31,27 +50,12 @@ const ActivityComponent: FunctionComponent<ActivityComponentProp> = ({
         />
       );
     case 1: {
-      const correctChoice = {
-        url: activities.a2.correctUrl,
-        correct: true,
-      };
-
-      const incorrectChoice = {
-        url: activities.a2.incorrectUrl,
-        correct: false,
-      };
-
-      const imageUrls =
-        Math.floor(Math.random() * 2) === 0
-          ? [correctChoice, incorrectChoice]
-          : [incorrectChoice, correctChoice];
-
       return (
         <SecondActivity
           title={title}
           prompt1Url={activities.a2.prompt}
           prompt2Url={activities.a2.prompt2}
-          imageUrls={imageUrls}
+          imageUrls={activity2ImageUrls}
           updateIntervention={updateIntervention}
         />
       );
