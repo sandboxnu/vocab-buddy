@@ -8,6 +8,8 @@ import { TextInput } from "../../components/TextInput";
 import { getCurrentUser, getDashboardError } from "./data/reducer";
 import { UpdateUserSettings } from "./data/actions";
 import Toast from "../../components/Toast";
+import { utc } from "moment";
+import { DateInput } from "../../components/DateInput";
 
 const LoginHoldingDiv = styled.div`
   display: flex;
@@ -79,7 +81,7 @@ const NameTextInput = styled(TextInput)`
     isStudent ? "15px" : "0px"};
 `;
 
-const AgeTextInput = styled(TextInput)`
+const AgeTextInput = styled(DateInput)`
   flex: 1;
   margin-left: 5;
 `;
@@ -100,7 +102,7 @@ interface SettingsProps {
   error?: Error;
   updateSettings: ({
     newName,
-    newAge,
+    newDob,
     newEmail,
     newPassword,
     currentPassword,
@@ -117,7 +119,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
   let [confirmPassword, setConfirmPassword] = useState("");
   let [currentPassword, setCurrentPassword] = useState("");
   let [name, setName] = useState(user.name);
-  let [age, setAge] = useState(user.age);
+  let [dob, setDob] = useState(user.dob);
   let [errorString, setErrorString] = useState("");
   let [networkErrorShown, setNetworkErrorShown] = useState(false);
   let [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -150,7 +152,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
 
     updateSettings({
       newName: name === user.name ? undefined : name,
-      newAge: age === user.age ? undefined : age,
+      newDob: dob === user.dob ? undefined : dob,
       newEmail: email === "" ? undefined : email,
       newPassword: password === "" ? undefined : password,
       currentPassword:
@@ -209,14 +211,13 @@ const Settings: FunctionComponent<SettingsProps> = ({
             />
             {user.accountType === "STUDENT" && (
               <AgeTextInput
+                text="date of birth"
                 onChange={(e) => {
-                  if (parseInt(e.target.value) != null) {
-                    setAge(parseInt(e.target.value));
+                  if (e != null) {
+                    setDob(e.toDate());
                   }
                 }}
-                value={age.toString()}
-                type="number"
-                text="age"
+                value={utc(dob.toUTCString())}
               />
             )}
           </HorizontalDiv>

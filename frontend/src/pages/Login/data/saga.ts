@@ -27,11 +27,11 @@ function* watchCreateUser(action: Action) {
     password,
     name,
     accountType,
-    age,
+    dob,
   }: CreateUserParams = action.payload;
   try {
     yield call(() =>
-      firebaseInteractor.createAccount(email, password, name, accountType, age)
+      firebaseInteractor.createAccount(email, password, name, accountType, dob)
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {

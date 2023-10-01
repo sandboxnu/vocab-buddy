@@ -12,10 +12,10 @@ export const authenticationRequest = {
     password,
     name,
     accountType,
-    age,
+    dob,
   }: CreateUserParams): Action => ({
     type: ActionTypes.CREATE_USER,
-    payload: { email, password, name, accountType, age },
+    payload: { email, password, name, accountType, dob },
   }),
   signIn: ({ email, password }: LoginParams): Action => ({
     type: ActionTypes.SIGN_IN,

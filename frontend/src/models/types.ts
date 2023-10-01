@@ -94,7 +94,7 @@ export interface User {
   id: string;
   name: string;
   accountType: AccountType;
-  age: number;
+  dob: Date;
   sessionId: SessionId;
   onAssessment: boolean;
   currentInterventionOrAssessment: string;
@@ -107,7 +107,7 @@ export interface User {
  */
 export interface UserSettings {
   newName?: string;
-  newAge?: number;
+  newDob?: Date;
   newEmail?: string;
   newPassword?: string;
   currentPassword?: string;
@@ -207,7 +207,7 @@ export interface CreateUserParams {
   password: string;
   name: string;
   accountType: AccountType;
-  age: Number | null;
+  dob: Date | null;
 }
 
 export interface ResetPasswordParams {

@@ -101,7 +101,7 @@ export default class FirebaseInteractor {
     password: string,
     name: string,
     accountType: AccountType,
-    age: Number | null
+    dob: Date | null
   ) {
     this.unsubscribe?.apply(this);
     let userAuth = await this.auth.createUserWithEmailAndPassword(
@@ -114,7 +114,7 @@ export default class FirebaseInteractor {
     this.db.collection("users").doc(userAuth.user.uid).set({
       name,
       accountType,
-      age,
+      dob,
     });
     userAuth.user.sendEmailVerification();
     if (accountType === "STUDENT") {
@@ -722,7 +722,7 @@ export default class FirebaseInteractor {
 
   async updateUserSettings({
     newName,
-    newAge,
+    newDob,
     newEmail,
     newPassword,
     currentPassword,
@@ -744,8 +744,8 @@ export default class FirebaseInteractor {
     if (newName !== undefined) {
       await this.updateCurrentUser({ name: newName });
     }
-    if (newAge !== undefined) {
-      await this.updateCurrentUser({ age: newAge });
+    if (newDob !== undefined) {
+      await this.updateCurrentUser({ dob: newDob });
     }
     return this.getUser(undefined);
   }
@@ -786,7 +786,7 @@ export default class FirebaseInteractor {
       id: id,
       name: userData.name as string,
       accountType: userData.accountType as AccountType,
-      age: userData.age as number,
+      dob: new Date(Date.parse(userData.dob)),
       sessionId: userData.sessionId === undefined ? -1 : userData.sessionId,
       onAssessment:
         userData.onAssessment === undefined ? true : userData.onAssessment,
