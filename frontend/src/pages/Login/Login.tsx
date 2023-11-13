@@ -148,8 +148,8 @@ const loginIllustration =
 
 interface LoginProps {
   signedIn: boolean;
-  signIn: ({ email, password }: LoginParams) => void;
-  resetPassword: ({ email }: ResetPasswordParams) => void;
+  signIn: ({ username, password }: LoginParams) => void;
+  resetPassword: ({ username }: ResetPasswordParams) => void;
   error?: Error;
 }
 
@@ -163,7 +163,7 @@ const Login: FunctionComponent<LoginProps> = ({
   resetPassword,
   error,
 }): ReactElement => {
-  let [email, setEmail] = useState("");
+  let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
   let [showError, setShowError] = useState(false);
   let history = useHistory();
@@ -174,20 +174,20 @@ const Login: FunctionComponent<LoginProps> = ({
   }
 
   let doResetPassword = () => {
-    let email = prompt("What is your email?");
+    let username = prompt("What is your username?");
 
-    if (email == null || email === "") {
+    if (username == null || username === "") {
       return;
     }
 
     setShowError(true);
 
-    resetPassword({ email });
+    resetPassword({ username });
   };
 
   const doSignIn = () => {
     setShowError(true);
-    signIn({ email, password });
+    signIn({ username, password });
   };
 
   useEffect(() => {
@@ -219,10 +219,12 @@ const Login: FunctionComponent<LoginProps> = ({
               <ActuallyLoginDiv>
                 <LoginHeader>login</LoginHeader>
                 <TextInput
-                  onChange={(event) => setEmail(event.target.value)}
-                  value={email}
-                  type="email"
-                  text="email address"
+                  onChange={(event) =>
+                    setUsername(event.target.value)
+                  }
+                  value={username}
+                  type="username"
+                  text="username"
                 />
                 <TextInput
                   onChange={(e) => setPassword(e.target.value)}

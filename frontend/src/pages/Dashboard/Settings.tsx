@@ -103,7 +103,7 @@ interface SettingsProps {
   updateSettings: ({
     newName,
     newDob,
-    newEmail,
+    newUsername,
     newPassword,
     currentPassword,
   }: UserSettings) => void;
@@ -114,7 +114,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
   error,
   updateSettings,
 }): ReactElement => {
-  let [email, setEmail] = useState("");
+  let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
   let [confirmPassword, setConfirmPassword] = useState("");
   let [currentPassword, setCurrentPassword] = useState("");
@@ -134,7 +134,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
       return;
     }
 
-    if (email.length > 0 && currentPassword.length === 0) {
+    if (username.length > 0 && currentPassword.length === 0) {
       setErrorString(
         "you need to enter your current password to change your email"
       );
@@ -153,7 +153,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
     updateSettings({
       newName: name === user.name ? undefined : name,
       newDob: dob === user.dob ? undefined : dob,
-      newEmail: email === "" ? undefined : email,
+      newUsername: username === "" ? undefined : username,
       newPassword: password === "" ? undefined : password,
       currentPassword:
         currentPassword === "" ? undefined : currentPassword,
@@ -223,11 +223,11 @@ const Settings: FunctionComponent<SettingsProps> = ({
           </HorizontalDiv>
           <SectionHeader>edit login</SectionHeader>
           <TextInput
-            onChange={(event) => setEmail(event.target.value)}
-            value={email}
-            type="email"
-            text="email address"
-            autoComplete={"new-email"}
+            onChange={(event) => setUsername(event.target.value)}
+            value={username}
+            type="username"
+            text="username"
+            autoComplete={"new-username"}
           />
           <TextInput
             onChange={(e) => setPassword(e.target.value)}
