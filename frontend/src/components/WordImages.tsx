@@ -1,6 +1,6 @@
 import React, { FunctionComponent, ReactElement } from "react";
 import styled from "styled-components";
-import { SEA_FOAM } from "../constants/colors";
+import { SKY } from "../constants/colors";
 
 interface ImagesProp {
   images: string[];
@@ -25,7 +25,7 @@ const Image = styled.img`
   ${({ highlight }: ImageProp) =>
     highlight &&
     `
-    border: 10px solid ${SEA_FOAM};
+    border: 10px solid ${SKY};
   `};
 `;
 
