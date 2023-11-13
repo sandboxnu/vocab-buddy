@@ -586,7 +586,7 @@ export default class FirebaseInteractor {
       .get();
     let totalWords = 0;
     for (let assessment of allAssessments.docs) {
-      if (assessment.data().sessionId === -1) {
+      if (assessment.data().session === -1) {
         continue;
       }
       let results = (await assessment.data()
