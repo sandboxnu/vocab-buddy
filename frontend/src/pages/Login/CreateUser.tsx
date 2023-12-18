@@ -139,7 +139,6 @@ const connector = connect(
 interface CreateUserProps {
   signedIn: boolean;
   createUser: ({
-    username,
     password,
     name,
     accountType,
@@ -153,7 +152,6 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
   createUser,
   error,
 }): ReactElement => {
-  let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
   let [confirmPassword, setConfirmPassword] = useState("");
   let [name, setName] = useState("");
@@ -169,14 +167,12 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
     } else if (
       (accountType === "STUDENT" && !dob) ||
       !name ||
-      !password ||
-      !username
+      !password
     ) {
       setErrorString("please fill in all fields");
     } else {
       setNetworkErrorShown(true);
       createUser({
-        username,
         password,
         name,
         accountType: accountType as AccountType,
@@ -253,12 +249,6 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
                   />
                 )}
               </HorizontalDiv>
-              <TextInput
-                onChange={(event) => setUsername(event.target.value)}
-                value={username}
-                type="username"
-                text="username"
-              />
               <TextInput
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}

@@ -34,12 +34,9 @@ var firebaseConfig = {
 };
 
 var baseEmail = process.env.REACT_APP_BASE_EMAIL;
-var basePass = process.env.REACT_APP_BASE_PASSWORD;
 
-const userToEmailAndPass = (username: string) => ({
-  email: baseEmail!.replace("<username>", username),
-  password: basePass!.replace("<username>", username),
-});
+const userToEmail = (username: string) =>
+  baseEmail!.replace("<username>", username.replace(" ", "."));
 
 firebase.initializeApp(firebaseConfig);
 
@@ -105,14 +102,13 @@ export default class FirebaseInteractor {
    * Creates an account for a user
    */
   async createAccount(
-    username: string,
     password: string,
     name: string,
     accountType: AccountType,
     dob: Date | null
   ) {
     this.unsubscribe?.apply(this);
-    const { email } = userToEmailAndPass(username);
+    const email = userToEmail(name);
     let userAuth = await this.auth.createUserWithEmailAndPassword(
       email,
       password
@@ -125,7 +121,6 @@ export default class FirebaseInteractor {
       accountType,
       dob,
     });
-    userAuth.user.sendEmailVerification();
     if (accountType === "STUDENT") {
       let initialAssessmentId = await this.createInitialAssessment();
       let currentDaysActive: string[] = [];
@@ -145,7 +140,7 @@ export default class FirebaseInteractor {
 
   async signInWithUsernameAndPassword(username: string, password: string) {
     this.unsubscribe?.apply(this);
-    const { email } = userToEmailAndPass(username);
+    const email = userToEmail(username);
     await this.auth.signInWithEmailAndPassword(email, password);
     await this.createCurrentUser();
   }
@@ -727,22 +722,21 @@ export default class FirebaseInteractor {
   }
 
   async resetPassword(username: string) {
-    await this.auth.sendPasswordResetEmail(userToEmailAndPass(username).email);
+    await this.auth.sendPasswordResetEmail(userToEmail(username));
   }
 
   async updateUserSettings({
     newName,
     newDob,
-    newUsername,
     newPassword,
     currentPassword,
   }: UserSettings) {
     // changing sensitive fields - need to reauthenticate user
-    if (newUsername !== undefined || newPassword !== undefined) {
+    if (newName !== undefined || newPassword !== undefined) {
       if (currentPassword !== undefined) {
         await this.reauthenticateUser(currentPassword);
-        if (newUsername !== undefined) {
-          await this.updateUserEmail(userToEmailAndPass(newUsername).email);
+        if (newName !== undefined) {
+          await this.updateUserEmail(userToEmail(newName));
         }
         if (newPassword !== undefined) {
           await this.updateUserPassword(newPassword);
@@ -750,9 +744,6 @@ export default class FirebaseInteractor {
       } else {
         throw new Error("Please enter your current password");
       }
-    }
-    if (newName !== undefined) {
-      await this.updateCurrentUser({ name: newName });
     }
     if (newDob !== undefined) {
       await this.updateCurrentUser({ dob: newDob });

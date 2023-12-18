@@ -125,12 +125,11 @@ export const UpdateUserSettings = {
   request: ({
     newName,
     newDob,
-    newUsername,
     newPassword,
     currentPassword,
   }: UserSettings) => ({
     type: ActionTypes.UPDATE_USER_SETTINGS_REQUEST,
-    payload: { newName, newDob, newUsername, newPassword, currentPassword },
+    payload: { newName, newDob, newPassword, currentPassword },
   }),
   success: ({ user }: UpdateUserSettingsSuccessResponse) => ({
     type: ActionTypes.UPDATE_USER_SETTINGS_SUCCESS,

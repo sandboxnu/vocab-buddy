@@ -108,7 +108,6 @@ export interface User {
 export interface UserSettings {
   newName?: string;
   newDob?: Date;
-  newUsername?: string;
   newPassword?: string;
   currentPassword?: string;
 }
@@ -198,12 +197,11 @@ export interface Action {
  * Represents parameters needed to login.
  */
 export interface LoginParams {
-  username: string;
+  name: string;
   password: string;
 }
 
 export interface CreateUserParams {
-  username: string;
   password: string;
   name: string;
   accountType: AccountType;
@@ -211,7 +209,7 @@ export interface CreateUserParams {
 }
 
 export interface ResetPasswordParams {
-  username: string;
+  name: string;
 }
 
 export interface SessionStats {
