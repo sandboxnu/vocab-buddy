@@ -16,6 +16,8 @@ import { authenticationRequest } from "./data/actions";
 import { AccountType, CreateUserParams } from "../../models/types";
 import { getCreateUserError, getSignedIn } from "./data/reducer";
 import Toast from "../../components/Toast";
+import { utc } from "moment";
+import { DateInput } from "../../components/DateInput";
 
 const LoginHoldingDiv = styled.div`
   display: flex;
@@ -118,7 +120,7 @@ const NameTextInput = styled(TextInput)`
     isStudent ? "15px" : "0px"};
 `;
 
-const AgeTextInput = styled(TextInput)`
+const AgeTextInput = styled(DateInput)`
   flex: 1;
   margin-left: 5;
 `;
@@ -137,11 +139,10 @@ const connector = connect(
 interface CreateUserProps {
   signedIn: boolean;
   createUser: ({
-    email,
     password,
     name,
     accountType,
-    age,
+    dob,
   }: CreateUserParams) => void;
   error?: Error;
 }
@@ -151,12 +152,11 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
   createUser,
   error,
 }): ReactElement => {
-  let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [confirmPassword, setConfirmPassword] = useState("");
   let [name, setName] = useState("");
   let [accountType, setAccountType] = useState("STUDENT");
-  let [age, setAge] = useState("");
+  let [dob, setDob] = useState(new Date());
   let [errorString, setErrorString] = useState("");
   let [networkErrorShown, setNetworkErrorShown] = useState(false);
   let createUserWithCheck = () => {
@@ -165,20 +165,18 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
         "you need to confirm the password with the same password"
       );
     } else if (
-      (accountType === "STUDENT" && !age) ||
+      (accountType === "STUDENT" && !dob) ||
       !name ||
-      !password ||
-      !email
+      !password
     ) {
       setErrorString("please fill in all fields");
     } else {
       setNetworkErrorShown(true);
       createUser({
-        email,
         password,
         name,
         accountType: accountType as AccountType,
-        age: accountType === "RESEARCHER" ? null : parseInt(age),
+        dob: accountType === "RESEARCHER" ? null : dob,
       });
     }
   };
@@ -241,23 +239,16 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({
                 />
                 {accountType === "STUDENT" && (
                   <AgeTextInput
+                    text="date of birth"
                     onChange={(e) => {
-                      if (parseInt(e.target.value) != null) {
-                        setAge(e.target.value);
+                      if (e != null) {
+                        setDob(e.toDate());
                       }
                     }}
-                    value={age}
-                    type="number"
-                    text="age"
+                    value={utc(dob.toUTCString())}
                   />
                 )}
               </HorizontalDiv>
-              <TextInput
-                onChange={(event) => setEmail(event.target.value)}
-                value={email}
-                type="email"
-                text="email address"
-              />
               <TextInput
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}

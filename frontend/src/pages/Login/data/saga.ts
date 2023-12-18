@@ -22,16 +22,10 @@ function* root() {
 }
 
 function* watchCreateUser(action: Action) {
-  let {
-    email,
-    password,
-    name,
-    accountType,
-    age,
-  }: CreateUserParams = action.payload;
+  let { password, name, accountType, dob }: CreateUserParams = action.payload;
   try {
     yield call(() =>
-      firebaseInteractor.createAccount(email, password, name, accountType, age)
+      firebaseInteractor.createAccount(password, name, accountType, dob)
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
@@ -40,10 +34,10 @@ function* watchCreateUser(action: Action) {
 }
 
 function* watchSignIn(action: Action) {
-  let { email, password }: LoginParams = action.payload;
+  let { name, password }: LoginParams = action.payload;
   try {
     yield call(() =>
-      firebaseInteractor.signInWithUsernameAndPassword(email, password)
+      firebaseInteractor.signInWithUsernameAndPassword(name, password)
     );
     yield put(authenticationRequest.authenticationSuccess());
   } catch (error) {
@@ -52,9 +46,9 @@ function* watchSignIn(action: Action) {
 }
 
 function* watchResetPassword(action: Action) {
-  let { email }: ResetPasswordParams = action.payload;
+  let { name }: ResetPasswordParams = action.payload;
   try {
-    yield call(() => firebaseInteractor.resetPassword(email));
+    yield call(() => firebaseInteractor.resetPassword(name));
     yield put(authenticationRequest.resetPasswordSuccess());
   } catch (error) {
     yield put(authenticationRequest.error(error));

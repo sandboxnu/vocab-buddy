@@ -8,25 +8,24 @@ import {
 
 export const authenticationRequest = {
   createUser: ({
-    email,
     password,
     name,
     accountType,
-    age,
+    dob,
   }: CreateUserParams): Action => ({
     type: ActionTypes.CREATE_USER,
-    payload: { email, password, name, accountType, age },
+    payload: { password, name, accountType, dob },
   }),
-  signIn: ({ email, password }: LoginParams): Action => ({
+  signIn: ({ name, password }: LoginParams): Action => ({
     type: ActionTypes.SIGN_IN,
-    payload: { email, password },
+    payload: { name, password },
   }),
   authenticationSuccess: (): Action => ({
     type: ActionTypes.AUTHENTICATION_SUCCESS,
   }),
-  resetPassword: ({ email }: ResetPasswordParams): Action => ({
+  resetPassword: ({ name }: ResetPasswordParams): Action => ({
     type: ActionTypes.RESET_PASSWORD,
-    payload: { email },
+    payload: { name },
   }),
   resetPasswordSuccess: (): Action => ({
     type: ActionTypes.RESET_PASSWORD_SUCCESS,

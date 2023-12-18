@@ -8,6 +8,8 @@ import { TextInput } from "../../components/TextInput";
 import { getCurrentUser, getDashboardError } from "./data/reducer";
 import { UpdateUserSettings } from "./data/actions";
 import Toast from "../../components/Toast";
+import { utc } from "moment";
+import { DateInput } from "../../components/DateInput";
 
 const LoginHoldingDiv = styled.div`
   display: flex;
@@ -79,7 +81,7 @@ const NameTextInput = styled(TextInput)`
     isStudent ? "15px" : "0px"};
 `;
 
-const AgeTextInput = styled(TextInput)`
+const AgeTextInput = styled(DateInput)`
   flex: 1;
   margin-left: 5;
 `;
@@ -100,8 +102,7 @@ interface SettingsProps {
   error?: Error;
   updateSettings: ({
     newName,
-    newAge,
-    newEmail,
+    newDob,
     newPassword,
     currentPassword,
   }: UserSettings) => void;
@@ -112,12 +113,11 @@ const Settings: FunctionComponent<SettingsProps> = ({
   error,
   updateSettings,
 }): ReactElement => {
-  let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [confirmPassword, setConfirmPassword] = useState("");
   let [currentPassword, setCurrentPassword] = useState("");
   let [name, setName] = useState(user.name);
-  let [age, setAge] = useState(user.age);
+  let [dob, setDob] = useState(user.dob);
   let [errorString, setErrorString] = useState("");
   let [networkErrorShown, setNetworkErrorShown] = useState(false);
   let [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -132,9 +132,9 @@ const Settings: FunctionComponent<SettingsProps> = ({
       return;
     }
 
-    if (email.length > 0 && currentPassword.length === 0) {
+    if (name.length > 0 && currentPassword.length === 0) {
       setErrorString(
-        "you need to enter your current password to change your email"
+        "you need to enter your current password to change your name"
       );
       return;
     }
@@ -150,8 +150,7 @@ const Settings: FunctionComponent<SettingsProps> = ({
 
     updateSettings({
       newName: name === user.name ? undefined : name,
-      newAge: age === user.age ? undefined : age,
-      newEmail: email === "" ? undefined : email,
+      newDob: dob === user.dob ? undefined : dob,
       newPassword: password === "" ? undefined : password,
       currentPassword:
         currentPassword === "" ? undefined : currentPassword,
@@ -209,25 +208,17 @@ const Settings: FunctionComponent<SettingsProps> = ({
             />
             {user.accountType === "STUDENT" && (
               <AgeTextInput
+                text="date of birth"
                 onChange={(e) => {
-                  if (parseInt(e.target.value) != null) {
-                    setAge(parseInt(e.target.value));
+                  if (e != null) {
+                    setDob(e.toDate());
                   }
                 }}
-                value={age.toString()}
-                type="number"
-                text="age"
+                value={utc(dob.toUTCString())}
               />
             )}
           </HorizontalDiv>
           <SectionHeader>edit login</SectionHeader>
-          <TextInput
-            onChange={(event) => setEmail(event.target.value)}
-            value={email}
-            type="email"
-            text="email address"
-            autoComplete={"new-email"}
-          />
           <TextInput
             onChange={(e) => setPassword(e.target.value)}
             value={password}

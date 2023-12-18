@@ -124,13 +124,12 @@ interface UpdateUserSettingsErrorResponse {
 export const UpdateUserSettings = {
   request: ({
     newName,
-    newAge,
-    newEmail,
+    newDob,
     newPassword,
     currentPassword,
   }: UserSettings) => ({
     type: ActionTypes.UPDATE_USER_SETTINGS_REQUEST,
-    payload: { newName, newAge, newEmail, newPassword, currentPassword },
+    payload: { newName, newDob, newPassword, currentPassword },
   }),
   success: ({ user }: UpdateUserSettingsSuccessResponse) => ({
     type: ActionTypes.UPDATE_USER_SETTINGS_SUCCESS,

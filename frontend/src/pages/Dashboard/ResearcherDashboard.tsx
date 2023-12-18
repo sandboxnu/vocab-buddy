@@ -224,7 +224,7 @@ const sortByName = (studentA: User, studentB: User): number => {
 };
 
 const sortByAge = (studentA: User, studentB: User): number => {
-  return studentA.age - studentB.age;
+  return studentA.dob.getTime() - studentB.dob.getTime();
 };
 
 const sortBySession = (studentA: User, studentB: User): number => {
